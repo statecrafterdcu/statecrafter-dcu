@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | StateCrafter DCU</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="../index.html">
+      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
+      <span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
+    </a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a class="nav-login" href="login.html">Login</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">STUDENT ACCESS</p>
+      <h1 style="font-size:clamp(40px,6vw,72px);line-height:1.02;color:var(--navy);margin:0 0 18px">Login</h1>
+      <p style="max-width:720px;color:var(--muted);font-size:17px">Student and admin authentication will be connected with Supabase in the next development phase.</p>
+      
+<div class="feature-card" style="max-width:520px;margin-top:42px">
+  <h3>Student / Admin Login</h3>
+  <p>This is the Phase 1 interface only. Supabase Authentication will be connected in Phase 3.</p>
+  <form onsubmit="event.preventDefault(); alert('Authentication will be connected after Supabase setup.');">
+    <label style="display:block;font-size:12px;font-weight:800;margin:18px 0 7px">Email</label>
+    <input type="email" placeholder="you@example.com" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:10px">
+    <label style="display:block;font-size:12px;font-weight:800;margin:18px 0 7px">Password</label>
+    <input type="password" placeholder="••••••••" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:10px">
+    <button class="btn btn-primary" style="margin-top:18px;width:100%">Continue</button>
+  </form>
+</div>
+
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-bottom" style="border-top:0;margin-top:0">
+    <span>© 2026 StateCrafter DCU</span>
+    <span>Political Science Department • Dhaka Central University</span>
+  </div>
+</footer>
+<script src="../app.js"></script>
+</body>
+</html>
