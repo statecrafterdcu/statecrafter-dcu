@@ -1,365 +1,697 @@
 <!doctype html>
 <html lang="en">
-<style>
 
-.submission-list{
-  border-top:1px solid var(--line);
-}
-
-.submission-item{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:20px;
-  align-items:center;
-  padding:22px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.submission-title{
-  margin:0 0 6px;
-  color:var(--navy);
-  font-size:16px;
-  font-weight:800;
-}
-
-.submission-meta{
-  margin:0;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.submission-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-
-.submission-status{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:30px;
-  padding:0 11px;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:900;
-  text-transform:uppercase;
-}
-
-.status-pending{
-  background:#fff4d6;
-  color:#8a6200;
-}
-
-.status-approved{
-  background:#e6f6eb;
-  color:#18733b;
-}
-
-.status-rejected{
-  background:#fbe7e7;
-  color:#9a1c24;
-}
-
-.reject-reason{
-  margin-top:12px;
-  padding:12px 14px;
-  border-radius:10px;
-  background:#faf1f1;
-  border-left:3px solid var(--red);
-  color:#6f3135;
-  font-size:12px;
-}
-
-.submission-empty{
-  padding:35px 20px;
-  border:1px dashed #ccd3dc;
-  border-radius:var(--radius);
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.submission-loading{
-  padding:25px 0;
-  color:var(--muted);
-  font-size:13px;
-}
-
-@media(max-width:700px){
-
-  .submission-item{
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-
-  .submission-actions{
-    justify-content:flex-start;
-  }
-
-}
-
-</style>
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Student Dashboard | StateCrafter DCU</title>
 
-  <link rel="stylesheet" href="../style.css">
+  <link
+    rel="stylesheet"
+    href="../style.css"
+  >
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
 
   <style>
 
-    /* ================================
+    /* =====================================================
        STUDENT DASHBOARD
-    ================================= */
+       ===================================================== */
+
+    .student-dashboard-section{
+      padding-top:70px;
+      padding-bottom:90px;
+    }
+
+
+    /* ================= PROFILE ================= */
 
     .student-profile-card{
+
       display:grid;
+
       grid-template-columns:180px 1fr;
-      gap:38px;
+
+      gap:40px;
+
       align-items:center;
-      padding:34px;
+
+      padding:38px;
+
       border:1px solid var(--line);
-      border-radius:24px;
+
+      border-radius:var(--radius);
+
       background:#fff;
-      box-shadow:0 10px 35px rgba(18,43,82,.06);
+
+      box-shadow:var(--shadow);
+
     }
 
-    /* PHOTO */
 
     .student-photo-column{
+
       display:flex;
+
       flex-direction:column;
+
       align-items:center;
+
       justify-content:center;
+
       text-align:center;
+
     }
+
 
     .student-profile-photo{
+
       width:150px;
+
       height:150px;
+
       border-radius:50%;
+
       object-fit:cover;
-      border:5px solid #f0f3f7;
-      background:#f4f5f7;
-      box-shadow:0 10px 28px rgba(18,43,82,.12);
+
+      border:5px solid #fff;
+
+      box-shadow:
+        0 10px 30px rgba(18,43,82,.15);
+
+      background:#f2f4f7;
+
     }
+
 
     .photo-button{
-      margin-top:16px;
-      width:150px;
-      font-size:12px;
+
+      margin-top:18px;
+
+      min-height:40px;
+
+      font-size:11px;
+
+      padding:0 15px;
+
+      cursor:pointer;
+
     }
+
 
     .photo-message{
-      width:180px;
+
       margin:8px 0 0;
+
+      min-height:18px;
+
       font-size:11px;
+
       color:var(--muted);
-      text-align:center;
+
     }
 
-    /* PROFILE INFORMATION */
-
-    .student-profile-info{
-      min-width:0;
-    }
 
     .student-profile-info h1{
+
       margin:0 0 22px;
+
       color:var(--navy);
-      font-size:clamp(30px,4vw,44px);
-      line-height:1.1;
+
+      font-size:clamp(30px,5vw,48px);
+
+      line-height:1.05;
+
       letter-spacing:-.035em;
+
     }
+
 
     .student-details{
+
       display:grid;
-      grid-template-columns:repeat(2,minmax(250px,1fr));
-      gap:0;
-      max-width:700px;
-      border-top:1px solid var(--line);
+
+      gap:10px;
+
+      max-width:650px;
+
     }
+
 
     .student-details p{
-      display:grid;
-      grid-template-columns:115px 1fr;
-      align-items:center;
-      gap:12px;
+
       margin:0;
-      min-height:48px;
-      padding:8px 18px 8px 0;
-      border-bottom:1px solid var(--line);
-      font-size:13px;
+
+      display:grid;
+
+      grid-template-columns:110px 1fr;
+
+      gap:10px;
+
+      align-items:baseline;
+
+      font-size:14px;
+
+      border-bottom:1px solid #eef0f3;
+
+      padding-bottom:8px;
+
     }
+
 
     .student-details p span{
+
       color:var(--muted);
-      font-weight:600;
-      white-space:nowrap;
+
+      font-weight:700;
+
     }
+
 
     .student-details p strong{
-      color:var(--navy);
+
+      color:var(--ink);
+
       font-weight:800;
-      min-width:0;
-      overflow-wrap:anywhere;
+
     }
 
-    /* CONTRIBUTION GRID */
 
-    .grid-4{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
+    /* ================= CONTRIBUTION COUNTS ================= */
+
+    .dashboard-block{
+
+      margin-top:65px;
+
     }
 
-    .contribution-card{
-      padding:26px;
-      min-height:125px;
-    }
 
-    .contribution-card strong{
-      display:block;
-      font-size:35px;
-      line-height:1;
+    .dashboard-block h2{
+
+      margin:0;
+
       color:var(--navy);
+
+      font-size:clamp(28px,4vw,42px);
+
+      line-height:1.08;
+
+      letter-spacing:-.03em;
+
     }
 
-    .contribution-card p{
-      margin:10px 0 0;
+
+    .dashboard-eyebrow{
+
+      margin:0 0 12px;
+
+      color:var(--red);
+
+      font-size:11px;
+
+      font-weight:900;
+
+      letter-spacing:.16em;
+
+    }
+
+
+    .dashboard-count-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      gap:18px;
+
+      margin-top:25px;
+
+    }
+
+
+    .dashboard-count-card{
+
+      padding:25px;
+
+      border:1px solid var(--line);
+
+      border-radius:var(--radius);
+
+      background:#fff;
+
+      box-shadow:
+        0 8px 30px rgba(18,43,82,.04);
+
+    }
+
+
+    .dashboard-count-number{
+
+      display:block;
+
+      color:var(--navy);
+
+      font-size:36px;
+
+      font-weight:900;
+
+      line-height:1;
+
+      margin-bottom:10px;
+
+    }
+
+
+    .dashboard-count-label{
+
+      margin:0;
+
       color:var(--muted);
+
       font-size:13px;
+
+      font-weight:700;
+
     }
 
-    /* MOBILE */
 
-    @media(max-width:900px){
+    /* ================= SUBMISSIONS ================= */
+
+    .submission-list{
+
+      margin-top:30px;
+
+      border-top:1px solid var(--line);
+
+    }
+
+
+    .submission-item{
+
+      display:grid;
+
+      grid-template-columns:1fr auto;
+
+      gap:25px;
+
+      align-items:center;
+
+      padding:23px 0;
+
+      border-bottom:1px solid var(--line);
+
+    }
+
+
+    .submission-title{
+
+      margin:0 0 6px;
+
+      color:var(--navy);
+
+      font-size:16px;
+
+      font-weight:800;
+
+    }
+
+
+    .submission-meta{
+
+      margin:0;
+
+      color:var(--muted);
+
+      font-size:12px;
+
+    }
+
+
+    .submission-actions{
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:flex-end;
+
+      gap:10px;
+
+      flex-wrap:wrap;
+
+    }
+
+
+    .submission-status{
+
+      display:inline-flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      min-height:30px;
+
+      padding:0 12px;
+
+      border-radius:999px;
+
+      font-size:10px;
+
+      font-weight:900;
+
+      text-transform:uppercase;
+
+      letter-spacing:.04em;
+
+    }
+
+
+    .status-pending{
+
+      background:#fff4d6;
+
+      color:#8a6200;
+
+    }
+
+
+    .status-approved{
+
+      background:#e6f6eb;
+
+      color:#18733b;
+
+    }
+
+
+    .status-rejected{
+
+      background:#fbe7e7;
+
+      color:#9a1c24;
+
+    }
+
+
+    .reject-reason{
+
+      margin-top:12px;
+
+      padding:12px 14px;
+
+      border-radius:10px;
+
+      background:#faf1f1;
+
+      border-left:3px solid var(--red);
+
+      color:#6f3135;
+
+      font-size:12px;
+
+      line-height:1.5;
+
+    }
+
+
+    .submission-empty{
+
+      padding:38px 20px;
+
+      border:1px dashed #cbd1d9;
+
+      border-radius:var(--radius);
+
+      text-align:center;
+
+      color:var(--muted);
+
+      font-size:13px;
+
+    }
+
+
+    .submission-loading{
+
+      padding:25px 0;
+
+      color:var(--muted);
+
+      font-size:13px;
+
+    }
+
+
+    .submission-error{
+
+      padding:18px;
+
+      border-radius:12px;
+
+      background:#faf1f1;
+
+      color:#8d1218;
+
+      font-size:13px;
+
+    }
+
+
+    /* ================= CONTRIBUTION ACTIONS ================= */
+
+    .contribute-description{
+
+      max-width:650px;
+
+      color:var(--muted);
+
+      font-size:14px;
+
+      margin:18px 0 22px;
+
+    }
+
+
+    .contribute-actions{
+
+      display:flex;
+
+      flex-wrap:wrap;
+
+      gap:12px;
+
+    }
+
+
+    .disabled-action{
+
+      opacity:.5;
+
+      cursor:not-allowed;
+
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:800px){
 
       .student-profile-card{
+
         grid-template-columns:1fr;
-        gap:28px;
+
         text-align:center;
+
+        gap:25px;
+
       }
+
 
       .student-photo-column{
-        width:100%;
-        align-items:center;
+
+        justify-self:center;
+
       }
 
-      .student-profile-info{
-        width:100%;
-        text-align:left;
-      }
 
       .student-profile-info h1{
-        text-align:center;
+
+        margin-bottom:20px;
+
       }
+
 
       .student-details{
-        width:100%;
-        max-width:none;
+
+        text-align:left;
+
+        margin:auto;
+
       }
 
-      .grid-4{
-        grid-template-columns:repeat(2,1fr);
+
+      .dashboard-count-grid{
+
+        grid-template-columns:
+          repeat(2,1fr);
+
       }
+
     }
+
 
     @media(max-width:560px){
 
-      .student-profile-card{
-        padding:26px 20px;
-        border-radius:20px;
+      .student-dashboard-section{
+
+        padding-top:45px;
+
+        padding-bottom:65px;
+
       }
 
-      /* PHOTO PERFECTLY CENTERED ON MOBILE */
+
+      .student-profile-card{
+
+        padding:28px 20px;
+
+      }
+
 
       .student-photo-column{
+
         width:100%;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        margin:0 auto;
+
       }
+
 
       .student-profile-photo{
+
         width:135px;
+
         height:135px;
+
       }
 
-      .photo-button{
-        width:145px;
-      }
 
-      .photo-message{
+      .student-profile-info{
+
         width:100%;
+
       }
 
-      /* NAME */
 
       .student-profile-info h1{
+
         font-size:30px;
-        line-height:1.15;
+
         text-align:center;
-        margin-bottom:22px;
-        word-break:break-word;
+
       }
 
-      /* DETAILS — ONE CLEAN COLUMN */
 
       .student-details{
-        display:block;
-        border-top:1px solid var(--line);
+
+        width:100%;
+
       }
 
+
       .student-details p{
-        display:grid;
-        grid-template-columns:105px minmax(0,1fr);
-        gap:10px;
-        min-height:46px;
-        padding:10px 0;
+
+        grid-template-columns:1fr;
+
+        gap:2px;
+
         text-align:left;
+
+        padding:10px 0;
+
       }
+
 
       .student-details p span{
-        text-align:left;
+
+        font-size:11px;
+
+        text-transform:uppercase;
+
+        letter-spacing:.05em;
+
       }
+
 
       .student-details p strong{
-        text-align:left;
+
+        font-size:14px;
+
       }
 
-      .grid-4{
+
+      .dashboard-count-grid{
+
         grid-template-columns:1fr 1fr;
+
         gap:12px;
+
       }
 
-      .contribution-card{
-        padding:22px 18px;
-        min-height:110px;
+
+      .dashboard-count-card{
+
+        padding:20px 16px;
+
       }
 
-      .contribution-card strong{
+
+      .dashboard-count-number{
+
         font-size:30px;
+
       }
 
-    }
 
-    @media(max-width:360px){
+      .submission-item{
 
-      .student-details p{
-        grid-template-columns:95px minmax(0,1fr);
-        font-size:12px;
-      }
-
-      .grid-4{
         grid-template-columns:1fr;
+
+        gap:14px;
+
+      }
+
+
+      .submission-actions{
+
+        justify-content:flex-start;
+
+      }
+
+
+      .contribute-actions{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+      }
+
+
+      .contribute-actions .btn{
+
+        width:100%;
+
       }
 
     }
@@ -372,11 +704,18 @@
 <body>
 
 
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <header class="site-header">
 
   <div class="container nav-wrap">
 
-    <a class="brand" href="../index.html">
+    <a
+      class="brand"
+      href="../index.html"
+    >
 
       <img
         src="../assets/statecrafter-logo.png"
@@ -385,7 +724,9 @@
 
       <span class="brand-copy">
 
-        <strong>StateCrafter DCU</strong>
+        <strong>
+          StateCrafter DCU
+        </strong>
 
         <small>
           Political Science Department
@@ -433,21 +774,24 @@
 </header>
 
 
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
 <main>
 
-<section class="section">
+<section class="section student-dashboard-section">
 
 <div class="container">
 
 
-  <p class="eyebrow">
-    STUDENT DASHBOARD
+  <!-- ================= PROFILE ================= -->
+
+  <p class="dashboard-eyebrow">
+    STUDENT PROFILE
   </p>
 
-
-  <!-- =================================
-       PROFILE
-  ================================== -->
 
   <div class="student-profile-card">
 
@@ -489,6 +833,7 @@
     </div>
 
 
+
     <!-- PROFILE INFORMATION -->
 
     <div class="student-profile-info">
@@ -503,7 +848,7 @@
         <p>
 
           <span>
-            Department :
+            Department
           </span>
 
           <strong>
@@ -516,7 +861,7 @@
         <p>
 
           <span>
-            Session :
+            Session
           </span>
 
           <strong id="studentSession">
@@ -529,7 +874,7 @@
         <p>
 
           <span>
-            Student ID :
+            Student ID
           </span>
 
           <strong id="studentId">
@@ -542,7 +887,7 @@
         <p>
 
           <span>
-            Campus :
+            Campus
           </span>
 
           <strong id="studentCampus">
@@ -559,14 +904,14 @@
 
 
 
-  <!-- =================================
+  <!-- =================================================
        CONTRIBUTIONS
-  ================================== -->
+       ================================================= -->
 
-  <div style="margin-top:50px">
+  <div class="dashboard-block">
 
     <p
-      class="eyebrow"
+      class="dashboard-eyebrow"
       id="contributionsEyebrow"
     >
       MY CONTRIBUTIONS
@@ -578,21 +923,21 @@
     </h2>
 
 
-    <div
-      class="grid-4"
-      style="margin-top:25px"
-    >
+    <div class="dashboard-count-grid">
 
 
       <!-- ARTICLES -->
 
-      <div class="feature-card contribution-card">
+      <div class="dashboard-count-card">
 
-        <strong id="articleCount">
+        <strong
+          id="articleCount"
+          class="dashboard-count-number"
+        >
           0
         </strong>
 
-        <p>
+        <p class="dashboard-count-label">
           Articles
         </p>
 
@@ -601,13 +946,16 @@
 
       <!-- NOTES -->
 
-      <div class="feature-card contribution-card">
+      <div class="dashboard-count-card">
 
-        <strong id="noteCount">
+        <strong
+          id="noteCount"
+          class="dashboard-count-number"
+        >
           0
         </strong>
 
-        <p>
+        <p class="dashboard-count-label">
           Notes
         </p>
 
@@ -616,13 +964,16 @@
 
       <!-- QUESTIONS -->
 
-      <div class="feature-card contribution-card">
+      <div class="dashboard-count-card">
 
-        <strong id="questionCount">
+        <strong
+          id="questionCount"
+          class="dashboard-count-number"
+        >
           0
         </strong>
 
-        <p>
+        <p class="dashboard-count-label">
           Questions
         </p>
 
@@ -631,13 +982,16 @@
 
       <!-- SUGGESTIONS -->
 
-      <div class="feature-card contribution-card">
+      <div class="dashboard-count-card">
 
-        <strong id="suggestionCount">
+        <strong
+          id="suggestionCount"
+          class="dashboard-count-number"
+        >
           0
         </strong>
 
-        <p>
+        <p class="dashboard-count-label">
           Suggestions
         </p>
 
@@ -648,66 +1002,130 @@
 
   </div>
 
-<!-- =================================
-     MY SUBMISSIONS
-================================== -->
 
-<div style="margin-top:70px">
 
-  <p class="eyebrow" id="submissionsEyebrow">
-    MY SUBMISSIONS
-  </p>
+  <!-- =================================================
+       MY SUBMISSIONS
+       ================================================= -->
 
-  <h2 id="submissionsTitle">
-    Your Submissions
-  </h2>
+  <div class="dashboard-block">
 
-  <!-- SUBMISSION COUNTS -->
 
-  <div
-    class="grid-4"
-    style="margin-top:25px"
-  >
+    <p
+      class="dashboard-eyebrow"
+      id="submissionsEyebrow"
+    >
+      MY SUBMISSIONS
+    </p>
 
-    <div class="feature-card contribution-card">
-      <strong id="totalSubmissionCount">0</strong>
-      <p>Total</p>
+
+    <h2 id="submissionsTitle">
+      Your Submissions
+    </h2>
+
+
+    <!-- FOUR STATUS COUNTS -->
+
+    <div class="dashboard-count-grid">
+
+
+      <!-- TOTAL -->
+
+      <div class="dashboard-count-card">
+
+        <strong
+          id="totalSubmissionCount"
+          class="dashboard-count-number"
+        >
+          0
+        </strong>
+
+        <p class="dashboard-count-label">
+          Total
+        </p>
+
+      </div>
+
+
+      <!-- PENDING -->
+
+      <div class="dashboard-count-card">
+
+        <strong
+          id="pendingSubmissionCount"
+          class="dashboard-count-number"
+        >
+          0
+        </strong>
+
+        <p class="dashboard-count-label">
+          Pending
+        </p>
+
+      </div>
+
+
+      <!-- APPROVED -->
+
+      <div class="dashboard-count-card">
+
+        <strong
+          id="approvedSubmissionCount"
+          class="dashboard-count-number"
+        >
+          0
+        </strong>
+
+        <p class="dashboard-count-label">
+          Approved
+        </p>
+
+      </div>
+
+
+      <!-- REJECTED -->
+
+      <div class="dashboard-count-card">
+
+        <strong
+          id="rejectedSubmissionCount"
+          class="dashboard-count-number"
+        >
+          0
+        </strong>
+
+        <p class="dashboard-count-label">
+          Rejected
+        </p>
+
+      </div>
+
+
     </div>
 
-    <div class="feature-card contribution-card">
-      <strong id="pendingSubmissionCount">0</strong>
-      <p>Pending</p>
+
+    <!-- SUBMISSION LIST -->
+
+    <div id="submissionsList">
+
+      <div class="submission-loading">
+        Loading submissions...
+      </div>
+
     </div>
 
-    <div class="feature-card contribution-card">
-      <strong id="approvedSubmissionCount">0</strong>
-      <p>Approved</p>
-    </div>
-
-    <div class="feature-card contribution-card">
-      <strong id="rejectedSubmissionCount">0</strong>
-      <p>Rejected</p>
-    </div>
 
   </div>
 
 
-  <!-- SUBMISSION LIST -->
 
-  <div
-    id="submissionsList"
-    style="margin-top:30px"
-  ></div>
-
-</div>
-
-  <!-- =================================
+  <!-- =================================================
        CONTRIBUTE
-  ================================== -->
+       ================================================= -->
 
-  <div style="margin-top:50px">
+  <div class="dashboard-block">
 
-    <p class="eyebrow">
+    <p class="dashboard-eyebrow">
       CONTRIBUTE
     </p>
 
@@ -717,27 +1135,20 @@
     </h2>
 
 
-    <p
-      style="
-        max-width:650px;
-        color:var(--muted)
-      "
-    >
-      Share notes, previous questions, suggestions
-      and research articles with the Political Science
-      community. All submissions are reviewed before
+    <p class="contribute-description">
+
+      Share notes, previous questions,
+      suggestions and research articles
+      with the Political Science community.
+
+      All submissions are reviewed before
       publication.
+
     </p>
 
 
-    <div
-      style="
-        display:flex;
-        gap:12px;
-        flex-wrap:wrap;
-        margin-top:20px;
-      "
-    >
+    <div class="contribute-actions">
+
 
       <a
         href="submit-note.html"
@@ -748,7 +1159,8 @@
 
 
       <button
-        class="btn"
+        class="btn btn-outline disabled-action"
+        type="button"
         disabled
       >
         Submit Question
@@ -756,7 +1168,8 @@
 
 
       <button
-        class="btn"
+        class="btn btn-outline disabled-action"
+        type="button"
         disabled
       >
         Submit Suggestion
@@ -764,11 +1177,13 @@
 
 
       <button
-        class="btn"
+        class="btn btn-outline disabled-action"
+        type="button"
         disabled
       >
         Write Article
       </button>
+
 
     </div>
 
@@ -782,6 +1197,10 @@
 </main>
 
 
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
 
 <footer class="site-footer">
 
@@ -801,15 +1220,27 @@
 
 
 
+<!-- =====================================================
+     AUTH
+     ===================================================== -->
+
 <script src="../auth.js"></script>
+
 
 
 <script>
 
+/* =====================================================
+   SUPABASE
+   ===================================================== */
+
 const supabaseClient =
   window.supabase.createClient(
+
     "https://psqwnvgruyfgdoukvpid.supabase.co",
+
     "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"
+
   );
 
 
@@ -817,10 +1248,9 @@ const DEFAULT_AVATAR =
   "../assets/default-avatar.svg";
 
 
-
-/* =================================
-   GET CURRENT USER
-================================= */
+/* =====================================================
+   CURRENT USER
+   ===================================================== */
 
 async function getCurrentUser(){
 
@@ -830,23 +1260,783 @@ async function getCurrentUser(){
   } =
     await supabaseClient.auth.getUser();
 
+
   if(error){
 
-    console.error(error);
-
-    return null;
+    throw error;
 
   }
+
 
   return data.user;
 
 }
 
 
+/* =====================================================
+   SAFE TEXT
+   ===================================================== */
 
-/* =================================
-   LOAD DASHBOARD
-================================= */
+function escapeHtml(value){
+
+  return String(value ?? "")
+
+    .replace(/&/g,"&amp;")
+
+    .replace(/</g,"&lt;")
+
+    .replace(/>/g,"&gt;")
+
+    .replace(/"/g,"&quot;")
+
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   VIEW SUBMISSION
+   ===================================================== */
+
+function viewSubmission(item){
+
+  const title =
+    item.title ||
+    "Untitled submission";
+
+
+  const type =
+    item.type ||
+    "Submission";
+
+
+  const status =
+    item.status ||
+    "Pending";
+
+
+  const date =
+    item.created_at
+
+      ? new Date(
+          item.created_at
+        ).toLocaleString(
+          "en-GB",
+          {
+            day:"2-digit",
+            month:"long",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+          }
+        )
+
+      : "Not available";
+
+
+  let message =
+
+`Title: ${title}
+
+Type: ${type}
+
+Status: ${status}
+
+Submitted: ${date}`;
+
+
+  if(
+
+    String(status).toLowerCase()
+      === "rejected"
+
+    &&
+
+    item.reject_reason
+
+  ){
+
+    message +=
+
+`\n\nReject reason:
+
+${item.reject_reason}`;
+
+  }
+
+
+  alert(message);
+
+}
+
+
+/* =====================================================
+   LOAD CONTRIBUTION COUNTS
+   ===================================================== */
+
+async function loadContributionCounts(
+  profileId
+){
+
+  try{
+
+    /*
+      These counts are intentionally kept
+      independent from submissions.
+
+      If your article/note/question/suggestion
+      tables already exist, they will be counted.
+
+      If a particular table does not exist yet,
+      that count remains 0 instead of breaking
+      the entire dashboard.
+    */
+
+
+    const countTable =
+      async function(tableName){
+
+        try{
+
+          const {
+            count,
+            error
+          } =
+            await supabaseClient
+
+              .from(tableName)
+
+              .select(
+                "*",
+                {
+                  count:"exact",
+                  head:true
+                }
+              )
+
+              .eq(
+                "user_id",
+                profileId
+              );
+
+
+          if(error){
+
+            console.warn(
+              `${tableName} count unavailable:`,
+              error.message
+            );
+
+            return 0;
+
+          }
+
+
+          return count || 0;
+
+        }catch(error){
+
+          console.warn(
+            `${tableName} count failed:`,
+            error
+          );
+
+          return 0;
+
+        }
+
+      };
+
+
+    const [
+
+      articles,
+
+      notes,
+
+      questions,
+
+      suggestions
+
+    ] = await Promise.all([
+
+      countTable("articles"),
+
+      countTable("notes"),
+
+      countTable("questions"),
+
+      countTable("suggestions")
+
+    ]);
+
+
+    document.getElementById(
+      "articleCount"
+    ).textContent = articles;
+
+
+    document.getElementById(
+      "noteCount"
+    ).textContent = notes;
+
+
+    document.getElementById(
+      "questionCount"
+    ).textContent = questions;
+
+
+    document.getElementById(
+      "suggestionCount"
+    ).textContent = suggestions;
+
+
+  }catch(error){
+
+    console.error(
+      "Contribution count error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD MY SUBMISSIONS
+   ===================================================== */
+
+async function loadSubmissions(
+
+  profileId,
+
+  isOwnProfile,
+
+  displayName
+
+){
+
+  const list =
+    document.getElementById(
+      "submissionsList"
+    );
+
+
+  const totalCount =
+    document.getElementById(
+      "totalSubmissionCount"
+    );
+
+
+  const pendingCount =
+    document.getElementById(
+      "pendingSubmissionCount"
+    );
+
+
+  const approvedCount =
+    document.getElementById(
+      "approvedSubmissionCount"
+    );
+
+
+  const rejectedCount =
+    document.getElementById(
+      "rejectedSubmissionCount"
+    );
+
+
+  if(!list) return;
+
+
+  list.innerHTML =
+
+    `<div class="submission-loading">
+      Loading submissions...
+    </div>`;
+
+
+  try{
+
+    const {
+
+      data: submissions,
+
+      error
+
+    } =
+
+      await supabaseClient
+
+        .from("submissions")
+
+        .select(`
+
+          id,
+
+          title,
+
+          type,
+
+          status,
+
+          reject_reason,
+
+          created_at
+
+        `)
+
+        .eq(
+          "user_id",
+          profileId
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    const items =
+      submissions || [];
+
+
+    /* ================= COUNTS ================= */
+
+    const total =
+      items.length;
+
+
+    const pending =
+      items.filter(
+        item =>
+
+          String(
+            item.status || ""
+          ).toLowerCase()
+          === "pending"
+
+      ).length;
+
+
+    const approved =
+      items.filter(
+        item =>
+
+          String(
+            item.status || ""
+          ).toLowerCase()
+          === "approved"
+
+      ).length;
+
+
+    const rejected =
+      items.filter(
+        item =>
+
+          String(
+            item.status || ""
+          ).toLowerCase()
+          === "rejected"
+
+      ).length;
+
+
+    totalCount.textContent =
+      total;
+
+
+    pendingCount.textContent =
+      pending;
+
+
+    approvedCount.textContent =
+      approved;
+
+
+    rejectedCount.textContent =
+      rejected;
+
+
+    /* ================= HEADING ================= */
+
+    const eyebrow =
+      document.getElementById(
+        "submissionsEyebrow"
+      );
+
+
+    const heading =
+      document.getElementById(
+        "submissionsTitle"
+      );
+
+
+    if(isOwnProfile){
+
+      eyebrow.textContent =
+        "MY SUBMISSIONS";
+
+
+      heading.textContent =
+        "Your Submissions";
+
+    }else{
+
+      eyebrow.textContent =
+        `${displayName.toUpperCase()}'S SUBMISSIONS`;
+
+
+      heading.textContent =
+        `${displayName}'s Submissions`;
+
+    }
+
+
+    /* ================= EMPTY ================= */
+
+    if(items.length === 0){
+
+      list.innerHTML = `
+
+        <div class="submission-empty">
+
+          No submissions yet.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /* ================= LIST ================= */
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "submission-list";
+
+
+    items.forEach(
+      item => {
+
+
+        const row =
+          document.createElement(
+            "div"
+          );
+
+
+        row.className =
+          "submission-item";
+
+
+        /* -------- CONTENT -------- */
+
+        const content =
+          document.createElement(
+            "div"
+          );
+
+
+        const title =
+          document.createElement(
+            "h3"
+          );
+
+
+        title.className =
+          "submission-title";
+
+
+        title.textContent =
+          item.title ||
+          "Untitled submission";
+
+
+        const meta =
+          document.createElement(
+            "p"
+          );
+
+
+        meta.className =
+          "submission-meta";
+
+
+        const type =
+          item.type ||
+          "Submission";
+
+
+        const date =
+          item.created_at
+
+            ? new Date(
+                item.created_at
+              ).toLocaleDateString(
+                "en-GB",
+                {
+                  day:"2-digit",
+                  month:"short",
+                  year:"numeric"
+                }
+              )
+
+            : "Date unavailable";
+
+
+        meta.textContent =
+          `${type} • ${date}`;
+
+
+        content.appendChild(
+          title
+        );
+
+
+        content.appendChild(
+          meta
+        );
+
+
+        /* -------- REJECT REASON -------- */
+
+        if(
+
+          String(
+            item.status || ""
+          ).toLowerCase()
+          === "rejected"
+
+          &&
+
+          item.reject_reason
+
+        ){
+
+          const reason =
+            document.createElement(
+              "div"
+            );
+
+
+          reason.className =
+            "reject-reason";
+
+
+          reason.innerHTML =
+
+            `<strong>
+              Reject reason:
+            </strong>
+            ${escapeHtml(
+              item.reject_reason
+            )}`;
+
+
+          content.appendChild(
+            reason
+          );
+
+        }
+
+
+        /* -------- ACTIONS -------- */
+
+        const actions =
+          document.createElement(
+            "div"
+          );
+
+
+        actions.className =
+          "submission-actions";
+
+
+        /* STATUS */
+
+        const status =
+          document.createElement(
+            "span"
+          );
+
+
+        const statusValue =
+          String(
+            item.status ||
+            "pending"
+          ).toLowerCase();
+
+
+        status.className =
+          "submission-status";
+
+
+        if(
+          statusValue ===
+          "approved"
+        ){
+
+          status.classList.add(
+            "status-approved"
+          );
+
+        }
+
+        else if(
+          statusValue ===
+          "rejected"
+        ){
+
+          status.classList.add(
+            "status-rejected"
+          );
+
+        }
+
+        else{
+
+          status.classList.add(
+            "status-pending"
+          );
+
+        }
+
+
+        status.textContent =
+          statusValue;
+
+
+        actions.appendChild(
+          status
+        );
+
+
+        /* VIEW BUTTON */
+
+        const viewButton =
+          document.createElement(
+            "button"
+          );
+
+
+        viewButton.type =
+          "button";
+
+
+        viewButton.className =
+          "btn btn-outline";
+
+
+        viewButton.style.minHeight =
+          "34px";
+
+
+        viewButton.style.padding =
+          "0 13px";
+
+
+        viewButton.style.fontSize =
+          "11px";
+
+
+        viewButton.textContent =
+          "View";
+
+
+        viewButton.addEventListener(
+          "click",
+          function(){
+
+            viewSubmission(
+              item
+            );
+
+          }
+        );
+
+
+        actions.appendChild(
+          viewButton
+        );
+
+
+        /* APPEND */
+
+        row.appendChild(
+          content
+        );
+
+
+        row.appendChild(
+          actions
+        );
+
+
+        wrapper.appendChild(
+          row
+        );
+
+      }
+    );
+
+
+    list.innerHTML = "";
+
+
+    list.appendChild(
+      wrapper
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Submission loading error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="submission-error">
+
+        Unable to load submissions
+        right now.
+
+        Please try again later.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD STUDENT DASHBOARD
+   ===================================================== */
 
 async function loadStudentDashboard(){
 
@@ -855,6 +2045,8 @@ async function loadStudentDashboard(){
     const user =
       await getCurrentUser();
 
+
+    /* -------- LOGIN REQUIRED -------- */
 
     if(!user){
 
@@ -865,6 +2057,8 @@ async function loadStudentDashboard(){
 
     }
 
+
+    /* -------- REQUESTED PROFILE -------- */
 
     const params =
       new URLSearchParams(
@@ -877,32 +2071,46 @@ async function loadStudentDashboard(){
 
 
     const profileId =
-      requestedProfileId || user.id;
+      requestedProfileId ||
+      user.id;
 
 
     const isOwnProfile =
       profileId === user.id;
 
 
-
-    /* ===============================
-       CURRENT USER PROFILE
-    ================================ */
+    /* =================================================
+       CURRENT LOGGED-IN USER PROFILE
+       ================================================= */
 
     const {
+
       data: currentProfile,
+
       error: currentProfileError
+
     } =
+
       await supabaseClient
+
         .from("profiles")
+
         .select("*")
-        .eq("id", user.id)
+
+        .eq(
+          "id",
+          user.id
+        )
+
         .single();
 
 
     if(
-      currentProfileError ||
+
+      currentProfileError
+      ||
       !currentProfile
+
     ){
 
       alert(
@@ -914,10 +2122,11 @@ async function loadStudentDashboard(){
     }
 
 
-    /* ADMIN → ADMIN DASHBOARD */
+    /* -------- ADMIN REDIRECT -------- */
 
     if(
-      currentProfile.role === "admin"
+      currentProfile.role ===
+      "admin"
     ){
 
       window.location.href =
@@ -928,41 +2137,59 @@ async function loadStudentDashboard(){
     }
 
 
-    /* ONLY STUDENTS */
+    /* -------- STUDENT ONLY -------- */
 
     if(
-      currentProfile.role !== "student"
+      currentProfile.role !==
+      "student"
     ){
 
-      await supabaseClient.auth.signOut();
+      await supabaseClient
+        .auth
+        .signOut();
+
 
       window.location.href =
         "login.html";
+
 
       return;
 
     }
 
 
-
-    /* ===============================
-       REQUESTED PROFILE
-    ================================ */
+    /* =================================================
+       TARGET PROFILE
+       ================================================= */
 
     const {
+
       data: profile,
+
       error: profileError
+
     } =
+
       await supabaseClient
+
         .from("profiles")
+
         .select("*")
-        .eq("id", profileId)
+
+        .eq(
+          "id",
+          profileId
+        )
+
         .single();
 
 
     if(
-      profileError ||
+
+      profileError
+      ||
       !profile
+
     ){
 
       alert(
@@ -974,16 +2201,19 @@ async function loadStudentDashboard(){
     }
 
 
-
-    /* ===============================
+    /* =================================================
        PROFILE INFORMATION
-    ================================ */
+       ================================================= */
+
+    const displayName =
+      profile.full_name ||
+      "Student";
+
 
     document.getElementById(
       "studentName"
     ).textContent =
-      profile.full_name ||
-      "Student";
+      displayName;
 
 
     document.getElementById(
@@ -1007,35 +2237,43 @@ async function loadStudentDashboard(){
       "Not specified";
 
 
-
-    /* ===============================
+    /* =================================================
        PROFILE PHOTO
-    ================================ */
+       ================================================= */
 
-    document.getElementById(
-      "profilePhoto"
-    ).src =
+    const profilePhoto =
+      document.getElementById(
+        "profilePhoto"
+      );
+
+
+    profilePhoto.src =
       profile.photo_url ||
       DEFAULT_AVATAR;
 
 
+    profilePhoto.onerror =
+      function(){
 
-    /* ===============================
-       CONTRIBUTION TITLE
-    ================================ */
+        this.onerror = null;
 
-    const displayName =
-      profile.full_name ||
-      "Student";
+        this.src =
+          DEFAULT_AVATAR;
+
+      };
 
 
-    const eyebrow =
+    /* =================================================
+       CONTRIBUTIONS TITLE
+       ================================================= */
+
+    const contributionsEyebrow =
       document.getElementById(
         "contributionsEyebrow"
       );
 
 
-    const title =
+    const contributionsTitle =
       document.getElementById(
         "contributionsTitle"
       );
@@ -1043,27 +2281,28 @@ async function loadStudentDashboard(){
 
     if(isOwnProfile){
 
-      eyebrow.textContent =
+      contributionsEyebrow.textContent =
         "MY CONTRIBUTIONS";
 
-      title.textContent =
+
+      contributionsTitle.textContent =
         "Your Academic Contributions";
 
     }else{
 
-      eyebrow.textContent =
+      contributionsEyebrow.textContent =
         `${displayName.toUpperCase()}'S CONTRIBUTIONS`;
 
-      title.textContent =
+
+      contributionsTitle.textContent =
         `${displayName}'s Academic Contributions`;
 
     }
 
 
-
-    /* ===============================
-       PHOTO CONTROL
-    ================================ */
+    /* =================================================
+       PHOTO PERMISSION
+       ================================================= */
 
     if(!isOwnProfile){
 
@@ -1074,11 +2313,43 @@ async function loadStudentDashboard(){
 
     }
 
-  }catch(error){
+
+    /* =================================================
+       LOAD COUNTS
+       ================================================= */
+
+    await loadContributionCounts(
+      profileId
+    );
+
+
+    /* =================================================
+       LOAD SUBMISSIONS
+       ================================================= */
+
+    await loadSubmissions(
+
+      profileId,
+
+      isOwnProfile,
+
+      displayName
+
+    );
+
+  }
+
+  catch(error){
 
     console.error(
       "Dashboard error:",
       error
+    );
+
+
+    alert(
+      error.message ||
+      "Unable to load dashboard."
     );
 
   }
@@ -1086,14 +2357,16 @@ async function loadStudentDashboard(){
 }
 
 
-
-/* =================================
+/* =====================================================
    PHOTO UPLOAD
-   MAXIMUM 1 MB
-================================= */
+   Maximum 1 MB
+   Owner only
+   ===================================================== */
 
 document
-  .getElementById("photoInput")
+  .getElementById(
+    "photoInput"
+  )
   .addEventListener(
     "change",
     async function(){
@@ -1102,8 +2375,11 @@ document
         this.files[0];
 
 
-      if(!file)
+      if(!file){
+
         return;
+
+      }
 
 
       const message =
@@ -1112,7 +2388,7 @@ document
         );
 
 
-      /* 1 MB LIMIT */
+      /* -------- SIZE -------- */
 
       if(
         file.size >
@@ -1129,12 +2405,16 @@ document
       }
 
 
-      /* ALLOWED TYPES */
+      /* -------- TYPE -------- */
 
       const allowedTypes = [
+
         "image/jpeg",
+
         "image/png",
+
         "image/webp"
+
       ];
 
 
@@ -1174,6 +2454,8 @@ document
         }
 
 
+        /* -------- FILE PATH -------- */
+
         const extension =
           file.name
             .split(".")
@@ -1185,78 +2467,106 @@ document
           `${user.id}/profile.${extension}`;
 
 
-
-        /* ===========================
-           SUPABASE STORAGE
-        ============================ */
+        /* -------- UPLOAD -------- */
 
         const {
           error: uploadError
         } =
+
           await supabaseClient
+
             .storage
-            .from("profile-photos")
+
+            .from(
+              "profile-photos"
+            )
+
             .upload(
+
               filePath,
+
               file,
+
               {
+
                 upsert:true,
-                contentType:file.type
+
+                contentType:
+                  file.type
+
               }
+
             );
 
 
-        if(uploadError)
+        if(uploadError){
+
           throw uploadError;
 
+        }
 
 
-        /* ===========================
-           PUBLIC URL
-        ============================ */
+        /* -------- PUBLIC URL -------- */
 
         const {
+
           data: publicData
+
         } =
+
           supabaseClient
+
             .storage
-            .from("profile-photos")
+
+            .from(
+              "profile-photos"
+            )
+
             .getPublicUrl(
               filePath
             );
 
 
         const photoUrl =
-          publicData.publicUrl +
-          "?v=" +
+
+          publicData.publicUrl
+          +
+          "?v="
+          +
           Date.now();
 
 
-
-        /* ===========================
-           UPDATE PROFILE
-        ============================ */
+        /* -------- SAVE PROFILE -------- */
 
         const {
           error: profileError
         } =
+
           await supabaseClient
+
             .from("profiles")
+
             .update({
-              photo_url: photoUrl
+
+              photo_url:
+                photoUrl
+
             })
+
             .eq(
               "id",
               user.id
             );
 
 
-        if(profileError)
+        if(profileError){
+
           throw profileError;
 
+        }
 
 
-        /* UPDATE SCREEN */
+        /* -------- UPDATE UI -------- */
 
         document.getElementById(
           "profilePhoto"
@@ -1270,10 +2580,15 @@ document
 
         this.value = "";
 
+      }
 
-      }catch(error){
+      catch(error){
 
-        console.error(error);
+        console.error(
+          "Photo upload error:",
+          error
+        );
+
 
         message.textContent =
           error.message ||
@@ -1285,10 +2600,9 @@ document
   );
 
 
-
-/* =================================
+/* =====================================================
    LOGOUT
-================================= */
+   ===================================================== */
 
 document
   .getElementById(
@@ -1296,11 +2610,12 @@ document
   )
   .addEventListener(
     "click",
-    async () => {
+    async function(){
 
       await supabaseClient
         .auth
         .signOut();
+
 
       window.location.href =
         "login.html";
@@ -1309,13 +2624,13 @@ document
   );
 
 
-
-/* START */
+/* =====================================================
+   START DASHBOARD
+   ===================================================== */
 
 loadStudentDashboard();
 
 </script>
-
 
 </body>
 
