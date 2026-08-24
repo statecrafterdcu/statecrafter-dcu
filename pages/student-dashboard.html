@@ -1,6 +1,107 @@
 <!doctype html>
 <html lang="en">
+<style>
 
+.submission-list{
+  border-top:1px solid var(--line);
+}
+
+.submission-item{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+  padding:22px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.submission-title{
+  margin:0 0 6px;
+  color:var(--navy);
+  font-size:16px;
+  font-weight:800;
+}
+
+.submission-meta{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.submission-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.submission-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.status-pending{
+  background:#fff4d6;
+  color:#8a6200;
+}
+
+.status-approved{
+  background:#e6f6eb;
+  color:#18733b;
+}
+
+.status-rejected{
+  background:#fbe7e7;
+  color:#9a1c24;
+}
+
+.reject-reason{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:10px;
+  background:#faf1f1;
+  border-left:3px solid var(--red);
+  color:#6f3135;
+  font-size:12px;
+}
+
+.submission-empty{
+  padding:35px 20px;
+  border:1px dashed #ccd3dc;
+  border-radius:var(--radius);
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.submission-loading{
+  padding:25px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+@media(max-width:700px){
+
+  .submission-item{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .submission-actions{
+    justify-content:flex-start;
+  }
+
+}
+
+</style>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -547,7 +648,58 @@
 
   </div>
 
+<!-- =================================
+     MY SUBMISSIONS
+================================== -->
 
+<div style="margin-top:70px">
+
+  <p class="eyebrow" id="submissionsEyebrow">
+    MY SUBMISSIONS
+  </p>
+
+  <h2 id="submissionsTitle">
+    Your Submissions
+  </h2>
+
+  <!-- SUBMISSION COUNTS -->
+
+  <div
+    class="grid-4"
+    style="margin-top:25px"
+  >
+
+    <div class="feature-card contribution-card">
+      <strong id="totalSubmissionCount">0</strong>
+      <p>Total</p>
+    </div>
+
+    <div class="feature-card contribution-card">
+      <strong id="pendingSubmissionCount">0</strong>
+      <p>Pending</p>
+    </div>
+
+    <div class="feature-card contribution-card">
+      <strong id="approvedSubmissionCount">0</strong>
+      <p>Approved</p>
+    </div>
+
+    <div class="feature-card contribution-card">
+      <strong id="rejectedSubmissionCount">0</strong>
+      <p>Rejected</p>
+    </div>
+
+  </div>
+
+
+  <!-- SUBMISSION LIST -->
+
+  <div
+    id="submissionsList"
+    style="margin-top:30px"
+  ></div>
+
+</div>
 
   <!-- =================================
        CONTRIBUTE
