@@ -24,7 +24,12 @@
 
   <style>
 
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
     .submit-hero {
+
       background:
         linear-gradient(
           135deg,
@@ -35,11 +40,13 @@
 
       border-bottom: 1px solid var(--line);
 
-      padding: 65px 0 55px;
+      padding: 58px 0 50px;
+
     }
 
 
     .submit-hero h1 {
+
       margin: 0;
 
       color: var(--navy);
@@ -50,22 +57,27 @@
       line-height: .98;
 
       letter-spacing: -.05em;
+
     }
 
 
     .submit-hero p:not(.eyebrow) {
+
       max-width: 680px;
+
+      margin: 20px 0 0;
 
       color: var(--muted);
 
       font-size: 16px;
 
-      margin-top: 20px;
     }
 
 
     .submit-section {
+
       padding: 65px 0 90px;
+
     }
 
 
@@ -74,14 +86,19 @@
       display: grid;
 
       grid-template-columns:
-        minmax(0, 1fr)
-        330px;
+        minmax(0, 1.5fr)
+        minmax(280px, .7fr);
 
-      gap: 35px;
+      gap: 28px;
 
       align-items: start;
+
     }
 
+
+    /* =====================================================
+       FORM CARD
+    ===================================================== */
 
     .submit-card {
 
@@ -89,23 +106,37 @@
 
       border: 1px solid var(--line);
 
-      border-radius: 22px;
+      border-radius: 24px;
 
       padding: 32px;
 
       box-shadow:
-        0 12px 35px
+        0 12px 40px
         rgba(18,43,82,.06);
+
     }
 
 
     .submit-card h2 {
 
-      margin: 0 0 25px;
+      margin: 0;
 
       color: var(--navy);
 
-      font-size: 27px;
+      font-size: 28px;
+
+      line-height: 1.2;
+
+    }
+
+
+    .submit-card-intro {
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      margin: 8px 0 28px;
 
     }
 
@@ -123,11 +154,18 @@
 
       color: var(--navy);
 
-      font-size: 13px;
+      font-size: 12px;
 
-      font-weight: 800;
+      font-weight: 900;
 
-      margin-bottom: 8px;
+      margin-bottom: 7px;
+
+    }
+
+
+    .required {
+
+      color: var(--red);
 
     }
 
@@ -138,7 +176,7 @@
 
       width: 100%;
 
-      border: 1px solid #d9dee5;
+      border: 1px solid #d8dde5;
 
       border-radius: 12px;
 
@@ -150,9 +188,9 @@
 
       font-size: 14px;
 
-      padding: 13px 14px;
-
       outline: none;
+
+      transition: .2s ease;
 
     }
 
@@ -160,16 +198,22 @@
     .form-group input,
     .form-group select {
 
-      min-height: 48px;
+      height: 48px;
+
+      padding: 0 14px;
 
     }
 
 
     .form-group textarea {
 
-      min-height: 125px;
+      min-height: 135px;
 
       resize: vertical;
+
+      padding: 13px 14px;
+
+      line-height: 1.6;
 
     }
 
@@ -182,16 +226,14 @@
 
       box-shadow:
         0 0 0 3px
-        rgba(18,43,82,.07);
+        rgba(18,43,82,.06);
 
     }
 
 
     .form-help {
 
-      display: block;
-
-      margin-top: 6px;
+      margin: 6px 0 0;
 
       color: var(--muted);
 
@@ -202,145 +244,84 @@
     }
 
 
-    .resource-type-grid {
+    .two-columns {
 
       display: grid;
 
       grid-template-columns:
-        repeat(3, 1fr);
+        1fr 1fr;
 
-      gap: 10px;
-
-    }
-
-
-    .resource-type {
-
-      position: relative;
+      gap: 14px;
 
     }
 
 
-    .resource-type input {
+    /* =====================================================
+       PROFILE INFO
+    ===================================================== */
 
-      position: absolute;
-
-      opacity: 0;
-
-      pointer-events: none;
-
-    }
-
-
-    .resource-type label {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      text-align: center;
-
-      min-height: 52px;
-
-      border: 1px solid #d9dee5;
-
-      border-radius: 12px;
-
-      background: #fff;
-
-      color: #4b5668;
-
-      cursor: pointer;
-
-      padding: 10px;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      transition: .2s ease;
-
-    }
-
-
-    .resource-type input:checked + label {
-
-      background: var(--navy);
-
-      color: #fff;
-
-      border-color: var(--navy);
-
-    }
-
-
-    .resource-type label:hover {
-
-      border-color: var(--navy);
-
-    }
-
-
-    .submitter-info {
+    .profile-summary {
 
       background: #f7f8fa;
 
-      border: 1px solid #e7e9ed;
+      border: 1px solid #e3e6eb;
 
       border-radius: 16px;
 
       padding: 18px;
 
-      margin-bottom: 25px;
+      margin-bottom: 26px;
 
     }
 
 
-    .submitter-info h3 {
-
-      margin: 0 0 12px;
+    .profile-summary-title {
 
       color: var(--navy);
 
-      font-size: 15px;
+      font-size: 11px;
+
+      font-weight: 900;
+
+      letter-spacing: .08em;
+
+      margin-bottom: 12px;
 
     }
 
 
-    .submitter-row {
+    .profile-row {
 
       display: flex;
 
       justify-content: space-between;
 
-      gap: 15px;
+      gap: 20px;
 
       padding: 7px 0;
 
-      border-bottom: 1px solid #e4e7eb;
+      border-bottom: 1px solid #e5e8ec;
 
       font-size: 12px;
 
     }
 
 
-    .submitter-row:last-child {
+    .profile-row:last-child {
 
       border-bottom: 0;
 
     }
 
 
-    .submitter-row span {
+    .profile-row span {
 
       color: var(--muted);
 
     }
 
 
-    .submitter-row strong {
+    .profile-row strong {
 
       color: var(--ink);
 
@@ -349,61 +330,187 @@
     }
 
 
-    .campus-note {
 
-      background: #f6e9e9;
+    /* =====================================================
+       RESOURCE TYPE
+    ===================================================== */
+
+    .resource-type-info {
+
+      display: none;
+
+      background: #f7f5f0;
 
       border-left: 3px solid var(--red);
 
-      border-radius: 10px;
+      border-radius: 0 12px 12px 0;
 
       padding: 12px 14px;
 
-      color: #5c2529;
+      margin-top: -8px;
+
+      margin-bottom: 20px;
+
+      color: #536075;
 
       font-size: 12px;
 
       line-height: 1.6;
 
+    }
+
+
+    .resource-type-info.visible {
+
+      display: block;
+
+    }
+
+
+
+    /* =====================================================
+       DRIVE HELP
+    ===================================================== */
+
+    .drive-box {
+
+      background: #f8fafc;
+
+      border: 1px solid #e1e5ea;
+
+      border-radius: 15px;
+
+      padding: 16px;
+
       margin-top: 8px;
+
+    }
+
+
+    .drive-box strong {
+
+      display: block;
+
+      color: var(--navy);
+
+      font-size: 12px;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .drive-box p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      line-height: 1.6;
+
+    }
+
+
+
+    /* =====================================================
+       SUBMIT BUTTON
+    ===================================================== */
+
+    .submit-actions {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+      margin-top: 25px;
 
     }
 
 
     .submit-button {
 
-      width: 100%;
-
-      margin-top: 8px;
+      min-width: 170px;
 
       cursor: pointer;
 
     }
 
 
-    .submit-message {
+    .submit-button:disabled {
 
-      min-height: 22px;
+      opacity: .6;
 
-      margin: 15px 0 0;
+      cursor: not-allowed;
 
-      font-size: 13px;
-
-      font-weight: 700;
+      transform: none;
 
     }
 
 
-    .submit-message.success {
 
-      color: #18733b;
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .form-message {
+
+      display: none;
+
+      border-radius: 12px;
+
+      padding: 13px 15px;
+
+      font-size: 12px;
+
+      margin-top: 18px;
+
+      line-height: 1.5;
 
     }
 
 
-    .submit-message.error {
+    .form-message.success {
+
+      display: block;
+
+      background: #eef8f0;
+
+      border: 1px solid #cce7d1;
+
+      color: #246233;
+
+    }
+
+
+    .form-message.error {
+
+      display: block;
+
+      background: #fdf0f0;
+
+      border: 1px solid #efcaca;
 
       color: var(--red);
+
+    }
+
+
+
+    /* =====================================================
+       SIDE INFO
+    ===================================================== */
+
+    .submit-side {
+
+      position: sticky;
+
+      top: 105px;
 
     }
 
@@ -418,34 +525,43 @@
 
       padding: 28px;
 
-      position: sticky;
+      box-shadow:
+        0 15px 40px
+        rgba(18,43,82,.13);
 
-      top: 105px;
+    }
+
+
+    .info-card .eyebrow {
+
+      color: #efb4b7;
 
     }
 
 
     .info-card h3 {
 
-      margin: 0 0 18px;
+      margin: 0 0 12px;
 
-      font-size: 22px;
+      color: #fff;
+
+      font-size: 24px;
 
     }
 
 
     .info-card p {
 
-      color: #c9d3e1;
+      color: #c8d1df;
 
-      font-size: 13px;
+      font-size: 12px;
 
       line-height: 1.7;
 
     }
 
 
-    .info-list {
+    .steps {
 
       margin: 22px 0 0;
 
@@ -456,13 +572,18 @@
     }
 
 
-    .info-list li {
+    .steps li {
 
-      position: relative;
+      display: flex;
 
-      padding-left: 20px;
+      gap: 12px;
 
-      margin: 12px 0;
+      align-items: flex-start;
+
+      padding: 10px 0;
+
+      border-bottom: 1px solid
+        rgba(255,255,255,.1);
 
       color: #dbe3ee;
 
@@ -471,64 +592,124 @@
     }
 
 
-    .info-list li::before {
+    .steps li:last-child {
 
-      content: "✓";
+      border-bottom: 0;
 
-      position: absolute;
+    }
 
-      left: 0;
 
-      color: #f0b0b3;
+    .step-number {
+
+      display: grid;
+
+      place-items: center;
+
+      flex: 0 0 25px;
+
+      width: 25px;
+
+      height: 25px;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,.12);
+
+      color: #fff;
+
+      font-size: 10px;
 
       font-weight: 900;
 
     }
 
 
-    .drive-help {
 
-      margin-top: 25px;
+    /* =====================================================
+       SUCCESS PANEL
+    ===================================================== */
 
-      padding-top: 20px;
+    .success-panel {
 
-      border-top:
-        1px solid
-        rgba(255,255,255,.12);
+      display: none;
+
+      text-align: center;
+
+      padding: 30px 15px;
 
     }
 
 
-    .drive-help strong {
+    .success-icon {
 
-      display: block;
+      display: grid;
 
-      color: #fff;
+      place-items: center;
 
-      margin-bottom: 7px;
+      width: 64px;
+
+      height: 64px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 50%;
+
+      background: #eef8f0;
+
+      color: #246233;
+
+      font-size: 28px;
+
+      font-weight: 900;
+
+    }
+
+
+    .success-panel h3 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 26px;
+
+    }
+
+
+    .success-panel p {
+
+      max-width: 550px;
+
+      margin: 10px auto 0;
+
+      color: var(--muted);
 
       font-size: 13px;
 
     }
 
 
-    .drive-help p {
+    .success-actions {
 
-      margin: 0;
+      display: flex;
 
-      font-size: 11px;
+      justify-content: center;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin-top: 22px;
 
     }
 
 
-    .hidden {
 
-      display: none !important;
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
 
-    }
-
-
-    @media(max-width: 850px) {
+    @media(max-width: 900px) {
 
       .submit-layout {
 
@@ -537,7 +718,7 @@
       }
 
 
-      .info-card {
+      .submit-side {
 
         position: static;
 
@@ -546,30 +727,41 @@
     }
 
 
-    @media(max-width: 560px) {
+    @media(max-width: 600px) {
+
+      .submit-section {
+
+        padding: 45px 0 65px;
+
+      }
+
 
       .submit-card {
 
         padding: 22px;
 
+        border-radius: 19px;
+
       }
 
 
-      .resource-type-grid {
+      .two-columns {
 
         grid-template-columns: 1fr;
 
+        gap: 0;
+
       }
 
 
-      .submitter-row {
+      .profile-row {
 
         display: block;
 
       }
 
 
-      .submitter-row strong {
+      .profile-row strong {
 
         display: block;
 
@@ -586,12 +778,18 @@
 </head>
 
 
+
 <body>
 
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
 <header class="site-header">
 
   <div class="container nav-wrap">
+
 
     <a
       class="brand"
@@ -616,6 +814,7 @@
       </span>
 
     </a>
+
 
 
     <nav class="nav">
@@ -650,6 +849,7 @@
     </nav>
 
 
+
     <button
       class="menu-toggle"
       type="button"
@@ -658,32 +858,34 @@
       ☰
     </button>
 
+
   </div>
 
 </header>
 
 
 
-<main>
-
+<!-- =====================================================
+     HERO
+====================================================== -->
 
 <section class="submit-hero">
 
   <div class="container">
 
     <p class="eyebrow">
-      CONTRIBUTE
+      CONTRIBUTE TO STATECRAFTER
     </p>
 
     <h1>
-      Share Academic<br>
-      Resources
+      Share Your<br>
+      Academic Work.
     </h1>
 
     <p>
-      Share notes, previous questions and academic suggestions
-      with Political Science students across the seven campuses
-      of Dhaka Central University.
+      Submit notes, previous questions, suggestions or
+      articles for review and publication in the
+      StateCrafter DCU Academic Archive.
     </p>
 
   </div>
@@ -692,6 +894,12 @@
 
 
 
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main>
+
 <section class="submit-section">
 
   <div class="container">
@@ -699,424 +907,526 @@
     <div class="submit-layout">
 
 
-      <!-- =========================================
+      <!-- =================================================
            FORM
-      ========================================== -->
+      ================================================== -->
 
       <div class="submit-card">
 
-        <h2>
-          Submit a Resource
-        </h2>
+
+        <!-- FORM AREA -->
+
+        <div id="formArea">
+
+          <p class="eyebrow">
+            NEW SUBMISSION
+          </p>
+
+          <h2>
+            Submit a Resource
+          </h2>
+
+          <p class="submit-card-intro">
+            Your profile information is automatically attached
+            to this submission. You only need to provide the
+            resource details.
+          </p>
 
 
-        <!-- SUBMITTER INFO -->
 
-        <div
-          id="submitterInfo"
-          class="submitter-info"
-        >
+          <!-- PROFILE -->
 
-          <h3>
-            Your Profile
-          </h3>
+          <div class="profile-summary">
+
+            <div class="profile-summary-title">
+              YOUR PROFILE
+            </div>
 
 
-          <div class="submitter-row">
+            <div class="profile-row">
 
-            <span>
-              Name
-            </span>
+              <span>
+                Name
+              </span>
 
-            <strong id="submitterName">
-              Loading...
-            </strong>
+              <strong id="profileName">
+                Loading...
+              </strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+              <span>
+                Session
+              </span>
+
+              <strong id="profileSession">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+              <span>
+                Student ID
+              </span>
+
+              <strong id="profileStudentId">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+              <span>
+                Your Campus
+              </span>
+
+              <strong id="profileCampus">
+                —
+              </strong>
+
+            </div>
 
           </div>
 
 
-          <div class="submitter-row">
 
-            <span>
-              Your Campus
-            </span>
+          <!-- FORM -->
 
-            <strong id="submitterCampus">
-              Loading...
-            </strong>
-
-          </div>
+          <form
+            id="submissionForm"
+            novalidate
+          >
 
 
-          <div class="submitter-row">
+            <!-- RESOURCE TYPE -->
 
-            <span>
-              Session
-            </span>
+            <div class="form-group">
 
-            <strong id="submitterSession">
-              —
-            </strong>
+              <label for="resourceType">
 
-          </div>
+                Resource Type
+                <span class="required">*</span>
+
+              </label>
 
 
-          <div class="submitter-row">
+              <select
+                id="resourceType"
+                required
+              >
 
-            <span>
-              Student ID
-            </span>
+                <option value="">
+                  Select resource type
+                </option>
 
-            <strong id="submitterStudentId">
-              —
-            </strong>
+                <option value="note">
+                  Academic Note
+                </option>
 
-          </div>
+                <option value="question">
+                  Previous Question
+                </option>
+
+                <option value="suggestion">
+                  Suggestion
+                </option>
+
+                <option value="article">
+                  Article
+                </option>
+
+              </select>
+
+            </div>
+
+
+
+            <!-- TYPE DESCRIPTION -->
+
+            <div
+              id="resourceTypeInfo"
+              class="resource-type-info"
+            ></div>
+
+
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+              <label for="title">
+
+                Title
+                <span class="required">*</span>
+
+              </label>
+
+
+              <input
+                id="title"
+                type="text"
+                maxlength="180"
+                placeholder="Enter the title of your resource"
+                required
+              >
+
+            </div>
+
+
+
+            <!-- COURSE + TARGET CAMPUS -->
+
+            <div class="two-columns">
+
+
+              <div class="form-group">
+
+                <label for="course">
+
+                  Course / Subject
+                  <span class="required">*</span>
+
+                </label>
+
+
+                <input
+                  id="course"
+                  type="text"
+                  maxlength="150"
+                  placeholder="e.g. Political Theory"
+                  required
+                >
+
+              </div>
+
+
+
+              <div class="form-group">
+
+                <label for="targetCampus">
+
+                  Resource Campus
+                  <span class="required">*</span>
+
+                </label>
+
+
+                <select
+                  id="targetCampus"
+                  required
+                >
+
+                  <option value="">
+                    Select campus
+                  </option>
+
+                  <option value="Dhaka College">
+                    Dhaka College
+                  </option>
+
+                  <option value="Eden Mohila College">
+                    Eden Mohila College
+                  </option>
+
+                  <option value="Titumir College">
+                    Titumir College
+                  </option>
+
+                  <option value="Bangla College">
+                    Bangla College
+                  </option>
+
+                  <option value="Kabi Nazrul College">
+                    Kabi Nazrul College
+                  </option>
+
+                  <option value="Begum Badrunnesa Mohila College">
+                    Begum Badrunnesa Mohila College
+                  </option>
+
+                  <option value="Shaheed Suhrawardy College">
+                    Shaheed Suhrawardy College
+                  </option>
+
+                </select>
+
+
+                <p class="form-help">
+                  Select the campus this resource is intended for.
+                  It can be different from your own campus.
+                </p>
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+              <label for="description">
+
+                Description
+                <span class="required">*</span>
+
+              </label>
+
+
+              <textarea
+                id="description"
+                maxlength="2000"
+                placeholder="Briefly describe what this resource contains..."
+                required
+              ></textarea>
+
+
+              <p class="form-help">
+                A clear description helps other students understand
+                the resource before opening it.
+              </p>
+
+            </div>
+
+
+
+            <!-- DRIVE LINK -->
+
+            <div class="form-group">
+
+              <label for="driveLink">
+
+                Google Drive Link
+                <span class="required">*</span>
+
+              </label>
+
+
+              <input
+                id="driveLink"
+                type="url"
+                placeholder="https://drive.google.com/..."
+                required
+              >
+
+
+              <div class="drive-box">
+
+                <strong>
+                  How to submit your file
+                </strong>
+
+                <p>
+                  Upload your PDF or document to your own
+                  Google Drive, set the sharing permission so
+                  anyone with the link can view it, then paste
+                  the Google Drive link here.
+                </p>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- SUBMIT -->
+
+            <div class="submit-actions">
+
+              <button
+                id="submitButton"
+                type="submit"
+                class="btn btn-primary submit-button"
+              >
+                Submit for Review
+              </button>
+
+
+              <a
+                href="student-dashboard.html"
+                class="btn btn-outline"
+              >
+                Back to Dashboard
+              </a>
+
+            </div>
+
+
+            <div
+              id="formMessage"
+              class="form-message"
+            ></div>
+
+
+          </form>
 
         </div>
 
 
 
-        <form id="submitForm">
+        <!-- =================================================
+             SUCCESS
+        ================================================== -->
 
+        <div
+          id="successPanel"
+          class="success-panel"
+        >
 
-          <!-- RESOURCE TYPE -->
-
-          <div class="form-group">
-
-            <label>
-              What are you submitting?
-            </label>
-
-
-            <div class="resource-type-grid">
-
-
-              <div class="resource-type">
-
-                <input
-                  type="radio"
-                  id="typeNote"
-                  name="resourceType"
-                  value="note"
-                  checked
-                >
-
-                <label for="typeNote">
-                  Academic Note
-                </label>
-
-              </div>
-
-
-              <div class="resource-type">
-
-                <input
-                  type="radio"
-                  id="typeQuestion"
-                  name="resourceType"
-                  value="question"
-                >
-
-                <label for="typeQuestion">
-                  Previous Question
-                </label>
-
-              </div>
-
-
-              <div class="resource-type">
-
-                <input
-                  type="radio"
-                  id="typeSuggestion"
-                  name="resourceType"
-                  value="suggestion"
-                >
-
-                <label for="typeSuggestion">
-                  Suggestion
-                </label>
-
-              </div>
-
-            </div>
-
+          <div class="success-icon">
+            ✓
           </div>
 
 
-
-          <!-- TARGET CAMPUS -->
-
-          <div class="form-group">
-
-            <label for="targetCampus">
-
-              Resource Campus
-
-              <span style="color:var(--red)">
-                *
-              </span>
-
-            </label>
+          <h3>
+            Submission Received
+          </h3>
 
 
-            <select
-              id="targetCampus"
-              required
+          <p>
+            Your resource has been submitted successfully
+            and is now waiting for admin review. It will appear
+            in the Academic Archive only after approval.
+          </p>
+
+
+          <div class="success-actions">
+
+            <a
+              href="student-dashboard.html"
+              class="btn btn-primary"
             >
-
-              <option value="">
-                Select the campus this resource belongs to
-              </option>
-
-              <option value="Dhaka College">
-                Dhaka College
-              </option>
-
-              <option value="Eden Mohila College">
-                Eden Mohila College
-              </option>
-
-              <option value="Titumir College">
-                Titumir College
-              </option>
-
-              <option value="Bangla College">
-                Bangla College
-              </option>
-
-              <option value="Kabi Nazrul College">
-                Kabi Nazrul College
-              </option>
-
-              <option value="Begum Badrunnesa Mohila College">
-                Begum Badrunnesa Mohila College
-              </option>
-
-              <option value="Shaheed Suhrawardy College">
-                Shaheed Suhrawardy College
-              </option>
-
-            </select>
+              View My Submissions
+            </a>
 
 
-            <div class="campus-note">
-
-              Your own campus is shown above for reference.
-              You may submit a resource for another campus.
-              The selected campus will determine where the
-              resource appears in the Academic Archive.
-
-            </div>
-
-          </div>
-
-
-
-          <!-- TITLE -->
-
-          <div class="form-group">
-
-            <label for="title">
-
-              Title
-
-              <span style="color:var(--red)">
-                *
-              </span>
-
-            </label>
-
-
-            <input
-              type="text"
-              id="title"
-              maxlength="180"
-              placeholder="e.g. Political Theory Final Exam Notes"
-              required
+            <a
+              href="archive.html"
+              class="btn btn-outline"
             >
+              Academic Archive
+            </a>
 
           </div>
 
+        </div>
 
-
-          <!-- COURSE -->
-
-          <div class="form-group">
-
-            <label for="course">
-              Course
-            </label>
-
-
-            <input
-              type="text"
-              id="course"
-              maxlength="120"
-              placeholder="e.g. PS 102 — Political Theory"
-            >
-
-
-            <small class="form-help">
-
-              For suggestions, you may leave this blank
-              if it does not belong to a specific course.
-
-            </small>
-
-          </div>
-
-
-
-          <!-- DESCRIPTION -->
-
-          <div class="form-group">
-
-            <label for="description">
-
-              Description
-
-            </label>
-
-
-            <textarea
-              id="description"
-              maxlength="1500"
-              placeholder="Briefly describe this resource..."
-            ></textarea>
-
-          </div>
-
-
-
-          <!-- DRIVE LINK -->
-
-          <div
-            id="driveGroup"
-            class="form-group"
-          >
-
-            <label for="driveLink">
-
-              Google Drive Link
-
-              <span style="color:var(--red)">
-                *
-              </span>
-
-            </label>
-
-
-            <input
-              type="url"
-              id="driveLink"
-              placeholder="https://drive.google.com/..."
-            >
-
-
-            <small class="form-help">
-
-              Upload the PDF to your Google Drive first,
-              set sharing to "Anyone with the link",
-              then paste the link here.
-
-            </small>
-
-          </div>
-
-
-
-          <!-- SUBMIT -->
-
-          <button
-            id="submitButton"
-            type="submit"
-            class="btn btn-primary submit-button"
-          >
-
-            Submit for Review
-
-          </button>
-
-
-          <p
-            id="submitMessage"
-            class="submit-message"
-          ></p>
-
-
-        </form>
 
       </div>
 
 
 
-      <!-- =========================================
+      <!-- =================================================
            SIDE INFORMATION
-      ========================================== -->
+      ================================================== -->
 
-      <aside class="info-card">
-
-        <h3>
-          Before You Submit
-        </h3>
+      <aside class="submit-side">
 
 
-        <p>
-          Every contribution is reviewed by an administrator
-          before it becomes publicly available in the
-          Academic Archive.
-        </p>
+        <div class="info-card">
 
-
-        <ul class="info-list">
-
-          <li>
-            Choose the correct resource type.
-          </li>
-
-          <li>
-            Select the campus the resource belongs to.
-          </li>
-
-          <li>
-            Use a clear and useful title.
-          </li>
-
-          <li>
-            Make sure your Google Drive link works.
-          </li>
-
-          <li>
-            Keep academic content relevant to Political Science.
-          </li>
-
-          <li>
-            Your profile information is automatically attached
-            to the submission.
-          </li>
-
-        </ul>
-
-
-        <div class="drive-help">
-
-          <strong>
-            Google Drive sharing
-          </strong>
-
-          <p>
-
-            Google Drive →
-            Share →
-            General access →
-            Anyone with the link →
-            Viewer
-
+          <p class="eyebrow">
+            HOW IT WORKS
           </p>
 
+
+          <h3>
+            From your Drive to the Archive.
+          </h3>
+
+
+          <p>
+            Every submission is reviewed before publication.
+            This helps keep the StateCrafter Academic Archive
+            useful, accurate and organized.
+          </p>
+
+
+          <ol class="steps">
+
+
+            <li>
+
+              <span class="step-number">
+                1
+              </span>
+
+              <span>
+                Upload your resource to your Google Drive.
+              </span>
+
+            </li>
+
+
+            <li>
+
+              <span class="step-number">
+                2
+              </span>
+
+              <span>
+                Make the Drive link accessible to anyone
+                with the link.
+              </span>
+
+            </li>
+
+
+            <li>
+
+              <span class="step-number">
+                3
+              </span>
+
+              <span>
+                Select the resource type and target campus.
+              </span>
+
+            </li>
+
+
+            <li>
+
+              <span class="step-number">
+                4
+              </span>
+
+              <span>
+                Submit the form for admin review.
+              </span>
+
+            </li>
+
+
+            <li>
+
+              <span class="step-number">
+                5
+              </span>
+
+              <span>
+                After approval, the resource appears in
+                Academic Archive.
+              </span>
+
+            </li>
+
+
+          </ol>
+
+
         </div>
+
 
       </aside>
 
@@ -1127,10 +1437,13 @@
 
 </section>
 
-
 </main>
 
 
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
 
 <footer class="site-footer">
 
@@ -1151,7 +1464,6 @@
 
 
 <script>
-
 
 /* =========================================================
    SUPABASE
@@ -1177,9 +1489,9 @@ const supabaseClient =
    DOM
 ========================================================= */
 
-const submitForm =
+const submissionForm =
   document.getElementById(
-    "submitForm"
+    "submissionForm"
   );
 
 
@@ -1189,21 +1501,21 @@ const submitButton =
   );
 
 
-const submitMessage =
+const formMessage =
   document.getElementById(
-    "submitMessage"
+    "formMessage"
   );
 
 
-const driveGroup =
+const resourceType =
   document.getElementById(
-    "driveGroup"
+    "resourceType"
   );
 
 
-const driveLink =
+const resourceTypeInfo =
   document.getElementById(
-    "driveLink"
+    "resourceTypeInfo"
   );
 
 
@@ -1213,6 +1525,22 @@ const targetCampus =
   );
 
 
+const formArea =
+  document.getElementById(
+    "formArea"
+  );
+
+
+const successPanel =
+  document.getElementById(
+    "successPanel"
+  );
+
+
+
+/* =========================================================
+   CURRENT USER / PROFILE
+========================================================= */
 
 let currentUser = null;
 
@@ -1220,165 +1548,256 @@ let currentProfile = null;
 
 
 
-/* =========================================================
-   GET USER
-========================================================= */
-
 async function loadUserProfile() {
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getUser();
+  try {
+
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
 
 
-  if (error) {
+    if (
+      userError ||
+      !user
+    ) {
 
-    console.error(error);
+      window.location.href =
+        "login.html";
 
-    window.location.href =
-      "login.html";
+      return;
 
-    return;
-
-  }
-
-
-  currentUser =
-    data.user;
+    }
 
 
-  if (!currentUser) {
-
-    window.location.href =
-      "login.html";
-
-    return;
-
-  }
+    currentUser =
+      user;
 
 
-  const {
-    data: profile,
-    error: profileError
-  } =
-    await supabaseClient
+    const {
+      data: profile,
+      error: profileError
+    } =
+      await supabaseClient
 
-      .from("profiles")
+        .from("profiles")
 
-      .select(`
-        id,
-        full_name,
-        campus,
-        session,
-        student_id,
-        role
-      `)
+        .select(
+          "id, full_name, session, student_id, campus, role"
+        )
 
-      .eq(
-        "id",
-        currentUser.id
-      )
+        .eq(
+          "id",
+          user.id
+        )
 
-      .single();
+        .single();
 
 
-  if (
-    profileError ||
-    !profile
-  ) {
+    if (
+      profileError ||
+      !profile
+    ) {
+
+      showMessage(
+        "Your profile could not be loaded. Please contact the administrator.",
+        "error"
+      );
+
+      submitButton.disabled =
+        true;
+
+      return;
+
+    }
+
+
+    currentProfile =
+      profile;
+
+
+    /*
+      Admin should use Admin Dashboard
+      instead of student submission form.
+    */
+
+    if (
+      profile.role === "admin"
+    ) {
+
+      window.location.href =
+        "admin-dashboard.html";
+
+      return;
+
+    }
+
+
+    if (
+      profile.role !== "student"
+    ) {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    document.getElementById(
+      "profileName"
+    ).textContent =
+      profile.full_name ||
+      "Student";
+
+
+    document.getElementById(
+      "profileSession"
+    ).textContent =
+      profile.session ||
+      "Not specified";
+
+
+    document.getElementById(
+      "profileStudentId"
+    ).textContent =
+      profile.student_id ||
+      "Not specified";
+
+
+    document.getElementById(
+      "profileCampus"
+    ).textContent =
+      profile.campus ||
+      "Not specified";
+
+
+    /*
+      IMPORTANT:
+
+      Do NOT automatically select target campus.
+
+      The student's own campus and the resource's
+      target campus are separate concepts.
+
+      The student may submit a resource for another campus.
+    */
+
+
+  } catch (error) {
 
     console.error(
-      profileError
+      error
     );
 
     showMessage(
-      "Your profile could not be loaded.",
+      "Unable to load your account.",
       "error"
     );
 
-    return;
-
   }
 
-
-  currentProfile =
-    profile;
+}
 
 
-  /* Admin should use Admin Dashboard */
 
-  if (
-    currentProfile.role ===
-    "admin"
-  ) {
+/* =========================================================
+   RESOURCE TYPE HELP
+========================================================= */
 
-    window.location.href =
-      "admin-dashboard.html";
+const typeDescriptions = {
 
-    return;
+  note:
+    "Academic notes, class notes, study materials or other educational documents.",
+
+  question:
+    "Previous examination questions, model questions or question papers.",
+
+  suggestion:
+    "Useful academic suggestions, recommendations or ideas for improving student resources.",
+
+  article:
+    "Original academic or research-oriented articles suitable for the StateCrafter community."
+
+};
+
+
+resourceType.addEventListener(
+  "change",
+  () => {
+
+    const type =
+      resourceType.value;
+
+
+    if (
+      type &&
+      typeDescriptions[type]
+    ) {
+
+      resourceTypeInfo.textContent =
+        typeDescriptions[type];
+
+      resourceTypeInfo.classList.add(
+        "visible"
+      );
+
+    } else {
+
+      resourceTypeInfo.textContent =
+        "";
+
+      resourceTypeInfo.classList.remove(
+        "visible"
+      );
+
+    }
 
   }
+);
 
 
-  if (
-    currentProfile.role !==
-    "student"
-  ) {
 
-    await supabaseClient
-      .auth
-      .signOut();
+/* =========================================================
+   DRIVE LINK VALIDATION
+========================================================= */
 
+function isValidDriveLink(
+  value
+) {
 
-    window.location.href =
-      "login.html";
+  try {
 
-    return;
-
-  }
-
-
-  /* Display profile */
-
-  document.getElementById(
-    "submitterName"
-  ).textContent =
-    currentProfile.full_name ||
-    "Student";
+    const url =
+      new URL(
+        value
+      );
 
 
-  document.getElementById(
-    "submitterCampus"
-  ).textContent =
-    currentProfile.campus ||
-    "Not specified";
+    const host =
+      url.hostname
+        .toLowerCase();
 
 
-  document.getElementById(
-    "submitterSession"
-  ).textContent =
-    currentProfile.session ||
-    "Not specified";
+    return (
+      host === "drive.google.com" ||
+      host === "docs.google.com"
+    );
 
+  } catch {
 
-  document.getElementById(
-    "submitterStudentId"
-  ).textContent =
-    currentProfile.student_id ||
-    "Not specified";
-
-
-  /*
-    Automatically select user's own campus initially.
-    Student can change it to another campus.
-  */
-
-  if (currentProfile.campus) {
-
-    targetCampus.value =
-      currentProfile.campus;
+    return false;
 
   }
 
@@ -1387,104 +1806,26 @@ async function loadUserProfile() {
 
 
 /* =========================================================
-   RESOURCE TYPE
+   FORM SUBMISSION
 ========================================================= */
 
-document
-  .querySelectorAll(
-    'input[name="resourceType"]'
-  )
-  .forEach(input => {
-
-    input.addEventListener(
-      "change",
-      updateFormForType
-    );
-
-  });
-
-
-function getResourceType() {
-
-  const selected =
-    document.querySelector(
-      'input[name="resourceType"]:checked'
-    );
-
-
-  return selected
-    ? selected.value
-    : "note";
-
-}
-
-
-function updateFormForType() {
-
-  const type =
-    getResourceType();
-
-
-  /*
-    Notes and Questions need
-    Google Drive because they
-    normally contain PDF files.
-  */
-
-  if (
-    type === "note" ||
-    type === "question"
-  ) {
-
-    driveGroup.classList.remove(
-      "hidden"
-    );
-
-    driveLink.required =
-      true;
-
-  } else {
-
-    /*
-      Suggestion does not require
-      a Google Drive PDF.
-    */
-
-    driveGroup.classList.add(
-      "hidden"
-    );
-
-    driveLink.required =
-      false;
-
-    driveLink.value =
-      "";
-
-  }
-
-}
-
-
-
-/* =========================================================
-   SUBMIT FORM
-========================================================= */
-
-submitForm.addEventListener(
+submissionForm.addEventListener(
   "submit",
-  async function(event) {
+  async event => {
 
     event.preventDefault();
 
 
-    clearMessage();
+    hideMessage();
 
 
-    if (!currentUser ||
-        !currentProfile) {
+    if (
+      !currentUser ||
+      !currentProfile
+    ) {
 
       showMessage(
-        "Please login again.",
+        "Your account is not ready. Please refresh the page.",
         "error"
       );
 
@@ -1493,49 +1834,55 @@ submitForm.addEventListener(
     }
 
 
-    const resourceType =
-      getResourceType();
-
-
-    const selectedCampus =
-      targetCampus.value;
+    const type =
+      resourceType.value.trim();
 
 
     const title =
-      document.getElementById(
-        "title"
-      ).value.trim();
+      document
+        .getElementById("title")
+        .value
+        .trim();
 
 
     const course =
-      document.getElementById(
-        "course"
-      ).value.trim();
+      document
+        .getElementById("course")
+        .value
+        .trim();
+
+
+    const selectedCampus =
+      targetCampus.value.trim();
 
 
     const description =
-      document.getElementById(
-        "description"
-      ).value.trim();
+      document
+        .getElementById("description")
+        .value
+        .trim();
 
 
-    const driveUrl =
-      driveLink.value.trim();
+    const driveLink =
+      document
+        .getElementById("driveLink")
+        .value
+        .trim();
 
 
 
-    /* =========================================
+    /* -----------------------------------------------
        VALIDATION
-    ========================================== */
+    ------------------------------------------------ */
 
-    if (!selectedCampus) {
+    if (!type) {
 
       showMessage(
-        "Please select the campus this resource belongs to.",
+        "Please select a resource type.",
         "error"
       );
 
-      targetCampus.focus();
+      resourceType.focus();
 
       return;
 
@@ -1549,54 +1896,104 @@ submitForm.addEventListener(
         "error"
       );
 
+      document
+        .getElementById("title")
+        .focus();
+
+      return;
+
+    }
+
+
+    if (!course) {
+
+      showMessage(
+        "Please enter the course or subject.",
+        "error"
+      );
+
+      document
+        .getElementById("course")
+        .focus();
+
+      return;
+
+    }
+
+
+    if (!selectedCampus) {
+
+      showMessage(
+        "Please select the campus this resource is intended for.",
+        "error"
+      );
+
+      targetCampus.focus();
+
+      return;
+
+    }
+
+
+    if (!description) {
+
+      showMessage(
+        "Please provide a short description.",
+        "error"
+      );
+
+      document
+        .getElementById("description")
+        .focus();
+
+      return;
+
+    }
+
+
+    if (!driveLink) {
+
+      showMessage(
+        "Please provide your Google Drive link.",
+        "error"
+      );
+
+      document
+        .getElementById("driveLink")
+        .focus();
+
       return;
 
     }
 
 
     if (
-      resourceType === "note" ||
-      resourceType === "question"
+      !isValidDriveLink(
+        driveLink
+      )
     ) {
 
-      if (!driveUrl) {
+      showMessage(
+        "Please enter a valid Google Drive or Google Docs link.",
+        "error"
+      );
 
-        showMessage(
-          "Please provide the Google Drive link.",
-          "error"
-        );
+      document
+        .getElementById("driveLink")
+        .focus();
 
-        return;
-
-      }
-
-
-      if (
-        !isValidDriveLink(
-          driveUrl
-        )
-      ) {
-
-        showMessage(
-          "Please enter a valid Google Drive link.",
-          "error"
-        );
-
-        return;
-
-      }
+      return;
 
     }
 
 
 
-    /* =========================================
-       DISABLE BUTTON
-    ========================================== */
+    /* -----------------------------------------------
+       PREVENT DUPLICATE CLICK
+    ------------------------------------------------ */
 
     submitButton.disabled =
       true;
-
 
     submitButton.textContent =
       "Submitting...";
@@ -1606,49 +2003,82 @@ submitForm.addEventListener(
     try {
 
 
-      /* =========================================
-         INSERT SUBMISSION
-      ========================================== */
+      /*
+        IMPORTANT DATABASE STRUCTURE
+
+        This form expects the submissions table
+        to contain these fields:
+
+        user_id
+        resource_type
+        title
+        course
+        description
+        target_campus
+        drive_link
+        status
+        full_name
+        session
+        student_id
+        submitter_campus
+      */
+
+
+      const submissionData = {
+
+        user_id:
+          currentUser.id,
+
+        resource_type:
+          type,
+
+        title:
+          title,
+
+        course:
+          course,
+
+        description:
+          description,
+
+        target_campus:
+          selectedCampus,
+
+        drive_link:
+          driveLink,
+
+        status:
+          "pending",
+
+        full_name:
+          currentProfile.full_name ||
+          null,
+
+        session:
+          currentProfile.session ||
+          null,
+
+        student_id:
+          currentProfile.student_id ||
+          null,
+
+        submitter_campus:
+          currentProfile.campus ||
+          null
+
+      };
+
 
       const {
-        data,
         error
       } =
         await supabaseClient
 
           .from("submissions")
 
-          .insert({
-
-            user_id:
-              currentUser.id,
-
-            title:
-              title,
-
-            description:
-              description || null,
-
-            course:
-              course || null,
-
-            drive_link:
-              driveUrl || null,
-
-            target_campus:
-              selectedCampus,
-
-            resource_type:
-              resourceType,
-
-            status:
-              "pending"
-
-          })
-
-          .select()
-
-          .single();
+          .insert(
+            submissionData
+          );
 
 
       if (error) {
@@ -1659,41 +2089,21 @@ submitForm.addEventListener(
 
 
 
-      /* =========================================
+      /* -----------------------------------------------
          SUCCESS
-      ========================================== */
+      ------------------------------------------------ */
 
-      showMessage(
-        "Submitted successfully. Your contribution is now pending admin review.",
-        "success"
-      );
+      formArea.style.display =
+        "none";
 
-
-      submitForm.reset();
+      successPanel.style.display =
+        "block";
 
 
-      /*
-        Restore Note as default
-      */
-
-      document.getElementById(
-        "typeNote"
-      ).checked = true;
-
-
-      /*
-        Restore user's own campus
-      */
-
-      if (currentProfile.campus) {
-
-        targetCampus.value =
-          currentProfile.campus;
-
-      }
-
-
-      updateFormForType();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
 
     } catch (error) {
@@ -1704,14 +2114,25 @@ submitForm.addEventListener(
       );
 
 
+      let message =
+        "Submission failed. Please try again.";
+
+
+      if (
+        error.message
+      ) {
+
+        message =
+          error.message;
+
+      }
+
+
       showMessage(
-        error.message ||
-        "Submission failed. Please try again.",
+        message,
         "error"
       );
 
-
-    } finally {
 
       submitButton.disabled =
         false;
@@ -1727,36 +2148,6 @@ submitForm.addEventListener(
 
 
 /* =========================================================
-   GOOGLE DRIVE VALIDATION
-========================================================= */
-
-function isValidDriveLink(url) {
-
-  try {
-
-    const parsed =
-      new URL(url);
-
-
-    return (
-      parsed.hostname ===
-        "drive.google.com" ||
-
-      parsed.hostname ===
-        "docs.google.com"
-    );
-
-  } catch {
-
-    return false;
-
-  }
-
-}
-
-
-
-/* =========================================================
    MESSAGE
 ========================================================= */
 
@@ -1765,23 +2156,22 @@ function showMessage(
   type
 ) {
 
-  submitMessage.textContent =
+  formMessage.textContent =
     message;
 
-  submitMessage.className =
-    "submit-message " +
-    type;
+  formMessage.className =
+    `form-message ${type}`;
 
 }
 
 
-function clearMessage() {
+function hideMessage() {
 
-  submitMessage.textContent =
+  formMessage.textContent =
     "";
 
-  submitMessage.className =
-    "submit-message";
+  formMessage.className =
+    "form-message";
 
 }
 
@@ -1826,8 +2216,6 @@ if (
 /* =========================================================
    START
 ========================================================= */
-
-updateFormForType();
 
 loadUserProfile();
 
