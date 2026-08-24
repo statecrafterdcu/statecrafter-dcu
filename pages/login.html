@@ -343,7 +343,36 @@
     font-weight:800;
     margin:18px 0 7px
   "
->
+
+      >
+        Student ID
+        <span style="font-weight:400">
+          (Optional)
+        </span>
+      </label>
+
+
+      <input
+        type="text"
+        id="studentId"
+        placeholder="Student ID"
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+        >
   Campus
 </label>
 
@@ -388,34 +417,7 @@
     Shaheed Suhrawardy College
   </option>
 </select>
-      >
-        Student ID
-        <span style="font-weight:400">
-          (Optional)
-        </span>
-      </label>
-
-
-      <input
-        type="text"
-        id="studentId"
-        placeholder="Student ID"
-        style="
-          width:100%;
-          padding:13px;
-          border:1px solid var(--line);
-          border-radius:10px
-        "
-      >
-
-
-      <label
-        style="
-          display:block;
-          font-size:12px;
-          font-weight:800;
-          margin:18px 0 7px
-        "
+      
       >
         Password
       </label>
@@ -693,6 +695,11 @@ document.addEventListener("DOMContentLoaded", () => {
           .value
           .trim();
 
+      const campus =
+  document
+    .getElementById("campus")
+    .value;
+
 
       const password =
         document
@@ -733,11 +740,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data =
           await registerStudent({
-            fullName,
-            email,
-            session,
-            studentId,
-            password
+  fullName,
+  email,
+  session,
+  studentId,
+  campus,
+  password
+});
           });
 
 
