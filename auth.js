@@ -18,6 +18,7 @@ async function registerStudent({
   email,
   session,
   studentId,
+  campus,
   password
 }) {
   const { data, error } = await supabaseClient.auth.signUp({
@@ -28,7 +29,8 @@ async function registerStudent({
       data: {
         full_name: fullName,
         session: session,
-        student_id: studentId || null
+        student_id: studentId || null,
+        campus: campus
       }
     }
   });
