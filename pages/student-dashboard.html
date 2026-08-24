@@ -10,16 +10,616 @@
   <link rel="stylesheet" href="../style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
+    .dashboard-page{
+      background:#f7f5f0;
+      min-height:calc(100vh - 82px);
+      padding:70px 0 90px;
+    }
+
+    .dashboard-header{
+      margin-bottom:28px;
+    }
+
+    .dashboard-header h1{
+      margin:0;
+      color:var(--navy);
+      font-size:clamp(38px,5vw,58px);
+      line-height:1;
+      letter-spacing:-.045em;
+    }
+
+    .dashboard-header p:not(.eyebrow){
+      margin:15px 0 0;
+      color:var(--muted);
+      max-width:700px;
+      font-size:15px;
+    }
+
+
+    /* =========================
+       PROFILE CARD
+    ========================= */
+
+    .student-profile-card{
+      display:grid;
+      grid-template-columns:180px 1fr;
+      gap:38px;
+      align-items:center;
+
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:34px;
+
+      box-shadow:var(--shadow);
+    }
+
+    .student-photo-column{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    }
+
+    .student-profile-photo{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      object-fit:cover;
+      border:5px solid #fff;
+      box-shadow:
+        0 0 0 1px #dce1e7,
+        0 12px 30px rgba(18,43,82,.12);
+      background:#f2f4f7;
+    }
+
+    .photo-button{
+      margin-top:18px;
+      min-height:40px;
+      font-size:12px;
+    }
+
+    .photo-message{
+      min-height:18px;
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    .student-profile-info h2{
+      margin:0 0 20px;
+      color:var(--navy);
+      font-size:clamp(30px,4vw,46px);
+      line-height:1;
+      letter-spacing:-.035em;
+    }
+
+    .student-details{
+      display:grid;
+      gap:9px;
+    }
+
+    .student-details p{
+      margin:0;
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .student-details p span{
+      color:#566274;
+    }
+
+    .student-details p strong{
+      color:var(--navy);
+    }
+
+
+    /* =========================
+       SECTION HEAD
+    ========================= */
+
+    .dashboard-section{
+      margin-top:55px;
+    }
+
+    .dashboard-section-heading{
+      margin-bottom:24px;
+    }
+
+    .dashboard-section-heading h2{
+      margin:0;
+      color:var(--navy);
+      font-size:clamp(28px,4vw,40px);
+      line-height:1.05;
+      letter-spacing:-.035em;
+    }
+
+
+    /* =========================
+       CONTRIBUTION COUNTS
+    ========================= */
+
+    .contribution-stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+
+      box-shadow:0 8px 30px rgba(18,43,82,.04);
+
+      transition:.2s ease;
+    }
+
+    .stat-card:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow);
+    }
+
+    .stat-number{
+      display:block;
+      color:var(--navy);
+      font-size:38px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+
+    .stat-label{
+      display:block;
+      margin-top:9px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .stat-description{
+      margin:7px 0 0;
+      color:#8992a0;
+      font-size:11px;
+    }
+
+
+    /* =========================
+       SUBMISSIONS
+    ========================= */
+
+    .submissions-box{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 8px 30px rgba(18,43,82,.04);
+    }
+
+    .submissions-toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+
+      padding:22px 25px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .submissions-toolbar h3{
+      margin:0;
+      color:var(--navy);
+      font-size:17px;
+    }
+
+    .submissions-toolbar p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .refresh-button{
+      border:1px solid #d6dce4;
+      background:#fff;
+      color:var(--navy);
+      border-radius:10px;
+      padding:9px 13px;
+      font-size:11px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .refresh-button:hover{
+      background:#f4f6f8;
+    }
+
+
+    /* =========================
+       SUBMISSION ITEM
+    ========================= */
+
+    .submission-list{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .submission-item{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
+      align-items:center;
+
+      padding:22px 25px;
+
+      border-bottom:1px solid var(--line);
+    }
+
+    .submission-item:last-child{
+      border-bottom:0;
+    }
+
+    .submission-title{
+      margin:0;
+      color:var(--navy);
+      font-size:16px;
+      font-weight:850;
+    }
+
+    .submission-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px 12px;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .submission-meta span::after{
+      content:"•";
+      margin-left:12px;
+      color:#b3bac4;
+    }
+
+    .submission-meta span:last-child::after{
+      content:"";
+      margin:0;
+    }
+
+    .submission-date{
+      margin-top:8px;
+      color:#929aa7;
+      font-size:10px;
+    }
+
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .submission-status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+
+      margin-top:10px;
+
+      padding:5px 9px;
+
+      border-radius:999px;
+
+      font-size:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+    .submission-status::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:currentColor;
+    }
+
+    .status-pending{
+      background:#fff5df;
+      color:#9a6900;
+    }
+
+    .status-approved{
+      background:#e9f7ef;
+      color:#19703a;
+    }
+
+    .status-rejected{
+      background:#fff0f0;
+      color:#9c2026;
+    }
+
+    .status-other{
+      background:#edf1f5;
+      color:#566274;
+    }
+
+
+    /* =========================
+       SUBMISSION ACTIONS
+    ========================= */
+
+    .submission-actions{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:8px;
+    }
+
+    .view-submission{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      min-width:82px;
+      min-height:38px;
+
+      padding:0 14px;
+
+      border-radius:10px;
+
+      background:var(--navy);
+      color:#fff;
+
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .view-submission:hover{
+      background:var(--navy-2);
+    }
+
+    .drive-link{
+      color:var(--red);
+      font-size:10px;
+      font-weight:800;
+    }
+
+
+    /* =========================
+       REJECTION REASON
+    ========================= */
+
+    .rejection-reason{
+      margin-top:12px;
+      max-width:650px;
+
+      padding:11px 13px;
+
+      background:#fff5f5;
+      border-left:3px solid var(--red);
+
+      border-radius:8px;
+
+      color:#76272b;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    .rejection-reason strong{
+      display:block;
+      margin-bottom:3px;
+      color:var(--red);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+
+
+    /* =========================
+       EMPTY STATE
+    ========================= */
+
+    .empty-submissions{
+      padding:55px 25px;
+      text-align:center;
+    }
+
+    .empty-submissions strong{
+      display:block;
+      color:var(--navy);
+      font-size:17px;
+    }
+
+    .empty-submissions p{
+      max-width:500px;
+      margin:8px auto 20px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+
+    /* =========================
+       CONTRIBUTE
+    ========================= */
+
+    .contribute-card{
+      background:var(--navy);
+      color:#fff;
+      border-radius:24px;
+      padding:35px;
+    }
+
+    .contribute-card .eyebrow{
+      color:#f0b0b3;
+    }
+
+    .contribute-card h2{
+      margin:0;
+      color:#fff;
+      font-size:32px;
+      line-height:1.05;
+      letter-spacing:-.035em;
+    }
+
+    .contribute-card p:not(.eyebrow){
+      margin:14px 0 22px;
+      color:#c8d1df;
+      max-width:680px;
+      font-size:14px;
+    }
+
+    .contribute-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .disabled-button{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+
+    /* =========================
+       LOADING
+    ========================= */
+
+    .loading-state{
+      padding:35px 25px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+
+    /* =========================
+       ERROR
+    ========================= */
+
+    .dashboard-error{
+      margin-top:20px;
+      padding:14px 16px;
+
+      background:#fff1f1;
+      border:1px solid #f0c8c8;
+      border-radius:12px;
+
+      color:#8c2025;
+      font-size:13px;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:900px){
+
+      .student-profile-card{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+
+      .student-photo-column{
+        justify-content:center;
+      }
+
+      .student-details{
+        justify-items:center;
+      }
+
+      .contribution-stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+
+    @media(max-width:600px){
+
+      .dashboard-page{
+        padding:45px 0 65px;
+      }
+
+      .student-profile-card{
+        padding:25px 20px;
+      }
+
+      .student-profile-photo{
+        width:125px;
+        height:125px;
+      }
+
+      .contribution-stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .stat-card{
+        padding:18px;
+      }
+
+      .stat-number{
+        font-size:31px;
+      }
+
+      .submission-item{
+        grid-template-columns:1fr;
+        gap:15px;
+        padding:20px;
+      }
+
+      .submission-actions{
+        align-items:flex-start;
+        flex-direction:row;
+      }
+
+      .submissions-toolbar{
+        align-items:flex-start;
+      }
+
+      .contribute-card{
+        padding:27px 22px;
+      }
+
+      .contribute-card h2{
+        font-size:27px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 
 <body>
 
+
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="site-header">
 
   <div class="container nav-wrap">
 
-    <a class="brand" href="../index.html">
+    <a
+      class="brand"
+      href="../index.html"
+    >
 
       <img
         src="../assets/statecrafter-logo.png"
@@ -27,15 +627,25 @@
       >
 
       <span class="brand-copy">
-        <strong>StateCrafter DCU</strong>
-        <small>Political Science Department</small>
+
+        <strong>
+          StateCrafter DCU
+        </strong>
+
+        <small>
+          Political Science Department
+        </small>
+
       </span>
 
     </a>
 
+
     <nav class="nav">
 
-      <a href="../index.html">Home</a>
+      <a href="../index.html">
+        Home
+      </a>
 
       <a href="archive.html">
         Academic Archive
@@ -68,206 +678,402 @@
 </header>
 
 
-<main>
 
-<section class="section">
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="dashboard-page">
 
 <div class="container">
 
 
-  <p class="eyebrow">
-    STUDENT DASHBOARD
-  </p>
+  <!-- HEADER -->
 
-
-  <!-- PROFILE -->
-  <div class="student-profile-card">
-    <div class="student-photo-column">
-      <img
-        id="profilePhoto"
-        class="student-profile-photo"
-        src="../assets/default-avatar.svg"
-        alt="Profile photo"
-      >
-
-      <label
-        id="changePhotoButton"
-        for="photoInput"
-        class="btn btn-outline photo-button"
-      >
-        Change Photo
-      </label>
-
-      <input
-        type="file"
-        id="photoInput"
-        accept="image/jpeg,image/png,image/webp"
-        hidden
-      >
-
-      <p id="photoMessage" class="photo-message"></p>
-    </div>
-
-    <div class="student-profile-info">
-      <h1 id="studentName">Loading...</h1>
-
-      <div class="student-details">
-        <p>
-          <span>Department :</span>
-          <strong>Political Science</strong>
-        </p>
-
-        <p>
-          <span>Session :</span>
-          <strong id="studentSession">—</strong>
-        </p>
-
-        <p>
-          <span>Student ID :</span>
-          <strong id="studentId">—</strong>
-        </p>
-
-        <p>
-          <span>Campus :</span>
-          <strong id="studentCampus">—</strong>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTRIBUTIONS -->
-
-  <div style="margin-top:50px">
-
-    <p class="eyebrow" id="contributionsEyebrow">
-      MY CONTRIBUTIONS
-    </p>
-
-    <h2 id="contributionsTitle">
-      Your Academic Contributions
-    </h2>
-
-
-    <div
-      class="grid-4"
-      style="margin-top:25px"
-    >
-
-      <div class="feature-card">
-
-        <strong
-          id="articleCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Articles</p>
-
-      </div>
-
-
-      <div class="feature-card">
-
-        <strong
-          id="noteCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Notes</p>
-
-      </div>
-
-
-      <div class="feature-card">
-
-        <strong
-          id="questionCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Questions</p>
-
-      </div>
-
-
-      <div class="feature-card">
-
-        <strong
-          id="suggestionCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Suggestions</p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- FUTURE ACTIONS -->
-
-  <div style="margin-top:50px">
+  <section class="dashboard-header">
 
     <p class="eyebrow">
-      CONTRIBUTE
+      STUDENT DASHBOARD
     </p>
 
-    <h2>
-      Share Academic Resources
-    </h2>
+    <h1>
+      Welcome back
+    </h1>
 
-    <p style="max-width:650px;color:var(--muted)">
-      You will be able to submit notes, previous questions,
-      suggestions and research articles from your dashboard.
-      All submissions will be reviewed before publication.
+    <p>
+      Manage your academic profile and track
+      your contributions to the StateCrafter DCU
+      academic archive.
     </p>
 
+  </section>
 
-    <div
-      style="
-        display:flex;
-        gap:12px;
-        flex-wrap:wrap;
-        margin-top:20px;
-      "
-    >
-<a>
-      <a href="submit-note.html" class="btn btn-primary">
-  Submit Note
-</a>
 
-      <button class="btn" disabled>
-        Submit Question
-      </button>
 
-      <button class="btn" disabled>
-        Submit Suggestion
-      </button>
+  <!-- =========================
+       PROFILE
+  ========================= -->
 
-      <button class="btn" disabled>
-        Write Article
-      </button>
+  <section>
+
+    <div class="student-profile-card">
+
+
+      <!-- PHOTO -->
+
+      <div class="student-photo-column">
+
+        <img
+          id="profilePhoto"
+          class="student-profile-photo"
+          src="../assets/default-avatar.svg"
+          alt="Profile photo"
+        >
+
+
+        <label
+          id="changePhotoButton"
+          for="photoInput"
+          class="btn btn-outline photo-button"
+        >
+          Change Photo
+        </label>
+
+
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/jpeg,image/png,image/webp"
+          hidden
+        >
+
+
+        <p
+          id="photoMessage"
+          class="photo-message"
+        ></p>
+
+      </div>
+
+
+
+      <!-- PROFILE INFORMATION -->
+
+      <div class="student-profile-info">
+
+        <h2 id="studentName">
+          Loading...
+        </h2>
+
+
+        <div class="student-details">
+
+          <p>
+            <span>
+              Department :
+            </span>
+
+            <strong>
+              Political Science
+            </strong>
+          </p>
+
+
+          <p>
+            <span>
+              Session :
+            </span>
+
+            <strong id="studentSession">
+              —
+            </strong>
+          </p>
+
+
+          <p>
+            <span>
+              Student ID :
+            </span>
+
+            <strong id="studentId">
+              —
+            </strong>
+          </p>
+
+
+          <p>
+            <span>
+              Campus :
+            </span>
+
+            <strong id="studentCampus">
+              —
+            </strong>
+          </p>
+
+        </div>
+
+      </div>
 
     </div>
 
-  </div>
+  </section>
+
+
+
+  <!-- =========================
+       CONTRIBUTIONS
+  ========================= -->
+
+  <section class="dashboard-section">
+
+    <div class="dashboard-section-heading">
+
+      <p
+        class="eyebrow"
+        id="contributionsEyebrow"
+      >
+        MY CONTRIBUTIONS
+      </p>
+
+
+      <h2 id="contributionsTitle">
+        Your Academic Contributions
+      </h2>
+
+    </div>
+
+
+
+    <!-- STATS -->
+
+    <div class="contribution-stats">
+
+
+      <div class="stat-card">
+
+        <span
+          id="totalCount"
+          class="stat-number"
+        >
+          0
+        </span>
+
+        <span class="stat-label">
+          Total
+        </span>
+
+        <p class="stat-description">
+          All submissions
+        </p>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span
+          id="pendingCount"
+          class="stat-number"
+        >
+          0
+        </span>
+
+        <span class="stat-label">
+          Pending
+        </span>
+
+        <p class="stat-description">
+          Waiting for review
+        </p>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span
+          id="approvedCount"
+          class="stat-number"
+        >
+          0
+        </span>
+
+        <span class="stat-label">
+          Approved
+        </span>
+
+        <p class="stat-description">
+          Published or approved
+        </p>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span
+          id="rejectedCount"
+          class="stat-number"
+        >
+          0
+        </span>
+
+        <span class="stat-label">
+          Rejected
+        </span>
+
+        <p class="stat-description">
+          Needs revision
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       SUBMISSION LIST
+  ========================= -->
+
+  <section class="dashboard-section">
+
+    <div class="submissions-box">
+
+
+      <div class="submissions-toolbar">
+
+        <div>
+
+          <h3>
+            Recent Submissions
+          </h3>
+
+          <p>
+            Track the status of your academic contributions.
+          </p>
+
+        </div>
+
+
+        <button
+          id="refreshSubmissions"
+          class="refresh-button"
+          type="button"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+      <div
+        id="submissionList"
+        class="submission-list"
+      >
+
+        <div class="loading-state">
+          Loading submissions...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================
+       CONTRIBUTE
+  ========================= -->
+
+  <section class="dashboard-section">
+
+    <div class="contribute-card">
+
+      <p class="eyebrow">
+        CONTRIBUTE
+      </p>
+
+
+      <h2>
+        Share Academic Resources
+      </h2>
+
+
+      <p>
+        Help build the StateCrafter DCU academic archive.
+        Submit notes, previous questions, suggestions and
+        research articles. Every submission is reviewed
+        before publication.
+      </p>
+
+
+      <div class="contribute-actions">
+
+        <a
+          href="submit-note.html"
+          class="btn btn-primary"
+        >
+          Submit Note
+        </a>
+
+
+        <button
+          class="btn btn-outline disabled-button"
+          type="button"
+          disabled
+        >
+          Submit Question
+        </button>
+
+
+        <button
+          class="btn btn-outline disabled-button"
+          type="button"
+          disabled
+        >
+          Submit Suggestion
+        </button>
+
+
+        <button
+          class="btn btn-outline disabled-button"
+          type="button"
+          disabled
+        >
+          Write Article
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ERROR MESSAGE -->
+
+  <div
+    id="dashboardError"
+    class="dashboard-error"
+    style="display:none"
+  ></div>
 
 
 </div>
 
-</section>
-
 </main>
 
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer class="site-footer">
 
@@ -286,10 +1092,12 @@
 </footer>
 
 
-<script src="../auth.js"></script>
-
 
 <script>
+
+/* =========================================
+   SUPABASE
+========================================= */
 
 const supabaseClient =
   window.supabase.createClient(
@@ -298,181 +1106,1172 @@ const supabaseClient =
   );
 
 
-const DEFAULT_AVATAR = "../assets/default-avatar.svg";
+const DEFAULT_AVATAR =
+  "../assets/default-avatar.svg";
 
-async function getCurrentUser() {
-  const { data, error } = await supabaseClient.auth.getUser();
-  if (error) throw error;
-  return data.user;
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function $(id){
+  return document.getElementById(id);
 }
 
-async function loadStudentDashboard() {
-  const user = await getCurrentUser();
 
-  if (!user) {
-    window.location.href = "login.html";
-    return;
+function showDashboardError(message){
+
+  const box =
+    $("dashboardError");
+
+  box.textContent =
+    message;
+
+  box.style.display =
+    "block";
+
+}
+
+
+function clearDashboardError(){
+
+  const box =
+    $("dashboardError");
+
+  box.textContent =
+    "";
+
+  box.style.display =
+    "none";
+
+}
+
+
+function escapeHtml(value){
+
+  if(value === null || value === undefined){
+    return "";
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const requestedProfileId = params.get("id");
-  const profileId = requestedProfileId || user.id;
-  const isOwnProfile = profileId === user.id;
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
-  const { data: currentProfile, error: currentProfileError } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+}
 
-  if (currentProfileError || !currentProfile) {
-    alert("Your profile could not be loaded.");
-    return;
+
+function formatDate(dateValue){
+
+  if(!dateValue){
+    return "Date unavailable";
   }
 
-  // Keep the dashboard student-only.
-  if (currentProfile.role === "admin") {
-    window.location.href = "admin-dashboard.html";
-    return;
+  const date =
+    new Date(dateValue);
+
+  if(Number.isNaN(date.getTime())){
+    return "Date unavailable";
   }
 
-  if (currentProfile.role !== "student") {
-    await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
-    return;
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function getStatusClass(status){
+
+  switch(String(status || "").toLowerCase()){
+
+    case "pending":
+      return "status-pending";
+
+    case "approved":
+      return "status-approved";
+
+    case "rejected":
+      return "status-rejected";
+
+    default:
+      return "status-other";
+
   }
 
-  const { data: profile, error: profileError } =
+}
+
+
+function getStatusLabel(status){
+
+  if(!status){
+    return "Unknown";
+  }
+
+  return String(status)
+    .replaceAll("_"," ")
+    .replace(
+      /\b\w/g,
+      character => character.toUpperCase()
+    );
+
+}
+
+
+/* =========================================
+   CURRENT USER
+========================================= */
+
+async function getCurrentUser(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  return data.user;
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+async function loadProfile(profileId){
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .from("profiles")
       .select("*")
       .eq("id", profileId)
       .single();
 
-  if (profileError || !profile) {
-    alert("This student profile could not be loaded.");
-    return;
+
+  if(error){
+    throw error;
   }
 
-  // Profile information
-  document.getElementById("studentName").textContent =
-    profile.full_name || "Student";
 
-  document.getElementById("studentSession").textContent =
-    profile.session || "Not specified";
+  return data;
 
-  document.getElementById("studentId").textContent =
-    profile.student_id || "Not specified";
-
-  document.getElementById("studentCampus").textContent =
-    profile.campus || "Not specified";
-
-  // Photo
-  document.getElementById("profilePhoto").src =
-    profile.photo_url || DEFAULT_AVATAR;
-
-  // Contributions wording
-  const displayName = profile.full_name || "Student";
-  const eyebrow = document.getElementById("contributionsEyebrow");
-  const title = document.getElementById("contributionsTitle");
-
-  if (isOwnProfile) {
-    eyebrow.textContent = "MY CONTRIBUTIONS";
-    title.textContent = "Your Academic Contributions";
-  } else {
-    eyebrow.textContent = `${displayName.toUpperCase()}'S CONTRIBUTIONS`;
-    title.textContent = `${displayName}'s Academic Contributions`;
-  }
-
-  // Only the owner can change their own photo.
-  if (!isOwnProfile) {
-    document.getElementById("changePhotoButton").style.display = "none";
-  }
 }
 
 
-// PHOTO UPLOAD — owner only, maximum 1 MB
-document.getElementById("photoInput").addEventListener("change", async function () {
-  const file = this.files[0];
-  if (!file) return;
+/* =========================================
+   PROFILE UI
+========================================= */
 
-  const message = document.getElementById("photoMessage");
+function renderProfile(
+  profile,
+  isOwnProfile
+){
 
-  if (file.size > 1048576) {
-    message.textContent = "Photo must be 1 MB or smaller.";
-    this.value = "";
-    return;
+  $("studentName").textContent =
+    profile.full_name ||
+    "Student";
+
+
+  $("studentSession").textContent =
+    profile.session ||
+    "Not specified";
+
+
+  $("studentId").textContent =
+    profile.student_id ||
+    "Not specified";
+
+
+  $("studentCampus").textContent =
+    profile.campus ||
+    "Not specified";
+
+
+  $("profilePhoto").src =
+    profile.photo_url ||
+    DEFAULT_AVATAR;
+
+
+  const displayName =
+    profile.full_name ||
+    "Student";
+
+
+  if(isOwnProfile){
+
+    $("contributionsEyebrow")
+      .textContent =
+      "MY CONTRIBUTIONS";
+
+    $("contributionsTitle")
+      .textContent =
+      "Your Academic Contributions";
+
+  }else{
+
+    $("contributionsEyebrow")
+      .textContent =
+      `${displayName.toUpperCase()}'S CONTRIBUTIONS`;
+
+    $("contributionsTitle")
+      .textContent =
+      `${displayName}'s Academic Contributions`;
+
+    /*
+     * Another student's profile:
+     * Do not show photo controls.
+     */
+
+    $("changePhotoButton")
+      .style.display =
+      "none";
+
   }
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+}
 
-  if (!allowedTypes.includes(file.type)) {
-    message.textContent = "Please upload JPG, PNG or WebP.";
-    this.value = "";
-    return;
+
+/* =========================================
+   CONTRIBUTION COUNTS
+========================================= */
+
+async function loadContributionStats(
+  profileId
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("submissions")
+      .select(
+        "id,status",
+        { count:"exact" }
+      )
+      .eq(
+        "user_id",
+        profileId
+      );
+
+
+  if(error){
+    throw error;
   }
 
-  message.textContent = "Uploading photo...";
 
-  try {
-    const user = await getCurrentUser();
+  const submissions =
+    data || [];
 
-    if (!user) {
-      window.location.href = "login.html";
+
+  const total =
+    submissions.length;
+
+
+  const pending =
+    submissions.filter(
+      item =>
+        String(item.status).toLowerCase()
+        === "pending"
+    ).length;
+
+
+  const approved =
+    submissions.filter(
+      item =>
+        String(item.status).toLowerCase()
+        === "approved"
+    ).length;
+
+
+  const rejected =
+    submissions.filter(
+      item =>
+        String(item.status).toLowerCase()
+        === "rejected"
+    ).length;
+
+
+  $("totalCount").textContent =
+    total;
+
+
+  $("pendingCount").textContent =
+    pending;
+
+
+  $("approvedCount").textContent =
+    approved;
+
+
+  $("rejectedCount").textContent =
+    rejected;
+
+}
+
+
+/* =========================================
+   SUBMISSION LIST
+========================================= */
+
+async function loadSubmissions(
+  profileId,
+  isOwnProfile
+){
+
+  const list =
+    $("submissionList");
+
+
+  list.innerHTML =
+    `<div class="loading-state">
+      Loading submissions...
+    </div>`;
+
+
+  /*
+   * For own profile:
+   * show all submissions.
+   *
+   * For another profile:
+   * only request approved submissions.
+   *
+   * This is an additional privacy layer.
+   */
+
+  let query =
+    supabaseClient
+      .from("submissions")
+      .select(`
+        id,
+        type,
+        title,
+        content,
+        campus,
+        course_code,
+        file_url,
+        status,
+        admin_note,
+        created_at
+      `)
+      .eq(
+        "user_id",
+        profileId
+      )
+      .order(
+        "created_at",
+        { ascending:false }
+      )
+      .limit(20);
+
+
+  if(!isOwnProfile){
+
+    query =
+      query.eq(
+        "status",
+        "approved"
+      );
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+
+  if(error){
+    throw error;
+  }
+
+
+  const submissions =
+    data || [];
+
+
+  if(submissions.length === 0){
+
+    list.innerHTML = `
+      <div class="empty-submissions">
+
+        <strong>
+          No submissions yet
+        </strong>
+
+        <p>
+          Academic contributions submitted by this
+          student will appear here.
+        </p>
+
+        ${
+          isOwnProfile
+          ? `
+            <a
+              href="submit-note.html"
+              class="btn btn-primary"
+            >
+              Submit Your First Note
+            </a>
+          `
+          : ""
+        }
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    submissions
+      .map(
+        submission =>
+          renderSubmission(
+            submission,
+            isOwnProfile
+          )
+      )
+      .join("");
+
+}
+
+
+/* =========================================
+   RENDER SUBMISSION
+========================================= */
+
+function renderSubmission(
+  submission,
+  isOwnProfile
+){
+
+  const status =
+    String(
+      submission.status ||
+      "unknown"
+    ).toLowerCase();
+
+
+  const statusClass =
+    getStatusClass(status);
+
+
+  const statusLabel =
+    getStatusLabel(status);
+
+
+  const title =
+    escapeHtml(
+      submission.title ||
+      "Untitled submission"
+    );
+
+
+  const type =
+    escapeHtml(
+      submission.type ||
+      "Submission"
+    );
+
+
+  const campus =
+    escapeHtml(
+      submission.campus ||
+      "Campus not specified"
+    );
+
+
+  const course =
+    escapeHtml(
+      submission.course_code ||
+      "Course not specified"
+    );
+
+
+  const date =
+    formatDate(
+      submission.created_at
+    );
+
+
+  let rejectionReason = "";
+
+
+  if(
+    isOwnProfile &&
+    status === "rejected" &&
+    submission.admin_note
+  ){
+
+    rejectionReason = `
+      <div class="rejection-reason">
+
+        <strong>
+          Admin Reason
+        </strong>
+
+        ${escapeHtml(
+          submission.admin_note
+        )}
+
+      </div>
+    `;
+
+  }
+
+
+  let driveButton = "";
+
+
+  if(
+    submission.file_url &&
+    status === "approved"
+  ){
+
+    driveButton = `
+      <a
+        class="drive-link"
+        href="${escapeHtml(
+          submission.file_url
+        )}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open PDF ↗
+      </a>
+    `;
+
+  }
+
+
+  /*
+   * View currently opens the submission
+   * details page.
+   *
+   * We will build that page next.
+   */
+
+  const viewLink = `
+    <a
+      class="view-submission"
+      href="submission-view.html?id=${encodeURIComponent(
+        submission.id
+      )}"
+    >
+      View
+    </a>
+  `;
+
+
+  return `
+
+    <article class="submission-item">
+
+      <div>
+
+        <h4 class="submission-title">
+          ${title}
+        </h4>
+
+
+        <div class="submission-meta">
+
+          <span>
+            ${type}
+          </span>
+
+          <span>
+            ${course}
+          </span>
+
+          <span>
+            ${campus}
+          </span>
+
+        </div>
+
+
+        <div class="submission-date">
+
+          Submitted:
+          ${date}
+
+        </div>
+
+
+        <span
+          class="submission-status ${statusClass}"
+        >
+          ${statusLabel}
+        </span>
+
+
+        ${rejectionReason}
+
+      </div>
+
+
+      <div class="submission-actions">
+
+        ${viewLink}
+
+        ${driveButton}
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================
+   LOAD EVERYTHING
+========================================= */
+
+async function loadStudentDashboard(){
+
+  clearDashboardError();
+
+
+  try{
+
+    const user =
+      await getCurrentUser();
+
+
+    if(!user){
+
+      window.location.href =
+        "login.html";
+
       return;
+
     }
 
-    const extension = file.name.split(".").pop().toLowerCase();
-    const filePath = `${user.id}/profile.${extension}`;
 
-    const { error: uploadError } =
-      await supabaseClient.storage
-        .from("profile-photos")
-        .upload(filePath, file, {
-          upsert: true,
-          contentType: file.type
-        });
+    /*
+     * Always load current user's profile
+     * first for authorization.
+     */
 
-    if (uploadError) throw uploadError;
+    const currentProfile =
+      await loadProfile(
+        user.id
+      );
 
-    const { data: publicData } =
-      supabaseClient.storage
-        .from("profile-photos")
-        .getPublicUrl(filePath);
 
-    const photoUrl = publicData.publicUrl + "?v=" + Date.now();
+    if(!currentProfile){
 
-    const { error: profileError } =
-      await supabaseClient
-        .from("profiles")
-        .update({ photo_url: photoUrl })
-        .eq("id", user.id);
+      throw new Error(
+        "Your profile could not be loaded."
+      );
 
-    if (profileError) throw profileError;
+    }
 
-    document.getElementById("profilePhoto").src = photoUrl;
-    message.textContent = "Photo updated successfully.";
-    this.value = "";
 
-  } catch (error) {
-    console.error(error);
-    message.textContent =
-      error.message || "Photo upload failed.";
+    /*
+     * Dashboard is student-only.
+     */
+
+    if(
+      String(currentProfile.role)
+        .toLowerCase()
+      === "admin"
+    ){
+
+      window.location.href =
+        "admin-dashboard.html";
+
+      return;
+
+    }
+
+
+    if(
+      String(currentProfile.role)
+        .toLowerCase()
+      !== "student"
+    ){
+
+      await supabaseClient.auth.signOut();
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+     * URL ?id= allows viewing another
+     * student's public profile.
+     */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const requestedProfileId =
+      params.get("id");
+
+
+    const profileId =
+      requestedProfileId ||
+      user.id;
+
+
+    const isOwnProfile =
+      profileId === user.id;
+
+
+    const profile =
+      await loadProfile(
+        profileId
+      );
+
+
+    if(!profile){
+
+      throw new Error(
+        "This student profile could not be loaded."
+      );
+
+    }
+
+
+    /*
+     * Only student profiles should
+     * use this dashboard.
+     */
+
+    if(
+      String(profile.role)
+        .toLowerCase()
+      !== "student"
+    ){
+
+      throw new Error(
+        "This is not a student profile."
+      );
+
+    }
+
+
+    renderProfile(
+      profile,
+      isOwnProfile
+    );
+
+
+    /*
+     * Load contribution stats.
+     *
+     * Stats are shown for own profile.
+     * For another profile, approved
+     * submissions are counted.
+     */
+
+    if(isOwnProfile){
+
+      await loadContributionStats(
+        profileId
+      );
+
+    }else{
+
+      /*
+       * Public profile stats:
+       * only approved contributions.
+       */
+
+      const {
+        data: publicSubmissions,
+        error: publicError
+      } =
+        await supabaseClient
+          .from("submissions")
+          .select(
+            "id,status"
+          )
+          .eq(
+            "user_id",
+            profileId
+          )
+          .eq(
+            "status",
+            "approved"
+          );
+
+
+      if(publicError){
+        throw publicError;
+      }
+
+
+      const approvedCount =
+        (publicSubmissions || [])
+          .length;
+
+
+      $("totalCount").textContent =
+        approvedCount;
+
+
+      $("pendingCount").textContent =
+        "—";
+
+
+      $("approvedCount").textContent =
+        approvedCount;
+
+
+      $("rejectedCount").textContent =
+        "—";
+
+    }
+
+
+    await loadSubmissions(
+      profileId,
+      isOwnProfile
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Dashboard Error:",
+      error
+    );
+
+
+    showDashboardError(
+      error.message ||
+      "Unable to load dashboard."
+    );
+
   }
-});
+
+}
 
 
-// LOGOUT
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
-});
+/* =========================================
+   PHOTO UPLOAD
+========================================= */
+
+$("photoInput")
+  .addEventListener(
+    "change",
+    async function(){
+
+      const file =
+        this.files[0];
+
+
+      if(!file){
+        return;
+      }
+
+
+      const message =
+        $("photoMessage");
+
+
+      /*
+       * Maximum 1 MB
+       */
+
+      if(
+        file.size >
+        1048576
+      ){
+
+        message.textContent =
+          "Photo must be 1 MB or smaller.";
+
+        this.value = "";
+
+        return;
+
+      }
+
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+
+      if(
+        !allowedTypes.includes(
+          file.type
+        )
+      ){
+
+        message.textContent =
+          "Please upload JPG, PNG or WebP.";
+
+        this.value = "";
+
+        return;
+
+      }
+
+
+      message.textContent =
+        "Uploading photo...";
+
+
+      try{
+
+        const user =
+          await getCurrentUser();
+
+
+        if(!user){
+
+          window.location.href =
+            "login.html";
+
+          return;
+
+        }
+
+
+        const extension =
+          file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+        const filePath =
+          `${user.id}/profile.${extension}`;
+
+
+        const {
+          error: uploadError
+        } =
+          await supabaseClient.storage
+            .from("profile-photos")
+            .upload(
+              filePath,
+              file,
+              {
+                upsert:true,
+                contentType:file.type
+              }
+            );
+
+
+        if(uploadError){
+          throw uploadError;
+        }
+
+
+        const {
+          data: publicData
+        } =
+          supabaseClient.storage
+            .from("profile-photos")
+            .getPublicUrl(
+              filePath
+            );
+
+
+        const photoUrl =
+          publicData.publicUrl +
+          "?v=" +
+          Date.now();
+
+
+        const {
+          error: profileError
+        } =
+          await supabaseClient
+            .from("profiles")
+            .update({
+              photo_url:photoUrl
+            })
+            .eq(
+              "id",
+              user.id
+            );
+
+
+        if(profileError){
+          throw profileError;
+        }
+
+
+        $("profilePhoto").src =
+          photoUrl;
+
+
+        message.textContent =
+          "Photo updated successfully.";
+
+
+        this.value = "";
+
+
+      }catch(error){
+
+        console.error(
+          "Photo upload error:",
+          error
+        );
+
+
+        message.textContent =
+          error.message ||
+          "Photo upload failed.";
+
+      }
+
+    }
+  );
+
+
+/* =========================================
+   REFRESH
+========================================= */
+
+$("refreshSubmissions")
+  .addEventListener(
+    "click",
+    async function(){
+
+      this.disabled =
+        true;
+
+      this.textContent =
+        "Refreshing...";
+
+
+      try{
+
+        const user =
+          await getCurrentUser();
+
+
+        if(!user){
+          return;
+        }
+
+
+        const params =
+          new URLSearchParams(
+            window.location.search
+          );
+
+
+        const profileId =
+          params.get("id") ||
+          user.id;
+
+
+        const isOwnProfile =
+          profileId === user.id;
+
+
+        if(isOwnProfile){
+
+          await loadContributionStats(
+            profileId
+          );
+
+        }
+
+
+        await loadSubmissions(
+          profileId,
+          isOwnProfile
+        );
+
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+
+        showDashboardError(
+          error.message ||
+          "Unable to refresh submissions."
+        );
+
+
+      }finally{
+
+        this.disabled =
+          false;
+
+        this.textContent =
+          "Refresh";
+
+      }
+
+    }
+  );
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+$("logoutButton")
+  .addEventListener(
+    "click",
+    async function(){
+
+      await supabaseClient.auth.signOut();
+
+      window.location.href =
+        "login.html";
+
+    }
+  );
+
+
+/* =========================================
+   START
+========================================= */
 
 loadStudentDashboard();
 
-
 </script>
 
+
 </body>
+
 </html>
