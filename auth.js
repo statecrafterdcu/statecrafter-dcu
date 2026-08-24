@@ -1,123 +1,308 @@
-const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co";
+/* =========================================================
+   StateCrafter DCU
+   Authentication
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+
+/* =========================================================
+   SUPABASE CLIENT
+   ========================================================= */
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
 
-// ============================================
-// REGISTER STUDENT
-// ============================================
-
-async function registerStudent({
-  fullName,
-  email,
-  session,
-  studentId,
-  campus,
-  password
-}) {
-  const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-
-    options: {
-      data: {
-        full_name: fullName,
-        session: session,
-        student_id: studentId || null,
-        campus: campus
-      }
-    }
-  });
-
-  if (error) {
-    throw error;
-  }
-
-  return data;
-}
-
-
-// ============================================
-// LOGIN
-// ============================================
+/* =========================================================
+   LOGIN
+   ========================================================= */
 
 async function loginUser(email, password) {
-  const { data, error } =
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient.auth.signInWithPassword({
-      email,
-      password
+      email: email,
+      password: password
     });
 
+
   if (error) {
     throw error;
   }
 
-  return data;
-}
+
+  if (!data || !data.user) {
+
+    throw new Error(
+      "Sign in failed. User account could not be found."
+    );
+
+  }
 
 
-// ============================================
-// GET CURRENT USER
-// ============================================
+  const user =
+    data.user;
 
-async function getCurrentUser() {
+
+  /*
+   * Load the user's profile.
+   *
+   * profiles.id must match auth.users.id
+   */
+
   const {
-    data: { user },
-    error
-  } = await supabaseClient.auth.getUser();
+    data: profile,
+    error: profileError
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id, full_name, role, campus, session, student_id, photo_url"
+      )
+      .eq(
+        "id",
+        user.id
+      )
+      .single();
 
-  if (error) {
-    throw error;
+
+  if (profileError || !profile) {
+
+    await supabaseClient.auth.signOut();
+
+    console.error(
+      "Profile error:",
+      profileError
+    );
+
+    throw new Error(
+      "Your account exists, but your student profile was not found. Please contact the administrator."
+    );
+
   }
 
-  return user;
+
+  /*
+   * ADMIN
+   */
+
+  if (profile.role === "admin") {
+
+    window.location.href =
+      "admin-dashboard.html";
+
+    return;
+
+  }
+
+
+  /*
+   * STUDENT
+   */
+
+  if (profile.role === "student") {
+
+    window.location.href =
+      "student-dashboard.html";
+
+    return;
+
+  }
+
+
+  /*
+   * UNKNOWN ROLE
+   */
+
+  await supabaseClient.auth.signOut();
+
+  throw new Error(
+    "Your account role is not configured correctly."
+  );
+
 }
 
 
-// ============================================
-// GET PROFILE
-// ============================================
-
-async function getCurrentProfile() {
-
-  const user = await getCurrentUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    throw error;
-  }
-
-  return data;
-}
-
-
-// ============================================
-// LOGOUT
-// ============================================
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
 async function logoutUser() {
 
-  const { error } =
+  try {
+
     await supabaseClient.auth.signOut();
 
-  if (error) {
-    throw error;
+  } finally {
+
+    window.location.href =
+      "login.html";
+
   }
 
-  window.location.href = "login.html";
+}
+
+
+/* =========================================================
+   GET CURRENT USER
+   ========================================================= */
+
+async function getCurrentUser() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if (error) {
+
+    console.error(
+      "Get user error:",
+      error
+    );
+
+    return null;
+
+  }
+
+
+  return data.user || null;
+
+}
+
+
+/* =========================================================
+   GET CURRENT PROFILE
+   ========================================================= */
+
+async function getCurrentProfile() {
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return null;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+
+      .from("profiles")
+
+      .select("*")
+
+      .eq(
+        "id",
+        user.id
+      )
+
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Profile load error:",
+      error
+    );
+
+    return null;
+
+  }
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   REDIRECT LOGGED-IN USER
+   ========================================================= */
+
+async function redirectLoggedInUser() {
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return false;
+
+  }
+
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+
+      .from("profiles")
+
+      .select("role")
+
+      .eq(
+        "id",
+        user.id
+      )
+
+      .single();
+
+
+  if (error || !profile) {
+
+    console.error(
+      "Redirect profile error:",
+      error
+    );
+
+    return false;
+
+  }
+
+
+  if (profile.role === "admin") {
+
+    window.location.href =
+      "admin-dashboard.html";
+
+    return true;
+
+  }
+
+
+  if (profile.role === "student") {
+
+    window.location.href =
+      "student-dashboard.html";
+
+    return true;
+
+  }
+
+
+  return false;
+
 }
