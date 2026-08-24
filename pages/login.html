@@ -1,57 +1,733 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Login | StateCrafter DCU</title>
+
   <link rel="stylesheet" href="../style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
+
 <body>
+
 <header class="site-header">
+
   <div class="container nav-wrap">
+
     <a class="brand" href="../index.html">
-      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
-      <span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
+
+      <img
+        src="../assets/statecrafter-logo.png"
+        alt="StateCrafter DCU logo"
+      >
+
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+
     </a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+
+
+    <button
+      class="menu-toggle"
+      aria-label="Open navigation"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+
     <nav class="nav">
+
       <a href="../index.html">Home</a>
-      <a href="archive.html">Academic Archive</a>
-      <a href="research.html">Research &amp; Articles</a>
-      <a href="events.html">Events</a>
-      <a href="about.html">About</a>
-      <a class="nav-login" href="login.html">Login</a>
+
+      <a href="archive.html">
+        Academic Archive
+      </a>
+
+      <a href="research.html">
+        Research &amp; Articles
+      </a>
+
+      <a href="events.html">
+        Events
+      </a>
+
+      <a href="about.html">
+        About
+      </a>
+
+      <a
+        class="nav-login"
+        href="login.html"
+      >
+        Login
+      </a>
+
     </nav>
+
   </div>
+
 </header>
+
+
 <main>
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">STUDENT ACCESS</p>
-      <h1 style="font-size:clamp(40px,6vw,72px);line-height:1.02;color:var(--navy);margin:0 0 18px">Login</h1>
-      <p style="max-width:720px;color:var(--muted);font-size:17px">Student and admin authentication will be connected with Supabase in the next development phase.</p>
-      
-<div class="feature-card" style="max-width:520px;margin-top:42px">
-  <h3>Student / Admin Login</h3>
-  <p>This is the Phase 1 interface only. Supabase Authentication will be connected in Phase 3.</p>
-  <form onsubmit="event.preventDefault(); alert('Authentication will be connected after Supabase setup.');">
-    <label style="display:block;font-size:12px;font-weight:800;margin:18px 0 7px">Email</label>
-    <input type="email" placeholder="you@example.com" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:10px">
-    <label style="display:block;font-size:12px;font-weight:800;margin:18px 0 7px">Password</label>
-    <input type="password" placeholder="••••••••" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:10px">
-    <button class="btn btn-primary" style="margin-top:18px;width:100%">Continue</button>
-  </form>
-</div>
+
+<section class="section">
+
+<div class="container">
+
+
+  <p class="eyebrow">
+    STUDENT ACCESS
+  </p>
+
+
+  <h1
+    style="
+      font-size:clamp(40px,6vw,72px);
+      line-height:1.02;
+      color:var(--navy);
+      margin:0 0 18px
+    "
+  >
+    Account
+  </h1>
+
+
+  <p
+    style="
+      max-width:720px;
+      color:var(--muted);
+      font-size:17px
+    "
+  >
+    Login to your StateCrafter DCU account or create a
+    student account to contribute academic resources.
+  </p>
+
+
+  <div
+    class="feature-card"
+    style="
+      max-width:560px;
+      margin-top:42px
+    "
+  >
+
+
+    <!-- TABS -->
+
+    <div
+      style="
+        display:flex;
+        gap:10px;
+        margin-bottom:28px
+      "
+    >
+
+      <button
+        type="button"
+        id="loginTab"
+        class="btn btn-primary"
+        style="flex:1"
+      >
+        Login
+      </button>
+
+      <button
+        type="button"
+        id="registerTab"
+        class="btn"
+        style="flex:1"
+      >
+        Register
+      </button>
 
     </div>
-  </section>
-</main>
-<footer class="site-footer">
-  <div class="container footer-bottom" style="border-top:0;margin-top:0">
-    <span>© 2026 StateCrafter DCU</span>
-    <span>Political Science Department • Dhaka Central University</span>
+
+
+    <!-- ========================= -->
+    <!-- LOGIN FORM -->
+    <!-- ========================= -->
+
+    <form id="loginForm">
+
+      <h3>Student / Admin Login</h3>
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Email
+      </label>
+
+
+      <input
+        type="email"
+        id="loginEmail"
+        placeholder="you@example.com"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Password
+      </label>
+
+
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="••••••••"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="
+          margin-top:18px;
+          width:100%
+        "
+      >
+        Login
+      </button>
+
+
+      <p
+        id="loginMessage"
+        style="
+          margin-top:15px;
+          font-size:14px
+        "
+      ></p>
+
+    </form>
+
+
+
+    <!-- ========================= -->
+    <!-- REGISTER FORM -->
+    <!-- ========================= -->
+
+    <form
+      id="registerForm"
+      style="display:none"
+    >
+
+      <h3>Create Student Account</h3>
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Full Name
+      </label>
+
+
+      <input
+        type="text"
+        id="fullName"
+        placeholder="Your full name"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Email
+      </label>
+
+
+      <input
+        type="email"
+        id="registerEmail"
+        placeholder="you@example.com"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Session
+      </label>
+
+
+      <input
+        type="text"
+        id="session"
+        placeholder="2024-25"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Student ID
+        <span style="font-weight:400">
+          (Optional)
+        </span>
+      </label>
+
+
+      <input
+        type="text"
+        id="studentId"
+        placeholder="Student ID"
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Password
+      </label>
+
+
+      <input
+        type="password"
+        id="registerPassword"
+        placeholder="Minimum 6 characters"
+        minlength="6"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <label
+        style="
+          display:block;
+          font-size:12px;
+          font-weight:800;
+          margin:18px 0 7px
+        "
+      >
+        Confirm Password
+      </label>
+
+
+      <input
+        type="password"
+        id="confirmPassword"
+        placeholder="Repeat password"
+        minlength="6"
+        required
+        style="
+          width:100%;
+          padding:13px;
+          border:1px solid var(--line);
+          border-radius:10px
+        "
+      >
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="
+          margin-top:18px;
+          width:100%
+        "
+      >
+        Create Student Account
+      </button>
+
+
+      <p
+        id="registerMessage"
+        style="
+          margin-top:15px;
+          font-size:14px
+        "
+      ></p>
+
+    </form>
+
+
   </div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div
+    class="container footer-bottom"
+    style="
+      border-top:0;
+      margin-top:0
+    "
+  >
+
+    <span>
+      © 2026 StateCrafter DCU
+    </span>
+
+    <span>
+      Political Science Department •
+      Dhaka Central University
+    </span>
+
+  </div>
+
 </footer>
+
+
+<!-- Existing mobile navigation -->
 <script src="../app.js"></script>
+
+<!-- StateCrafter Authentication -->
+<script src="../auth.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const registerForm =
+    document.getElementById("registerForm");
+
+  const loginTab =
+    document.getElementById("loginTab");
+
+  const registerTab =
+    document.getElementById("registerTab");
+
+
+  // ==============================
+  // TAB SWITCHING
+  // ==============================
+
+  loginTab.addEventListener("click", () => {
+
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
+
+    loginTab.classList.add("btn-primary");
+    registerTab.classList.remove("btn-primary");
+
+  });
+
+
+  registerTab.addEventListener("click", () => {
+
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+
+    registerTab.classList.add("btn-primary");
+    loginTab.classList.remove("btn-primary");
+
+  });
+
+
+  // ==============================
+  // LOGIN
+  // ==============================
+
+  loginForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value;
+
+
+      const message =
+        document.getElementById(
+          "loginMessage"
+        );
+
+
+      message.textContent =
+        "Logging in...";
+
+
+      try {
+
+        await loginUser(
+          email,
+          password
+        );
+
+
+        const profile =
+          await getCurrentProfile();
+
+
+        if (!profile) {
+
+          throw new Error(
+            "Your account profile was not found."
+          );
+
+        }
+
+
+        message.textContent =
+          "Login successful.";
+
+
+        /*
+         * Dashboard pages will be added
+         * in the next phase.
+         *
+         * For now send user back home.
+         */
+
+        setTimeout(() => {
+
+          window.location.href =
+            "../index.html";
+
+        }, 700);
+
+
+      } catch (error) {
+
+        message.textContent =
+          error.message ||
+          "Login failed.";
+
+      }
+
+    }
+  );
+
+
+  // ==============================
+  // REGISTER
+  // ==============================
+
+  registerForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      const fullName =
+        document
+          .getElementById("fullName")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("registerEmail")
+          .value
+          .trim();
+
+
+      const session =
+        document
+          .getElementById("session")
+          .value
+          .trim();
+
+
+      const studentId =
+        document
+          .getElementById("studentId")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("registerPassword")
+          .value;
+
+
+      const confirmPassword =
+        document
+          .getElementById("confirmPassword")
+          .value;
+
+
+      const message =
+        document.getElementById(
+          "registerMessage"
+        );
+
+
+      if (
+        password !==
+        confirmPassword
+      ) {
+
+        message.textContent =
+          "Passwords do not match.";
+
+        return;
+
+      }
+
+
+      message.textContent =
+        "Creating account...";
+
+
+      try {
+
+        const data =
+          await registerStudent({
+            fullName,
+            email,
+            session,
+            studentId,
+            password
+          });
+
+
+        /*
+         * If email confirmation is enabled,
+         * Supabase will ask the student
+         * to verify their email.
+         */
+
+        if (
+          data.user &&
+          !data.session
+        ) {
+
+          message.textContent =
+            "Account created. Please check your email to verify your account.";
+
+        } else {
+
+          message.textContent =
+            "Account created successfully. You can now log in.";
+
+        }
+
+
+        registerForm.reset();
+
+
+      } catch (error) {
+
+        message.textContent =
+          error.message ||
+          "Registration failed.";
+
+      }
+
+    }
+  );
+
+});
+
+</script>
+
 </body>
 </html>
