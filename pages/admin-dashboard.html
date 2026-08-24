@@ -23,391 +23,508 @@
   <style>
 
     /* =====================================================
-       ADMIN DASHBOARD
+       ADMIN HERO
     ===================================================== */
 
-    .admin-page {
-      background: #f8f9fb;
-      min-height: calc(100vh - 82px);
-    }
-
-
     .admin-hero {
-      padding: 55px 0 35px;
-    }
 
+      background:
+        linear-gradient(
+          135deg,
+          #f7f5f0 0%,
+          #ffffff 55%,
+          #eef2f8 100%
+        );
 
-    .admin-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: #f6e9e9;
-      color: var(--red);
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: .12em;
+      border-bottom: 1px solid var(--line);
+
+      padding: 55px 0 48px;
+
     }
 
 
     .admin-hero h1 {
-      margin: 14px 0 7px;
-      color: var(--navy);
-      font-size: clamp(34px, 5vw, 54px);
-      letter-spacing: -.04em;
-      line-height: 1;
-    }
 
-
-    .admin-hero p {
       margin: 0;
-      color: var(--muted);
-      max-width: 700px;
-      font-size: 14px;
+
+      color: var(--navy);
+
+      font-size:
+        clamp(42px, 6vw, 68px);
+
+      line-height: .98;
+
+      letter-spacing: -.05em;
+
     }
+
+
+    .admin-hero p:not(.eyebrow) {
+
+      max-width: 650px;
+
+      margin: 18px 0 0;
+
+      color: var(--muted);
+
+      font-size: 15px;
+
+    }
+
 
 
     /* =====================================================
        STATS
     ===================================================== */
 
+    .admin-section {
+
+      padding: 55px 0 90px;
+
+    }
+
+
     .admin-stats {
+
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
       gap: 16px;
-      margin-bottom: 45px;
+
+      margin-bottom: 42px;
+
     }
 
 
     .admin-stat {
-      background: #fff;
+
+      padding: 23px;
+
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 25px;
-      box-shadow: 0 7px 25px rgba(18,43,82,.04);
+
+      border-radius: 18px;
+
+      background: #fff;
+
+      box-shadow:
+        0 7px 25px
+        rgba(18,43,82,.04);
+
     }
 
 
-    .admin-stat-label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
+    .admin-stat strong {
 
+      display: block;
 
-    .admin-stat-number {
       color: var(--navy);
-      font-size: 36px;
-      font-weight: 900;
+
+      font-size: 34px;
+
       line-height: 1;
+
     }
 
 
-    /* =====================================================
-       QUICK ACTIONS
-    ===================================================== */
+    .admin-stat span {
 
-    .admin-section {
-      margin-bottom: 55px;
-    }
-
-
-    .admin-section-heading {
-      margin-bottom: 20px;
-    }
-
-
-    .admin-section-heading .eyebrow {
-      margin-bottom: 7px;
-    }
-
-
-    .admin-section-heading h2 {
-      margin: 0;
-      color: var(--navy);
-      font-size: 30px;
-    }
-
-
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
-
-
-    .quick-action {
       display: block;
-      padding: 22px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      transition: .2s ease;
-    }
 
-
-    .quick-action:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-
-
-    .quick-action-icon {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 11px;
-      background: #f3f5f8;
-      color: var(--navy);
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-
-
-    .quick-action strong {
-      display: block;
-      color: var(--navy);
-      font-size: 15px;
-      margin-bottom: 5px;
-    }
-
-
-    .quick-action span {
       color: var(--muted);
+
       font-size: 12px;
+
+      margin-top: 8px;
+
+      font-weight: 700;
+
     }
 
 
+    .admin-stat.pending strong {
+
+      color: var(--red);
+
+    }
+
+
+
     /* =====================================================
-       SUBMISSIONS
+       TOOLBAR
     ===================================================== */
 
     .submission-toolbar {
+
       display: flex;
-      justify-content: space-between;
+
       align-items: center;
+
+      justify-content: space-between;
+
       gap: 15px;
+
       flex-wrap: wrap;
-      margin-bottom: 20px;
+
+      margin-bottom: 22px;
+
     }
 
 
-    .submission-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .submission-toolbar h2 {
 
+      margin: 0;
 
-    .filter-button {
-      border: 1px solid #d7dce4;
-      background: #fff;
       color: var(--navy);
-      padding: 9px 13px;
-      border-radius: 9px;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
+
+      font-size: 30px;
+
     }
 
 
-    .filter-button.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: #fff;
+    .toolbar-controls {
+
+      display: flex;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+
     }
 
 
-    .search-input {
-      min-height: 40px;
-      width: 250px;
-      border: 1px solid #d7dce4;
-      border-radius: 9px;
-      padding: 0 13px;
-      font: inherit;
-      font-size: 12px;
-      outline: none;
+    .toolbar-controls input,
+    .toolbar-controls select {
+
+      height: 43px;
+
+      border: 1px solid #d8dde5;
+
+      border-radius: 10px;
+
+      padding: 0 12px;
+
       background: #fff;
+
+      color: var(--ink);
+
+      font: inherit;
+
+      font-size: 12px;
+
+      outline: none;
+
     }
 
 
-    .search-input:focus {
+    .toolbar-controls input {
+
+      min-width: 230px;
+
+    }
+
+
+    .toolbar-controls input:focus,
+    .toolbar-controls select:focus {
+
       border-color: var(--navy);
+
     }
 
+
+
+    /* =====================================================
+       SUBMISSION LIST
+    ===================================================== */
 
     .submission-list {
+
       display: grid;
+
       gap: 16px;
+
     }
 
 
     .submission-card {
-      background: #fff;
+
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: 0 7px 25px rgba(18,43,82,.035);
+
+      border-radius: 19px;
+
+      background: #fff;
+
+      padding: 23px;
+
+      box-shadow:
+        0 7px 25px
+        rgba(18,43,82,.04);
+
     }
 
 
     .submission-top {
+
       display: flex;
+
       justify-content: space-between;
-      gap: 20px;
+
       align-items: flex-start;
+
+      gap: 20px;
+
+    }
+
+
+    .submission-type {
+
+      color: var(--red);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: .12em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 5px;
+
     }
 
 
     .submission-title {
-      margin: 0 0 8px;
+
+      margin: 0;
+
       color: var(--navy);
-      font-size: 19px;
-    }
 
+      font-size: 21px;
 
-    .submission-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px 18px;
-      color: var(--muted);
-      font-size: 11px;
-    }
+      line-height: 1.25;
 
-
-    .submission-meta strong {
-      color: var(--ink);
     }
 
 
     .status-badge {
+
       display: inline-flex;
+
       align-items: center;
-      white-space: nowrap;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 9px;
+
+      justify-content: center;
+
+      min-height: 29px;
+
+      padding: 0 11px;
+
+      border-radius: 30px;
+
+      font-size: 10px;
+
       font-weight: 900;
-      letter-spacing: .08em;
+
       text-transform: uppercase;
+
+      letter-spacing: .06em;
+
+      white-space: nowrap;
+
     }
 
 
     .status-pending {
-      background: #fff4d8;
-      color: #8a6200;
+
+      background: #fff5df;
+
+      color: #8a5a00;
+
     }
 
 
     .status-approved {
-      background: #e8f6ec;
-      color: #236b36;
+
+      background: #edf8ef;
+
+      color: #27703a;
+
     }
 
 
     .status-rejected {
-      background: #f8e7e7;
+
+      background: #fceeee;
+
       color: var(--red);
+
     }
 
-
-    .submission-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-    }
-
-
-    .reject-box {
-      display: none;
-      margin-top: 14px;
-      padding: 17px;
-      border-radius: 13px;
-      background: #faf7f7;
-      border: 1px solid #ead7d7;
-    }
-
-
-    .reject-box textarea {
-      width: 100%;
-      min-height: 90px;
-      resize: vertical;
-      border: 1px solid #d7dce4;
-      border-radius: 9px;
-      padding: 11px;
-      font: inherit;
-      font-size: 13px;
-      margin-bottom: 10px;
-      outline: none;
-    }
-
-
-    .reject-box textarea:focus {
-      border-color: var(--red);
-    }
-
-
-    .reject-reason-display {
-      margin-top: 15px;
-      padding: 14px;
-      border-radius: 10px;
-      background: #faf5f5;
-      border-left: 3px solid var(--red);
-      color: var(--muted);
-      font-size: 12px;
-    }
 
 
     /* =====================================================
-       STUDENTS
+       META
     ===================================================== */
 
-    .student-list {
+    .submission-meta {
+
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 12px;
+
+      margin-top: 19px;
+
+      padding-top: 17px;
+
+      border-top: 1px solid #e8ebef;
+
     }
 
 
-    .student-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 20px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
+    .meta-item span {
 
+      display: block;
 
-    .student-avatar {
-      width: 58px;
-      height: 58px;
-      flex: 0 0 58px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #eef1f5;
-      background: #f4f6f8;
-    }
-
-
-    .student-card h3 {
-      margin: 0 0 4px;
-      color: var(--navy);
-      font-size: 15px;
-    }
-
-
-    .student-card p {
-      margin: 2px 0;
       color: var(--muted);
-      font-size: 11px;
+
+      font-size: 10px;
+
+      margin-bottom: 3px;
+
     }
+
+
+    .meta-item strong {
+
+      display: block;
+
+      color: var(--ink);
+
+      font-size: 12px;
+
+      word-break: break-word;
+
+    }
+
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .submission-description {
+
+      margin: 17px 0 0;
+
+      padding: 14px;
+
+      background: #f7f8fa;
+
+      border-radius: 12px;
+
+      color: #596577;
+
+      font-size: 12px;
+
+      line-height: 1.65;
+
+    }
+
+
+
+    /* =====================================================
+       REJECTION
+    ===================================================== */
+
+    .rejection-box {
+
+      margin-top: 13px;
+
+      padding: 13px 15px;
+
+      background: #fdf1f1;
+
+      border-left: 3px solid var(--red);
+
+      border-radius: 0 10px 10px 0;
+
+      color: #71343a;
+
+      font-size: 12px;
+
+    }
+
+
+    .rejection-box strong {
+
+      display: block;
+
+      margin-bottom: 3px;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .06em;
+
+    }
+
+
+
+    /* =====================================================
+       ACTIONS
+    ===================================================== */
+
+    .submission-actions {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+
+      margin-top: 19px;
+
+    }
+
+
+    .submission-actions .btn {
+
+      min-height: 40px;
+
+      font-size: 11px;
+
+      cursor: pointer;
+
+    }
+
+
+    .btn-approve {
+
+      background: #286c3a;
+
+      color: #fff;
+
+      border-color: #286c3a;
+
+    }
+
+
+    .btn-reject {
+
+      background: #fff;
+
+      color: var(--red);
+
+      border-color: #dcaeb1;
+
+    }
+
 
 
     /* =====================================================
@@ -415,104 +532,267 @@
     ===================================================== */
 
     .empty-state {
+
       text-align: center;
+
+      border: 1px dashed #ccd2da;
+
+      border-radius: 18px;
+
       padding: 55px 25px;
-      border: 1px dashed #ccd3dc;
-      border-radius: var(--radius);
-      background: #fff;
+
       color: var(--muted);
+
     }
 
 
     .empty-state strong {
+
+      display: block;
+
       color: var(--navy);
+
+      font-size: 20px;
+
+      margin-bottom: 5px;
+
     }
 
 
-    .loading {
+    .loading-state {
+
+      text-align: center;
+
+      padding: 45px;
+
       color: var(--muted);
-      padding: 25px 0;
+
       font-size: 13px;
+
     }
+
+
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    .modal-overlay {
+
+      display: none;
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 100;
+
+      background:
+        rgba(10,25,47,.55);
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+    }
+
+
+    .modal-overlay.open {
+
+      display: flex;
+
+    }
+
+
+    .modal {
+
+      width: min(520px, 100%);
+
+      background: #fff;
+
+      border-radius: 20px;
+
+      padding: 27px;
+
+      box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.2);
+
+    }
+
+
+    .modal h3 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 24px;
+
+    }
+
+
+    .modal p {
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin: 8px 0 18px;
+
+    }
+
+
+    .modal textarea {
+
+      width: 100%;
+
+      min-height: 125px;
+
+      resize: vertical;
+
+      border: 1px solid #d8dde5;
+
+      border-radius: 11px;
+
+      padding: 12px;
+
+      font: inherit;
+
+      font-size: 13px;
+
+      outline: none;
+
+    }
+
+
+    .modal textarea:focus {
+
+      border-color: var(--navy);
+
+    }
+
+
+    .modal-actions {
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 9px;
+
+      margin-top: 16px;
+
+    }
+
 
 
     /* =====================================================
        RESPONSIVE
     ===================================================== */
 
-    @media(max-width:950px) {
+    @media(max-width: 900px) {
 
       .admin-stats {
-        grid-template-columns: repeat(2, 1fr);
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
       }
 
 
-      .quick-actions {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .submission-meta {
 
+        grid-template-columns:
+          repeat(2, 1fr);
 
-      .student-list {
-        grid-template-columns: repeat(2, 1fr);
       }
 
     }
 
 
-    @media(max-width:650px) {
+    @media(max-width: 600px) {
 
-      .admin-hero {
-        padding-top: 40px;
+      .admin-section {
+
+        padding: 40px 0 65px;
+
       }
 
 
       .admin-stats {
-        grid-template-columns: repeat(2, 1fr);
+
+        grid-template-columns: 1fr 1fr;
+
         gap: 10px;
+
       }
 
 
       .admin-stat {
+
+        padding: 17px;
+
+      }
+
+
+      .admin-stat strong {
+
+        font-size: 28px;
+
+      }
+
+
+      .submission-card {
+
         padding: 18px;
-      }
 
-
-      .admin-stat-number {
-        font-size: 29px;
-      }
-
-
-      .quick-actions {
-        grid-template-columns: 1fr 1fr;
-      }
-
-
-      .student-list {
-        grid-template-columns: 1fr;
       }
 
 
       .submission-top {
+
         display: block;
+
       }
 
 
       .submission-top .status-badge {
-        margin-top: 12px;
+
+        margin-top: 10px;
+
       }
 
 
-      .search-input {
+      .submission-meta {
+
+        grid-template-columns: 1fr 1fr;
+
+      }
+
+
+      .toolbar-controls {
+
         width: 100%;
+
       }
 
-    }
+
+      .toolbar-controls input {
+
+        width: 100%;
+
+        min-width: 0;
+
+      }
 
 
-    @media(max-width:430px) {
+      .toolbar-controls select {
 
-      .quick-actions {
-        grid-template-columns: 1fr;
+        flex: 1;
+
       }
 
     }
@@ -528,11 +808,12 @@
 
 <!-- =====================================================
      HEADER
-===================================================== -->
+====================================================== -->
 
 <header class="site-header">
 
   <div class="container nav-wrap">
+
 
     <a
       class="brand"
@@ -551,7 +832,7 @@
         </strong>
 
         <small>
-          Political Science Department
+          Admin Panel
         </small>
 
       </span>
@@ -569,27 +850,30 @@
         Academic Archive
       </a>
 
-      <a href="research.html">
-        Research &amp; Articles
-      </a>
-
-      <a href="events.html">
-        Events
-      </a>
-
-      <a href="about.html">
-        About
+      <a
+        href="student-dashboard.html"
+      >
+        Student Dashboard
       </a>
 
       <button
         id="logoutButton"
-        class="btn"
+        class="btn nav-login"
         type="button"
       >
         Logout
       </button>
 
     </nav>
+
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
   </div>
 
@@ -598,424 +882,274 @@
 
 
 <!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main class="admin-page">
-
+     HERO
+====================================================== -->
 
 <section class="admin-hero">
 
-<div class="container">
+  <div class="container">
 
+    <p class="eyebrow">
+      STATECRAFTER ADMINISTRATION
+    </p>
 
-  <span class="admin-badge">
-    ADMINISTRATION
-  </span>
+    <h1>
+      Admin Dashboard
+    </h1>
 
+    <p>
+      Review student contributions, manage submissions,
+      and publish approved academic resources to the
+      StateCrafter Academic Archive.
+    </p>
 
-  <h1>
-    Admin Dashboard
-  </h1>
-
-
-  <p>
-    Manage student contributions, review academic
-    submissions and monitor the StateCrafter DCU
-    academic community.
-  </p>
-
-
-</div>
+  </div>
 
 </section>
 
 
 
-<div class="container">
-
-
-
 <!-- =====================================================
-     OVERVIEW
-===================================================== -->
+     MAIN
+====================================================== -->
+
+<main>
 
 <section class="admin-section">
 
+<div class="container">
 
-  <div class="admin-section-heading">
 
-    <p class="eyebrow">
-      OVERVIEW
-    </p>
-
-    <h2>
-      Dashboard Overview
-    </h2>
-
-  </div>
-
+  <!-- ===================================================
+       STATS
+  ==================================================== -->
 
   <div class="admin-stats">
 
 
-    <div class="admin-stat">
+    <div class="admin-stat pending">
 
-      <div class="admin-stat-label">
-        Total Students
-      </div>
-
-      <div
-        class="admin-stat-number"
-        id="studentCount"
-      >
+      <strong id="pendingCount">
         0
-      </div>
+      </strong>
 
-    </div>
-
-
-    <div class="admin-stat">
-
-      <div class="admin-stat-label">
-        Total Submissions
-      </div>
-
-      <div
-        class="admin-stat-number"
-        id="totalCount"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="admin-stat">
-
-      <div class="admin-stat-label">
+      <span>
         Pending Review
-      </div>
-
-      <div
-        class="admin-stat-number"
-        id="pendingCount"
-      >
-        0
-      </div>
+      </span>
 
     </div>
 
 
     <div class="admin-stat">
 
-      <div class="admin-stat-label">
-        Approved
-      </div>
-
-      <div
-        class="admin-stat-number"
-        id="approvedCount"
-      >
+      <strong id="approvedCount">
         0
-      </div>
+      </strong>
+
+      <span>
+        Approved
+      </span>
+
+    </div>
+
+
+    <div class="admin-stat">
+
+      <strong id="rejectedCount">
+        0
+      </strong>
+
+      <span>
+        Rejected
+      </span>
+
+    </div>
+
+
+    <div class="admin-stat">
+
+      <strong id="totalCount">
+        0
+      </strong>
+
+      <span>
+        Total Submissions
+      </span>
 
     </div>
 
 
   </div>
 
-</section>
 
 
-
-<!-- =====================================================
-     QUICK ACTIONS
-===================================================== -->
-
-<section class="admin-section">
-
-
-  <div class="admin-section-heading">
-
-    <p class="eyebrow">
-      CONTROL PANEL
-    </p>
-
-    <h2>
-      Quick Actions
-    </h2>
-
-  </div>
-
-
-  <div class="quick-actions">
-
-
-    <a
-      href="#pendingSection"
-      class="quick-action"
-    >
-
-      <div class="quick-action-icon">
-        P
-      </div>
-
-      <strong>
-        Pending Submissions
-      </strong>
-
-      <span>
-        Review student submissions awaiting approval.
-      </span>
-
-    </a>
-
-
-    <a
-      href="#allSection"
-      class="quick-action"
-    >
-
-      <div class="quick-action-icon">
-        A
-      </div>
-
-      <strong>
-        All Submissions
-      </strong>
-
-      <span>
-        Browse approved, rejected and pending submissions.
-      </span>
-
-    </a>
-
-
-    <a
-      href="#studentsSection"
-      class="quick-action"
-    >
-
-      <div class="quick-action-icon">
-        S
-      </div>
-
-      <strong>
-        Students
-      </strong>
-
-      <span>
-        View registered Political Science students.
-      </span>
-
-    </a>
-
-
-    <a
-      href="archive.html"
-      class="quick-action"
-    >
-
-      <div class="quick-action-icon">
-        A
-      </div>
-
-      <strong>
-        Academic Archive
-      </strong>
-
-      <span>
-        Open Notes, Questions and academic resources.
-      </span>
-
-    </a>
-
-
-  </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     PENDING SUBMISSIONS
-===================================================== -->
-
-<section
-  class="admin-section"
-  id="pendingSection"
->
-
-
-  <div class="admin-section-heading">
-
-    <p class="eyebrow">
-      REVIEW QUEUE
-    </p>
-
-    <h2>
-      Pending Submissions
-    </h2>
-
-  </div>
-
-
-  <div
-    id="pendingList"
-    class="submission-list"
-  >
-
-    <p class="loading">
-      Loading pending submissions...
-    </p>
-
-  </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     ALL SUBMISSIONS
-===================================================== -->
-
-<section
-  class="admin-section"
-  id="allSection"
->
-
-
-  <div class="admin-section-heading">
-
-    <p class="eyebrow">
-      SUBMISSION MANAGEMENT
-    </p>
-
-    <h2>
-      All Submissions
-    </h2>
-
-  </div>
-
+  <!-- ===================================================
+       SUBMISSION HEADER
+  ==================================================== -->
 
   <div class="submission-toolbar">
 
 
-    <div class="submission-filters">
+    <div>
 
-      <button
-        class="filter-button active"
-        data-filter="all"
-        type="button"
-      >
-        All
-      </button>
+      <p class="eyebrow">
+        SUBMISSIONS
+      </p>
 
-      <button
-        class="filter-button"
-        data-filter="pending"
-        type="button"
-      >
-        Pending
-      </button>
-
-      <button
-        class="filter-button"
-        data-filter="approved"
-        type="button"
-      >
-        Approved
-      </button>
-
-      <button
-        class="filter-button"
-        data-filter="rejected"
-        type="button"
-      >
-        Rejected
-      </button>
+      <h2>
+        Student Contributions
+      </h2>
 
     </div>
 
 
-    <input
-      id="searchInput"
-      class="search-input"
-      type="search"
-      placeholder="Search submissions..."
-    >
+    <div class="toolbar-controls">
 
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search title, student or ID..."
+      >
+
+
+      <select id="statusFilter">
+
+        <option value="pending">
+          Pending
+        </option>
+
+        <option value="approved">
+          Approved
+        </option>
+
+        <option value="rejected">
+          Rejected
+        </option>
+
+        <option value="all">
+          All
+        </option>
+
+      </select>
+
+
+      <select id="typeFilter">
+
+        <option value="all">
+          All Types
+        </option>
+
+        <option value="note">
+          Notes
+        </option>
+
+        <option value="question">
+          Questions
+        </option>
+
+        <option value="suggestion">
+          Suggestions
+        </option>
+
+        <option value="article">
+          Articles
+        </option>
+
+      </select>
+
+
+    </div>
 
   </div>
 
 
+
+  <!-- ===================================================
+       LIST
+  ==================================================== -->
+
   <div
-    id="allList"
+    id="submissionList"
     class="submission-list"
   >
 
-    <p class="loading">
+    <div class="loading-state">
       Loading submissions...
-    </p>
+    </div>
 
   </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     STUDENTS
-===================================================== -->
-
-<section
-  class="admin-section"
-  id="studentsSection"
->
-
-
-  <div class="admin-section-heading">
-
-    <p class="eyebrow">
-      COMMUNITY
-    </p>
-
-    <h2>
-      Registered Students
-    </h2>
-
-  </div>
-
-
-  <div
-    id="studentList"
-    class="student-list"
-  >
-
-    <p class="loading">
-      Loading students...
-    </p>
-
-  </div>
-
-
-</section>
-
 
 
 </div>
 
+</section>
 
 </main>
 
 
 
 <!-- =====================================================
+     REJECT MODAL
+====================================================== -->
+
+<div
+  id="rejectModal"
+  class="modal-overlay"
+>
+
+  <div class="modal">
+
+    <p class="eyebrow">
+      REJECT SUBMISSION
+    </p>
+
+    <h3>
+      Why is this submission being rejected?
+    </h3>
+
+    <p>
+      The rejection reason will be visible to the student
+      in their Student Dashboard.
+    </p>
+
+
+    <textarea
+      id="rejectionReason"
+      maxlength="1000"
+      placeholder="Enter a clear reason for rejection..."
+    ></textarea>
+
+
+    <div class="modal-actions">
+
+      <button
+        id="cancelReject"
+        type="button"
+        class="btn btn-outline"
+      >
+        Cancel
+      </button>
+
+      <button
+        id="confirmReject"
+        type="button"
+        class="btn btn-reject"
+      >
+        Reject Submission
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
      FOOTER
-===================================================== -->
+====================================================== -->
 
 <footer class="site-footer">
 
@@ -1037,154 +1171,421 @@
 
 <script>
 
-
-/* =====================================================
+/* =========================================================
    SUPABASE
-===================================================== */
+========================================================= */
+
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
 
 const supabaseClient =
   window.supabase.createClient(
-    "https://psqwnvgruyfgdoukvpid.supabase.co",
-    "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"
+    SUPABASE_URL,
+    SUPABASE_KEY
   );
 
 
 
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+
+let currentAdminProfile = null;
+
 let allSubmissions = [];
 
-let currentFilter = "all";
+let rejectingSubmissionId = null;
 
 
 
-/* =====================================================
-   AUTH + ADMIN CHECK
-===================================================== */
+/* =========================================================
+   DOM
+========================================================= */
 
-async function checkAdmin() {
-
-  const {
-    data: { user },
-    error
-  } = await supabaseClient.auth.getUser();
+const submissionList =
+  document.getElementById(
+    "submissionList"
+  );
 
 
-  if (error || !user) {
-
-    window.location.href =
-      "login.html";
-
-    return null;
-
-  }
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
 
 
-  const {
-    data: profile,
-    error: profileError
-  } = await supabaseClient
-    .from("profiles")
-    .select("id, role, full_name")
-    .eq("id", user.id)
-    .single();
+const statusFilter =
+  document.getElementById(
+    "statusFilter"
+  );
 
 
-  if (
-    profileError ||
-    !profile ||
-    profile.role !== "admin"
-  ) {
-
-    alert(
-      "Admin access required."
-    );
-
-    window.location.href =
-      "student-dashboard.html";
-
-    return null;
-
-  }
+const typeFilter =
+  document.getElementById(
+    "typeFilter"
+  );
 
 
-  return user;
+const rejectModal =
+  document.getElementById(
+    "rejectModal"
+  );
+
+
+const rejectionReason =
+  document.getElementById(
+    "rejectionReason"
+  );
+
+
+
+/* =========================================================
+   FORMAT TYPE
+========================================================= */
+
+function formatType(
+  type
+) {
+
+  const types = {
+
+    note:
+      "Academic Note",
+
+    question:
+      "Previous Question",
+
+    suggestion:
+      "Suggestion",
+
+    article:
+      "Article"
+
+  };
+
+
+  return (
+    types[type] ||
+    type ||
+    "Resource"
+  );
 
 }
 
 
 
-/* =====================================================
-   LOAD OVERVIEW
-===================================================== */
+/* =========================================================
+   FORMAT DATE
+========================================================= */
 
-async function loadOverview() {
+function formatDate(
+  value
+) {
 
+  if (!value) {
 
-  const {
-    data: students,
-    error: studentsError
-  } = await supabaseClient
-    .from("profiles")
-    .select("id")
-    .eq("role", "student");
-
-
-  if (!studentsError) {
-
-    document.getElementById(
-      "studentCount"
-    ).textContent =
-      students?.length || 0;
+    return "—";
 
   }
 
 
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  ).format(
+    new Date(value)
+  );
+
+}
+
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+
+/* =========================================================
+   LOAD ADMIN
+========================================================= */
+
+async function loadAdmin() {
+
+  try {
+
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if (
+      userError ||
+      !user
+    ) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    currentUser =
+      user;
+
+
+    const {
+      data: profile,
+      error: profileError
+    } =
+      await supabaseClient
+
+        .from("profiles")
+
+        .select(
+          "id, full_name, role"
+        )
+
+        .eq(
+          "id",
+          user.id
+        )
+
+        .single();
+
+
+    if (
+      profileError ||
+      !profile
+    ) {
+
+      alert(
+        "Admin profile could not be loaded."
+      );
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+      SECURITY CHECK
+
+      This page is only for admins.
+    */
+
+    if (
+      profile.role !== "admin"
+    ) {
+
+      window.location.href =
+        "student-dashboard.html";
+
+      return;
+
+    }
+
+
+    currentAdminProfile =
+      profile;
+
+
+    await loadSubmissions();
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    submissionList.innerHTML = `
+
+      <div class="empty-state">
+
+        <strong>
+          Unable to load dashboard
+        </strong>
+
+        Please refresh the page and try again.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+
+/* =========================================================
+   LOAD SUBMISSIONS
+========================================================= */
+
+async function loadSubmissions() {
+
+  submissionList.innerHTML = `
+
+    <div class="loading-state">
+      Loading submissions...
+    </div>
+
+  `;
+
 
   const {
-    data: submissions,
+    data,
     error
-  } = await supabaseClient
-    .from("submissions")
-    .select("status");
+  } =
+    await supabaseClient
+
+      .from("submissions")
+
+      .select("*")
+
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
+
+    submissionList.innerHTML = `
+
+      <div class="empty-state">
+
+        <strong>
+          Could not load submissions
+        </strong>
+
+        <span>
+          ${escapeHtml(error.message)}
+        </span>
+
+      </div>
+
+    `;
 
     return;
 
   }
 
 
-  const total =
-    submissions.length;
+  allSubmissions =
+    data || [];
 
+
+  updateStats();
+
+  renderSubmissions();
+
+}
+
+
+
+/* =========================================================
+   UPDATE STATS
+========================================================= */
+
+function updateStats() {
 
   const pending =
-    submissions.filter(
+    allSubmissions.filter(
       item =>
         item.status === "pending"
     ).length;
 
 
   const approved =
-    submissions.filter(
+    allSubmissions.filter(
       item =>
         item.status === "approved"
     ).length;
 
 
   const rejected =
-    submissions.filter(
+    allSubmissions.filter(
       item =>
         item.status === "rejected"
     ).length;
-
-
-  document.getElementById(
-    "totalCount"
-  ).textContent =
-    total;
 
 
   document.getElementById(
@@ -1199,285 +1600,89 @@ async function loadOverview() {
     approved;
 
 
-  /* Rejected is kept available
-     internally for future statistics. */
+  document.getElementById(
+    "rejectedCount"
+  ).textContent =
+    rejected;
+
+
+  document.getElementById(
+    "totalCount"
+  ).textContent =
+    allSubmissions.length;
 
 }
 
 
 
-/* =====================================================
-   LOAD SUBMISSIONS
-===================================================== */
+/* =========================================================
+   FILTER
+========================================================= */
 
-async function loadSubmissions() {
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("submissions")
-    .select("*")
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    );
-
-
-  if (error) {
-
-    console.error(error);
-
-    showSubmissionError(
-      "Could not load submissions.",
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  allSubmissions =
-    data || [];
-
-
-  await enrichSubmissions();
-
-}
-
-
-
-/* =====================================================
-   ADD PROFILE INFORMATION
-===================================================== */
-
-async function enrichSubmissions() {
-
-
-  const userIds =
-    [
-      ...new Set(
-        allSubmissions
-          .map(item => item.user_id)
-          .filter(Boolean)
-      )
-    ];
-
-
-  if (!userIds.length) {
-
-    renderSubmissions();
-
-    return;
-
-  }
-
-
-  const {
-    data: profiles,
-    error
-  } = await supabaseClient
-    .from("profiles")
-    .select(
-      "id, full_name, campus, session, student_id, photo_url"
-    )
-    .in(
-      "id",
-      userIds
-    );
-
-
-  if (error) {
-
-    console.error(error);
-
-    renderSubmissions();
-
-    return;
-
-  }
-
-
-  const profileMap =
-    Object.fromEntries(
-      (profiles || []).map(
-        profile => [
-          profile.id,
-          profile
-        ]
-      )
-    );
-
-
-  allSubmissions =
-    allSubmissions.map(
-      submission => ({
-        ...submission,
-        profile:
-          profileMap[
-            submission.user_id
-          ] || {}
-      })
-    );
-
-
-  renderSubmissions();
-
-}
-
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderSubmissions() {
-
-
-  const pending =
-    allSubmissions.filter(
-      item =>
-        item.status === "pending"
-    );
-
-
-  renderList(
-    document.getElementById(
-      "pendingList"
-    ),
-    pending,
-    true
-  );
-
+function getFilteredSubmissions() {
 
   const search =
-    document.getElementById(
-      "searchInput"
-    ).value
+    searchInput.value
       .trim()
       .toLowerCase();
 
 
-  let filtered =
-    [...allSubmissions];
+  const selectedStatus =
+    statusFilter.value;
 
 
-  if (
-    currentFilter !== "all"
-  ) {
-
-    filtered =
-      filtered.filter(
-        item =>
-          item.status ===
-          currentFilter
-      );
-
-  }
+  const selectedType =
+    typeFilter.value;
 
 
-  if (search) {
-
-    filtered =
-      filtered.filter(
-        item => {
-
-          const profile =
-            item.profile || {};
+  return allSubmissions.filter(
+    item => {
 
 
-          const text =
-            [
-              item.title,
-              item.type,
-              profile.full_name,
-              profile.campus,
-              profile.session,
-              profile.student_id
-            ]
-              .join(" ")
-              .toLowerCase();
+      const matchesStatus =
+        selectedStatus === "all" ||
+        item.status === selectedStatus;
 
 
-          return text.includes(
-            search
-          );
-
-        }
-      );
-
-  }
+      const matchesType =
+        selectedType === "all" ||
+        item.resource_type === selectedType;
 
 
-  renderList(
-    document.getElementById(
-      "allList"
-    ),
-    filtered,
-    false
-  );
+      const searchable = [
 
-}
+        item.title,
 
+        item.full_name,
 
+        item.student_id,
 
-/* =====================================================
-   RENDER SUBMISSION CARDS
-===================================================== */
+        item.session,
 
-function renderList(
-  container,
-  submissions,
-  pendingOnly
-) {
+        item.submitter_campus,
 
+        item.target_campus,
 
-  if (
-    !submissions ||
-    submissions.length === 0
-  ) {
+        item.course
 
-    container.innerHTML = `
-      <div class="empty-state">
+      ]
 
-        <strong>
-          ${
-            pendingOnly
-              ? "No pending submissions"
-              : "No submissions found"
-          }
-        </strong>
+        .filter(Boolean)
 
-        <p>
-          ${
-            pendingOnly
-              ? "Everything is up to date."
-              : "Try another filter or search."
-          }
-        </p>
+        .join(" ")
 
-      </div>
-    `;
-
-    return;
-
-  }
+        .toLowerCase();
 
 
-  container.innerHTML = "";
+      const matchesSearch =
+        !search ||
+        searchable.includes(search);
 
 
-  submissions.forEach(
-    submission => {
-
-      container.appendChild(
-        createSubmissionCard(
-          submission
-        )
+      return (
+        matchesStatus &&
+        matchesType &&
+        matchesSearch
       );
 
     }
@@ -1487,794 +1692,798 @@ function renderList(
 
 
 
-/* =====================================================
-   SUBMISSION CARD
-===================================================== */
+/* =========================================================
+   RENDER
+========================================================= */
 
-function createSubmissionCard(
-  submission
-) {
+function renderSubmissions() {
 
-
-  const profile =
-    submission.profile || {};
+  const submissions =
+    getFilteredSubmissions();
 
 
-  const name =
-    profile.full_name ||
-    "Unknown Student";
+  if (
+    submissions.length === 0
+  ) {
 
+    submissionList.innerHTML = `
 
-  const campus =
-    profile.campus ||
-    "Not specified";
+      <div class="empty-state">
 
+        <strong>
+          No submissions found
+        </strong>
 
-  const session =
-    profile.session ||
-    "Not specified";
-
-
-  const studentId =
-    profile.student_id ||
-    "Not specified";
-
-
-  const title =
-    submission.title ||
-    "Untitled Submission";
-
-
-  const type =
-    submission.type ||
-    "Submission";
-
-
-  const status =
-    submission.status ||
-    "pending";
-
-
-  const created =
-    submission.created_at
-      ? new Date(
-          submission.created_at
-        ).toLocaleDateString(
-          "en-GB",
-          {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-          }
-        )
-      : "Unknown";
-
-
-  const driveLink =
-    submission.drive_link ||
-    submission.google_drive_link ||
-    submission.file_url ||
-    "";
-
-
-  const card =
-    document.createElement(
-      "article"
-    );
-
-
-  card.className =
-    "submission-card";
-
-
-  card.innerHTML = `
-
-    <div class="submission-top">
-
-      <div>
-
-        <h3 class="submission-title">
-          ${escapeHtml(title)}
-        </h3>
-
-        <div class="submission-meta">
-
-          <span>
-            Type:
-            <strong>
-              ${escapeHtml(type)}
-            </strong>
-          </span>
-
-          <span>
-            Student:
-            <strong>
-              ${escapeHtml(name)}
-            </strong>
-          </span>
-
-          <span>
-            Campus:
-            <strong>
-              ${escapeHtml(campus)}
-            </strong>
-          </span>
-
-          <span>
-            Session:
-            <strong>
-              ${escapeHtml(session)}
-            </strong>
-          </span>
-
-          <span>
-            Student ID:
-            <strong>
-              ${escapeHtml(studentId)}
-            </strong>
-          </span>
-
-          <span>
-            Submitted:
-            <strong>
-              ${created}
-            </strong>
-          </span>
-
-        </div>
+        There are no submissions matching
+        the current filter.
 
       </div>
 
+    `;
 
-      <span
-        class="status-badge status-${escapeHtml(status)}"
-      >
-        ${escapeHtml(status)}
-      </span>
+    return;
 
-    </div>
+  }
 
+
+  submissionList.innerHTML =
+    submissions
+      .map(
+        renderSubmissionCard
+      )
+      .join("");
+
+}
+
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+function renderSubmissionCard(
+  item
+) {
+
+  const status =
+    item.status || "pending";
+
+
+  const statusClass =
+    `status-${status}`;
+
+
+  const rejection =
+    item.rejection_reason
+      ? `
+
+        <div class="rejection-box">
+
+          <strong>
+            Rejection Reason
+          </strong>
+
+          ${escapeHtml(
+            item.rejection_reason
+          )}
+
+        </div>
+
+      `
+      : "";
+
+
+  const actions = `
 
     <div class="submission-actions">
 
-      ${
-        driveLink
-          ? `
-            <a
-              href="${escapeAttribute(driveLink)}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-secondary"
-            >
-              View Drive File
-            </a>
-          `
-          : `
-            <span
-              style="
-                color:var(--muted);
-                font-size:12px;
-                align-self:center;
-              "
-            >
-              No Drive link
-            </span>
-          `
-      }
+
+      <a
+        href="${escapeHtml(
+          item.drive_link
+        )}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-outline"
+      >
+        View Resource
+      </a>
 
 
       ${
         status === "pending"
           ? `
+
             <button
-              class="btn btn-primary approve-button"
               type="button"
+              class="btn btn-approve"
+              data-action="approve"
+              data-id="${item.id}"
             >
               Approve
             </button>
 
+
             <button
-              class="btn btn-outline reject-button"
               type="button"
+              class="btn btn-reject"
+              data-action="reject"
+              data-id="${item.id}"
             >
               Reject
             </button>
+
           `
           : ""
       }
 
     </div>
 
-
-    ${
-      submission.reject_reason
-        ? `
-          <div class="reject-reason-display">
-
-            <strong>
-              Rejection reason:
-            </strong>
-
-            <br>
-
-            ${escapeHtml(
-              submission.reject_reason
-            )}
-
-          </div>
-        `
-        : ""
-    }
-
-
-    ${
-      status === "pending"
-        ? `
-          <div
-            class="reject-box"
-          >
-
-            <textarea
-              placeholder="Write the reason for rejecting this submission..."
-            ></textarea>
-
-            <button
-              class="btn btn-primary confirm-reject"
-              type="button"
-            >
-              Confirm Rejection
-            </button>
-
-          </div>
-        `
-        : ""
-    }
-
   `;
 
 
-  /* ===================================================
-     APPROVE
-  =================================================== */
+  return `
 
-  const approve =
-    card.querySelector(
-      ".approve-button"
-    );
+    <article
+      class="submission-card"
+    >
 
 
-  if (approve) {
+      <div class="submission-top">
 
-    approve.addEventListener(
-      "click",
-      async () => {
 
-        const ok =
-          confirm(
-            "Approve this submission?"
-          );
+        <div>
 
+          <div class="submission-type">
 
-        if (!ok) return;
+            ${escapeHtml(
+              formatType(
+                item.resource_type
+              )
+            )}
 
+          </div>
 
-        approve.disabled =
-          true;
 
+          <h3 class="submission-title">
 
-        approve.textContent =
-          "Approving...";
+            ${escapeHtml(
+              item.title
+            )}
 
+          </h3>
 
-        const {
-          error
-        } = await supabaseClient
-          .from("submissions")
-          .update({
-            status: "approved",
-            reject_reason: null
-          })
-          .eq(
-            "id",
-            submission.id
-          );
+        </div>
 
 
-        if (error) {
+        <span
+          class="status-badge ${statusClass}"
+        >
 
-          alert(
-            error.message
-          );
+          ${escapeHtml(
+            status
+          )}
 
-          approve.disabled =
-            false;
+        </span>
 
-          approve.textContent =
-            "Approve";
 
-          return;
+      </div>
 
-        }
 
 
-        await reloadAll();
+      <div class="submission-meta">
 
-      }
-    );
 
-  }
+        <div class="meta-item">
 
+          <span>
+            Student
+          </span>
 
+          <strong>
+            ${escapeHtml(
+              item.full_name ||
+              "Unknown"
+            )}
+          </strong>
 
-  /* ===================================================
-     REJECT BOX
-  =================================================== */
+        </div>
 
-  const rejectButton =
-    card.querySelector(
-      ".reject-button"
-    );
 
+        <div class="meta-item">
 
-  const rejectBox =
-    card.querySelector(
-      ".reject-box"
-    );
+          <span>
+            Student ID
+          </span>
 
+          <strong>
+            ${escapeHtml(
+              item.student_id ||
+              "—"
+            )}
+          </strong>
 
-  if (rejectButton) {
+        </div>
 
-    rejectButton.addEventListener(
-      "click",
-      () => {
 
-        rejectBox.style.display =
-          rejectBox.style.display ===
-          "block"
-            ? "none"
-            : "block";
+        <div class="meta-item">
 
-      }
-    );
+          <span>
+            Submitter Campus
+          </span>
 
-  }
+          <strong>
+            ${escapeHtml(
+              item.submitter_campus ||
+              "—"
+            )}
+          </strong>
 
+        </div>
 
 
-  /* ===================================================
-     CONFIRM REJECT
-  =================================================== */
+        <div class="meta-item">
 
-  const confirmReject =
-    card.querySelector(
-      ".confirm-reject"
-    );
+          <span>
+            Resource Campus
+          </span>
 
+          <strong>
+            ${escapeHtml(
+              item.target_campus ||
+              "—"
+            )}
+          </strong>
 
-  if (confirmReject) {
+        </div>
 
-    confirmReject.addEventListener(
-      "click",
-      async () => {
 
-        const textarea =
-          rejectBox.querySelector(
-            "textarea"
-          );
+        <div class="meta-item">
 
+          <span>
+            Session
+          </span>
 
-        const reason =
-          textarea.value.trim();
+          <strong>
+            ${escapeHtml(
+              item.session ||
+              "—"
+            )}
+          </strong>
 
+        </div>
 
-        if (!reason) {
 
-          alert(
-            "Please write a rejection reason."
-          );
+        <div class="meta-item">
 
-          textarea.focus();
+          <span>
+            Course / Subject
+          </span>
 
-          return;
+          <strong>
+            ${escapeHtml(
+              item.course ||
+              "—"
+            )}
+          </strong>
 
-        }
+        </div>
 
 
-        const ok =
-          confirm(
-            "Reject this submission?"
-          );
+        <div class="meta-item">
 
+          <span>
+            Submitted
+          </span>
 
-        if (!ok) return;
+          <strong>
+            ${escapeHtml(
+              formatDate(
+                item.created_at
+              )
+            )}
+          </strong>
 
+        </div>
 
-        confirmReject.disabled =
-          true;
 
+        <div class="meta-item">
 
-        confirmReject.textContent =
-          "Rejecting...";
+          <span>
+            Submission ID
+          </span>
 
+          <strong>
+            ${escapeHtml(
+              item.id
+            )}
+          </strong>
 
-        const {
-          error
-        } = await supabaseClient
-          .from("submissions")
-          .update({
-            status: "rejected",
-            reject_reason:
-              reason
-          })
-          .eq(
-            "id",
-            submission.id
-          );
+        </div>
 
 
-        if (error) {
+      </div>
 
-          alert(
-            error.message
-          );
 
-          confirmReject.disabled =
-            false;
 
-          confirmReject.textContent =
-            "Confirm Rejection";
+      <div class="submission-description">
 
-          return;
+        ${escapeHtml(
+          item.description
+        )}
 
-        }
+      </div>
 
 
-        await reloadAll();
+      ${rejection}
 
-      }
-    );
 
-  }
+      ${actions}
 
 
-  return card;
+    </article>
+
+  `;
 
 }
 
 
 
-/* =====================================================
-   STUDENTS
-===================================================== */
+/* =========================================================
+   APPROVE
+========================================================= */
 
-async function loadStudents() {
+async function approveSubmission(
+  id
+) {
 
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("profiles")
-    .select(
-      "id, full_name, campus, session, student_id, photo_url"
-    )
-    .eq(
-      "role",
-      "student"
-    )
-    .order(
-      "full_name",
-      {
-        ascending: true
-      }
+  const submission =
+    allSubmissions.find(
+      item =>
+        item.id === id
     );
 
 
-  const list =
-    document.getElementById(
-      "studentList"
-    );
-
-
-  if (error) {
-
-    console.error(error);
-
-    list.innerHTML = `
-      <div class="empty-state">
-
-        <strong>
-          Could not load students.
-        </strong>
-
-        <p>
-          ${escapeHtml(
-            error.message
-          )}
-        </p>
-
-      </div>
-    `;
+  if (!submission) {
 
     return;
 
   }
 
 
-  if (
-    !data ||
-    data.length === 0
-  ) {
+  const confirmed =
+    confirm(
+      `Approve "${submission.title}"?`
+    );
 
-    list.innerHTML = `
-      <div class="empty-state">
 
-        <strong>
-          No students registered yet.
-        </strong>
-
-      </div>
-    `;
+  if (!confirmed) {
 
     return;
 
   }
 
 
-  list.innerHTML = "";
+  try {
 
 
-  data.forEach(
-    student => {
+    const {
+      error
+    } =
+      await supabaseClient
 
-      const card =
-        document.createElement(
-          "div"
+        .from("submissions")
+
+        .update({
+
+          status:
+            "approved",
+
+          reviewed_by:
+            currentUser.id,
+
+          reviewed_at:
+            new Date().toISOString(),
+
+          rejection_reason:
+            null
+
+        })
+
+        .eq(
+          "id",
+          id
+        )
+
+        .eq(
+          "status",
+          "pending"
         );
 
 
-      card.className =
-        "student-card";
+    if (error) {
 
-
-      card.innerHTML = `
-
-        <img
-          class="student-avatar"
-          src="${
-            student.photo_url ||
-            "../assets/default-avatar.svg"
-          }"
-          alt="Student photo"
-        >
-
-
-        <div>
-
-          <h3>
-            ${escapeHtml(
-              student.full_name ||
-              "Student"
-            )}
-          </h3>
-
-          <p>
-            ${escapeHtml(
-              student.campus ||
-              "Campus not specified"
-            )}
-          </p>
-
-          <p>
-            Session:
-            ${escapeHtml(
-              student.session ||
-              "—"
-            )}
-          </p>
-
-          <p>
-            ID:
-            ${escapeHtml(
-              student.student_id ||
-              "—"
-            )}
-          </p>
-
-        </div>
-
-      `;
-
-
-      list.appendChild(card);
+      throw error;
 
     }
+
+
+    /*
+      Reload after approval.
+
+      The next Auto Publish SQL/logic will use
+      status = approved to create the archive entry.
+    */
+
+    await loadSubmissions();
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Approval failed: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   OPEN REJECT MODAL
+========================================================= */
+
+function openRejectModal(
+  id
+) {
+
+  rejectingSubmissionId =
+    id;
+
+
+  rejectionReason.value =
+    "";
+
+
+  rejectModal.classList.add(
+    "open"
+  );
+
+
+  setTimeout(
+    () => {
+      rejectionReason.focus();
+    },
+    100
   );
 
 }
 
 
 
-/* =====================================================
-   SEARCH + FILTER
-===================================================== */
+/* =========================================================
+   CLOSE REJECT MODAL
+========================================================= */
 
-document
-  .querySelectorAll(
-    ".filter-button"
-  )
-  .forEach(
-    button => {
+function closeRejectModal() {
 
-      button.addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelectorAll(
-              ".filter-button"
-            )
-            .forEach(
-              item =>
-                item.classList.remove(
-                  "active"
-                )
-            );
+  rejectingSubmissionId =
+    null;
 
 
-          button.classList.add(
-            "active"
-          );
+  rejectionReason.value =
+    "";
 
 
-          currentFilter =
-            button.dataset.filter;
+  rejectModal.classList.remove(
+    "open"
+  );
+
+}
 
 
-          renderSubmissions();
 
-        }
+/* =========================================================
+   REJECT
+========================================================= */
+
+async function rejectSubmission() {
+
+  if (
+    !rejectingSubmissionId
+  ) {
+
+    return;
+
+  }
+
+
+  const reason =
+    rejectionReason.value
+      .trim();
+
+
+  if (!reason) {
+
+    alert(
+      "Please provide a rejection reason."
+    );
+
+    rejectionReason.focus();
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "confirmReject"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Rejecting...";
+
+
+  try {
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+
+        .from("submissions")
+
+        .update({
+
+          status:
+            "rejected",
+
+          rejection_reason:
+            reason,
+
+          reviewed_by:
+            currentUser.id,
+
+          reviewed_at:
+            new Date().toISOString()
+
+        })
+
+        .eq(
+          "id",
+          rejectingSubmissionId
+        )
+
+        .eq(
+          "status",
+          "pending"
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    closeRejectModal();
+
+
+    await loadSubmissions();
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Rejection failed: " +
+      error.message
+    );
+
+
+  } finally {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Reject Submission";
+
+  }
+
+}
+
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+searchInput.addEventListener(
+  "input",
+  renderSubmissions
+);
+
+
+statusFilter.addEventListener(
+  "change",
+  renderSubmissions
+);
+
+
+typeFilter.addEventListener(
+  "change",
+  renderSubmissions
+);
+
+
+
+submissionList.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "[data-action]"
+      );
+
+
+    if (!button) {
+
+      return;
+
+    }
+
+
+    const action =
+      button.dataset.action;
+
+
+    const id =
+      button.dataset.id;
+
+
+    if (
+      action === "approve"
+    ) {
+
+      approveSubmission(
+        id
+      );
+
+    }
+
+
+    if (
+      action === "reject"
+    ) {
+
+      openRejectModal(
+        id
+      );
+
+    }
+
+  }
+);
+
+
+
+document.getElementById(
+  "cancelReject"
+).addEventListener(
+  "click",
+  closeRejectModal
+);
+
+
+
+document.getElementById(
+  "confirmReject"
+).addEventListener(
+  "click",
+  rejectSubmission
+);
+
+
+
+rejectModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      rejectModal
+    ) {
+
+      closeRejectModal();
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document.getElementById(
+  "logoutButton"
+).addEventListener(
+  "click",
+  async () => {
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+    window.location.href =
+      "login.html";
+
+  }
+);
+
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuToggle =
+  document.querySelector(
+    ".menu-toggle"
+  );
+
+
+const nav =
+  document.querySelector(
+    ".nav"
+  );
+
+
+if (
+  menuToggle &&
+  nav
+) {
+
+  menuToggle.addEventListener(
+    "click",
+    () => {
+
+      nav.classList.toggle(
+        "open"
       );
 
     }
   );
 
-
-
-document
-  .getElementById(
-    "searchInput"
-  )
-  .addEventListener(
-    "input",
-    renderSubmissions
-  );
-
-
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-async function reloadAll() {
-
-  await loadOverview();
-
-  await loadSubmissions();
-
 }
 
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-
-function escapeAttribute(
-  value
-) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    );
-
-}
-
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-document
-  .getElementById(
-    "logoutButton"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      await supabaseClient.auth.signOut();
-
-      window.location.href =
-        "login.html";
-
-    }
-  );
-
-
-
-/* =====================================================
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
-async function startAdminDashboard() {
-
-  const user =
-    await checkAdmin();
-
-
-  if (!user) return;
-
-
-  await loadOverview();
-
-  await loadSubmissions();
-
-  await loadStudents();
-
-}
-
-
-startAdminDashboard();
+loadAdmin();
 
 </script>
 
