@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 200 200">
+
+  <rect
+    width="200"
+    height="200"
+    rx="100"
+    fill="#0b1f3a"/>
+
+  <circle
+    cx="100"
+    cy="72"
+    r="34"
+    fill="#ffffff"/>
+
+  <path
+    d="M42 168
+       C47 125 70 108 100 108
+       C130 108 153 125 158 168
+       Z"
+    fill="#ffffff"/>
+
+  <text
+    x="100"
+    y="190"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    letter-spacing="1"
+    fill="#ffffff">
+    STATECRAFTER
+  </text>
+
+</svg>
