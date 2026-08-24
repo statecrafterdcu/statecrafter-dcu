@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Student Dashboard | StateCrafter DCU</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+
+<body>
+
+<header class="site-header">
+
+  <div class="container nav-wrap">
+
+    <a class="brand" href="../index.html">
+
+      <img
+        src="../assets/statecrafter-logo.png"
+        alt="StateCrafter DCU"
+      >
+
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+
+    </a>
+
+    <nav class="nav">
+
+      <a href="../index.html">Home</a>
+
+      <a href="archive.html">
+        Academic Archive
+      </a>
+
+      <a href="research.html">
+        Research &amp; Articles
+      </a>
+
+      <a href="events.html">
+        Events
+      </a>
+
+      <a href="about.html">
+        About
+      </a>
+
+      <button
+        id="logoutButton"
+        class="btn"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<section class="section">
+
+<div class="container">
+
+
+  <p class="eyebrow">
+    STUDENT DASHBOARD
+  </p>
+
+
+  <!-- PROFILE -->
+  <div class="student-profile-card">
+    <div class="student-photo-column">
+      <img
+        id="profilePhoto"
+        class="student-profile-photo"
+        src="../assets/default-avatar.svg"
+        alt="Profile photo"
+      >
+
+      <label
+        id="changePhotoButton"
+        for="photoInput"
+        class="btn btn-outline photo-button"
+      >
+        Change Photo
+      </label>
+
+      <input
+        type="file"
+        id="photoInput"
+        accept="image/jpeg,image/png,image/webp"
+        hidden
+      >
+
+      <p id="photoMessage" class="photo-message"></p>
+    </div>
+
+    <div class="student-profile-info">
+      <h1 id="studentName">Loading...</h1>
+
+      <div class="student-details">
+        <p>
+          <span>Department :</span>
+          <strong>Political Science</strong>
+        </p>
+
+        <p>
+          <span>Session :</span>
+          <strong id="studentSession">—</strong>
+        </p>
+
+        <p>
+          <span>Student ID :</span>
+          <strong id="studentId">—</strong>
+        </p>
+
+        <p>
+          <span>Campus :</span>
+          <strong id="studentCampus">—</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRIBUTIONS -->
+
+  <div style="margin-top:50px">
+
+    <p class="eyebrow" id="contributionsEyebrow">
+      MY CONTRIBUTIONS
+    </p>
+
+    <h2 id="contributionsTitle">
+      Your Academic Contributions
+    </h2>
+
+
+    <div
+      class="grid-4"
+      style="margin-top:25px"
+    >
+
+      <div class="feature-card">
+
+        <strong
+          id="articleCount"
+          style="font-size:35px"
+        >
+          0
+        </strong>
+
+        <p>Articles</p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <strong
+          id="noteCount"
+          style="font-size:35px"
+        >
+          0
+        </strong>
+
+        <p>Notes</p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <strong
+          id="questionCount"
+          style="font-size:35px"
+        >
+          0
+        </strong>
+
+        <p>Questions</p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <strong
+          id="suggestionCount"
+          style="font-size:35px"
+        >
+          0
+        </strong>
+
+        <p>Suggestions</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FUTURE ACTIONS -->
+
+  <div style="margin-top:50px">
+
+    <p class="eyebrow">
+      CONTRIBUTE
+    </p>
+
+    <h2>
+      Share Academic Resources
+    </h2>
+
+    <p style="max-width:650px;color:var(--muted)">
+      You will be able to submit notes, previous questions,
+      suggestions and research articles from your dashboard.
+      All submissions will be reviewed before publication.
+    </p>
+
+
+    <div
+      style="
+        display:flex;
+        gap:12px;
+        flex-wrap:wrap;
+        margin-top:20px;
+      "
+    >
+
+      <button class="btn" disabled>
+        Submit Note
+      </button>
+
+      <button class="btn" disabled>
+        Submit Question
+      </button>
+
+      <button class="btn" disabled>
+        Submit Suggestion
+      </button>
+
+      <button class="btn" disabled>
+        Write Article
+      </button>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="container footer-bottom">
+
+    <span>
+      © 2026 StateCrafter DCU
+    </span>
+
+    <span>
+      Political Science Department • Dhaka Central University
+    </span>
+
+  </div>
+
+</footer>
+
+
+<script src="../auth.js"></script>
+
+
+<script>
+
+const supabaseClient =
+  window.supabase.createClient(
+    "https://psqwnvgruyfgdoukvpid.supabase.co",
+    "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"
+  );
+
+
+const DEFAULT_AVATAR = "../assets/default-avatar.svg";
+
+async function getCurrentUser() {
+  const { data, error } = await supabaseClient.auth.getUser();
+  if (error) throw error;
+  return data.user;
+}
+
+async function loadStudentDashboard() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedProfileId = params.get("id");
+  const profileId = requestedProfileId || user.id;
+  const isOwnProfile = profileId === user.id;
+
+  const { data: currentProfile, error: currentProfileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+  if (currentProfileError || !currentProfile) {
+    alert("Your profile could not be loaded.");
+    return;
+  }
+
+  // Keep the dashboard student-only.
+  if (currentProfile.role === "admin") {
+    window.location.href = "admin-dashboard.html";
+    return;
+  }
+
+  if (currentProfile.role !== "student") {
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", profileId)
+      .single();
+
+  if (profileError || !profile) {
+    alert("This student profile could not be loaded.");
+    return;
+  }
+
+  // Profile information
+  document.getElementById("studentName").textContent =
+    profile.full_name || "Student";
+
+  document.getElementById("studentSession").textContent =
+    profile.session || "Not specified";
+
+  document.getElementById("studentId").textContent =
+    profile.student_id || "Not specified";
+
+  document.getElementById("studentCampus").textContent =
+    profile.campus || "Not specified";
+
+  // Photo
+  document.getElementById("profilePhoto").src =
+    profile.photo_url || DEFAULT_AVATAR;
+
+  // Contributions wording
+  const displayName = profile.full_name || "Student";
+  const eyebrow = document.getElementById("contributionsEyebrow");
+  const title = document.getElementById("contributionsTitle");
+
+  if (isOwnProfile) {
+    eyebrow.textContent = "MY CONTRIBUTIONS";
+    title.textContent = "Your Academic Contributions";
+  } else {
+    eyebrow.textContent = `${displayName.toUpperCase()}'S CONTRIBUTIONS`;
+    title.textContent = `${displayName}'s Academic Contributions`;
+  }
+
+  // Only the owner can change their own photo.
+  if (!isOwnProfile) {
+    document.getElementById("changePhotoButton").style.display = "none";
+  }
+}
+
+
+// PHOTO UPLOAD — owner only, maximum 1 MB
+document.getElementById("photoInput").addEventListener("change", async function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  const message = document.getElementById("photoMessage");
+
+  if (file.size > 1048576) {
+    message.textContent = "Photo must be 1 MB or smaller.";
+    this.value = "";
+    return;
+  }
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    message.textContent = "Please upload JPG, PNG or WebP.";
+    this.value = "";
+    return;
+  }
+
+  message.textContent = "Uploading photo...";
+
+  try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const extension = file.name.split(".").pop().toLowerCase();
+    const filePath = `${user.id}/profile.${extension}`;
+
+    const { error: uploadError } =
+      await supabaseClient.storage
+        .from("profile-photos")
+        .upload(filePath, file, {
+          upsert: true,
+          contentType: file.type
+        });
+
+    if (uploadError) throw uploadError;
+
+    const { data: publicData } =
+      supabaseClient.storage
+        .from("profile-photos")
+        .getPublicUrl(filePath);
+
+    const photoUrl = publicData.publicUrl + "?v=" + Date.now();
+
+    const { error: profileError } =
+      await supabaseClient
+        .from("profiles")
+        .update({ photo_url: photoUrl })
+        .eq("id", user.id);
+
+    if (profileError) throw profileError;
+
+    document.getElementById("profilePhoto").src = photoUrl;
+    message.textContent = "Photo updated successfully.";
+    this.value = "";
+
+  } catch (error) {
+    console.error(error);
+    message.textContent =
+      error.message || "Photo upload failed.";
+  }
+});
+
+
+// LOGOUT
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
+});
+
+loadStudentDashboard();
+
+
+</script>
+
+</body>
+</html>
