@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Submit Note | StateCrafter DCU</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    .submit-page{
+      min-height:calc(100vh - 82px);
+      background:#f7f5f0;
+      padding:70px 0;
+    }
+
+    .submit-wrap{
+      width:min(820px,calc(100% - 40px));
+      margin:auto;
+    }
+
+    .submit-header{
+      margin-bottom:30px;
+    }
+
+    .submit-header .eyebrow{
+      margin-bottom:10px;
+    }
+
+    .submit-header h1{
+      margin:0;
+      color:var(--navy);
+      font-size:clamp(36px,5vw,58px);
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .submit-header p{
+      color:var(--muted);
+      margin:16px 0 0;
+      font-size:15px;
+    }
+
+    .submit-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:36px;
+      box-shadow:var(--shadow);
+    }
+
+    .form-group{
+      margin-bottom:22px;
+    }
+
+    .form-group label{
+      display:block;
+      margin-bottom:8px;
+      color:var(--navy);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select{
+      width:100%;
+      border:1px solid #d7dce4;
+      border-radius:12px;
+      padding:13px 14px;
+      background:#fff;
+      color:var(--ink);
+      outline:none;
+      font-size:14px;
+      transition:.2s;
+    }
+
+    .form-group textarea{
+      min-height:180px;
+      resize:vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus{
+      border-color:var(--navy);
+      box-shadow:0 0 0 3px rgba(18,43,82,.08);
+    }
+
+    .readonly-field{
+      background:#f4f6f8 !important;
+      color:var(--muted) !important;
+      cursor:not-allowed;
+    }
+
+    .file-box{
+      border:1px dashed #cbd1d9;
+      border-radius:14px;
+      padding:22px;
+      background:#fafbfc;
+    }
+
+    .file-box input{
+      border:0;
+      padding:0;
+      background:transparent;
+    }
+
+    .file-help{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .submit-actions{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-top:30px;
+    }
+
+    .submit-message{
+      min-height:22px;
+      margin:18px 0 0;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .success{
+      color:#19703a;
+    }
+
+    .error{
+      color:var(--red);
+    }
+
+    @media(max-width:560px){
+      .submit-page{
+        padding:45px 0;
+      }
+
+      .submit-wrap{
+        width:min(100% - 28px,820px);
+      }
+
+      .submit-card{
+        padding:24px 20px;
+        border-radius:20px;
+      }
+
+      .submit-actions{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .submit-actions .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+
+    <a href="../index.html" class="brand">
+      <img src="../assets/logo.png" alt="StateCrafter DCU">
+      <div class="brand-copy">
+        <strong>STATECRAFTER DCU</strong>
+        <small>Political Science Department</small>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="academic-archive.html">Academic Archive</a>
+      <a href="research.html">Research & Articles</a>
+      <a href="events.html">Events</a>
+      <a href="student-dashboard.html" class="active">Dashboard</a>
+    </nav>
+
+  </div>
+</header>
+
+
+<main class="submit-page">
+
+  <div class="submit-wrap">
+
+    <div class="submit-header">
+      <p class="eyebrow">ACADEMIC ARCHIVE</p>
+
+      <h1>Submit Note</h1>
+
+      <p>
+        Share your academic notes with StateCrafter DCU.
+        Your submission will be reviewed by an administrator before publication.
+      </p>
+    </div>
+
+
+    <form id="noteForm" class="submit-card">
+
+      <!-- TITLE -->
+      <div class="form-group">
+        <label for="title">Note Title *</label>
+
+        <input
+          type="text"
+          id="title"
+          name="title"
+          placeholder="Example: Ancient Greek Political Thought"
+          maxlength="200"
+          required
+        >
+      </div>
+
+
+      <!-- CAMPUS -->
+      <div class="form-group">
+        <label for="campus">Campus</label>
+
+        <input
+          type="text"
+          id="campus"
+          class="readonly-field"
+          readonly
+          value="Loading..."
+        >
+      </div>
+
+
+      <!-- COURSE -->
+      <div class="form-group">
+        <label for="course_code">Course *</label>
+
+        <select id="course_code" required>
+
+          <option value="">Select Course</option>
+
+          <option value="PS 101">
+            PS 101 — Ancient and Medieval Western Political Thought
+          </option>
+
+          <option value="PS 102">
+            PS 102 — Political Theory and Organization
+          </option>
+
+          <option value="PS 103">
+            PS 103 — Government and Politics: UK, USA and France
+          </option>
+
+          <option value="PS 104">
+            PS 104 — Principles of Sociology
+          </option>
+
+          <option value="PS 105">
+            PS 105 — Modern Western Political Thought
+          </option>
+
+          <option value="PS 211501">
+            PS 211501 — History of the Emergence of Independent Bangladesh
+          </option>
+
+          <option value="PS 107">
+            PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)
+          </option>
+
+          <option value="PS 108">
+            PS 108 — Public Administration in Bangladesh
+          </option>
+
+        </select>
+      </div>
+
+
+      <!-- DESCRIPTION -->
+      <div class="form-group">
+        <label for="content">Description / Details</label>
+
+        <textarea
+          id="content"
+          placeholder="Write a short description of your note..."
+        ></textarea>
+      </div>
+
+
+      <!-- FILE -->
+      <div class="form-group">
+
+        <label for="noteFile">
+          Note File
+        </label>
+
+        <div class="file-box">
+
+          <input
+            type="file"
+            id="noteFile"
+            accept=".pdf,.doc,.docx"
+          >
+
+          <p class="file-help">
+            Maximum file size: 10 MB.
+            Accepted formats: PDF, DOC, DOCX.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="submit-actions">
+
+        <button
+          type="submit"
+          id="submitButton"
+          class="btn btn-primary"
+        >
+          Submit Note
+        </button>
+
+        <a
+          href="student-dashboard.html"
+          class="btn btn-outline"
+        >
+          Cancel
+        </a>
+
+      </div>
+
+
+      <p id="submitMessage" class="submit-message"></p>
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const campuses = [
+  "Dhaka College",
+  "Eden Mohila College",
+  "Titumir College",
+  "Bangla College",
+  "Kabi Nazrul College",
+  "Begum Badrunnesa Mohila College",
+  "Shaheed Suhrawardy College"
+];
+
+
+async function loadProfile(){
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if(userError || !user){
+
+    window.location.href = "login.html";
+    return null;
+  }
+
+
+  const {
+    data: profile,
+    error: profileError
+  } = await supabaseClient
+    .from("profiles")
+    .select("id, full_name, role, campus")
+    .eq("id", user.id)
+    .single();
+
+
+  if(profileError || !profile){
+
+    showMessage(
+      "Your profile could not be loaded.",
+      "error"
+    );
+
+    return null;
+  }
+
+
+  if(profile.role !== "student"){
+
+    window.location.href = "admin-dashboard.html";
+    return null;
+  }
+
+
+  document.getElementById("campus").value =
+    profile.campus || "Not specified";
+
+
+  return {
+    user,
+    profile
+  };
+}
+
+
+function showMessage(message,type){
+
+  const box =
+    document.getElementById("submitMessage");
+
+  box.textContent = message;
+
+  box.className =
+    "submit-message " + type;
+}
+
+
+document
+  .getElementById("noteForm")
+  .addEventListener("submit", async function(event){
+
+    event.preventDefault();
+
+
+    const button =
+      document.getElementById("submitButton");
+
+    const title =
+      document.getElementById("title").value.trim();
+
+    const courseCode =
+      document.getElementById("course_code").value;
+
+    const content =
+      document.getElementById("content").value.trim();
+
+    const file =
+      document.getElementById("noteFile").files[0];
+
+
+    if(!title){
+
+      showMessage(
+        "Please enter a note title.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(!courseCode){
+
+      showMessage(
+        "Please select a course.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(file && file.size > 10 * 1024 * 1024){
+
+      showMessage(
+        "The file must be 10 MB or smaller.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent = "Submitting...";
+
+
+    try{
+
+      const result = await loadProfile();
+
+      if(!result){
+
+        button.disabled = false;
+        button.textContent = "Submit Note";
+
+        return;
+      }
+
+
+      const {
+        user,
+        profile
+      } = result;
+
+
+      let fileUrl = null;
+
+
+      /*
+       * FILE UPLOAD
+       *
+       * This part expects a Supabase Storage bucket
+       * named "submission-files".
+       *
+       * We will create its Storage security in the
+       * next step.
+       */
+
+      if(file){
+
+        const extension =
+          file.name.split(".").pop().toLowerCase();
+
+        const filePath =
+          `${user.id}/notes/${crypto.randomUUID()}.${extension}`;
+
+
+        const {
+          error: uploadError
+        } = await supabaseClient.storage
+          .from("submission-files")
+          .upload(
+            filePath,
+            file,
+            {
+              upsert:false,
+              contentType:file.type
+            }
+          );
+
+
+        if(uploadError){
+
+          throw uploadError;
+        }
+
+
+        const {
+          data: publicData
+        } = supabaseClient.storage
+          .from("submission-files")
+          .getPublicUrl(filePath);
+
+
+        fileUrl =
+          publicData.publicUrl;
+      }
+
+
+      /*
+       * CREATE SUBMISSION
+       */
+
+      const {
+        error: submissionError
+      } = await supabaseClient
+        .from("submissions")
+        .insert({
+
+          user_id:user.id,
+
+          type:"note",
+
+          title:title,
+
+          content:content || null,
+
+          /*
+           * Campus comes from profiles,
+           * NOT from user input.
+           */
+          campus:profile.campus || null,
+
+          course_code:courseCode,
+
+          file_url:fileUrl,
+
+          status:"pending"
+
+        });
+
+
+      if(submissionError){
+
+        throw submissionError;
+      }
+
+
+      showMessage(
+        "Your note has been submitted successfully and is waiting for admin approval.",
+        "success"
+      );
+
+
+      document
+        .getElementById("noteForm")
+        .reset();
+
+
+      document.getElementById("campus").value =
+        profile.campus || "Not specified";
+
+
+      button.textContent =
+        "Submitted";
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      showMessage(
+        error.message ||
+        "Something went wrong while submitting your note.",
+        "error"
+      );
+
+      button.disabled = false;
+
+      button.textContent =
+        "Submit Note";
+    }
+
+  });
+
+
+loadProfile();
+
+</script>
+
+</body>
+</html>
