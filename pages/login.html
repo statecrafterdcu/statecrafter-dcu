@@ -211,6 +211,10 @@
     }
 
 
+    /* =====================================================
+       PASSWORD
+    ===================================================== */
+
     .password-wrap {
 
       position: relative;
@@ -253,6 +257,38 @@
     }
 
 
+    /* =====================================================
+       FORGOT PASSWORD
+    ===================================================== */
+
+    .forgot-password {
+
+      display: block;
+
+      margin-top: -8px;
+
+      text-align: right;
+
+      color: var(--red);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+    }
+
+
+    .forgot-password:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =====================================================
+       LOGIN BUTTON
+    ===================================================== */
+
     .login-button {
 
       width: 100%;
@@ -278,6 +314,10 @@
 
     }
 
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
 
     .form-message {
 
@@ -307,6 +347,10 @@
 
     }
 
+
+    /* =====================================================
+       INFO
+    ===================================================== */
 
     .login-info {
 
@@ -361,7 +405,11 @@
     }
 
 
-    @media(max-width: 560px) {
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media(max-width: 560px){
 
       .login-page {
 
@@ -376,7 +424,8 @@
 
       .login-card {
 
-        padding: 25px 20px;
+        padding:
+          25px 20px;
 
         border-radius: 20px;
 
@@ -495,6 +544,8 @@
     <div class="login-card">
 
 
+      <!-- LOGO -->
+
       <div class="login-logo">
 
         <img
@@ -504,6 +555,9 @@
 
       </div>
 
+
+
+      <!-- HEADING -->
 
       <div class="login-heading">
 
@@ -534,6 +588,8 @@
       >
 
 
+        <!-- EMAIL -->
+
         <div class="form-group">
 
           <label for="email">
@@ -552,6 +608,8 @@
         </div>
 
 
+
+        <!-- PASSWORD -->
 
         <div class="form-group">
 
@@ -586,6 +644,21 @@
 
 
 
+        <!-- =================================================
+             FORGOT PASSWORD
+        ================================================== -->
+
+        <a
+          href="forgot-password.html"
+          class="forgot-password"
+        >
+          Forgot Password?
+        </a>
+
+
+
+        <!-- SIGN IN -->
+
         <button
           type="submit"
           id="loginButton"
@@ -594,6 +667,8 @@
           Sign In
         </button>
 
+
+        <!-- MESSAGE -->
 
         <p
           id="loginMessage"
@@ -606,6 +681,8 @@
 
 
 
+      <!-- INFO -->
+
       <div class="login-info">
 
         Sign in with the email and password
@@ -617,6 +694,9 @@
 
       </div>
 
+
+
+      <!-- BACK HOME -->
 
       <a
         href="../index.html"
@@ -712,9 +792,9 @@ document.addEventListener(
       );
 
 
-    /*
-     * Make sure the form exists.
-     */
+    /* =====================================================
+       CHECK FORM
+    ===================================================== */
 
     if (!loginForm) {
 
@@ -735,6 +815,7 @@ document.addEventListener(
     showPassword.addEventListener(
       "click",
       function() {
+
 
         if (
           passwordInput.type ===
@@ -783,9 +864,7 @@ document.addEventListener(
           passwordInput.value;
 
 
-        /*
-         * Basic validation
-         */
+        /* VALIDATION */
 
         if (!email) {
 
@@ -815,9 +894,8 @@ document.addEventListener(
         }
 
 
-        /*
-         * Disable button
-         */
+
+        /* DISABLE BUTTON */
 
         loginButton.disabled =
           true;
@@ -835,19 +913,25 @@ document.addEventListener(
         try {
 
 
+          /*
+           * loginUser() is defined
+           * inside auth.js.
+           *
+           * It checks the user's role
+           * and redirects:
+           *
+           * student → student-dashboard.html
+           * admin   → admin-dashboard.html
+           */
+
           await loginUser(
             email,
             password
           );
 
 
-          /*
-           * loginUser() redirects
-           * automatically according
-           * to role.
-           */
-
         } catch (error) {
+
 
           console.error(
             "Sign in error:",
@@ -859,16 +943,20 @@ document.addEventListener(
             "Sign in failed. Please try again.";
 
 
-          /*
-           * Friendly Supabase errors
-           */
+          const errorMessage =
+            error.message ||
+            "";
+
+
+          const lowerMessage =
+            errorMessage.toLowerCase();
+
+
 
           if (
-            error.message
-              .toLowerCase()
-              .includes(
-                "invalid login credentials"
-              )
+            lowerMessage.includes(
+              "invalid login credentials"
+            )
           ) {
 
             message =
@@ -878,11 +966,9 @@ document.addEventListener(
 
 
           else if (
-            error.message
-              .toLowerCase()
-              .includes(
-                "email not confirmed"
-              )
+            lowerMessage.includes(
+              "email not confirmed"
+            )
           ) {
 
             message =
@@ -892,25 +978,23 @@ document.addEventListener(
 
 
           else if (
-            error.message
-              .toLowerCase()
-              .includes(
-                "profile was not found"
-              )
+            lowerMessage.includes(
+              "profile was not found"
+            )
           ) {
 
             message =
-              error.message;
+              errorMessage;
 
           }
 
 
           else if (
-            error.message
+            errorMessage
           ) {
 
             message =
-              error.message;
+              errorMessage;
 
           }
 
@@ -962,11 +1046,14 @@ document.addEventListener(
       type
     ) {
 
+
       loginMessage.textContent =
         message;
 
+
       loginMessage.className =
         "form-message";
+
 
       if (type) {
 
