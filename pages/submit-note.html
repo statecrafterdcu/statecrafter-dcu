@@ -10,9 +10,7 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>
-    Submit Resource | StateCrafter DCU
-  </title>
+  <title>Submit Resource | StateCrafter DCU</title>
 
   <link
     rel="stylesheet"
@@ -21,754 +19,405 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <style>
 
-    /* =====================================================
-       PAGE
-    ===================================================== */
-
-    .submit-hero {
-
-      background:
-        linear-gradient(
-          135deg,
-          #f7f5f0 0%,
-          #ffffff 55%,
-          #eef2f8 100%
-        );
-
-      border-bottom: 1px solid var(--line);
-
-      padding: 58px 0 50px;
-
+    .submit-hero{
+      background:linear-gradient(
+        135deg,
+        #f7f5f0 0%,
+        #fff 55%,
+        #eef2f8 100%
+      );
+      border-bottom:1px solid var(--line);
+      padding:58px 0 50px;
     }
 
-
-    .submit-hero h1 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size:
-        clamp(42px, 6vw, 68px);
-
-      line-height: .98;
-
-      letter-spacing: -.05em;
-
+    .submit-hero h1{
+      margin:0;
+      color:var(--navy);
+      font-size:clamp(42px,6vw,68px);
+      line-height:.98;
+      letter-spacing:-.05em;
     }
 
-
-    .submit-hero p:not(.eyebrow) {
-
-      max-width: 680px;
-
-      margin: 20px 0 0;
-
-      color: var(--muted);
-
-      font-size: 16px;
-
+    .submit-hero p:not(.eyebrow){
+      max-width:680px;
+      margin:20px 0 0;
+      color:var(--muted);
+      font-size:16px;
     }
 
-
-    .submit-section {
-
-      padding: 65px 0 90px;
-
+    .submit-section{
+      padding:65px 0 90px;
     }
 
-
-    .submit-layout {
-
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.5fr)
-        minmax(280px, .7fr);
-
-      gap: 28px;
-
-      align-items: start;
-
+    .submit-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr);
+      gap:28px;
+      align-items:start;
     }
 
-
-    /* =====================================================
-       FORM CARD
-    ===================================================== */
-
-    .submit-card {
-
-      background: #fff;
-
-      border: 1px solid var(--line);
-
-      border-radius: 24px;
-
-      padding: 32px;
-
-      box-shadow:
-        0 12px 40px
-        rgba(18,43,82,.06);
-
+    .submit-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:32px;
+      box-shadow:0 12px 40px rgba(18,43,82,.06);
     }
 
-
-    .submit-card h2 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: 28px;
-
-      line-height: 1.2;
-
+    .submit-card h2{
+      margin:0;
+      color:var(--navy);
+      font-size:28px;
+      line-height:1.2;
     }
 
-
-    .submit-card-intro {
-
-      color: var(--muted);
-
-      font-size: 13px;
-
-      margin: 8px 0 28px;
-
+    .submit-card-intro{
+      color:var(--muted);
+      font-size:13px;
+      margin:8px 0 28px;
     }
 
-
-    .form-group {
-
-      margin-bottom: 20px;
-
+    .form-group{
+      margin-bottom:20px;
     }
 
-
-    .form-group label {
-
-      display: block;
-
-      color: var(--navy);
-
-      font-size: 12px;
-
-      font-weight: 900;
-
-      margin-bottom: 7px;
-
+    .form-group label{
+      display:block;
+      color:var(--navy);
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:7px;
     }
 
-
-    .required {
-
-      color: var(--red);
-
+    .required{
+      color:var(--red);
     }
-
 
     .form-group input,
     .form-group select,
-    .form-group textarea {
-
-      width: 100%;
-
-      border: 1px solid #d8dde5;
-
-      border-radius: 12px;
-
-      background: #fff;
-
-      color: var(--ink);
-
-      font: inherit;
-
-      font-size: 14px;
-
-      outline: none;
-
-      transition: .2s ease;
-
+    .form-group textarea{
+      width:100%;
+      border:1px solid #d8dde5;
+      border-radius:12px;
+      background:#fff;
+      color:var(--ink);
+      font:inherit;
+      font-size:14px;
+      outline:none;
+      transition:.2s ease;
     }
-
 
     .form-group input,
-    .form-group select {
-
-      height: 48px;
-
-      padding: 0 14px;
-
+    .form-group select{
+      height:48px;
+      padding:0 14px;
     }
 
-
-    .form-group textarea {
-
-      min-height: 135px;
-
-      resize: vertical;
-
-      padding: 13px 14px;
-
-      line-height: 1.6;
-
+    .form-group textarea{
+      min-height:135px;
+      resize:vertical;
+      padding:13px 14px;
+      line-height:1.6;
     }
-
 
     .form-group input:focus,
     .form-group select:focus,
-    .form-group textarea:focus {
-
-      border-color: var(--navy);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(18,43,82,.06);
-
+    .form-group textarea:focus{
+      border-color:var(--navy);
+      box-shadow:0 0 0 3px rgba(18,43,82,.06);
     }
 
-
-    .form-help {
-
-      margin: 6px 0 0;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      line-height: 1.5;
-
+    .form-help{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.5;
     }
 
-
-    .two-columns {
-
-      display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap: 14px;
-
+    .two-columns{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
     }
 
-
-    /* =====================================================
-       PROFILE INFO
-    ===================================================== */
-
-    .profile-summary {
-
-      background: #f7f8fa;
-
-      border: 1px solid #e3e6eb;
-
-      border-radius: 16px;
-
-      padding: 18px;
-
-      margin-bottom: 26px;
-
+    .profile-summary{
+      background:#f7f8fa;
+      border:1px solid #e3e6eb;
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:26px;
     }
 
-
-    .profile-summary-title {
-
-      color: var(--navy);
-
-      font-size: 11px;
-
-      font-weight: 900;
-
-      letter-spacing: .08em;
-
-      margin-bottom: 12px;
-
+    .profile-summary-title{
+      color:var(--navy);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.08em;
+      margin-bottom:12px;
     }
 
-
-    .profile-row {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      padding: 7px 0;
-
-      border-bottom: 1px solid #e5e8ec;
-
-      font-size: 12px;
-
+    .profile-row{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      padding:7px 0;
+      border-bottom:1px solid #e5e8ec;
+      font-size:12px;
     }
 
-
-    .profile-row:last-child {
-
-      border-bottom: 0;
-
+    .profile-row:last-child{
+      border-bottom:0;
     }
 
-
-    .profile-row span {
-
-      color: var(--muted);
-
+    .profile-row span{
+      color:var(--muted);
     }
 
-
-    .profile-row strong {
-
-      color: var(--ink);
-
-      text-align: right;
-
+    .profile-row strong{
+      color:var(--ink);
+      text-align:right;
     }
 
-
-
-    /* =====================================================
-       RESOURCE TYPE
-    ===================================================== */
-
-    .resource-type-info {
-
-      display: none;
-
-      background: #f7f5f0;
-
-      border-left: 3px solid var(--red);
-
-      border-radius: 0 12px 12px 0;
-
-      padding: 12px 14px;
-
-      margin-top: -8px;
-
-      margin-bottom: 20px;
-
-      color: #536075;
-
-      font-size: 12px;
-
-      line-height: 1.6;
-
+    .resource-type-info{
+      display:none;
+      background:#f7f5f0;
+      border-left:3px solid var(--red);
+      border-radius:0 12px 12px 0;
+      padding:12px 14px;
+      margin-top:-8px;
+      margin-bottom:20px;
+      color:#536075;
+      font-size:12px;
+      line-height:1.6;
     }
 
-
-    .resource-type-info.visible {
-
-      display: block;
-
+    .resource-type-info.visible{
+      display:block;
     }
 
-
-
-    /* =====================================================
-       DRIVE HELP
-    ===================================================== */
-
-    .drive-box {
-
-      background: #f8fafc;
-
-      border: 1px solid #e1e5ea;
-
-      border-radius: 15px;
-
-      padding: 16px;
-
-      margin-top: 8px;
-
+    .course-selected-info{
+      display:none;
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:#f5f7fa;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.5;
     }
 
-
-    .drive-box strong {
-
-      display: block;
-
-      color: var(--navy);
-
-      font-size: 12px;
-
-      margin-bottom: 5px;
-
+    .course-selected-info.visible{
+      display:block;
     }
 
-
-    .drive-box p {
-
-      margin: 0;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      line-height: 1.6;
-
+    .drive-box{
+      background:#f8fafc;
+      border:1px solid #e1e5ea;
+      border-radius:15px;
+      padding:16px;
+      margin-top:8px;
     }
 
-
-
-    /* =====================================================
-       SUBMIT BUTTON
-    ===================================================== */
-
-    .submit-actions {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      flex-wrap: wrap;
-
-      margin-top: 25px;
-
+    .drive-box strong{
+      display:block;
+      color:var(--navy);
+      font-size:12px;
+      margin-bottom:5px;
     }
 
-
-    .submit-button {
-
-      min-width: 170px;
-
-      cursor: pointer;
-
+    .drive-box p{
+      margin:0;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.6;
     }
 
-
-    .submit-button:disabled {
-
-      opacity: .6;
-
-      cursor: not-allowed;
-
-      transform: none;
-
+    .submit-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:25px;
     }
 
-
-
-    /* =====================================================
-       STATUS
-    ===================================================== */
-
-    .form-message {
-
-      display: none;
-
-      border-radius: 12px;
-
-      padding: 13px 15px;
-
-      font-size: 12px;
-
-      margin-top: 18px;
-
-      line-height: 1.5;
-
+    .submit-button{
+      min-width:170px;
+      cursor:pointer;
     }
 
-
-    .form-message.success {
-
-      display: block;
-
-      background: #eef8f0;
-
-      border: 1px solid #cce7d1;
-
-      color: #246233;
-
+    .submit-button:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
     }
 
-
-    .form-message.error {
-
-      display: block;
-
-      background: #fdf0f0;
-
-      border: 1px solid #efcaca;
-
-      color: var(--red);
-
+    .form-message{
+      display:none;
+      border-radius:12px;
+      padding:13px 15px;
+      font-size:12px;
+      margin-top:18px;
+      line-height:1.5;
     }
 
-
-
-    /* =====================================================
-       SIDE INFO
-    ===================================================== */
-
-    .submit-side {
-
-      position: sticky;
-
-      top: 105px;
-
+    .form-message.success{
+      display:block;
+      background:#eef8f0;
+      border:1px solid #cce7d1;
+      color:#246233;
     }
 
-
-    .info-card {
-
-      background: var(--navy);
-
-      color: #fff;
-
-      border-radius: 22px;
-
-      padding: 28px;
-
-      box-shadow:
-        0 15px 40px
-        rgba(18,43,82,.13);
-
+    .form-message.error{
+      display:block;
+      background:#fdf0f0;
+      border:1px solid #efcaca;
+      color:var(--red);
     }
 
-
-    .info-card .eyebrow {
-
-      color: #efb4b7;
-
+    .submit-side{
+      position:sticky;
+      top:105px;
     }
 
-
-    .info-card h3 {
-
-      margin: 0 0 12px;
-
-      color: #fff;
-
-      font-size: 24px;
-
+    .info-card{
+      background:var(--navy);
+      color:#fff;
+      border-radius:22px;
+      padding:28px;
+      box-shadow:0 15px 40px rgba(18,43,82,.13);
     }
 
-
-    .info-card p {
-
-      color: #c8d1df;
-
-      font-size: 12px;
-
-      line-height: 1.7;
-
+    .info-card .eyebrow{
+      color:#efb4b7;
     }
 
-
-    .steps {
-
-      margin: 22px 0 0;
-
-      padding: 0;
-
-      list-style: none;
-
+    .info-card h3{
+      margin:0 0 12px;
+      color:#fff;
+      font-size:24px;
     }
 
-
-    .steps li {
-
-      display: flex;
-
-      gap: 12px;
-
-      align-items: flex-start;
-
-      padding: 10px 0;
-
-      border-bottom: 1px solid
-        rgba(255,255,255,.1);
-
-      color: #dbe3ee;
-
-      font-size: 12px;
-
+    .info-card p{
+      color:#c8d1df;
+      font-size:12px;
+      line-height:1.7;
     }
 
-
-    .steps li:last-child {
-
-      border-bottom: 0;
-
+    .steps{
+      margin:22px 0 0;
+      padding:0;
+      list-style:none;
     }
 
-
-    .step-number {
-
-      display: grid;
-
-      place-items: center;
-
-      flex: 0 0 25px;
-
-      width: 25px;
-
-      height: 25px;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,.12);
-
-      color: #fff;
-
-      font-size: 10px;
-
-      font-weight: 900;
-
+    .steps li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,.1);
+      color:#dbe3ee;
+      font-size:12px;
     }
 
-
-
-    /* =====================================================
-       SUCCESS PANEL
-    ===================================================== */
-
-    .success-panel {
-
-      display: none;
-
-      text-align: center;
-
-      padding: 30px 15px;
-
+    .steps li:last-child{
+      border-bottom:0;
     }
 
-
-    .success-icon {
-
-      display: grid;
-
-      place-items: center;
-
-      width: 64px;
-
-      height: 64px;
-
-      margin: 0 auto 18px;
-
-      border-radius: 50%;
-
-      background: #eef8f0;
-
-      color: #246233;
-
-      font-size: 28px;
-
-      font-weight: 900;
-
+    .step-number{
+      display:grid;
+      place-items:center;
+      flex:0 0 25px;
+      width:25px;
+      height:25px;
+      border-radius:50%;
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      font-size:10px;
+      font-weight:900;
     }
 
-
-    .success-panel h3 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: 26px;
-
+    .success-panel{
+      display:none;
+      text-align:center;
+      padding:30px 15px;
     }
 
-
-    .success-panel p {
-
-      max-width: 550px;
-
-      margin: 10px auto 0;
-
-      color: var(--muted);
-
-      font-size: 13px;
-
+    .success-icon{
+      display:grid;
+      place-items:center;
+      width:64px;
+      height:64px;
+      margin:0 auto 18px;
+      border-radius:50%;
+      background:#eef8f0;
+      color:#246233;
+      font-size:28px;
+      font-weight:900;
     }
 
-
-    .success-actions {
-
-      display: flex;
-
-      justify-content: center;
-
-      gap: 10px;
-
-      flex-wrap: wrap;
-
-      margin-top: 22px;
-
+    .success-panel h3{
+      margin:0;
+      color:var(--navy);
+      font-size:26px;
     }
 
+    .success-panel p{
+      max-width:550px;
+      margin:10px auto 0;
+      color:var(--muted);
+      font-size:13px;
+    }
 
+    .success-actions{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
 
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
+    @media(max-width:900px){
 
-    @media(max-width: 900px) {
-
-      .submit-layout {
-
-        grid-template-columns: 1fr;
-
+      .submit-layout{
+        grid-template-columns:1fr;
       }
 
-
-      .submit-side {
-
-        position: static;
-
+      .submit-side{
+        position:static;
       }
 
     }
 
+    @media(max-width:600px){
 
-    @media(max-width: 600px) {
-
-      .submit-section {
-
-        padding: 45px 0 65px;
-
+      .submit-section{
+        padding:45px 0 65px;
       }
 
-
-      .submit-card {
-
-        padding: 22px;
-
-        border-radius: 19px;
-
+      .submit-card{
+        padding:22px;
+        border-radius:19px;
       }
 
-
-      .two-columns {
-
-        grid-template-columns: 1fr;
-
-        gap: 0;
-
+      .two-columns{
+        grid-template-columns:1fr;
+        gap:0;
       }
 
-
-      .profile-row {
-
-        display: block;
-
+      .profile-row{
+        display:block;
       }
 
+      .profile-row strong{
+        display:block;
+        text-align:left;
+        margin-top:2px;
+      }
 
-      .profile-row strong {
-
-        display: block;
-
-        text-align: left;
-
-        margin-top: 2px;
-
+      .submit-hero{
+        padding:45px 0;
       }
 
     }
@@ -778,18 +427,12 @@
 </head>
 
 
-
 <body>
 
-
-<!-- =====================================================
-     HEADER
-====================================================== -->
 
 <header class="site-header">
 
   <div class="container nav-wrap">
-
 
     <a
       class="brand"
@@ -814,7 +457,6 @@
       </span>
 
     </a>
-
 
 
     <nav class="nav">
@@ -849,7 +491,6 @@
     </nav>
 
 
-
     <button
       class="menu-toggle"
       type="button"
@@ -858,16 +499,11 @@
       ☰
     </button>
 
-
   </div>
 
 </header>
 
 
-
-<!-- =====================================================
-     HERO
-====================================================== -->
 
 <section class="submit-hero">
 
@@ -894,10 +530,6 @@
 
 
 
-<!-- =====================================================
-     MAIN
-====================================================== -->
-
 <main>
 
 <section class="submit-section">
@@ -907,14 +539,8 @@
     <div class="submit-layout">
 
 
-      <!-- =================================================
-           FORM
-      ================================================== -->
-
       <div class="submit-card">
 
-
-        <!-- FORM AREA -->
 
         <div id="formArea">
 
@@ -928,10 +554,9 @@
 
           <p class="submit-card-intro">
             Your profile information is automatically attached
-            to this submission. You only need to provide the
-            resource details.
+            to this submission. Select the resource type and
+            provide the resource details.
           </p>
-
 
 
           <!-- PROFILE -->
@@ -945,9 +570,7 @@
 
             <div class="profile-row">
 
-              <span>
-                Name
-              </span>
+              <span>Name</span>
 
               <strong id="profileName">
                 Loading...
@@ -958,9 +581,7 @@
 
             <div class="profile-row">
 
-              <span>
-                Session
-              </span>
+              <span>Session</span>
 
               <strong id="profileSession">
                 —
@@ -971,9 +592,7 @@
 
             <div class="profile-row">
 
-              <span>
-                Student ID
-              </span>
+              <span>Student ID</span>
 
               <strong id="profileStudentId">
                 —
@@ -984,9 +603,7 @@
 
             <div class="profile-row">
 
-              <span>
-                Your Campus
-              </span>
+              <span>Your Campus</span>
 
               <strong id="profileCampus">
                 —
@@ -997,8 +614,6 @@
           </div>
 
 
-
-          <!-- FORM -->
 
           <form
             id="submissionForm"
@@ -1048,9 +663,6 @@
             </div>
 
 
-
-            <!-- TYPE DESCRIPTION -->
-
             <div
               id="resourceTypeInfo"
               class="resource-type-info"
@@ -1082,90 +694,165 @@
 
 
 
-            <!-- COURSE + TARGET CAMPUS -->
+            <!-- COURSE -->
 
-            <div class="two-columns">
+            <div class="form-group">
 
+              <label for="course">
 
-              <div class="form-group">
+                Course / Subject
+                <span class="required">*</span>
 
-                <label for="course">
-
-                  Course / Subject
-                  <span class="required">*</span>
-
-                </label>
+              </label>
 
 
-                <input
-                  id="course"
-                  type="text"
-                  maxlength="150"
-                  placeholder="e.g. Political Theory"
-                  required
-                >
+              <select
+                id="course"
+                required
+              >
 
-              </div>
+                <option value="">
+                  Select Course / Subject
+                </option>
 
+                <option value="PS 101|Ancient and Medieval Western Political Thought">
+                  PS 101 — Ancient and Medieval Western Political Thought
+                </option>
 
+                <option value="PS 102|Political Theory and Organization">
+                  PS 102 — Political Theory and Organization
+                </option>
 
-              <div class="form-group">
+                <option value="PS 103|Government and Politics: UK, USA and France">
+                  PS 103 — Government and Politics: UK, USA and France
+                </option>
 
-                <label for="targetCampus">
+                <option value="PS 104|Principles of Sociology">
+                  PS 104 — Principles of Sociology
+                </option>
 
-                  Resource Campus
-                  <span class="required">*</span>
+                <option value="PS 105|Modern Western Political Thought">
+                  PS 105 — Modern Western Political Thought
+                </option>
 
-                </label>
+                <option value="PS 211501|History of the Emergence of Independent Bangladesh">
+                  PS 211501 — History of the Emergence of Independent Bangladesh
+                </option>
 
+                <option value="PS 107|Socio-Political and Constitutional Development in British India (1757 to 1947)">
+                  PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)
+                </option>
 
-                <select
-                  id="targetCampus"
-                  required
-                >
+                <option value="PS 108|Public Administration in Bangladesh">
+                  PS 108 — Public Administration in Bangladesh
+                </option>
 
-                  <option value="">
-                    Select campus
-                  </option>
+                <option value="other">
+                  Other / Not Listed
+                </option>
 
-                  <option value="Dhaka College">
-                    Dhaka College
-                  </option>
-
-                  <option value="Eden Mohila College">
-                    Eden Mohila College
-                  </option>
-
-                  <option value="Titumir College">
-                    Titumir College
-                  </option>
-
-                  <option value="Bangla College">
-                    Bangla College
-                  </option>
-
-                  <option value="Kabi Nazrul College">
-                    Kabi Nazrul College
-                  </option>
-
-                  <option value="Begum Badrunnesa Mohila College">
-                    Begum Badrunnesa Mohila College
-                  </option>
-
-                  <option value="Shaheed Suhrawardy College">
-                    Shaheed Suhrawardy College
-                  </option>
-
-                </select>
+              </select>
 
 
-                <p class="form-help">
-                  Select the campus this resource is intended for.
-                  It can be different from your own campus.
-                </p>
+              <div
+                id="courseSelectedInfo"
+                class="course-selected-info"
+              ></div>
 
-              </div>
 
+              <p class="form-help">
+                Select the relevant Political Science course.
+                If your course is not listed, choose
+                “Other / Not Listed”.
+              </p>
+
+            </div>
+
+
+
+            <!-- OTHER COURSE -->
+
+            <div
+              id="otherCourseGroup"
+              class="form-group"
+              style="display:none"
+            >
+
+              <label for="otherCourse">
+
+                Course / Subject Name
+                <span class="required">*</span>
+
+              </label>
+
+
+              <input
+                id="otherCourse"
+                type="text"
+                maxlength="180"
+                placeholder="Enter course code and name"
+              >
+
+            </div>
+
+
+
+            <!-- TARGET CAMPUS -->
+
+            <div class="form-group">
+
+              <label for="targetCampus">
+
+                Resource Campus
+                <span class="required">*</span>
+
+              </label>
+
+
+              <select
+                id="targetCampus"
+                required
+              >
+
+                <option value="">
+                  Select campus
+                </option>
+
+                <option value="Dhaka College">
+                  Dhaka College
+                </option>
+
+                <option value="Eden Mohila College">
+                  Eden Mohila College
+                </option>
+
+                <option value="Titumir College">
+                  Titumir College
+                </option>
+
+                <option value="Bangla College">
+                  Bangla College
+                </option>
+
+                <option value="Kabi Nazrul College">
+                  Kabi Nazrul College
+                </option>
+
+                <option value="Begum Badrunnesa Mohila College">
+                  Begum Badrunnesa Mohila College
+                </option>
+
+                <option value="Shaheed Suhrawardy College">
+                  Shaheed Suhrawardy College
+                </option>
+
+              </select>
+
+
+              <p class="form-help">
+                This is the campus the resource is intended
+                for. It may be different from your own campus.
+              </p>
 
             </div>
 
@@ -1192,17 +879,20 @@
 
 
               <p class="form-help">
-                A clear description helps other students understand
-                the resource before opening it.
+                A clear description helps other students
+                understand the resource before opening it.
               </p>
 
             </div>
 
 
 
-            <!-- DRIVE LINK -->
+            <!-- DRIVE -->
 
-            <div class="form-group">
+            <div
+              id="driveGroup"
+              class="form-group"
+            >
 
               <label for="driveLink">
 
@@ -1216,7 +906,6 @@
                 id="driveLink"
                 type="url"
                 placeholder="https://drive.google.com/..."
-                required
               >
 
 
@@ -1228,9 +917,9 @@
 
                 <p>
                   Upload your PDF or document to your own
-                  Google Drive, set the sharing permission so
-                  anyone with the link can view it, then paste
-                  the Google Drive link here.
+                  Google Drive, set sharing to
+                  “Anyone with the link can view”, then paste
+                  the link here.
                 </p>
 
               </div>
@@ -1274,9 +963,7 @@
 
 
 
-        <!-- =================================================
-             SUCCESS
-        ================================================== -->
+        <!-- SUCCESS -->
 
         <div
           id="successPanel"
@@ -1296,7 +983,7 @@
           <p>
             Your resource has been submitted successfully
             and is now waiting for admin review. It will appear
-            in the Academic Archive only after approval.
+            in the Academic Archive after approval.
           </p>
 
 
@@ -1326,12 +1013,9 @@
 
 
 
-      <!-- =================================================
-           SIDE INFORMATION
-      ================================================== -->
+      <!-- SIDE -->
 
       <aside class="submit-side">
-
 
         <div class="info-card">
 
@@ -1353,7 +1037,6 @@
 
 
           <ol class="steps">
-
 
             <li>
 
@@ -1389,7 +1072,7 @@
               </span>
 
               <span>
-                Select the resource type and target campus.
+                Select resource type, course and target campus.
               </span>
 
             </li>
@@ -1421,12 +1104,9 @@
 
             </li>
 
-
           </ol>
 
-
         </div>
-
 
       </aside>
 
@@ -1440,10 +1120,6 @@
 </main>
 
 
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
 
 <footer class="site-footer">
 
@@ -1472,10 +1148,8 @@
 const SUPABASE_URL =
   "https://psqwnvgruyfgdoukvpid.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -1484,58 +1158,51 @@ const supabaseClient =
   );
 
 
-
 /* =========================================================
    DOM
 ========================================================= */
 
 const submissionForm =
-  document.getElementById(
-    "submissionForm"
-  );
-
+  document.getElementById("submissionForm");
 
 const submitButton =
-  document.getElementById(
-    "submitButton"
-  );
-
+  document.getElementById("submitButton");
 
 const formMessage =
-  document.getElementById(
-    "formMessage"
-  );
-
+  document.getElementById("formMessage");
 
 const resourceType =
-  document.getElementById(
-    "resourceType"
-  );
-
+  document.getElementById("resourceType");
 
 const resourceTypeInfo =
-  document.getElementById(
-    "resourceTypeInfo"
-  );
+  document.getElementById("resourceTypeInfo");
 
+const course =
+  document.getElementById("course");
+
+const otherCourseGroup =
+  document.getElementById("otherCourseGroup");
+
+const otherCourse =
+  document.getElementById("otherCourse");
+
+const courseSelectedInfo =
+  document.getElementById("courseSelectedInfo");
 
 const targetCampus =
-  document.getElementById(
-    "targetCampus"
-  );
-
+  document.getElementById("targetCampus");
 
 const formArea =
-  document.getElementById(
-    "formArea"
-  );
-
+  document.getElementById("formArea");
 
 const successPanel =
-  document.getElementById(
-    "successPanel"
-  );
+  document.getElementById("successPanel");
 
+const driveGroup =
+  document.getElementById("driveGroup");
+
+const driveLink =
+  document.getElementById("driveLink");
 
 
 /* =========================================================
@@ -1543,30 +1210,105 @@ const successPanel =
 ========================================================= */
 
 let currentUser = null;
-
 let currentProfile = null;
 
 
+/* =========================================================
+   URL TYPE
+========================================================= */
 
-async function loadUserProfile() {
+const urlParams =
+  new URLSearchParams(
+    window.location.search
+  );
 
-  try {
+const requestedType =
+  urlParams.get("type");
+
+
+const validTypes = [
+  "note",
+  "question",
+  "suggestion",
+  "article"
+];
+
+
+/* =========================================================
+   TYPE DESCRIPTIONS
+========================================================= */
+
+const typeDescriptions = {
+
+  note:
+    "Academic notes, class notes, study materials or other educational documents.",
+
+  question:
+    "Previous examination questions, model questions or question papers.",
+
+  suggestion:
+    "Useful academic suggestions, recommendations or ideas for improving student resources.",
+
+  article:
+    "Original academic or research-oriented articles suitable for the StateCrafter community."
+
+};
+
+
+/* =========================================================
+   COURSE DATA
+========================================================= */
+
+const courseData = {
+
+  "PS 101":
+    "Ancient and Medieval Western Political Thought",
+
+  "PS 102":
+    "Political Theory and Organization",
+
+  "PS 103":
+    "Government and Politics: UK, USA and France",
+
+  "PS 104":
+    "Principles of Sociology",
+
+  "PS 105":
+    "Modern Western Political Thought",
+
+  "PS 211501":
+    "History of the Emergence of Independent Bangladesh",
+
+  "PS 107":
+    "Socio-Political and Constitutional Development in British India (1757 to 1947)",
+
+  "PS 108":
+    "Public Administration in Bangladesh"
+
+};
+
+
+/* =========================================================
+   CURRENT USER PROFILE
+========================================================= */
+
+async function loadUserProfile(){
+
+  try{
 
     const {
-      data: {
+      data:{
         user
       },
-      error: userError
+      error:userError
     } =
-      await supabaseClient
-        .auth
-        .getUser();
+      await supabaseClient.auth.getUser();
 
 
-    if (
+    if(
       userError ||
       !user
-    ) {
+    ){
 
       window.location.href =
         "login.html";
@@ -1581,29 +1323,25 @@ async function loadUserProfile() {
 
 
     const {
-      data: profile,
-      error: profileError
+      data:profile,
+      error:profileError
     } =
       await supabaseClient
-
         .from("profiles")
-
         .select(
           "id, full_name, session, student_id, campus, role"
         )
-
         .eq(
           "id",
           user.id
         )
-
         .single();
 
 
-    if (
+    if(
       profileError ||
       !profile
-    ) {
+    ){
 
       showMessage(
         "Your profile could not be loaded. Please contact the administrator.",
@@ -1622,14 +1360,9 @@ async function loadUserProfile() {
       profile;
 
 
-    /*
-      Admin should use Admin Dashboard
-      instead of student submission form.
-    */
-
-    if (
+    if(
       profile.role === "admin"
-    ) {
+    ){
 
       window.location.href =
         "admin-dashboard.html";
@@ -1639,9 +1372,9 @@ async function loadUserProfile() {
     }
 
 
-    if (
+    if(
       profile.role !== "student"
-    ) {
+    ){
 
       await supabaseClient
         .auth
@@ -1684,20 +1417,16 @@ async function loadUserProfile() {
 
 
     /*
-      IMPORTANT:
+      The student's own campus is NOT automatically
+      selected as the resource campus.
 
-      Do NOT automatically select target campus.
-
-      The student's own campus and the resource's
-      target campus are separate concepts.
-
-      The student may submit a resource for another campus.
+      A student can submit material for another campus.
     */
 
-
-  } catch (error) {
+  }catch(error){
 
     console.error(
+      "Profile error:",
       error
     );
 
@@ -1711,54 +1440,170 @@ async function loadUserProfile() {
 }
 
 
-
 /* =========================================================
-   RESOURCE TYPE HELP
+   SET TYPE FROM URL
 ========================================================= */
 
-const typeDescriptions = {
+function initializeSubmissionType(){
 
-  note:
-    "Academic notes, class notes, study materials or other educational documents.",
+  if(
+    validTypes.includes(
+      requestedType
+    )
+  ){
 
-  question:
-    "Previous examination questions, model questions or question papers.",
+    resourceType.value =
+      requestedType;
 
-  suggestion:
-    "Useful academic suggestions, recommendations or ideas for improving student resources.",
+    updateResourceTypeInfo();
 
-  article:
-    "Original academic or research-oriented articles suitable for the StateCrafter community."
+  }
 
-};
+}
+
+
+/* =========================================================
+   RESOURCE TYPE
+========================================================= */
+
+function updateResourceTypeInfo(){
+
+  const type =
+    resourceType.value;
+
+
+  if(
+    type &&
+    typeDescriptions[type]
+  ){
+
+    resourceTypeInfo.textContent =
+      typeDescriptions[type];
+
+    resourceTypeInfo.classList.add(
+      "visible"
+    );
+
+  }else{
+
+    resourceTypeInfo.textContent =
+      "";
+
+    resourceTypeInfo.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  /*
+    Suggestions are informational submissions,
+    but we still allow a Drive link if the user has
+    supporting material.
+  */
+
+  if(
+    type === "suggestion"
+  ){
+
+    driveLink.required = false;
+
+    driveGroup.querySelector(
+      "label"
+    ).innerHTML =
+      `Google Drive Link <span style="color:var(--muted);font-weight:700">(Optional)</span>`;
+
+  }else{
+
+    driveLink.required = true;
+
+    driveGroup.querySelector(
+      "label"
+    ).innerHTML =
+      `Google Drive Link <span class="required">*</span>`;
+
+  }
+
+}
 
 
 resourceType.addEventListener(
   "change",
-  () => {
-
-    const type =
-      resourceType.value;
+  updateResourceTypeInfo
+);
 
 
-    if (
-      type &&
-      typeDescriptions[type]
-    ) {
+/* =========================================================
+   COURSE SELECT
+========================================================= */
 
-      resourceTypeInfo.textContent =
-        typeDescriptions[type];
+course.addEventListener(
+  "change",
+  function(){
 
-      resourceTypeInfo.classList.add(
+    const value =
+      this.value;
+
+
+    if(
+      value === "other"
+    ){
+
+      otherCourseGroup.style.display =
+        "block";
+
+      otherCourse.required =
+        true;
+
+      courseSelectedInfo.textContent =
+        "Enter the course code and full course name below.";
+
+      courseSelectedInfo.classList.add(
         "visible"
       );
 
-    } else {
+      return;
 
-      resourceTypeInfo.textContent =
+    }
+
+
+    otherCourseGroup.style.display =
+      "none";
+
+    otherCourse.required =
+      false;
+
+    otherCourse.value =
+      "";
+
+
+    if(
+      value
+    ){
+
+      const parts =
+        value.split("|");
+
+      const code =
+        parts[0];
+
+      const name =
+        parts.slice(1).join("|");
+
+
+      courseSelectedInfo.textContent =
+        `${code} — ${name}`;
+
+      courseSelectedInfo.classList.add(
+        "visible"
+      );
+
+    }else{
+
+      courseSelectedInfo.textContent =
         "";
 
-      resourceTypeInfo.classList.remove(
+      courseSelectedInfo.classList.remove(
         "visible"
       );
 
@@ -1768,34 +1613,32 @@ resourceType.addEventListener(
 );
 
 
-
 /* =========================================================
    DRIVE LINK VALIDATION
 ========================================================= */
 
 function isValidDriveLink(
   value
-) {
+){
 
-  try {
+  try{
 
     const url =
       new URL(
         value
       );
 
-
     const host =
       url.hostname
         .toLowerCase();
 
 
-    return (
+    return(
       host === "drive.google.com" ||
       host === "docs.google.com"
     );
 
-  } catch {
+  }catch{
 
     return false;
 
@@ -1804,6 +1647,34 @@ function isValidDriveLink(
 }
 
 
+/* =========================================================
+   GET COURSE VALUE
+========================================================= */
+
+function getCourseValue(){
+
+  if(
+    course.value === "other"
+  ){
+
+    return otherCourse.value.trim();
+
+  }
+
+
+  if(
+    !course.value
+  ){
+
+    return "";
+
+  }
+
+
+  return course.value;
+
+}
+
 
 /* =========================================================
    FORM SUBMISSION
@@ -1811,18 +1682,17 @@ function isValidDriveLink(
 
 submissionForm.addEventListener(
   "submit",
-  async event => {
+  async function(event){
 
     event.preventDefault();
-
 
     hideMessage();
 
 
-    if (
+    if(
       !currentUser ||
       !currentProfile
-    ) {
+    ){
 
       showMessage(
         "Your account is not ready. Please refresh the page.",
@@ -1845,11 +1715,8 @@ submissionForm.addEventListener(
         .trim();
 
 
-    const course =
-      document
-        .getElementById("course")
-        .value
-        .trim();
+    const selectedCourse =
+      getCourseValue();
 
 
     const selectedCampus =
@@ -1863,19 +1730,15 @@ submissionForm.addEventListener(
         .trim();
 
 
-    const driveLink =
-      document
-        .getElementById("driveLink")
-        .value
-        .trim();
+    const link =
+      driveLink.value.trim();
 
 
-
-    /* -----------------------------------------------
+    /* =====================================================
        VALIDATION
-    ------------------------------------------------ */
+    ===================================================== */
 
-    if (!type) {
+    if(!type){
 
       showMessage(
         "Please select a resource type.",
@@ -1889,7 +1752,7 @@ submissionForm.addEventListener(
     }
 
 
-    if (!title) {
+    if(!title){
 
       showMessage(
         "Please enter a title.",
@@ -1905,23 +1768,21 @@ submissionForm.addEventListener(
     }
 
 
-    if (!course) {
+    if(!selectedCourse){
 
       showMessage(
-        "Please enter the course or subject.",
+        "Please select or enter the course / subject.",
         "error"
       );
 
-      document
-        .getElementById("course")
-        .focus();
+      course.focus();
 
       return;
 
     }
 
 
-    if (!selectedCampus) {
+    if(!selectedCampus){
 
       showMessage(
         "Please select the campus this resource is intended for.",
@@ -1935,7 +1796,7 @@ submissionForm.addEventListener(
     }
 
 
-    if (!description) {
+    if(!description){
 
       showMessage(
         "Please provide a short description.",
@@ -1951,46 +1812,48 @@ submissionForm.addEventListener(
     }
 
 
-    if (!driveLink) {
+    /*
+      Drive link is required for every type except
+      suggestion.
+    */
+
+    if(
+      type !== "suggestion" &&
+      !link
+    ){
 
       showMessage(
         "Please provide your Google Drive link.",
         "error"
       );
 
-      document
-        .getElementById("driveLink")
-        .focus();
+      driveLink.focus();
 
       return;
 
     }
 
 
-    if (
-      !isValidDriveLink(
-        driveLink
-      )
-    ) {
+    if(
+      link &&
+      !isValidDriveLink(link)
+    ){
 
       showMessage(
         "Please enter a valid Google Drive or Google Docs link.",
         "error"
       );
 
-      document
-        .getElementById("driveLink")
-        .focus();
+      driveLink.focus();
 
       return;
 
     }
 
 
-
-    /* -----------------------------------------------
-       PREVENT DUPLICATE CLICK
-    ------------------------------------------------ */
+    /* =====================================================
+       PREVENT DOUBLE SUBMIT
+    ===================================================== */
 
     submitButton.disabled =
       true;
@@ -1999,15 +1862,13 @@ submissionForm.addEventListener(
       "Submitting...";
 
 
-
-    try {
-
+    try{
 
       /*
-        IMPORTANT DATABASE STRUCTURE
+        IMPORTANT
 
-        This form expects the submissions table
-        to contain these fields:
+        The following fields must exist in the
+        submissions table:
 
         user_id
         resource_type
@@ -2036,7 +1897,7 @@ submissionForm.addEventListener(
           title,
 
         course:
-          course,
+          selectedCourse,
 
         description:
           description,
@@ -2045,7 +1906,7 @@ submissionForm.addEventListener(
           selectedCampus,
 
         drive_link:
-          driveLink,
+          link || null,
 
         status:
           "pending",
@@ -2073,25 +1934,22 @@ submissionForm.addEventListener(
         error
       } =
         await supabaseClient
-
           .from("submissions")
-
           .insert(
             submissionData
           );
 
 
-      if (error) {
+      if(error){
 
         throw error;
 
       }
 
 
-
-      /* -----------------------------------------------
+      /* ===================================================
          SUCCESS
-      ------------------------------------------------ */
+      =================================================== */
 
       formArea.style.display =
         "none";
@@ -2101,12 +1959,12 @@ submissionForm.addEventListener(
 
 
       window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
       });
 
 
-    } catch (error) {
+    }catch(error){
 
       console.error(
         "Submission error:",
@@ -2118,9 +1976,10 @@ submissionForm.addEventListener(
         "Submission failed. Please try again.";
 
 
-      if (
+      if(
+        error &&
         error.message
-      ) {
+      ){
 
         message =
           error.message;
@@ -2146,7 +2005,6 @@ submissionForm.addEventListener(
 );
 
 
-
 /* =========================================================
    MESSAGE
 ========================================================= */
@@ -2154,7 +2012,7 @@ submissionForm.addEventListener(
 function showMessage(
   message,
   type
-) {
+){
 
   formMessage.textContent =
     message;
@@ -2165,7 +2023,7 @@ function showMessage(
 }
 
 
-function hideMessage() {
+function hideMessage(){
 
   formMessage.textContent =
     "";
@@ -2174,7 +2032,6 @@ function hideMessage() {
     "form-message";
 
 }
-
 
 
 /* =========================================================
@@ -2186,21 +2043,20 @@ const menuToggle =
     ".menu-toggle"
   );
 
-
 const nav =
   document.querySelector(
     ".nav"
   );
 
 
-if (
+if(
   menuToggle &&
   nav
-) {
+){
 
   menuToggle.addEventListener(
     "click",
-    () => {
+    function(){
 
       nav.classList.toggle(
         "open"
@@ -2212,12 +2068,14 @@ if (
 }
 
 
-
 /* =========================================================
    START
 ========================================================= */
 
-loadUserProfile();
+loadUserProfile()
+  .then(
+    initializeSubmissionType
+  );
 
 </script>
 
