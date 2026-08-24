@@ -197,19 +197,15 @@
       display:block;
     }
 
-    .course-selected-info{
-      display:none;
+    .course-help{
+      background:#f8fafc;
+      border:1px solid #e1e5ea;
+      border-radius:12px;
+      padding:10px 13px;
       margin-top:8px;
-      padding:10px 12px;
-      border-radius:10px;
-      background:#f5f7fa;
       color:var(--muted);
       font-size:11px;
       line-height:1.5;
-    }
-
-    .course-selected-info.visible{
-      display:block;
     }
 
     .drive-box{
@@ -416,10 +412,6 @@
         margin-top:2px;
       }
 
-      .submit-hero{
-        padding:45px 0;
-      }
-
     }
 
   </style>
@@ -504,7 +496,6 @@
 </header>
 
 
-
 <section class="submit-hero">
 
   <div class="container">
@@ -529,7 +520,6 @@
 </section>
 
 
-
 <main>
 
 <section class="submit-section">
@@ -540,7 +530,6 @@
 
 
       <div class="submit-card">
-
 
         <div id="formArea">
 
@@ -554,8 +543,7 @@
 
           <p class="submit-card-intro">
             Your profile information is automatically attached
-            to this submission. Select the resource type and
-            provide the resource details.
+            to this submission.
           </p>
 
 
@@ -614,7 +602,6 @@
           </div>
 
 
-
           <form
             id="submissionForm"
             novalidate
@@ -631,7 +618,6 @@
                 <span class="required">*</span>
 
               </label>
-
 
               <select
                 id="resourceType"
@@ -669,7 +655,6 @@
             ></div>
 
 
-
             <!-- TITLE -->
 
             <div class="form-group">
@@ -681,7 +666,6 @@
 
               </label>
 
-
               <input
                 id="title"
                 type="text"
@@ -691,7 +675,6 @@
               >
 
             </div>
-
 
 
             <!-- COURSE -->
@@ -705,96 +688,54 @@
 
               </label>
 
-
               <select
                 id="course"
                 required
               >
 
                 <option value="">
-                  Select Course / Subject
+                  Select course
                 </option>
 
-                <option value="PS 101|Ancient and Medieval Western Political Thought">
+                <option value="PS 101">
                   PS 101 — Ancient and Medieval Western Political Thought
                 </option>
 
-                <option value="PS 102|Political Theory and Organization">
+                <option value="PS 102">
                   PS 102 — Political Theory and Organization
                 </option>
 
-                <option value="PS 103|Government and Politics: UK, USA and France">
+                <option value="PS 103">
                   PS 103 — Government and Politics: UK, USA and France
                 </option>
 
-                <option value="PS 104|Principles of Sociology">
+                <option value="PS 104">
                   PS 104 — Principles of Sociology
                 </option>
 
-                <option value="PS 105|Modern Western Political Thought">
+                <option value="PS 105">
                   PS 105 — Modern Western Political Thought
                 </option>
 
-                <option value="PS 211501|History of the Emergence of Independent Bangladesh">
+                <option value="PS 211501">
                   PS 211501 — History of the Emergence of Independent Bangladesh
                 </option>
 
-                <option value="PS 107|Socio-Political and Constitutional Development in British India (1757 to 1947)">
+                <option value="PS 107">
                   PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)
                 </option>
 
-                <option value="PS 108|Public Administration in Bangladesh">
+                <option value="PS 108">
                   PS 108 — Public Administration in Bangladesh
-                </option>
-
-                <option value="other">
-                  Other / Not Listed
                 </option>
 
               </select>
 
-
-              <div
-                id="courseSelectedInfo"
-                class="course-selected-info"
-              ></div>
-
-
-              <p class="form-help">
-                Select the relevant Political Science course.
-                If your course is not listed, choose
-                “Other / Not Listed”.
-              </p>
+              <div class="course-help">
+                Select the course that this resource belongs to.
+              </div>
 
             </div>
-
-
-
-            <!-- OTHER COURSE -->
-
-            <div
-              id="otherCourseGroup"
-              class="form-group"
-              style="display:none"
-            >
-
-              <label for="otherCourse">
-
-                Course / Subject Name
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="otherCourse"
-                type="text"
-                maxlength="180"
-                placeholder="Enter course code and name"
-              >
-
-            </div>
-
 
 
             <!-- TARGET CAMPUS -->
@@ -807,7 +748,6 @@
                 <span class="required">*</span>
 
               </label>
-
 
               <select
                 id="targetCampus"
@@ -848,14 +788,12 @@
 
               </select>
 
-
               <p class="form-help">
-                This is the campus the resource is intended
-                for. It may be different from your own campus.
+                This is the campus the resource is intended for.
+                It can be different from your own campus.
               </p>
 
             </div>
-
 
 
             <!-- DESCRIPTION -->
@@ -869,7 +807,6 @@
 
               </label>
 
-
               <textarea
                 id="description"
                 maxlength="2000"
@@ -877,22 +814,12 @@
                 required
               ></textarea>
 
-
-              <p class="form-help">
-                A clear description helps other students
-                understand the resource before opening it.
-              </p>
-
             </div>
 
 
+            <!-- DRIVE LINK -->
 
-            <!-- DRIVE -->
-
-            <div
-              id="driveGroup"
-              class="form-group"
-            >
+            <div class="form-group">
 
               <label for="driveLink">
 
@@ -901,13 +828,12 @@
 
               </label>
 
-
               <input
                 id="driveLink"
                 type="url"
                 placeholder="https://drive.google.com/..."
+                required
               >
-
 
               <div class="drive-box">
 
@@ -917,9 +843,9 @@
 
                 <p>
                   Upload your PDF or document to your own
-                  Google Drive, set sharing to
-                  “Anyone with the link can view”, then paste
-                  the link here.
+                  Google Drive. Set sharing to
+                  <strong>Anyone with the link → Viewer</strong>,
+                  then paste the link here.
                 </p>
 
               </div>
@@ -927,8 +853,7 @@
             </div>
 
 
-
-            <!-- SUBMIT -->
+            <!-- ACTIONS -->
 
             <div class="submit-actions">
 
@@ -939,7 +864,6 @@
               >
                 Submit for Review
               </button>
-
 
               <a
                 href="student-dashboard.html"
@@ -962,7 +886,6 @@
         </div>
 
 
-
         <!-- SUCCESS -->
 
         <div
@@ -974,18 +897,14 @@
             ✓
           </div>
 
-
           <h3>
             Submission Received
           </h3>
 
-
           <p>
             Your resource has been submitted successfully
-            and is now waiting for admin review. It will appear
-            in the Academic Archive after approval.
+            and is now waiting for admin review.
           </p>
-
 
           <div class="success-actions">
 
@@ -995,7 +914,6 @@
             >
               View My Submissions
             </a>
-
 
             <a
               href="archive.html"
@@ -1008,9 +926,7 @@
 
         </div>
 
-
       </div>
-
 
 
       <!-- SIDE -->
@@ -1023,18 +939,13 @@
             HOW IT WORKS
           </p>
 
-
           <h3>
             From your Drive to the Archive.
           </h3>
 
-
           <p>
             Every submission is reviewed before publication.
-            This helps keep the StateCrafter Academic Archive
-            useful, accurate and organized.
           </p>
-
 
           <ol class="steps">
 
@@ -1050,7 +961,6 @@
 
             </li>
 
-
             <li>
 
               <span class="step-number">
@@ -1058,12 +968,10 @@
               </span>
 
               <span>
-                Make the Drive link accessible to anyone
-                with the link.
+                Set the Drive link to anyone with the link.
               </span>
 
             </li>
-
 
             <li>
 
@@ -1072,11 +980,10 @@
               </span>
 
               <span>
-                Select resource type, course and target campus.
+                Select resource type, course and campus.
               </span>
 
             </li>
-
 
             <li>
 
@@ -1085,11 +992,10 @@
               </span>
 
               <span>
-                Submit the form for admin review.
+                Submit the resource for review.
               </span>
 
             </li>
-
 
             <li>
 
@@ -1098,8 +1004,7 @@
               </span>
 
               <span>
-                After approval, the resource appears in
-                Academic Archive.
+                After approval, it appears in Academic Archive.
               </span>
 
             </li>
@@ -1110,7 +1015,6 @@
 
       </aside>
 
-
     </div>
 
   </div>
@@ -1118,7 +1022,6 @@
 </section>
 
 </main>
-
 
 
 <footer class="site-footer">
@@ -1138,12 +1041,11 @@
 </footer>
 
 
-
 <script>
 
-/* =========================================================
+/* =====================================================
    SUPABASE
-========================================================= */
+===================================================== */
 
 const SUPABASE_URL =
   "https://psqwnvgruyfgdoukvpid.supabase.co";
@@ -1158,9 +1060,9 @@ const supabaseClient =
   );
 
 
-/* =========================================================
+/* =====================================================
    DOM
-========================================================= */
+===================================================== */
 
 const submissionForm =
   document.getElementById("submissionForm");
@@ -1177,138 +1079,35 @@ const resourceType =
 const resourceTypeInfo =
   document.getElementById("resourceTypeInfo");
 
-const course =
-  document.getElementById("course");
-
-const otherCourseGroup =
-  document.getElementById("otherCourseGroup");
-
-const otherCourse =
-  document.getElementById("otherCourse");
-
-const courseSelectedInfo =
-  document.getElementById("courseSelectedInfo");
-
-const targetCampus =
-  document.getElementById("targetCampus");
-
 const formArea =
   document.getElementById("formArea");
 
 const successPanel =
   document.getElementById("successPanel");
 
-const driveGroup =
-  document.getElementById("driveGroup");
 
-const driveLink =
-  document.getElementById("driveLink");
-
-
-/* =========================================================
-   CURRENT USER / PROFILE
-========================================================= */
+/* =====================================================
+   USER / PROFILE
+===================================================== */
 
 let currentUser = null;
 let currentProfile = null;
 
-
-/* =========================================================
-   URL TYPE
-========================================================= */
-
-const urlParams =
-  new URLSearchParams(
-    window.location.search
-  );
-
-const requestedType =
-  urlParams.get("type");
-
-
-const validTypes = [
-  "note",
-  "question",
-  "suggestion",
-  "article"
-];
-
-
-/* =========================================================
-   TYPE DESCRIPTIONS
-========================================================= */
-
-const typeDescriptions = {
-
-  note:
-    "Academic notes, class notes, study materials or other educational documents.",
-
-  question:
-    "Previous examination questions, model questions or question papers.",
-
-  suggestion:
-    "Useful academic suggestions, recommendations or ideas for improving student resources.",
-
-  article:
-    "Original academic or research-oriented articles suitable for the StateCrafter community."
-
-};
-
-
-/* =========================================================
-   COURSE DATA
-========================================================= */
-
-const courseData = {
-
-  "PS 101":
-    "Ancient and Medieval Western Political Thought",
-
-  "PS 102":
-    "Political Theory and Organization",
-
-  "PS 103":
-    "Government and Politics: UK, USA and France",
-
-  "PS 104":
-    "Principles of Sociology",
-
-  "PS 105":
-    "Modern Western Political Thought",
-
-  "PS 211501":
-    "History of the Emergence of Independent Bangladesh",
-
-  "PS 107":
-    "Socio-Political and Constitutional Development in British India (1757 to 1947)",
-
-  "PS 108":
-    "Public Administration in Bangladesh"
-
-};
-
-
-/* =========================================================
-   CURRENT USER PROFILE
-========================================================= */
 
 async function loadUserProfile(){
 
   try{
 
     const {
-      data:{
+      data: {
         user
       },
-      error:userError
+      error: userError
     } =
       await supabaseClient.auth.getUser();
 
 
-    if(
-      userError ||
-      !user
-    ){
+    if(userError || !user){
 
       window.location.href =
         "login.html";
@@ -1318,51 +1117,53 @@ async function loadUserProfile(){
     }
 
 
-    currentUser =
-      user;
+    currentUser = user;
 
 
     const {
-      data:profile,
-      error:profileError
+      data: profile,
+      error: profileError
     } =
       await supabaseClient
+
         .from("profiles")
-        .select(
-          "id, full_name, session, student_id, campus, role"
-        )
-        .eq(
-          "id",
-          user.id
-        )
+
+        .select(`
+          id,
+          full_name,
+          session,
+          student_id,
+          campus,
+          role
+        `)
+
+        .eq("id", user.id)
+
         .single();
 
 
-    if(
-      profileError ||
-      !profile
-    ){
+    if(profileError || !profile){
+
+      console.error(profileError);
 
       showMessage(
         "Your profile could not be loaded. Please contact the administrator.",
         "error"
       );
 
-      submitButton.disabled =
-        true;
+      submitButton.disabled = true;
 
       return;
 
     }
 
 
-    currentProfile =
-      profile;
+    currentProfile = profile;
 
 
-    if(
-      profile.role === "admin"
-    ){
+    /* Admin goes to admin dashboard */
+
+    if(profile.role === "admin"){
 
       window.location.href =
         "admin-dashboard.html";
@@ -1372,13 +1173,11 @@ async function loadUserProfile(){
     }
 
 
-    if(
-      profile.role !== "student"
-    ){
+    /* Only students can submit */
 
-      await supabaseClient
-        .auth
-        .signOut();
+    if(profile.role !== "student"){
+
+      await supabaseClient.auth.signOut();
 
       window.location.href =
         "login.html";
@@ -1387,6 +1186,8 @@ async function loadUserProfile(){
 
     }
 
+
+    /* Profile display */
 
     document.getElementById(
       "profileName"
@@ -1416,19 +1217,9 @@ async function loadUserProfile(){
       "Not specified";
 
 
-    /*
-      The student's own campus is NOT automatically
-      selected as the resource campus.
-
-      A student can submit material for another campus.
-    */
-
   }catch(error){
 
-    console.error(
-      "Profile error:",
-      error
-    );
+    console.error(error);
 
     showMessage(
       "Unable to load your account.",
@@ -1440,170 +1231,50 @@ async function loadUserProfile(){
 }
 
 
-/* =========================================================
-   SET TYPE FROM URL
-========================================================= */
+/* =====================================================
+   RESOURCE TYPE INFO
+===================================================== */
 
-function initializeSubmissionType(){
+const typeDescriptions = {
 
-  if(
-    validTypes.includes(
-      requestedType
-    )
-  ){
+  note:
+    "Academic notes, class notes, study materials or other educational documents.",
 
-    resourceType.value =
-      requestedType;
+  question:
+    "Previous examination questions, model questions or question papers.",
 
-    updateResourceTypeInfo();
+  suggestion:
+    "Useful academic suggestions, recommendations or ideas for improving student resources.",
 
-  }
+  article:
+    "Original academic or research-oriented articles suitable for the StateCrafter community."
 
-}
-
-
-/* =========================================================
-   RESOURCE TYPE
-========================================================= */
-
-function updateResourceTypeInfo(){
-
-  const type =
-    resourceType.value;
-
-
-  if(
-    type &&
-    typeDescriptions[type]
-  ){
-
-    resourceTypeInfo.textContent =
-      typeDescriptions[type];
-
-    resourceTypeInfo.classList.add(
-      "visible"
-    );
-
-  }else{
-
-    resourceTypeInfo.textContent =
-      "";
-
-    resourceTypeInfo.classList.remove(
-      "visible"
-    );
-
-  }
-
-
-  /*
-    Suggestions are informational submissions,
-    but we still allow a Drive link if the user has
-    supporting material.
-  */
-
-  if(
-    type === "suggestion"
-  ){
-
-    driveLink.required = false;
-
-    driveGroup.querySelector(
-      "label"
-    ).innerHTML =
-      `Google Drive Link <span style="color:var(--muted);font-weight:700">(Optional)</span>`;
-
-  }else{
-
-    driveLink.required = true;
-
-    driveGroup.querySelector(
-      "label"
-    ).innerHTML =
-      `Google Drive Link <span class="required">*</span>`;
-
-  }
-
-}
+};
 
 
 resourceType.addEventListener(
   "change",
-  updateResourceTypeInfo
-);
-
-
-/* =========================================================
-   COURSE SELECT
-========================================================= */
-
-course.addEventListener(
-  "change",
   function(){
 
-    const value =
-      this.value;
+    const type =
+      resourceType.value;
 
 
-    if(
-      value === "other"
-    ){
+    if(type && typeDescriptions[type]){
 
-      otherCourseGroup.style.display =
-        "block";
+      resourceTypeInfo.textContent =
+        typeDescriptions[type];
 
-      otherCourse.required =
-        true;
-
-      courseSelectedInfo.textContent =
-        "Enter the course code and full course name below.";
-
-      courseSelectedInfo.classList.add(
-        "visible"
-      );
-
-      return;
-
-    }
-
-
-    otherCourseGroup.style.display =
-      "none";
-
-    otherCourse.required =
-      false;
-
-    otherCourse.value =
-      "";
-
-
-    if(
-      value
-    ){
-
-      const parts =
-        value.split("|");
-
-      const code =
-        parts[0];
-
-      const name =
-        parts.slice(1).join("|");
-
-
-      courseSelectedInfo.textContent =
-        `${code} — ${name}`;
-
-      courseSelectedInfo.classList.add(
+      resourceTypeInfo.classList.add(
         "visible"
       );
 
     }else{
 
-      courseSelectedInfo.textContent =
+      resourceTypeInfo.textContent =
         "";
 
-      courseSelectedInfo.classList.remove(
+      resourceTypeInfo.classList.remove(
         "visible"
       );
 
@@ -1613,27 +1284,22 @@ course.addEventListener(
 );
 
 
-/* =========================================================
+/* =====================================================
    DRIVE LINK VALIDATION
-========================================================= */
+===================================================== */
 
-function isValidDriveLink(
-  value
-){
+function isValidDriveLink(value){
 
   try{
 
     const url =
-      new URL(
-        value
-      );
+      new URL(value);
 
     const host =
-      url.hostname
-        .toLowerCase();
+      url.hostname.toLowerCase();
 
 
-    return(
+    return (
       host === "drive.google.com" ||
       host === "docs.google.com"
     );
@@ -1647,38 +1313,9 @@ function isValidDriveLink(
 }
 
 
-/* =========================================================
-   GET COURSE VALUE
-========================================================= */
-
-function getCourseValue(){
-
-  if(
-    course.value === "other"
-  ){
-
-    return otherCourse.value.trim();
-
-  }
-
-
-  if(
-    !course.value
-  ){
-
-    return "";
-
-  }
-
-
-  return course.value;
-
-}
-
-
-/* =========================================================
-   FORM SUBMISSION
-========================================================= */
+/* =====================================================
+   FORM SUBMIT
+===================================================== */
 
 submissionForm.addEventListener(
   "submit",
@@ -1689,10 +1326,7 @@ submissionForm.addEventListener(
     hideMessage();
 
 
-    if(
-      !currentUser ||
-      !currentProfile
-    ){
+    if(!currentUser || !currentProfile){
 
       showMessage(
         "Your account is not ready. Please refresh the page.",
@@ -1715,12 +1349,18 @@ submissionForm.addEventListener(
         .trim();
 
 
-    const selectedCourse =
-      getCourseValue();
+    const course =
+      document
+        .getElementById("course")
+        .value
+        .trim();
 
 
     const selectedCampus =
-      targetCampus.value.trim();
+      document
+        .getElementById("targetCampus")
+        .value
+        .trim();
 
 
     const description =
@@ -1730,13 +1370,16 @@ submissionForm.addEventListener(
         .trim();
 
 
-    const link =
-      driveLink.value.trim();
+    const driveLink =
+      document
+        .getElementById("driveLink")
+        .value
+        .trim();
 
 
-    /* =====================================================
+    /* =================================================
        VALIDATION
-    ===================================================== */
+    ================================================= */
 
     if(!type){
 
@@ -1768,14 +1411,16 @@ submissionForm.addEventListener(
     }
 
 
-    if(!selectedCourse){
+    if(!course){
 
       showMessage(
-        "Please select or enter the course / subject.",
+        "Please select a course.",
         "error"
       );
 
-      course.focus();
+      document
+        .getElementById("course")
+        .focus();
 
       return;
 
@@ -1789,7 +1434,9 @@ submissionForm.addEventListener(
         "error"
       );
 
-      targetCampus.focus();
+      document
+        .getElementById("targetCampus")
+        .focus();
 
       return;
 
@@ -1812,51 +1459,43 @@ submissionForm.addEventListener(
     }
 
 
-    /*
-      Drive link is required for every type except
-      suggestion.
-    */
-
-    if(
-      type !== "suggestion" &&
-      !link
-    ){
+    if(!driveLink){
 
       showMessage(
         "Please provide your Google Drive link.",
         "error"
       );
 
-      driveLink.focus();
+      document
+        .getElementById("driveLink")
+        .focus();
 
       return;
 
     }
 
 
-    if(
-      link &&
-      !isValidDriveLink(link)
-    ){
+    if(!isValidDriveLink(driveLink)){
 
       showMessage(
         "Please enter a valid Google Drive or Google Docs link.",
         "error"
       );
 
-      driveLink.focus();
+      document
+        .getElementById("driveLink")
+        .focus();
 
       return;
 
     }
 
 
-    /* =====================================================
-       PREVENT DOUBLE SUBMIT
-    ===================================================== */
+    /* =================================================
+       DISABLE BUTTON
+    ================================================= */
 
-    submitButton.disabled =
-      true;
+    submitButton.disabled = true;
 
     submitButton.textContent =
       "Submitting...";
@@ -1865,23 +1504,18 @@ submissionForm.addEventListener(
     try{
 
       /*
-        IMPORTANT
+       IMPORTANT
 
-        The following fields must exist in the
-        submissions table:
+       Profile snapshot fields:
 
-        user_id
-        resource_type
-        title
-        course
-        description
-        target_campus
-        drive_link
-        status
-        full_name
-        session
-        student_id
-        submitter_campus
+       full_name
+       session
+       student_id
+       submitter_campus
+
+       Resource campus:
+
+       target_campus
       */
 
 
@@ -1897,7 +1531,7 @@ submissionForm.addEventListener(
           title,
 
         course:
-          selectedCourse,
+          course,
 
         description:
           description,
@@ -1906,50 +1540,70 @@ submissionForm.addEventListener(
           selectedCampus,
 
         drive_link:
-          link || null,
+          driveLink,
 
         status:
           "pending",
 
         full_name:
-          currentProfile.full_name ||
-          null,
+          currentProfile.full_name || null,
 
         session:
-          currentProfile.session ||
-          null,
+          currentProfile.session || null,
 
         student_id:
-          currentProfile.student_id ||
-          null,
+          currentProfile.student_id || null,
 
         submitter_campus:
-          currentProfile.campus ||
-          null
+          currentProfile.campus || null
 
       };
 
 
+      console.log(
+        "Submitting:",
+        submissionData
+      );
+
+
       const {
+        data,
         error
       } =
         await supabaseClient
+
           .from("submissions")
-          .insert(
+
+          .insert([
             submissionData
-          );
+          ])
+
+          .select()
+          
+          .single();
 
 
       if(error){
+
+        console.error(
+          "Supabase submission error:",
+          error
+        );
 
         throw error;
 
       }
 
 
-      /* ===================================================
+      console.log(
+        "Submission created:",
+        data
+      );
+
+
+      /* =================================================
          SUCCESS
-      =================================================== */
+      ================================================= */
 
       formArea.style.display =
         "none";
@@ -1976,13 +1630,15 @@ submissionForm.addEventListener(
         "Submission failed. Please try again.";
 
 
-      if(
-        error &&
-        error.message
-      ){
+      if(error){
 
-        message =
-          error.message;
+        if(error.message){
+          message = error.message;
+        }
+
+        else if(error.details){
+          message = error.details;
+        }
 
       }
 
@@ -2005,9 +1661,9 @@ submissionForm.addEventListener(
 );
 
 
-/* =========================================================
+/* =====================================================
    MESSAGE
-========================================================= */
+===================================================== */
 
 function showMessage(
   message,
@@ -2018,7 +1674,7 @@ function showMessage(
     message;
 
   formMessage.className =
-    `form-message ${type}`;
+    "form-message " + type;
 
 }
 
@@ -2034,9 +1690,9 @@ function hideMessage(){
 }
 
 
-/* =========================================================
+/* =====================================================
    MOBILE MENU
-========================================================= */
+===================================================== */
 
 const menuToggle =
   document.querySelector(
@@ -2049,10 +1705,7 @@ const nav =
   );
 
 
-if(
-  menuToggle &&
-  nav
-){
+if(menuToggle && nav){
 
   menuToggle.addEventListener(
     "click",
@@ -2068,14 +1721,11 @@ if(
 }
 
 
-/* =========================================================
+/* =====================================================
    START
-========================================================= */
+===================================================== */
 
-loadUserProfile()
-  .then(
-    initializeSubmissionType
-  );
+loadUserProfile();
 
 </script>
 
