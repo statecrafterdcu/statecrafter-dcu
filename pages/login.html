@@ -1,496 +1,271 @@
 <!doctype html>
-
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <title>Sign In | StateCrafter DCU</title>
 
-  <title>
-    Sign In | StateCrafter DCU
-  </title>
+  <link rel="stylesheet" href="../style.css">
 
-
-  <link
-    rel="stylesheet"
-    href="../style.css"
-  >
-
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-
-    /* =====================================================
-       LOGIN PAGE
-    ===================================================== */
-
-    .login-page {
-
-      min-height:
-        calc(100vh - 82px);
-
+    .auth-page {
+      min-height: calc(100vh - 82px);
       display: grid;
-
       place-items: center;
-
-      padding:
-        55px 20px;
-
+      padding: 60px 20px;
       background:
-        linear-gradient(
-          135deg,
+        linear-gradient(135deg,
           #f7f5f0 0%,
           #ffffff 55%,
-          #eef2f8 100%
-        );
-
+          #eef2f8 100%);
     }
 
-
-    .login-wrapper {
-
-      width:
-        min(460px, 100%);
-
-    }
-
-
-    .login-card {
-
+    .auth-card {
+      width: min(460px, 100%);
       background: #fff;
-
-      border:
-        1px solid var(--line);
-
+      border: 1px solid var(--line);
       border-radius: 24px;
-
-      padding:
-        36px;
-
-      box-shadow:
-        0 20px 60px
-        rgba(18,43,82,.10);
-
+      padding: 38px;
+      box-shadow: var(--shadow);
     }
 
-
-    .login-logo {
-
-      display: flex;
-
-      justify-content: center;
-
-      margin-bottom: 20px;
-
-    }
-
-
-    .login-logo img {
-
-      width: 125px;
-
-      height: 125px;
-
-      object-fit: contain;
-
-    }
-
-
-    .login-heading {
-
+    .auth-brand {
       text-align: center;
-
       margin-bottom: 30px;
-
     }
 
+    .auth-brand img {
+      width: 82px;
+      height: 82px;
+      object-fit: contain;
+      margin: 0 auto 18px;
+    }
 
-    .login-heading h1 {
-
+    .auth-brand h1 {
       margin: 0;
-
       color: var(--navy);
-
       font-size: 32px;
-
       line-height: 1.1;
-
-      letter-spacing: -.035em;
-
+      letter-spacing: -.03em;
     }
 
-
-    .login-heading p {
-
-      margin:
-        9px 0 0;
-
+    .auth-brand p {
+      margin: 9px 0 0;
       color: var(--muted);
-
       font-size: 13px;
-
     }
 
-
-    .login-form {
-
+    .auth-form {
       display: grid;
-
       gap: 18px;
-
     }
-
 
     .form-group {
-
       display: grid;
-
       gap: 7px;
-
     }
-
 
     .form-group label {
-
-      color: var(--navy);
-
       font-size: 12px;
-
       font-weight: 800;
-
+      color: var(--navy);
     }
-
 
     .form-group input {
-
       width: 100%;
-
-      height: 48px;
-
-      border:
-        1px solid #d8dde5;
-
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid #d5dae1;
       border-radius: 11px;
-
-      padding:
-        0 13px;
-
       background: #fff;
-
       color: var(--ink);
-
       font: inherit;
-
-      font-size: 14px;
-
       outline: none;
-
       transition: .2s ease;
-
     }
-
 
     .form-group input:focus {
-
-      border-color:
-        var(--navy);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(18,43,82,.07);
-
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(18, 43, 82, .08);
     }
-
-
-    /* =====================================================
-       PASSWORD
-    ===================================================== */
 
     .password-wrap {
-
       position: relative;
-
     }
-
 
     .password-wrap input {
-
-      padding-right: 75px;
-
+      padding-right: 78px;
     }
 
-
-    .show-password {
-
+    .password-toggle {
       position: absolute;
-
       right: 10px;
-
       top: 50%;
-
-      transform:
-        translateY(-50%);
-
+      transform: translateY(-50%);
       border: 0;
-
       background: transparent;
-
       color: var(--navy);
-
       font-size: 11px;
-
       font-weight: 800;
-
       cursor: pointer;
-
-      padding: 7px;
-
+      padding: 8px;
     }
 
+    .forgot-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -7px;
+    }
 
-    /* =====================================================
-       FORGOT PASSWORD
-    ===================================================== */
-
-    .forgot-password {
-
-      display: block;
-
-      margin-top: -8px;
-
-      text-align: right;
-
+    .forgot-link {
+      border: 0;
+      background: none;
+      padding: 0;
       color: var(--red);
-
       font-size: 12px;
-
       font-weight: 800;
-
+      cursor: pointer;
     }
 
-
-    .forgot-password:hover {
-
+    .forgot-link:hover {
       text-decoration: underline;
-
     }
 
-
-    /* =====================================================
-       LOGIN BUTTON
-    ===================================================== */
-
-    .login-button {
-
+    .auth-submit {
       width: 100%;
-
-      min-height: 50px;
-
-      margin-top: 4px;
-
-      cursor: pointer;
-
-      font-size: 13px;
-
-    }
-
-
-    .login-button:disabled {
-
-      opacity: .65;
-
-      cursor: not-allowed;
-
-      transform: none;
-
-    }
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    .form-message {
-
-      min-height: 20px;
-
-      margin: 0;
-
-      text-align: center;
-
-      font-size: 12px;
-
-      line-height: 1.5;
-
-    }
-
-
-    .form-message.error {
-
-      color: var(--red);
-
-    }
-
-
-    .form-message.success {
-
-      color: #27703a;
-
-    }
-
-
-    /* =====================================================
-       INFO
-    ===================================================== */
-
-    .login-info {
-
-      margin-top: 22px;
-
-      padding:
-        14px 15px;
-
+      min-height: 52px;
+      border: 0;
       border-radius: 12px;
-
-      background: #f5f7fa;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      line-height: 1.6;
-
-      text-align: center;
-
+      background: var(--navy);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .2s ease;
     }
 
-
-    .login-info strong {
-
-      color: var(--navy);
-
+    .auth-submit:hover {
+      background: var(--navy-2);
+      transform: translateY(-1px);
     }
 
+    .auth-submit:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-    .back-home {
-
-      display: block;
-
-      margin-top: 18px;
-
-      text-align: center;
-
-      color: var(--red);
-
+    .auth-message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 10px;
       font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
 
+    .auth-message.show {
+      display: block;
+    }
+
+    .auth-message.error {
+      background: #fbecec;
+      color: #8d1218;
+      border: 1px solid #f0cccc;
+    }
+
+    .auth-message.success {
+      background: #edf8f0;
+      color: #176b35;
+      border: 1px solid #cce8d4;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 26px 0 20px;
+      color: #9aa3b0;
+      font-size: 10px;
       font-weight: 800;
-
+      letter-spacing: .08em;
     }
 
-
-    .back-home:hover {
-
-      text-decoration: underline;
-
+    .auth-divider::before,
+    .auth-divider::after {
+      content: "";
+      height: 1px;
+      background: var(--line);
+      flex: 1;
     }
 
+    .register-link {
+      display: block;
+      text-align: center;
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 800;
+    }
 
-    /* =====================================================
-       MOBILE
-    ===================================================== */
+    .register-link span {
+      color: var(--red);
+    }
 
-    @media(max-width: 560px){
+    .auth-note {
+      margin: 22px 0 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.6;
+    }
 
-      .login-page {
-
-        padding:
-          30px 14px;
-
-        min-height:
-          calc(100vh - 72px);
-
+    @media (max-width: 560px) {
+      .auth-page {
+        min-height: calc(100vh - 72px);
+        padding: 35px 14px;
       }
 
-
-      .login-card {
-
-        padding:
-          25px 20px;
-
+      .auth-card {
+        padding: 28px 22px;
         border-radius: 20px;
-
       }
 
-
-      .login-logo img {
-
-        width: 105px;
-
-        height: 105px;
-
-      }
-
-
-      .login-heading h1 {
-
+      .auth-brand h1 {
         font-size: 28px;
-
       }
 
+      .auth-brand img {
+        width: 70px;
+        height: 70px;
+      }
     }
-
   </style>
-
 </head>
 
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-====================================================== -->
-
 <header class="site-header">
 
   <div class="container nav-wrap">
 
-
-    <a
-      class="brand"
-      href="../index.html"
-    >
+    <a class="brand" href="../index.html">
 
       <img
         src="../assets/statecrafter-logo.png"
         alt="StateCrafter DCU"
       >
 
-
       <span class="brand-copy">
-
-        <strong>
-          StateCrafter DCU
-        </strong>
-
-        <small>
-          Political Science Department
-        </small>
-
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
       </span>
 
     </a>
-
 
     <nav class="nav">
 
@@ -516,11 +291,11 @@
 
     </nav>
 
-
     <button
       class="menu-toggle"
       type="button"
       aria-label="Open menu"
+      onclick="document.querySelector('.nav').classList.toggle('open')"
     >
       ☰
     </button>
@@ -530,194 +305,132 @@
 </header>
 
 
+<main class="auth-page">
 
-<!-- =====================================================
-     LOGIN
-====================================================== -->
+  <section class="auth-card">
 
-<main class="login-page">
+    <div class="auth-brand">
 
-
-  <div class="login-wrapper">
-
-
-    <div class="login-card">
-
-
-      <!-- LOGO -->
-
-      <div class="login-logo">
-
-        <img
-          src="../assets/statecrafter-logo.png"
-          alt="StateCrafter DCU"
-        >
-
-      </div>
-
-
-
-      <!-- HEADING -->
-
-      <div class="login-heading">
-
-        <p class="eyebrow">
-          STATECRAFTER DCU
-        </p>
-
-        <h1>
-          Welcome Back
-        </h1>
-
-        <p>
-          Sign in to access your student account.
-        </p>
-
-      </div>
-
-
-
-      <!-- =================================================
-           LOGIN FORM
-      ================================================== -->
-
-      <form
-        id="loginForm"
-        class="login-form"
-        novalidate
+      <img
+        src="../assets/statecrafter-logo.png"
+        alt="StateCrafter DCU"
       >
 
+      <h1>Sign In</h1>
 
-        <!-- EMAIL -->
-
-        <div class="form-group">
-
-          <label for="email">
-            Email Address
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="your@email.com"
-            autocomplete="email"
-            required
-          >
-
-        </div>
-
-
-
-        <!-- PASSWORD -->
-
-        <div class="form-group">
-
-          <label for="password">
-            Password
-          </label>
-
-
-          <div class="password-wrap">
-
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              autocomplete="current-password"
-              required
-            >
-
-
-            <button
-              type="button"
-              id="showPassword"
-              class="show-password"
-            >
-              Show
-            </button>
-
-          </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             FORGOT PASSWORD
-        ================================================== -->
-
-        <a
-          href="forgot-password.html"
-          class="forgot-password"
-        >
-          Forgot Password?
-        </a>
-
-
-
-        <!-- SIGN IN -->
-
-        <button
-          type="submit"
-          id="loginButton"
-          class="btn btn-primary login-button"
-        >
-          Sign In
-        </button>
-
-
-        <!-- MESSAGE -->
-
-        <p
-          id="loginMessage"
-          class="form-message"
-          aria-live="polite"
-        ></p>
-
-
-      </form>
-
-
-
-      <!-- INFO -->
-
-      <div class="login-info">
-
-        Sign in with the email and password
-        associated with your
-        <strong>
-          StateCrafter DCU
-        </strong>
-        account.
-
-      </div>
-
-
-
-      <!-- BACK HOME -->
-
-      <a
-        href="../index.html"
-        class="back-home"
-      >
-        ← Back to StateCrafter DCU
-      </a>
-
+      <p>
+        Access your StateCrafter DCU student account
+      </p>
 
     </div>
 
 
-  </div>
+    <form
+      id="loginForm"
+      class="auth-form"
+      novalidate
+    >
+
+      <div class="form-group">
+
+        <label for="email">
+          Email Address
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          placeholder="your@email.com"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="password-wrap">
+
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+            required
+          >
+
+          <button
+            type="button"
+            id="togglePassword"
+            class="password-toggle"
+          >
+            SHOW
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="forgot-row">
+
+        <button
+          type="button"
+          id="forgotPassword"
+          class="forgot-link"
+        >
+          Forgot Password?
+        </button>
+
+      </div>
+
+
+      <div
+        id="authMessage"
+        class="auth-message"
+        role="alert"
+      ></div>
+
+
+      <button
+        id="loginButton"
+        class="auth-submit"
+        type="submit"
+      >
+        Sign In
+      </button>
+
+    </form>
+
+
+    <div class="auth-divider">
+      NEW TO STATECRAFTER?
+    </div>
+
+
+    <a
+      href="register.html"
+      class="register-link"
+    >
+      Don't have an account?
+      <span>Create an account</span>
+    </a>
+
+
+    <p class="auth-note">
+      StateCrafter DCU • Political Science Department<br>
+      Dhaka Central University
+    </p>
+
+  </section>
 
 </main>
 
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
 
 <footer class="site-footer">
 
@@ -736,70 +449,459 @@
 </footer>
 
 
-
-<!-- =====================================================
-     AUTH.JS
-====================================================== -->
-
-<script src="../auth.js"></script>
-
-
-
-<!-- =====================================================
-     LOGIN SCRIPT
-====================================================== -->
-
 <script>
 
-document.addEventListener(
-  "DOMContentLoaded",
-  async function() {
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
 
 
-    const loginForm =
-      document.getElementById(
-        "loginForm"
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const emailInput =
+  document.getElementById("email");
+
+const passwordInput =
+  document.getElementById("password");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const authMessage =
+  document.getElementById("authMessage");
+
+const togglePassword =
+  document.getElementById("togglePassword");
+
+const forgotPassword =
+  document.getElementById("forgotPassword");
+
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(message, type = "error") {
+
+  authMessage.textContent = message;
+
+  authMessage.className =
+    "auth-message show " + type;
+
+}
+
+
+function clearMessage() {
+
+  authMessage.textContent = "";
+
+  authMessage.className =
+    "auth-message";
+
+}
+
+
+
+/* =========================================================
+   PASSWORD SHOW / HIDE
+========================================================= */
+
+togglePassword.addEventListener(
+  "click",
+  () => {
+
+    if (passwordInput.type === "password") {
+
+      passwordInput.type = "text";
+
+      togglePassword.textContent = "HIDE";
+
+    } else {
+
+      passwordInput.type = "password";
+
+      togglePassword.textContent = "SHOW";
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   GET USER ROLE
+========================================================= */
+
+async function redirectUser(user) {
+
+  if (!user) {
+
+    window.location.href = "login.html";
+
+    return;
+
+  }
+
+
+  /*
+   * IMPORTANT:
+   *
+   * We get the role from profiles.
+   * We do NOT trust a URL parameter
+   * or browser localStorage for admin access.
+   */
+
+  const {
+    data: profile,
+    error
+  } = await supabaseClient
+
+    .from("profiles")
+
+    .select("id, role")
+
+    .eq("id", user.id)
+
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Profile lookup error:",
+      error
+    );
+
+    showMessage(
+      "Your account was authenticated, but your profile could not be loaded."
+    );
+
+    return;
+
+  }
+
+
+  if (!profile) {
+
+    showMessage(
+      "Your account does not have a profile yet. Please contact support."
+    );
+
+    return;
+
+  }
+
+
+  if (profile.role === "admin") {
+
+    window.location.href =
+      "admin-dashboard.html";
+
+    return;
+
+  }
+
+
+  if (profile.role === "student") {
+
+    window.location.href =
+      "student-dashboard.html";
+
+    return;
+
+  }
+
+
+  /*
+   * Unknown role
+   */
+
+  await supabaseClient.auth.signOut();
+
+  showMessage(
+    "Your account has an invalid role. Please contact support."
+  );
+
+}
+
+
+
+/* =========================================================
+   SIGN IN
+========================================================= */
+
+loginForm.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+    clearMessage();
+
+
+    const email =
+      emailInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+
+    if (!email) {
+
+      showMessage(
+        "Please enter your email address."
+      );
+
+      emailInput.focus();
+
+      return;
+
+    }
+
+
+    if (!password) {
+
+      showMessage(
+        "Please enter your password."
+      );
+
+      passwordInput.focus();
+
+      return;
+
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+      "Signing In...";
+
+
+    try {
+
+      const {
+        data,
+        error
+      } = await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+      if (error) {
+
+        console.error(
+          "Sign in error:",
+          error
+        );
+
+        throw error;
+
+      }
+
+
+      if (!data || !data.user) {
+
+        throw new Error(
+          "Sign in was unsuccessful."
+        );
+
+      }
+
+
+      loginButton.textContent =
+        "Loading Profile...";
+
+
+      await redirectUser(
+        data.user
       );
 
 
-    const loginButton =
-      document.getElementById(
-        "loginButton"
+    } catch (error) {
+
+      console.error(error);
+
+
+      let message =
+        "Sign in failed. Please check your email and password.";
+
+
+      if (
+        error.message &&
+        error.message.toLowerCase().includes(
+          "email not confirmed"
+        )
+      ) {
+
+        message =
+          "Your email address has not been confirmed yet. Please check your email.";
+
+      } else if (
+        error.message &&
+        error.message.toLowerCase().includes(
+          "invalid login credentials"
+        )
+      ) {
+
+        message =
+          "Incorrect email or password.";
+
+      } else if (
+        error.message
+      ) {
+
+        message =
+          error.message;
+
+      }
+
+
+      showMessage(message);
+
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        "Sign In";
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+forgotPassword.addEventListener(
+  "click",
+  async () => {
+
+    clearMessage();
+
+
+    const email =
+      emailInput.value.trim();
+
+
+    if (!email) {
+
+      showMessage(
+        "Enter your email address first, then click Forgot Password."
+      );
+
+      emailInput.focus();
+
+      return;
+
+    }
+
+
+    forgotPassword.disabled = true;
+
+    forgotPassword.textContent =
+      "Sending...";
+
+
+    try {
+
+      const redirectUrl =
+        new URL(
+          "reset-password.html",
+          window.location.href
+        ).href;
+
+
+      const {
+        error
+      } = await supabaseClient.auth.resetPasswordForEmail(
+
+        email,
+
+        {
+          redirectTo: redirectUrl
+        }
+
       );
 
 
-    const loginMessage =
-      document.getElementById(
-        "loginMessage"
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      showMessage(
+        "Password reset instructions have been sent to your email.",
+        "success"
       );
 
 
-    const emailInput =
-      document.getElementById(
-        "email"
-      );
-
-
-    const passwordInput =
-      document.getElementById(
-        "password"
-      );
-
-
-    const showPassword =
-      document.getElementById(
-        "showPassword"
-      );
-
-
-    /* =====================================================
-       CHECK FORM
-    ===================================================== */
-
-    if (!loginForm) {
+    } catch (error) {
 
       console.error(
-        "loginForm not found."
+        "Password reset error:",
+        error
+      );
+
+      showMessage(
+        error.message ||
+        "Could not send password reset email."
+      );
+
+    } finally {
+
+      forgotPassword.disabled = false;
+
+      forgotPassword.textContent =
+        "Forgot Password?";
+
+    }
+
+  }
+);
+
+
+
+/* =========================================================
+   ALREADY LOGGED-IN USER
+========================================================= */
+
+async function checkExistingSession() {
+
+  try {
+
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+      console.error(
+        "Session error:",
+        error
       );
 
       return;
@@ -807,272 +909,44 @@ document.addEventListener(
     }
 
 
+    const session =
+      data.session;
 
-    /* =====================================================
-       SHOW / HIDE PASSWORD
-    ===================================================== */
 
-    showPassword.addEventListener(
-      "click",
-      function() {
+    if (
+      session &&
+      session.user
+    ) {
 
+      loginButton.disabled = true;
 
-        if (
-          passwordInput.type ===
-          "password"
-        ) {
+      loginButton.textContent =
+        "Loading...";
 
-          passwordInput.type =
-            "text";
 
-          showPassword.textContent =
-            "Hide";
-
-        } else {
-
-          passwordInput.type =
-            "password";
-
-          showPassword.textContent =
-            "Show";
-
-        }
-
-      }
-    );
-
-
-
-    /* =====================================================
-       LOGIN
-    ===================================================== */
-
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        const email =
-          emailInput.value
-            .trim()
-            .toLowerCase();
-
-
-        const password =
-          passwordInput.value;
-
-
-        /* VALIDATION */
-
-        if (!email) {
-
-          showMessage(
-            "Please enter your email address.",
-            "error"
-          );
-
-          emailInput.focus();
-
-          return;
-
-        }
-
-
-        if (!password) {
-
-          showMessage(
-            "Please enter your password.",
-            "error"
-          );
-
-          passwordInput.focus();
-
-          return;
-
-        }
-
-
-
-        /* DISABLE BUTTON */
-
-        loginButton.disabled =
-          true;
-
-        loginButton.textContent =
-          "Signing In...";
-
-
-        showMessage(
-          "Checking your account...",
-          ""
-        );
-
-
-        try {
-
-
-          /*
-           * loginUser() is defined
-           * inside auth.js.
-           *
-           * It checks the user's role
-           * and redirects:
-           *
-           * student → student-dashboard.html
-           * admin   → admin-dashboard.html
-           */
-
-          await loginUser(
-            email,
-            password
-          );
-
-
-        } catch (error) {
-
-
-          console.error(
-            "Sign in error:",
-            error
-          );
-
-
-          let message =
-            "Sign in failed. Please try again.";
-
-
-          const errorMessage =
-            error.message ||
-            "";
-
-
-          const lowerMessage =
-            errorMessage.toLowerCase();
-
-
-
-          if (
-            lowerMessage.includes(
-              "invalid login credentials"
-            )
-          ) {
-
-            message =
-              "Incorrect email or password.";
-
-          }
-
-
-          else if (
-            lowerMessage.includes(
-              "email not confirmed"
-            )
-          ) {
-
-            message =
-              "Please confirm your email before signing in.";
-
-          }
-
-
-          else if (
-            lowerMessage.includes(
-              "profile was not found"
-            )
-          ) {
-
-            message =
-              errorMessage;
-
-          }
-
-
-          else if (
-            errorMessage
-          ) {
-
-            message =
-              errorMessage;
-
-          }
-
-
-          showMessage(
-            message,
-            "error"
-          );
-
-
-          loginButton.disabled =
-            false;
-
-          loginButton.textContent =
-            "Sign In";
-
-        }
-
-      }
-    );
-
-
-
-    /* =====================================================
-       IF ALREADY LOGGED IN
-    ===================================================== */
-
-    try {
-
-      await redirectLoggedInUser();
-
-    } catch (error) {
-
-      console.error(
-        "Existing session check failed:",
-        error
+      await redirectUser(
+        session.user
       );
 
     }
 
+  } catch (error) {
 
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    function showMessage(
-      message,
-      type
-    ) {
-
-
-      loginMessage.textContent =
-        message;
-
-
-      loginMessage.className =
-        "form-message";
-
-
-      if (type) {
-
-        loginMessage.classList.add(
-          type
-        );
-
-      }
-
-    }
-
+    console.error(
+      "Existing session error:",
+      error
+    );
 
   }
 
-);
+}
+
+
+/* Run on page load */
+
+checkExistingSession();
 
 </script>
 
-
 </body>
-
 </html>
