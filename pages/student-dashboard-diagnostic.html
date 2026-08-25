@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard Diagnostic</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f5f7fb;color:#172b4d;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .wrap{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+    .card{background:#fff;border:1px solid #e2e7ef;border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 8px 30px rgba(18,43,82,.06)}
+    h1{margin:0 0 8px;font-size:28px}
+    h2{font-size:17px;margin:0 0 12px}
+    p{color:#66758a;line-height:1.6}
+    .status{padding:14px;border-radius:12px;background:#eef3f9;margin:12px 0;font-size:13px}
+    .ok{background:#eaf7ed;color:#216b35}
+    .bad{background:#fbecec;color:#922329}
+    .warn{background:#fff4df;color:#86590d}
+    pre{white-space:pre-wrap;word-break:break-word;background:#101827;color:#dce8f7;border-radius:12px;padding:15px;font-size:12px;line-height:1.55;overflow:auto}
+    .row{display:grid;grid-template-columns:180px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #edf0f4}
+    .row:last-child{border-bottom:0}
+    .label{font-weight:800;color:#5f6e82}
+    .value{word-break:break-all}
+    button,a{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:11px;padding:11px 15px;font-weight:800;cursor:pointer;text-decoration:none}
+    button{background:#122b52;color:#fff}
+    a{background:#eef3f9;color:#122b52;margin-left:8px}
+    .articles{display:grid;gap:10px;margin-top:12px}
+    .article{padding:13px;border:1px solid #e2e7ef;border-radius:12px}
+    .article strong{display:block}
+    .article small{display:block;margin-top:5px;color:#718096}
+    @media(max-width:600px){.row{grid-template-columns:1fr;gap:4px}.wrap{padding:20px 12px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>Student Dashboard Diagnostic</h1>
+    <p>
+      এই page শুধু test করার জন্য। এটি তোমার logged-in Supabase student account-এর
+      actual Auth user ID এবং সেই user-এর Articles database থেকে পাওয়া যাচ্ছে কিনা দেখাবে।
+    </p>
+    <button id="runTest">Run Diagnostic</button>
+    <a href="student-dashboard.html">Back to Dashboard</a>
+    <div id="overall" class="status">Test চালানোর জন্য উপরের button চাপো।</div>
+  </div>
+
+  <div class="card">
+    <h2>1. Authentication</h2>
+    <div id="authInfo"></div>
+  </div>
+
+  <div class="card">
+    <h2>2. Articles Query</h2>
+    <div id="articleInfo"></div>
+    <div id="articleList" class="articles"></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Raw Console Data</h2>
+    <pre id="raw">No test has been run.</pre>
+  </div>
+</div>
+
+<script>
+  const supabaseClient = window.supabase.createClient(
+    "https://psqwnvgruyfgdoukvpid.supabase.co",
+    "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"
+  );
+
+  const $ = id => document.getElementById(id);
+
+  function esc(value){
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function row(label,value){
+    return `<div class="row"><div class="label">${esc(label)}</div><div class="value">${esc(value)}</div></div>`;
+  }
+
+  async function runDiagnostic(){
+    $("overall").className = "status";
+    $("overall").textContent = "Testing...";
+
+    $("authInfo").innerHTML = "";
+    $("articleInfo").innerHTML = "";
+    $("articleList").innerHTML = "";
+    $("raw").textContent = "Running...";
+
+    try{
+      const {data: authData, error: authError} =
+        await supabaseClient.auth.getUser();
+
+      const user = authData?.user || null;
+
+      $("authInfo").innerHTML =
+        row("Auth error", authError ? authError.message : "null") +
+        row("Logged-in user", user ? "YES" : "NO") +
+        row("AUTH USER ID", user?.id || "NULL") +
+        row("Email", user?.email || "Not available");
+
+      if(authError){
+        $("overall").className = "status bad";
+        $("overall").textContent = "Authentication error পাওয়া গেছে।";
+        $("raw").textContent = JSON.stringify({authError},null,2);
+        return;
+      }
+
+      if(!user){
+        $("overall").className = "status warn";
+        $("overall").textContent =
+          "এই browser session-এ কোনো Supabase user logged in নেই। আগে student account দিয়ে login করো।";
+        $("raw").textContent = JSON.stringify({user:null},null,2);
+        return;
+      }
+
+      const {data: myArticles, error: articleError} =
+        await supabaseClient
+          .from("articles")
+          .select("id,title,author_id,status,created_at")
+          .eq("author_id", user.id)
+          .order("created_at",{ascending:false});
+
+      $("articleInfo").innerHTML =
+        row("Article query error", articleError ? articleError.message : "null") +
+        row("My article count", articleError ? "QUERY FAILED" : String((myArticles || []).length)) +
+        row("User ID used in query", user.id);
+
+      if(articleError){
+        $("overall").className = "status bad";
+        $("overall").textContent =
+          "Articles query failed। এটি RLS/query permission-এর সমস্যা হতে পারে।";
+      }else if((myArticles || []).length === 0){
+        $("overall").className = "status warn";
+        $("overall").textContent =
+          "Auth user পাওয়া গেছে, কিন্তু এই user-এর author_id দিয়ে কোনো article পাওয়া যায়নি।";
+      }else{
+        $("overall").className = "status ok";
+        $("overall").textContent =
+          `Auth + Articles query কাজ করছে। ${myArticles.length}টি article পাওয়া গেছে।`;
+      }
+
+      if((myArticles || []).length){
+        $("articleList").innerHTML = myArticles.map(article => `
+          <div class="article">
+            <strong>${esc(article.title || "Untitled")}</strong>
+            <small>ID: ${esc(article.id)}</small>
+            <small>author_id: ${esc(article.author_id)}</small>
+            <small>status: ${esc(article.status || "—")}</small>
+          </div>
+        `).join("");
+      }else{
+        $("articleList").innerHTML =
+          `<div class="status">No articles returned for this authenticated user.</div>`;
+      }
+
+      const raw = {
+        auth: {
+          user_id: user.id,
+          email: user.email,
+          error: authError?.message || null
+        },
+        articles: {
+          count: myArticles?.length || 0,
+          error: articleError?.message || null,
+          rows: myArticles || []
+        }
+      };
+
+      $("raw").textContent = JSON.stringify(raw,null,2);
+
+      console.log("AUTH USER:", user);
+      console.log("AUTH USER ID:", user.id);
+      console.log("MY ARTICLES:", myArticles);
+      console.log("ARTICLE TEST ERROR:", articleError);
+
+    }catch(error){
+      $("overall").className = "status bad";
+      $("overall").textContent = "Unexpected error: " + error.message;
+      $("raw").textContent = JSON.stringify({
+        message:error.message,
+        stack:error.stack
+      },null,2);
+      console.error(error);
+    }
+  }
+
+  $("runTest").addEventListener("click",runDiagnostic);
+</script>
+</body>
+</html>
