@@ -351,7 +351,7 @@
         <div class="thumb">${cover}</div>
         <div class="item-main">
           <h3 class="item-title">${esc(row.title || "Untitled Article")}</h3>
-          <p class="item-desc">${esc(row.excerpt || row.description || "Read this published article.")}</p>
+          <p class="item-desc">${esc(row.excerpt || "Read this published article.")}</p>
           <div class="item-meta">
             <span class="pill">${esc(row.category || "Article")}</span>
             <span class="pill">${esc(formatDate(row.published_at || row.created_at))}</span>
@@ -424,7 +424,7 @@
           .maybeSingle(),
 
         db.from("articles")
-          .select("id,title,category,excerpt,description,published_at,created_at,cover_image_url,author_id,status")
+          .select("id,title,category,excerpt,published_at,created_at,cover_image_url,author_id,status")
           .eq("author_id", id)
           .order("published_at", { ascending: false }),
 
