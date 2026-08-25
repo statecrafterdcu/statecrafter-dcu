@@ -1,26 +1,540 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contributor Profile | StateCrafter DCU</title>
-<link rel="stylesheet" href="../style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-.profile-page{background:#f7f8fa;min-height:75vh;padding:55px 0 90px}.profile-hero{background:#fff;border:1px solid #e0e5eb;border-radius:24px;padding:30px;display:flex;gap:24px;align-items:center;box-shadow:0 16px 45px rgba(18,43,82,.07)}.avatar{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,#122b52,#a3151b);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;overflow:hidden;flex:0 0 auto}.avatar img{width:100%;height:100%;object-fit:cover}.eyebrow{margin:0 0 7px;color:#a3151b;font-size:10px;font-weight:900;letter-spacing:.14em}.profile-hero h1{margin:0;color:#122b52;font-size:clamp(30px,5vw,52px);letter-spacing:-.04em}.profile-info{margin-top:10px;color:#68758a;font-size:13px;line-height:1.7}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.stat{padding:9px 12px;border:1px solid #e0e5eb;border-radius:10px;background:#f8fafc;color:#344258;font-size:11px;font-weight:800}.profile-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:25px;margin-top:25px}.info-card,.articles-card{background:#fff;border:1px solid #e0e5eb;border-radius:20px;padding:24px}.info-card h2,.articles-card h2{margin:0;color:#122b52;font-size:22px}.info-row{padding:13px 0;border-bottom:1px solid #edf0f3}.info-row:last-child{border-bottom:0}.info-row span{display:block;color:#8a94a3;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.info-row strong{display:block;margin-top:4px;color:#344258;font-size:13px}.public-article{padding:18px 0;border-bottom:1px solid #e7eaee;cursor:pointer}.public-article:last-child{border-bottom:0}.public-article h3{margin:0;color:#122b52;font-size:18px}.public-article p{margin:7px 0 0;color:#6b7789;font-size:12px;line-height:1.6}.article-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:9px;color:#8a94a3;font-size:10px;font-weight:800}.loading,.empty{padding:30px;text-align:center;color:#7c8797}.back{display:inline-flex;margin-bottom:18px;color:#122b52;font-weight:900;font-size:12px;text-decoration:none}.back:hover{color:#a3151b}@media(max-width:800px){.profile-grid{grid-template-columns:1fr}.profile-hero{align-items:flex-start}.avatar{width:72px;height:72px;font-size:22px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contributor Profile | StateCrafter DCU</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --navy:#122b52;
+      --navy2:#193c6c;
+      --red:#a3151b;
+      --ink:#17253a;
+      --muted:#6d7888;
+      --line:#e3e8ef;
+      --soft:#f5f7fa;
+      --white:#fff;
+      --shadow:0 18px 50px rgba(18,43,82,.09);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:#fbfcfd;
+    }
+    a{color:inherit}
+    .container{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .site-header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(255,255,255,.96);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(12px)
+    }
+    .nav-wrap{min-height:82px;display:flex;align-items:center;gap:30px}
+    .brand{display:flex;align-items:center;gap:13px;text-decoration:none;margin-right:auto}
+    .brand img{width:58px;height:44px;object-fit:contain}
+    .brand-copy{display:flex;flex-direction:column;gap:2px}
+    .brand-copy strong{font-size:20px;color:var(--navy);letter-spacing:-.02em}
+    .brand-copy small{font-size:12px;color:#738096;font-weight:600}
+    .nav{display:flex;align-items:center;gap:8px}
+    .nav a{
+      text-decoration:none;padding:12px 14px;border-radius:12px;
+      font-size:14px;font-weight:750;color:#445166
+    }
+    .nav a:hover,.nav a.active{background:#f0f3f7;color:var(--navy)}
+    .nav .nav-login{background:var(--navy);color:#fff;padding:13px 18px}
+    .menu-toggle{display:none;border:0;background:none;font-size:24px;color:var(--navy)}
+
+    .page{padding:48px 0 80px}
+    .back{
+      display:inline-flex;align-items:center;gap:8px;
+      text-decoration:none;color:var(--navy);font-size:13px;font-weight:850;
+      margin-bottom:24px
+    }
+    .back:hover{color:var(--red)}
+    .loading,.error{
+      background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+      padding:50px;text-align:center;box-shadow:var(--shadow)
+    }
+    .error{color:#9b1c23}
+
+    .profile-hero{
+      background:linear-gradient(135deg,#fff 0%,#f4f7fb 100%);
+      border:1px solid var(--line);border-radius:30px;padding:34px;
+      display:flex;align-items:center;gap:28px;box-shadow:var(--shadow)
+    }
+    .avatar{
+      width:118px;height:118px;flex:0 0 118px;border-radius:50%;
+      overflow:hidden;background:var(--navy);color:#fff;
+      display:grid;place-items:center;font-size:34px;font-weight:900;
+      border:5px solid #fff;box-shadow:0 8px 28px rgba(18,43,82,.16)
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .eyebrow{
+      margin:0 0 8px;color:var(--red);font-size:11px;font-weight:900;
+      letter-spacing:.17em;text-transform:uppercase
+    }
+    h1{margin:0;color:var(--navy);font-size:clamp(34px,5vw,56px);line-height:1.02;letter-spacing:-.045em}
+    .summary{margin:12px 0 0;color:var(--muted);font-size:15px;line-height:1.65}
+    .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+    .stat{
+      display:inline-flex;align-items:center;gap:7px;padding:9px 12px;
+      background:#fff;border:1px solid var(--line);border-radius:999px;
+      color:#4c596c;font-size:12px;font-weight:800
+    }
+    .stat strong{color:var(--navy);font-size:16px}
+
+    .contribution-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px
+    }
+    .counter{
+      background:#fff;border:1px solid var(--line);border-radius:18px;
+      padding:20px;text-decoration:none;box-shadow:0 8px 24px rgba(18,43,82,.05);
+      transition:.2s transform,.2s box-shadow,.2s border-color
+    }
+    .counter:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#ccd6e3}
+    .counter-label{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#7d8797}
+    .counter-number{margin-top:8px;font-size:32px;font-weight:950;color:var(--navy);line-height:1}
+    .counter-note{margin-top:8px;font-size:11px;color:#8a94a3}
+
+    .content-grid{
+      display:grid;grid-template-columns:290px minmax(0,1fr);gap:22px;margin-top:22px
+    }
+    .info-card,.section-card{
+      background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+      padding:25px;box-shadow:0 8px 26px rgba(18,43,82,.045)
+    }
+    .info-card h2,.section-card h2{margin:0;color:var(--navy);font-size:22px;letter-spacing:-.025em}
+    .info-row{padding:15px 0;border-bottom:1px solid #edf0f4}
+    .info-row:last-child{border-bottom:0}
+    .info-row span{
+      display:block;color:#8b95a4;font-size:10px;font-weight:900;
+      text-transform:uppercase;letter-spacing:.1em
+    }
+    .info-row strong{display:block;margin-top:5px;color:#344258;font-size:14px}
+    .section-card + .section-card{margin-top:22px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:12px}
+    .section-head p{margin:0;color:#8791a0;font-size:12px}
+
+    .item-list{display:grid;gap:12px}
+    .item{
+      display:flex;gap:15px;padding:14px;border:1px solid #e8ecf1;border-radius:17px;
+      text-decoration:none;background:#fff;transition:.18s transform,.18s box-shadow,.18s border-color
+    }
+    .item:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(18,43,82,.08);border-color:#ccd6e3}
+    .thumb{
+      width:118px;height:82px;flex:0 0 118px;border-radius:12px;overflow:hidden;background:#edf1f5;
+      display:grid;place-items:center;color:#7c8796;font-size:11px;font-weight:800;text-align:center
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .item-main{min-width:0;flex:1}
+    .item-title{margin:0;color:var(--navy);font-size:16px;font-weight:900;line-height:1.35}
+    .item-desc{margin:6px 0 0;color:#707c8d;font-size:12px;line-height:1.55}
+    .item-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+    .pill{
+      padding:5px 8px;border-radius:999px;background:#f2f5f8;color:#687587;
+      font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em
+    }
+    .empty{padding:25px 10px;color:#8a94a3;text-align:center;font-size:13px}
+    .event-date{font-weight:900;color:var(--red)}
+
+    .site-footer{border-top:1px solid var(--line);background:#fff}
+    .footer-bottom{
+      min-height:70px;display:flex;justify-content:space-between;align-items:center;
+      gap:20px;color:#7d8797;font-size:11px
+    }
+    @media(max-width:1000px){
+      .nav{display:none}
+      .menu-toggle{display:block}
+      .contribution-grid{grid-template-columns:repeat(2,1fr)}
+      .content-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .container{width:min(100% - 24px,1180px)}
+      .profile-hero{padding:24px;flex-direction:column;align-items:flex-start}
+      .avatar{width:92px;height:92px;flex-basis:92px}
+      .contribution-grid{grid-template-columns:1fr 1fr}
+      .item{align-items:flex-start}
+      .thumb{width:92px;height:72px;flex-basis:92px}
+      .footer-bottom{flex-direction:column;justify-content:center;align-items:flex-start;padding:18px 0}
+    }
+  </style>
 </head>
 <body>
-<header class="site-header"><div class="container nav-wrap"><a class="brand" href="../index.html"><img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU"><span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span></a><nav class="nav"><a href="../index.html">Home</a><a href="archive.html">Academic Archive</a><a href="research.html">Research &amp; Articles</a><a href="events.html">Events</a><a href="about.html">About</a><a href="student-dashboard.html" class="nav-login">Dashboard</a></nav><button class="menu-toggle" type="button" aria-label="Open menu">☰</button></div></header>
-<main class="profile-page"><div class="container"><a class="back" href="research.html">← Back to Research &amp; Articles</a><div id="loading" class="loading">Loading contributor profile...</div><div id="content" style="display:none"><section class="profile-hero"><div id="avatar" class="avatar"></div><div><p class="eyebrow">STATECRAFTER CONTRIBUTOR</p><h1 id="name">Contributor</h1><p id="summary" class="profile-info"></p><div class="stats"><span class="stat" id="articleCount">0 Articles</span><span class="stat" id="campusStat">Campus —</span><span class="stat" id="sessionStat">Session —</span></div></div></section><div class="profile-grid"><section class="info-card"><h2>Profile</h2><div class="info-row"><span>Student ID</span><strong id="studentId">—</strong></div><div class="info-row"><span>Campus</span><strong id="campus">—</strong></div><div class="info-row"><span>Session</span><strong id="session">—</strong></div></section><section class="articles-card"><h2>Published Articles</h2><div id="articles"><div class="loading">Loading articles...</div></div></section></div></div></div></main>
-<footer class="site-footer"><div class="container footer-bottom"><span>© 2026 StateCrafter DCU</span><span>Political Science Department • Dhaka Central University</span></div></footer>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="../index.html">
+      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+    </nav>
+    <button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="container">
+    <a class="back" href="research.html">← Back to Research &amp; Articles</a>
+
+    <div id="loading" class="loading">Loading contributor profile...</div>
+
+    <div id="error" class="error" style="display:none"></div>
+
+    <div id="content" style="display:none">
+      <section class="profile-hero">
+        <div id="avatar" class="avatar"></div>
+        <div>
+          <p class="eyebrow">STATECRAFTER CONTRIBUTOR</p>
+          <h1 id="name">Contributor</h1>
+          <p id="summary" class="summary"></p>
+          <div class="stats">
+            <span class="stat"><strong id="totalCount">0</strong> Total Contributions</span>
+            <span class="stat" id="campusStat">Campus —</span>
+            <span class="stat" id="sessionStat">Session —</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="contribution-grid">
+        <a class="counter" href="#articlesSection">
+          <div class="counter-label">Articles</div>
+          <div class="counter-number" id="articleCount">0</div>
+          <div class="counter-note">Published articles</div>
+        </a>
+        <a class="counter" href="#archiveSection">
+          <div class="counter-label">Academic Archive</div>
+          <div class="counter-number" id="archiveCount">0</div>
+          <div class="counter-note">Public resources</div>
+        </a>
+        <a class="counter" href="#eventsSection">
+          <div class="counter-label">Events</div>
+          <div class="counter-number" id="eventCount">0</div>
+          <div class="counter-note">Public event posts</div>
+        </a>
+        <a class="counter" href="#articlesSection">
+          <div class="counter-label">All Contributions</div>
+          <div class="counter-number" id="allCount">0</div>
+          <div class="counter-note">Articles + Archive + Events</div>
+        </a>
+      </section>
+
+      <div class="content-grid">
+        <aside class="info-card">
+          <h2>Profile</h2>
+          <div class="info-row">
+            <span>Full Name</span>
+            <strong id="profileName">—</strong>
+          </div>
+          <div class="info-row">
+            <span>Campus</span>
+            <strong id="campus">—</strong>
+          </div>
+          <div class="info-row">
+            <span>Session</span>
+            <strong id="session">—</strong>
+          </div>
+        </aside>
+
+        <div>
+          <section class="section-card" id="articlesSection">
+            <div class="section-head">
+              <div>
+                <h2>Published Articles</h2>
+                <p id="articleSummary">0 published articles</p>
+              </div>
+            </div>
+            <div id="articles" class="item-list"></div>
+          </section>
+
+          <section class="section-card" id="archiveSection">
+            <div class="section-head">
+              <div>
+                <h2>Academic Archive</h2>
+                <p id="archiveSummary">0 public archive resources</p>
+              </div>
+            </div>
+            <div id="archive" class="item-list"></div>
+          </section>
+
+          <section class="section-card" id="eventsSection">
+            <div class="section-head">
+              <div>
+                <h2>Events</h2>
+                <p id="eventSummary">0 public events</p>
+              </div>
+            </div>
+            <div id="events" class="item-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 StateCrafter DCU</span>
+    <span>Political Science Department • Dhaka Central University</span>
+  </div>
+</footer>
+
 <script>
-const SUPABASE_URL="https://psqwnvgruyfgdoukvpid.supabase.co";const SUPABASE_KEY="sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
-function initials(name){return (name||"Contributor").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"C"}
-function date(v){if(!v)return "Date unavailable";const d=new Date(v);return Number.isNaN(d.getTime())?"Date unavailable":d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}
-async function load(){const id=new URLSearchParams(location.search).get("id");if(!id){$("loading").textContent="No contributor was selected.";return}const {data:profile,error}=await supabaseClient.from("public_author_profiles").select("id,full_name,campus,session,photo_url").eq("id",id).maybeSingle();if(error||!profile){$("loading").textContent="This contributor profile could not be found.";return}const {data:articles}=await supabaseClient.from("articles").select("id,title,category,excerpt,published_at,created_at,cover_image_url").eq("author_id",id).eq("status","approved").order("published_at",{ascending:false});$("loading").style.display="none";$("content").style.display="block";$("name").textContent=profile.full_name||"StateCrafter Contributor";$("studentId").textContent=profile.student_id||"Not specified";$("campus").textContent=profile.campus||"Not specified";$("session").textContent=profile.session||"Not specified";$("campusStat").textContent="Campus · "+(profile.campus||"Not specified");$("sessionStat").textContent="Session · "+(profile.session||"Not specified");const list=articles||[];$("articleCount").textContent=`${list.length} ${list.length===1?"Article":"Articles"}`;$("summary").textContent=`${list.length} published ${list.length===1?"article":"articles"} on StateCrafter DCU.`;$("avatar").innerHTML=profile.photo_url?`<img src="${esc(profile.photo_url)}" alt="${esc(profile.full_name||"Contributor")}">`:esc(initials(profile.full_name));$("articles").innerHTML=list.length?list.map(a=>`<div class="public-article" onclick="location.href='article-view.html?id=${encodeURIComponent(a.id)}'"><h3>${esc(a.title||"Untitled Article")}</h3><p>${esc(a.excerpt||"Read this published article.")}</p><div class="article-meta"><span>${esc(a.category||"Article")}</span><span>${esc(date(a.published_at||a.created_at))}</span></div></div>`).join(""):"<div class='empty'>No published articles yet.</div>";document.title=(profile.full_name||"Contributor")+" | StateCrafter DCU"}
-$("menu-toggle")
-const menu=document.querySelector(".menu-toggle"),nav=document.querySelector(".nav");if(menu&&nav)menu.addEventListener("click",()=>nav.classList.toggle("open"));load();
+  const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const $ = id => document.getElementById(id);
+
+  function esc(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function initials(name) {
+    const parts = String(name || "Contributor").trim().split(/\s+/).filter(Boolean);
+    return (parts.slice(0, 2).map(x => x[0]).join("") || "C").toUpperCase();
+  }
+
+  function formatDate(value) {
+    if (!value) return "Date unavailable";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "Date unavailable";
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }
+
+  function showError(message) {
+    $("loading").style.display = "none";
+    $("content").style.display = "none";
+    $("error").textContent = message;
+    $("error").style.display = "block";
+  }
+
+  function publicEvent(row) {
+    const status = String(row.status || "").toLowerCase().trim();
+    if (!status) return true;
+    return ["approved", "published", "public", "active", "upcoming"].includes(status);
+  }
+
+  function archiveHref(row) {
+    return row.drive_link || "#";
+  }
+
+  function renderArticle(row) {
+    const cover = row.cover_image_url
+      ? `<img src="${esc(row.cover_image_url)}" alt="${esc(row.title || "Article cover")}" onerror="this.style.display='none'">`
+      : "ARTICLE";
+
+    return `
+      <a class="item" href="article-view.html?id=${encodeURIComponent(row.id)}">
+        <div class="thumb">${cover}</div>
+        <div class="item-main">
+          <h3 class="item-title">${esc(row.title || "Untitled Article")}</h3>
+          <p class="item-desc">${esc(row.excerpt || row.description || "Read this published article.")}</p>
+          <div class="item-meta">
+            <span class="pill">${esc(row.category || "Article")}</span>
+            <span class="pill">${esc(formatDate(row.published_at || row.created_at))}</span>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  function renderArchive(row) {
+    const href = archiveHref(row);
+    const tag = href !== "#" ? "a" : "div";
+    const hrefAttr = href !== "#" ? ` href="${esc(href)}" target="_blank" rel="noopener noreferrer"` : "";
+
+    return `
+      <${tag} class="item"${hrefAttr}>
+        <div class="thumb">ARCHIVE</div>
+        <div class="item-main">
+          <h3 class="item-title">${esc(row.title || "Academic Resource")}</h3>
+          <p class="item-desc">${esc(row.description || "Academic archive resource.")}</p>
+          <div class="item-meta">
+            <span class="pill">${esc(row.course || "Academic")}</span>
+            <span class="pill">${esc(row.campus || row.target_campus || "Archive")}</span>
+            <span class="pill">${esc(formatDate(row.published_at || row.created_at))}</span>
+          </div>
+        </div>
+      </${tag}>
+    `;
+  }
+
+  function renderEvent(row) {
+    const eventId = row.id;
+    return `
+      <a class="item" href="events.html?id=${encodeURIComponent(eventId)}">
+        <div class="thumb">
+          ${row.image_url
+            ? `<img src="${esc(row.image_url)}" alt="${esc(row.title || "Event")}" onerror="this.style.display='none'">`
+            : "EVENT"}
+        </div>
+        <div class="item-main">
+          <h3 class="item-title">${esc(row.title || "Untitled Event")}</h3>
+          <p class="item-desc">${esc(row.description || "StateCrafter DCU event.")}</p>
+          <div class="item-meta">
+            <span class="pill event-date">${esc(formatDate(row.event_date))}</span>
+            ${row.location ? `<span class="pill">${esc(row.location)}</span>` : ""}
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  async function loadProfile() {
+    const id = new URLSearchParams(location.search).get("id");
+
+    if (!id) {
+      showError("No contributor was selected.");
+      return;
+    }
+
+    try {
+      const [
+        profileResponse,
+        articlesResponse,
+        archiveResponse,
+        eventsResponse
+      ] = await Promise.all([
+        db.from("public_author_profiles")
+          .select("id,full_name,campus,session,photo_url")
+          .eq("id", id)
+          .maybeSingle(),
+
+        db.from("articles")
+          .select("id,title,category,excerpt,description,published_at,created_at,cover_image_url,author_id,status")
+          .eq("author_id", id)
+          .eq("status", "approved")
+          .order("published_at", { ascending: false }),
+
+        db.from("academic_notes")
+          .select("id,title,description,campus,course,drive_link,published_at,created_at,user_id")
+          .eq("user_id", id)
+          .order("published_at", { ascending: false }),
+
+        db.from("events")
+          .select("id,title,description,event_date,location,image_url,created_by,status,created_at")
+          .eq("created_by", id)
+          .order("event_date", { ascending: false })
+      ]);
+
+      if (profileResponse.error) throw profileResponse.error;
+
+      const profile = profileResponse.data;
+
+      if (!profile) {
+        showError("This contributor profile could not be found.");
+        return;
+      }
+
+      const articles = articlesResponse.data || [];
+      const archive = archiveResponse.data || [];
+      const events = (eventsResponse.data || []).filter(publicEvent);
+
+      $("loading").style.display = "none";
+      $("content").style.display = "block";
+
+      const name = profile.full_name || "StateCrafter Contributor";
+
+      $("name").textContent = name;
+      $("profileName").textContent = name;
+      $("campus").textContent = profile.campus || "Not specified";
+      $("session").textContent = profile.session || "Not specified";
+      $("campusStat").textContent = "Campus · " + (profile.campus || "Not specified");
+      $("sessionStat").textContent = "Session · " + (profile.session || "Not specified");
+
+      const total = articles.length + archive.length + events.length;
+
+      $("articleCount").textContent = articles.length;
+      $("archiveCount").textContent = archive.length;
+      $("eventCount").textContent = events.length;
+      $("allCount").textContent = total;
+      $("totalCount").textContent = total;
+
+      $("summary").textContent =
+        `${name} has ${total} public contribution${total === 1 ? "" : "s"} on StateCrafter DCU.`;
+
+      $("articleSummary").textContent =
+        `${articles.length} published article${articles.length === 1 ? "" : "s"}`;
+
+      $("archiveSummary").textContent =
+        `${archive.length} public archive resource${archive.length === 1 ? "" : "s"}`;
+
+      $("eventSummary").textContent =
+        `${events.length} public event${events.length === 1 ? "" : "s"}`;
+
+      if (profile.photo_url) {
+        $("avatar").innerHTML =
+          `<img src="${esc(profile.photo_url)}" alt="${esc(name)} profile photo">`;
+
+        $("avatar").querySelector("img").addEventListener("error", function () {
+          this.remove();
+          $("avatar").textContent = initials(name);
+        });
+      } else {
+        $("avatar").textContent = initials(name);
+      }
+
+      $("articles").innerHTML = articles.length
+        ? articles.map(renderArticle).join("")
+        : `<div class="empty">No published articles yet.</div>`;
+
+      $("archive").innerHTML = archive.length
+        ? archive.map(renderArchive).join("")
+        : `<div class="empty">No academic archive resources yet.</div>`;
+
+      $("events").innerHTML = events.length
+        ? events.map(renderEvent).join("")
+        : `<div class="empty">No public events yet.</div>`;
+
+      document.title = `${name} | StateCrafter DCU`;
+
+      if (articlesResponse.error) {
+        console.warn("Articles could not be loaded:", articlesResponse.error);
+      }
+      if (archiveResponse.error) {
+        console.warn("Academic archive could not be loaded:", archiveResponse.error);
+      }
+      if (eventsResponse.error) {
+        console.warn("Events could not be loaded:", eventsResponse.error);
+      }
+
+    } catch (error) {
+      console.error(error);
+      showError(error.message || "Could not load this contributor profile.");
+    }
+  }
+
+  const menu = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".nav");
+
+  if (menu && nav) {
+    menu.addEventListener("click", () => nav.classList.toggle("open"));
+  }
+
+  loadProfile();
 </script>
-</body></html>
+</body>
+</html>
