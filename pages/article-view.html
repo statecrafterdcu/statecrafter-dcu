@@ -482,7 +482,7 @@ async function loadArticle() {
     let query = supabaseClient
       .from("articles")
       .select("*")
-      .eq("status", "published");
+      .eq("status", "approved");
 
     if (id) {
       query = query.eq("id", id);
