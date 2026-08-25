@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,41 +10,26 @@
 
   <style>
     :root {
-      --navy: #102a4c;
-      --navy-2: #173e6b;
-      --red: #a71920;
-      --red-soft: #fdf0f1;
-
-      --green: #28733c;
-      --green-soft: #eaf7ed;
-
-      --amber: #9a620d;
-      --amber-soft: #fff4df;
-
-      --bg: #f5f7fa;
-      --card: #ffffff;
-      --line: #e2e8f0;
-
-      --text: #1c2d42;
-      --muted: #718096;
-
-      --shadow: 0 15px 45px rgba(16, 42, 76, 0.08);
-      --radius: 20px;
+      --navy: #102f56;
+      --navy-dark: #0b2342;
+      --red: #a9151b;
+      --red-dark: #8c1015;
+      --text: #26364d;
+      --muted: #6d7b8e;
+      --border: #e4e9ef;
+      --bg: #f7f9fc;
+      --white: #ffffff;
+      --shadow: 0 16px 45px rgba(16, 47, 86, 0.10);
+      --radius: 22px;
     }
 
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-
       font-family:
         Inter,
         ui-sans-serif,
@@ -54,17 +38,9 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
     a {
@@ -72,1169 +48,786 @@
       text-decoration: none;
     }
 
-    .page {
-      width: min(1220px, calc(100% - 30px));
-      margin: 0 auto;
-      padding: 25px 0 70px;
+    button,
+    input,
+    textarea {
+      font: inherit;
     }
 
-    /* =====================================================
-       HEADER
-       ===================================================== */
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
 
-    .topbar {
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+      height: 86px;
+      background: rgba(255, 255, 255, 0.97);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-
-      margin-bottom: 22px;
+      gap: 30px;
     }
 
-    .brand-small {
-      margin: 0 0 7px;
-
-      color: var(--red);
-
-      font-size: 10px;
-      font-weight: 950;
-
-      letter-spacing: .18em;
-      text-transform: uppercase;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
     }
 
-    .topbar h1 {
-      margin: 0;
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: var(--navy);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
 
+    .brand-text strong {
+      display: block;
       color: var(--navy);
-
-      font-size: clamp(30px, 5vw, 48px);
-      line-height: .98;
-
-      letter-spacing: -.045em;
+      font-size: 20px;
+      line-height: 1.1;
     }
 
-    .subtitle {
-      margin: 10px 0 0;
-
+    .brand-text span {
+      display: block;
       color: var(--muted);
-
       font-size: 12px;
-      line-height: 1.6;
+      margin-top: 3px;
     }
 
-    .top-actions {
+    .nav-links {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
     }
 
-    .btn {
-      min-height: 43px;
+    .nav-links a {
+      padding: 11px 15px;
+      border-radius: 13px;
+      color: #3d4b61;
+      font-weight: 700;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 0 16px;
-
-      border: 1px solid var(--line);
-      border-radius: 12px;
-
-      background: #fff;
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: #eef2f7;
       color: var(--navy);
-
-      font-size: 11px;
-      font-weight: 900;
-
-      transition:
-        transform .18s ease,
-        box-shadow .18s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(16, 42, 76, .08);
+    .nav-dashboard {
+      background: var(--navy) !important;
+      color: white !important;
+      padding-inline: 20px !important;
     }
 
-    .btn-primary {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: #fff;
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: #eef2f7;
+      color: var(--navy);
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
-    .btn-red {
-      background: var(--red);
-      border-color: var(--red);
-      color: #fff;
-    }
-
-    /* =====================================================
+    /* =========================
        HERO
-       ===================================================== */
+    ========================= */
 
     .hero {
-      position: relative;
-      overflow: hidden;
-
-      padding: 30px;
-
       background:
-        linear-gradient(
-          135deg,
-          var(--navy),
-          var(--navy-2)
-        );
-
-      border-radius: 24px;
-
-      color: #fff;
-
-      box-shadow: var(--shadow);
+        radial-gradient(circle at 90% 20%, rgba(169, 21, 27, 0.07), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #f3f6fb 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 105px 0 95px;
     }
 
-    .hero::after {
-      content: "";
-
-      position: absolute;
-
-      width: 260px;
-      height: 260px;
-
-      right: -90px;
-      top: -100px;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,.07);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-
-      max-width: 700px;
-    }
-
-    .hero-label {
-      margin: 0 0 9px;
-
-      font-size: 9px;
-      font-weight: 950;
-
-      letter-spacing: .17em;
+    .eyebrow {
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 3px;
       text-transform: uppercase;
-
-      opacity: .7;
+      margin-bottom: 18px;
     }
 
-    .hero h2 {
-      margin: 0;
-
-      font-size: clamp(27px, 5vw, 43px);
-      line-height: 1.05;
-
-      letter-spacing: -.04em;
+    .hero h1 {
+      max-width: 750px;
+      color: var(--navy);
+      font-size: clamp(54px, 7vw, 92px);
+      line-height: 0.94;
+      letter-spacing: -5px;
+      font-weight: 900;
     }
 
     .hero p {
-      margin: 12px 0 0;
-
-      color: rgba(255,255,255,.72);
-
-      font-size: 12px;
+      max-width: 720px;
+      margin-top: 28px;
+      color: #68778d;
+      font-size: 19px;
       line-height: 1.7;
     }
 
-    /* =====================================================
-       CONTROLS
-       ===================================================== */
-
-    .controls {
-      display: grid;
-
-      grid-template-columns: minmax(0, 1fr) 190px 160px;
-
-      gap: 10px;
-
-      margin-top: 18px;
-    }
-
-    .input,
-    .select,
-    .textarea {
-      width: 100%;
-
-      border: 1px solid var(--line);
-      border-radius: 12px;
-
-      background: #fff;
-
-      color: var(--text);
-
-      outline: none;
-
-      transition:
-        border-color .18s ease,
-        box-shadow .18s ease;
-    }
-
-    .input,
-    .select {
-      height: 45px;
-      padding: 0 13px;
-
-      font-size: 11px;
-    }
-
-    .textarea {
-      min-height: 110px;
-
-      padding: 12px 13px;
-
-      resize: vertical;
-
-      font-size: 11px;
-      line-height: 1.6;
-    }
-
-    .input:focus,
-    .select:focus,
-    .textarea:focus {
-      border-color: var(--navy);
-
-      box-shadow:
-        0 0 0 3px rgba(16,42,76,.08);
-    }
-
-    /* =====================================================
-       EVENT SECTION
-       ===================================================== */
-
-    .section {
-      margin-top: 30px;
-    }
-
-    .section-heading {
+    .hero-actions {
       display: flex;
-      align-items: flex-end;
+      gap: 12px;
+      margin-top: 34px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      border-radius: 13px;
+      padding: 14px 22px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .primary-btn {
+      background: var(--red);
+      color: white;
+      box-shadow: 0 12px 25px rgba(169, 21, 27, 0.20);
+    }
+
+    .primary-btn:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    .secondary-btn:hover {
+      border-color: #cbd4df;
+      transform: translateY(-1px);
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+      padding: 80px 0 100px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
       justify-content: space-between;
-
-      gap: 15px;
-
-      margin-bottom: 14px;
+      gap: 30px;
+      margin-bottom: 28px;
     }
 
-    .section-heading h2 {
-      margin: 0;
-
+    .section-head h2 {
       color: var(--navy);
-
-      font-size: 23px;
-      letter-spacing: -.03em;
+      font-size: 38px;
+      letter-spacing: -1.8px;
+      line-height: 1.1;
     }
 
-    .section-heading p {
-      margin: 5px 0 0;
-
+    .section-head p {
+      margin-top: 8px;
       color: var(--muted);
-
-      font-size: 10px;
     }
 
-    .event-count {
-      padding: 7px 10px;
-
-      border-radius: 999px;
-
-      background: #fff;
-
-      border: 1px solid var(--line);
-
-      color: var(--navy);
-
-      font-size: 9px;
-      font-weight: 900;
+    .tools {
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
 
-    /* =====================================================
-       EVENT GRID
-       ===================================================== */
+    .search-box {
+      width: 280px;
+      height: 50px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0 16px;
+      outline: none;
+      color: var(--text);
+    }
 
-    .event-grid {
+    .search-box:focus {
+      border-color: #b6c3d3;
+      box-shadow: 0 0 0 4px rgba(16, 47, 86, 0.06);
+    }
+
+    /* =========================
+       EVENTS GRID
+    ========================= */
+
+    .events-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
     }
 
     .event-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       overflow: hidden;
-
-      background: var(--card);
-
-      border: 1px solid var(--line);
-      border-radius: 18px;
-
-      box-shadow:
-        0 7px 28px rgba(16,42,76,.045);
-
+      box-shadow: 0 8px 28px rgba(16, 47, 86, 0.05);
       transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+      cursor: pointer;
     }
 
     .event-card:hover {
-      transform: translateY(-4px);
-
-      box-shadow:
-        0 18px 40px rgba(16,42,76,.11);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
     }
 
-    /* =====================================================
-       COVER IMAGE
-       ===================================================== */
-
-    .event-cover {
+    .event-image {
+      height: 225px;
+      background: #e9eef4;
       position: relative;
-
-      height: 190px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #e8edf4,
-          #d8e1ec
-        );
-
       overflow: hidden;
     }
 
-    .event-cover img {
+    .event-image img {
       width: 100%;
       height: 100%;
-
-      display: block;
-
       object-fit: cover;
+      display: block;
     }
 
-    .event-cover-fallback {
+    .event-image-placeholder {
       width: 100%;
       height: 100%;
-
       display: grid;
       place-items: center;
-
-      color: var(--navy);
-
-      font-size: 36px;
-      font-weight: 950;
-    }
-
-    .event-category {
-      position: absolute;
-
-      left: 12px;
-      top: 12px;
-
-      padding: 6px 9px;
-
-      border-radius: 999px;
-
-      background: rgba(16,42,76,.92);
-
-      color: #fff;
-
-      font-size: 8px;
+      color: #9aa7b7;
+      font-size: 45px;
       font-weight: 900;
-
-      letter-spacing: .07em;
-      text-transform: uppercase;
     }
 
-    .event-date-badge {
+    .event-status {
       position: absolute;
-
-      right: 12px;
-      top: 12px;
-
-      width: 48px;
-
-      padding: 7px 5px;
-
-      border-radius: 11px;
-
-      background: #fff;
-
-      text-align: center;
-
-      box-shadow:
-        0 7px 20px rgba(16,42,76,.13);
-    }
-
-    .event-date-day {
-      display: block;
-
-      color: var(--red);
-
-      font-size: 19px;
-      font-weight: 950;
-
-      line-height: 1;
-    }
-
-    .event-date-month {
-      display: block;
-
-      margin-top: 3px;
-
-      color: var(--navy);
-
-      font-size: 7px;
-      font-weight: 950;
-
-      letter-spacing: .1em;
+      top: 14px;
+      left: 14px;
+      background: rgba(16, 47, 86, 0.92);
+      color: white;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
       text-transform: uppercase;
+      letter-spacing: 0.7px;
     }
-
-    /* =====================================================
-       EVENT BODY
-       ===================================================== */
 
     .event-body {
-      padding: 17px;
+      padding: 23px;
+    }
+
+    .event-date {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .event-title {
-      margin: 0;
-
       color: var(--navy);
-
-      font-size: 16px;
-      line-height: 1.3;
-
-      letter-spacing: -.02em;
+      font-size: 23px;
+      line-height: 1.2;
+      letter-spacing: -0.6px;
+      margin-top: 8px;
+      font-weight: 850;
     }
 
     .event-description {
-      display: -webkit-box;
-
-      margin: 8px 0 0;
-
       color: var(--muted);
-
-      font-size: 10px;
-      line-height: 1.6;
-
+      font-size: 14px;
+      margin-top: 11px;
+      display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .event-info {
-      display: grid;
-
-      gap: 7px;
-
-      margin-top: 14px;
-
-      padding-top: 13px;
-
-      border-top: 1px solid var(--line);
-    }
-
-    .event-info-row {
+    .event-meta {
       display: flex;
-      align-items: flex-start;
-
       gap: 8px;
-
-      color: #667487;
-
-      font-size: 9px;
-      line-height: 1.4;
-    }
-
-    .event-info-icon {
-      width: 19px;
-      flex: 0 0 19px;
-
-      color: var(--red);
-
-      font-weight: 950;
-
-      text-align: center;
-    }
-
-    .event-organizer {
-      display: flex;
       align-items: center;
-
-      gap: 8px;
-
-      margin-top: 15px;
-    }
-
-    .organizer-avatar {
-      width: 27px;
-      height: 27px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 50%;
-
-      background: #e9eef5;
-      color: var(--navy);
-
-      font-size: 9px;
-      font-weight: 950;
-
-      overflow: hidden;
-    }
-
-    .organizer-avatar img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-    .organizer-name {
-      color: var(--navy);
-
-      font-size: 9px;
-      font-weight: 850;
+      margin-top: 17px;
+      color: #65758a;
+      font-size: 13px;
     }
 
     .event-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
-      gap: 8px;
-
-      margin-top: 15px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #edf0f4;
     }
 
-    .view-event {
-      flex: 1;
+    .read-more {
+      color: var(--navy);
+      font-weight: 850;
+      font-size: 13px;
+    }
 
-      min-height: 37px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
+    .share-small {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      background: white;
       border-radius: 10px;
-
-      background: var(--navy);
-      color: #fff;
-
-      font-size: 9px;
-      font-weight: 900;
+      cursor: pointer;
+      color: var(--navy);
     }
 
-    .share-event {
-      width: 37px;
-      height: 37px;
+    /* =========================
+       EMPTY / LOADING
+    ========================= */
 
+    .state-box {
+      grid-column: 1 / -1;
+      min-height: 280px;
+      border: 1px dashed #ccd5df;
+      border-radius: var(--radius);
+      background: white;
       display: grid;
       place-items: center;
-
-      border: 1px solid var(--line);
-      border-radius: 10px;
-
-      background: #fff;
-      color: var(--navy);
-
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    /* =====================================================
-       EMPTY
-       ===================================================== */
-
-    .empty {
-      grid-column: 1 / -1;
-
-      padding: 45px 20px;
-
-      background: #fff;
-
-      border: 1px dashed #d4dee9;
-      border-radius: 17px;
-
-      color: var(--muted);
-
       text-align: center;
-
-      font-size: 11px;
-      line-height: 1.7;
+      padding: 40px;
     }
 
-    /* =====================================================
+    .state-box h3 {
+      color: var(--navy);
+      font-size: 24px;
+    }
+
+    .state-box p {
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* =========================
        MODAL
-       ===================================================== */
+    ========================= */
 
     .modal {
       position: fixed;
-
       inset: 0;
-
-      z-index: 500;
-
+      background: rgba(8, 20, 35, 0.62);
       display: none;
-
       align-items: center;
       justify-content: center;
-
       padding: 20px;
-
-      background: rgba(10, 24, 42, .65);
-
+      z-index: 500;
       backdrop-filter: blur(6px);
     }
 
-    .modal.open {
+    .modal.show {
       display: flex;
     }
 
-    .modal-box {
+    .modal-card {
       width: min(720px, 100%);
       max-height: 92vh;
-
       overflow-y: auto;
-
-      background: #fff;
-
-      border-radius: 22px;
-
-      box-shadow:
-        0 30px 90px rgba(0,0,0,.22);
-    }
-
-    .modal-header {
-      position: sticky;
-
-      top: 0;
-
-      z-index: 5;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 19px 20px;
-
-      background: #fff;
-
-      border-bottom: 1px solid var(--line);
-    }
-
-    .modal-header h2 {
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: 19px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
+      padding: 30px;
+      position: relative;
     }
 
     .modal-close {
-      width: 34px;
-      height: 34px;
-
-      display: grid;
-      place-items: center;
-
-      border: 1px solid var(--line);
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 38px;
+      height: 38px;
+      border: 0;
       border-radius: 10px;
-
-      background: #fff;
-
+      background: #f0f3f7;
+      cursor: pointer;
       color: var(--navy);
-
-      font-weight: 900;
+      font-size: 20px;
     }
 
-    .modal-body {
-      padding: 20px;
+    .modal-title {
+      color: var(--navy);
+      font-size: 32px;
+      line-height: 1.15;
+      padding-right: 45px;
     }
 
     .form-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 13px;
+      gap: 17px;
+      margin-top: 25px;
     }
 
-    .form-group {
-      display: grid;
-      gap: 7px;
-    }
-
-    .form-group.full {
-      grid-column: 1 / -1;
-    }
-
-    .form-label {
+    .field label {
+      display: block;
       color: var(--navy);
+      font-size: 13px;
+      font-weight: 850;
+      margin-bottom: 7px;
+    }
 
-      font-size: 9px;
-      font-weight: 950;
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 14px;
+      outline: none;
+      color: var(--text);
+      background: #fbfcfe;
+    }
 
-      letter-spacing: .06em;
+    .field textarea {
+      min-height: 125px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #aebdce;
+      box-shadow: 0 0 0 4px rgba(16, 47, 86, 0.05);
+    }
+
+    .image-preview {
+      margin-top: 12px;
+      border-radius: 14px;
+      overflow: hidden;
+      display: none;
+      background: #eef2f6;
+      aspect-ratio: 16 / 8;
+    }
+
+    .image-preview.show {
+      display: block;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    /* =========================
+       DETAIL MODAL
+    ========================= */
+
+    .detail-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 18px;
+      margin-bottom: 25px;
+    }
+
+    .detail-date {
+      color: var(--red);
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
 
-    .hint {
-      color: #8b97a6;
-
-      font-size: 8px;
-      line-height: 1.5;
-    }
-
-    /* =====================================================
-       IMAGE PREVIEW
-       ===================================================== */
-
-    .preview-box {
-      overflow: hidden;
-
-      min-height: 180px;
-
-      display: grid;
-      place-items: center;
-
-      margin-top: 5px;
-
-      border: 1px dashed #cbd6e2;
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #f6f8fb,
-          #edf2f7
-        );
-
-      color: #7b8796;
-
-      text-align: center;
-
-      font-size: 10px;
-    }
-
-    .preview-box img {
-      width: 100%;
-      max-height: 300px;
-
-      display: block;
-
-      object-fit: cover;
-    }
-
-    .preview-content {
-      padding: 20px;
-    }
-
-    .preview-title {
-      margin: 0 0 6px;
-
-      color: var(--navy);
-
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    /* =====================================================
-       FORM ACTIONS
-       ===================================================== */
-
-    .form-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      gap: 8px;
-
-      margin-top: 18px;
-      padding-top: 16px;
-
-      border-top: 1px solid var(--line);
-    }
-
-    .form-message {
-      margin-right: auto;
-
-      color: var(--muted);
-
-      font-size: 9px;
-    }
-
-    .form-message.success {
-      color: var(--green);
-    }
-
-    .form-message.error {
-      color: var(--red);
-    }
-
-    /* =====================================================
-       DETAIL MODAL
-       ===================================================== */
-
-    .detail-cover {
-      width: 100%;
-      height: 280px;
-
-      object-fit: cover;
-
-      display: block;
-
-      background: #e8edf4;
-    }
-
-    .detail-body {
-      padding: 22px;
-    }
-
-    .detail-title {
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: clamp(25px, 4vw, 36px);
-      line-height: 1.08;
-
-      letter-spacing: -.035em;
-    }
-
-    .detail-meta {
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      margin-top: 12px;
-    }
-
-    .meta-chip {
-      padding: 7px 9px;
-
-      border-radius: 999px;
-
-      background: #eef2f6;
-
-      color: #657386;
-
-      font-size: 8px;
-      font-weight: 900;
-    }
-
     .detail-description {
-      margin-top: 18px;
-
-      color: #566579;
-
-      font-size: 11px;
-      line-height: 1.8;
-
-      white-space: pre-wrap;
-    }
-
-    .detail-actions {
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 8px;
-
       margin-top: 20px;
+      color: #56667b;
+      white-space: pre-line;
     }
 
-    /* =====================================================
+    .detail-location {
+      margin-top: 18px;
+      color: var(--navy);
+      font-weight: 750;
+    }
+
+    .detail-share {
+      margin-top: 25px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: var(--navy-dark);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      transform: translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s ease;
+      z-index: 1000;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =========================
        MOBILE
-       ===================================================== */
+    ========================= */
 
     @media (max-width: 950px) {
-
-      .event-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .controls {
-        grid-template-columns:
-          1fr 1fr;
-      }
-
-      .controls .input {
-        grid-column: 1 / -1;
-      }
-
-    }
-
-    @media (max-width: 650px) {
-
-      .page {
-        width: min(100% - 22px, 1220px);
-        padding-top: 16px;
-        padding-bottom: 50px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-      }
-
-      .top-actions .btn:not(.btn-primary) {
+      .nav-links {
         display: none;
       }
 
-      .hero {
-        padding: 23px 19px;
-        border-radius: 19px;
+      .mobile-menu {
+        display: block;
       }
 
-      .controls {
-        grid-template-columns: 1fr;
+      .events-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .controls .input {
-        grid-column: auto;
-      }
-
-      .event-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .event-cover {
-        height: 205px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-group.full {
-        grid-column: auto;
-      }
-
-      .modal {
-        padding: 8px;
-      }
-
-      .modal-box {
-        max-height: 96vh;
-        border-radius: 18px;
-      }
-
-      .modal-body {
-        padding: 15px;
-      }
-
-      .detail-cover {
-        height: 220px;
-      }
-
-      .section-heading {
+      .section-head {
         align-items: flex-start;
         flex-direction: column;
       }
 
+      .tools {
+        width: 100%;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .container,
+      .nav-inner {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .navbar {
+        height: 74px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-text strong {
+        font-size: 17px;
+      }
+
+      .brand-text span {
+        font-size: 10px;
+      }
+
+      .hero {
+        padding: 72px 0 65px;
+      }
+
+      .hero h1 {
+        font-size: 56px;
+        letter-spacing: -3px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .content {
+        padding: 55px 0 70px;
+      }
+
+      .section-head h2 {
+        font-size: 32px;
+      }
+
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event-image {
+        height: 215px;
+      }
+
+      .modal-card {
+        padding: 22px;
+        border-radius: 20px;
+      }
+
+      .modal-title {
+        font-size: 27px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <main class="page">
+  <header class="navbar">
+    <div class="nav-inner">
 
-    <!-- ===================================================
-         HEADER
-         =================================================== -->
+      <a href="index.html" class="brand">
+        <div class="brand-mark">SC</div>
 
-    <header class="topbar">
+        <div class="brand-text">
+          <strong>StateCrafter DCU</strong>
+          <span>Political Science Department</span>
+        </div>
+      </a>
 
-      <div>
-
-        <p class="brand-small">
-          STATECRAFTER DCU
-        </p>
-
-        <h1>
-          Events
-        </h1>
-
-        <p class="subtitle">
-          Discover academic, cultural and community events.
-        </p>
-
-      </div>
-
-      <div class="top-actions">
-
-        <a
-          href="student-dashboard.html"
-          class="btn"
-        >
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="archive.html">Academic Archive</a>
+        <a href="research.html">Research & Articles</a>
+        <a href="events.html" class="active">Events</a>
+        <a href="about.html">About</a>
+        <a href="student-dashboard.html" class="nav-dashboard">
           Dashboard
         </a>
+      </nav>
 
-        <button
-          id="createEventButton"
-          class="btn btn-primary"
-          type="button"
-        >
-          + Create Event
-        </button>
+      <button class="mobile-menu" onclick="toggleMobileMenu()">
+        ☰
+      </button>
 
-      </div>
-
-    </header>
+    </div>
+  </header>
 
 
-    <!-- ===================================================
-         HERO
-         =================================================== -->
+  <main>
 
     <section class="hero">
+      <div class="container">
 
-      <div class="hero-content">
+        <div class="eyebrow">
+          StateCrafter DCU
+        </div>
 
-        <p class="hero-label">
-          EVENT HUB
-        </p>
-
-        <h2>
-          Learn. Connect. Participate.
-        </h2>
+        <h1>
+          Ideas Meet<br>
+          People.
+        </h1>
 
         <p>
-          Find upcoming academic events, seminars, workshops,
-          competitions and community activities from the
-          StateCrafter DCU community.
+          Discover seminars, academic discussions, workshops and
+          community events from the StateCrafter DCU community.
         </p>
 
+        <div class="hero-actions">
+          <button
+            class="primary-btn"
+            onclick="openCreateEvent()">
+            Create an Event
+          </button>
+
+          <a href="#events" class="secondary-btn">
+            Explore Events
+          </a>
+        </div>
+
       </div>
-
     </section>
 
 
-    <!-- ===================================================
-         SEARCH / FILTER
-         =================================================== -->
+    <section class="content" id="events">
 
-    <section class="controls">
+      <div class="container">
 
-      <input
-        id="searchInput"
-        class="input"
-        type="search"
-        placeholder="Search events, organizers, locations..."
-        autocomplete="off"
-      >
+        <div class="section-head">
 
-      <select
-        id="categoryFilter"
-        class="select"
-      >
-        <option value="all">
-          All categories
-        </option>
+          <div>
+            <div class="eyebrow">
+              Upcoming & Published
+            </div>
 
-        <option value="academic">
-          Academic
-        </option>
+            <h2>
+              Events
+            </h2>
 
-        <option value="seminar">
-          Seminar
-        </option>
+            <p>
+              Explore events shared by the StateCrafter community.
+            </p>
+          </div>
 
-        <option value="workshop">
-          Workshop
-        </option>
-
-        <option value="competition">
-          Competition
-        </option>
-
-        <option value="cultural">
-          Cultural
-        </option>
-
-        <option value="community">
-          Community
-        </option>
-
-        <option value="other">
-          Other
-        </option>
-      </select>
-
-      <select
-        id="timeFilter"
-        class="select"
-      >
-        <option value="upcoming">
-          Upcoming
-        </option>
-
-        <option value="all">
-          All Events
-        </option>
-
-        <option value="past">
-          Past Events
-        </option>
-      </select>
-
-    </section>
-
-
-    <!-- ===================================================
-         EVENTS
-         =================================================== -->
-
-    <section class="section">
-
-      <div class="section-heading">
-
-        <div>
-
-          <h2>
-            Upcoming Events
-          </h2>
-
-          <p>
-            Approved events are visible to everyone.
-          </p>
+          <div class="tools">
+            <input
+              id="searchInput"
+              class="search-box"
+              type="search"
+              placeholder="Search events..."
+              oninput="filterEvents()">
+          </div>
 
         </div>
 
-        <span
-          id="eventCount"
-          class="event-count"
-        >
-          0 events
-        </span>
+        <div
+          id="eventsGrid"
+          class="events-grid">
 
-      </div>
+          <div class="state-box">
+            <div>
+              <h3>Loading events...</h3>
+              <p>Please wait.</p>
+            </div>
+          </div>
 
-
-      <div
-        id="eventGrid"
-        class="event-grid"
-      >
-
-        <div class="empty">
-          Loading events...
         </div>
 
       </div>
@@ -1244,361 +837,124 @@
   </main>
 
 
-  <!-- =====================================================
-       CREATE EVENT MODAL
-       ===================================================== -->
+  <!-- CREATE EVENT MODAL -->
 
   <div
     id="createModal"
     class="modal"
-  >
+    onclick="closeModalOutside(event, 'createModal')">
 
-    <div class="modal-box">
+    <div class="modal-card">
 
-      <div class="modal-header">
+      <button
+        class="modal-close"
+        onclick="closeCreateEvent()">
+        ×
+      </button>
 
-        <h2>
-          Create Event
-        </h2>
-
-        <button
-          id="closeCreateModal"
-          class="modal-close"
-          type="button"
-        >
-          ×
-        </button>
-
-      </div>
-
+      <h2 class="modal-title">
+        Create an Event
+      </h2>
 
       <form
         id="eventForm"
-        class="modal-body"
-      >
-
-        <div class="form-grid">
-
-
-          <!-- TITLE -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Event Title *
-            </label>
-
-            <input
-              id="eventTitle"
-              class="input"
-              type="text"
-              maxlength="180"
-              required
-              placeholder="e.g. DCU Research & Innovation Seminar"
-            >
-
-          </div>
-
-
-          <!-- CATEGORY -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              Category *
-            </label>
-
-            <select
-              id="eventCategory"
-              class="select"
-              required
-            >
-
-              <option value="">
-                Select category
-              </option>
-
-              <option value="academic">
-                Academic
-              </option>
-
-              <option value="seminar">
-                Seminar
-              </option>
-
-              <option value="workshop">
-                Workshop
-              </option>
-
-              <option value="competition">
-                Competition
-              </option>
-
-              <option value="cultural">
-                Cultural
-              </option>
-
-              <option value="community">
-                Community
-              </option>
-
-              <option value="other">
-                Other
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- DATE -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              Event Date *
-            </label>
-
-            <input
-              id="eventDate"
-              class="input"
-              type="date"
-              required
-            >
-
-          </div>
-
-
-          <!-- START TIME -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              Start Time
-            </label>
-
-            <input
-              id="eventStartTime"
-              class="input"
-              type="time"
-            >
-
-          </div>
-
-
-          <!-- END TIME -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              End Time
-            </label>
-
-            <input
-              id="eventEndTime"
-              class="input"
-              type="time"
-            >
-
-          </div>
-
-
-          <!-- LOCATION -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Location *
-            </label>
-
-            <input
-              id="eventLocation"
-              class="input"
-              type="text"
-              maxlength="220"
-              required
-              placeholder="e.g. DCU Auditorium / Online / Room 301"
-            >
-
-          </div>
-
-
-          <!-- SHORT DESCRIPTION -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Short Description *
-            </label>
-
-            <textarea
-              id="eventShortDescription"
-              class="textarea"
-              maxlength="500"
-              required
-              placeholder="A short introduction that will appear on the event card."
-            ></textarea>
-
-          </div>
-
-
-          <!-- FULL DESCRIPTION -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Event Details
-            </label>
-
-            <textarea
-              id="eventDescription"
-              class="textarea"
-              placeholder="Write the complete event details, agenda, speakers, instructions, etc."
-            ></textarea>
-
-          </div>
-
-
-          <!-- COVER IMAGE -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Cover Image URL
-            </label>
-
-            <input
-              id="coverImageUrl"
-              class="input"
-              type="url"
-              placeholder="https://example.com/event-cover.jpg"
-            >
-
-            <span class="hint">
-              Use a direct image URL. No file upload is required.
-              The image will always appear with the event title/card.
-            </span>
-
-            <div
-              id="coverPreview"
-              class="preview-box"
-            >
-
-              <div class="preview-content">
-
-                <p class="preview-title">
-                  Cover preview
-                </p>
-
-                Paste an image URL above to preview it here.
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- EXTRA IMAGE / DRIVE -->
-
-          <div class="form-group full">
-
-            <label class="form-label">
-              Additional Image / Drive Image URL
-            </label>
-
-            <input
-              id="imageUrl"
-              class="input"
-              type="url"
-              placeholder="https://drive.google.com/... or direct image URL"
-            >
-
-            <span class="hint">
-              If you use Google Drive, make sure the file is publicly
-              accessible. Direct image URLs provide the best preview.
-            </span>
-
-            <div
-              id="imagePreview"
-              class="preview-box"
-            >
-
-              <div class="preview-content">
-
-                <p class="preview-title">
-                  Image preview
-                </p>
-
-                Paste an image URL above to preview it here.
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- REGISTRATION -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              Registration Link
-            </label>
-
-            <input
-              id="registrationUrl"
-              class="input"
-              type="url"
-              placeholder="https://..."
-            >
-
-          </div>
-
-
-          <!-- ORGANIZER -->
-
-          <div class="form-group">
-
-            <label class="form-label">
-              Organizer
-            </label>
-
-            <input
-              id="organizerName"
-              class="input"
-              type="text"
-              maxlength="150"
-              placeholder="Your name / club / department"
-            >
-
-          </div>
-
-
+        class="form-grid">
+
+        <div class="field">
+          <label for="eventTitle">
+            Event Title *
+          </label>
+
+          <input
+            id="eventTitle"
+            type="text"
+            required
+            placeholder="e.g. Political Science Seminar">
         </div>
 
 
-        <div class="form-actions">
+        <div class="field">
+          <label for="eventDescription">
+            Description
+          </label>
 
-          <span
-            id="formMessage"
-            class="form-message"
-          ></span>
+          <textarea
+            id="eventDescription"
+            placeholder="Tell people about the event..."></textarea>
+        </div>
+
+
+        <div class="field">
+          <label for="eventDate">
+            Event Date & Time
+          </label>
+
+          <input
+            id="eventDate"
+            type="datetime-local">
+        </div>
+
+
+        <div class="field">
+          <label for="eventLocation">
+            Location
+          </label>
+
+          <input
+            id="eventLocation"
+            type="text"
+            placeholder="e.g. DCU Seminar Hall">
+        </div>
+
+
+        <div class="field">
+          <label for="eventImage">
+            Cover Image URL
+          </label>
+
+          <input
+            id="eventImage"
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            oninput="previewEventImage()">
+
+          <div
+            id="imagePreview"
+            class="image-preview">
+
+            <img
+              id="previewImage"
+              alt="Event cover preview">
+
+          </div>
+        </div>
+
+
+        <div class="field">
+          <label for="youtubeUrl">
+            YouTube URL
+          </label>
+
+          <input
+            id="youtubeUrl"
+            type="url"
+            placeholder="https://youtube.com/...">
+        </div>
+
+
+        <div class="modal-actions">
 
           <button
-            id="cancelCreate"
-            class="btn"
             type="button"
-          >
+            class="secondary-btn"
+            onclick="closeCreateEvent()">
             Cancel
           </button>
 
           <button
-            id="submitEvent"
-            class="btn btn-red"
             type="submit"
-          >
+            class="primary-btn"
+            id="submitEventBtn">
             Submit Event
           </button>
 
@@ -1607,56 +963,42 @@
       </form>
 
     </div>
-
   </div>
 
 
-  <!-- =====================================================
-       EVENT DETAIL MODAL
-       ===================================================== -->
+  <!-- EVENT DETAIL MODAL -->
 
   <div
     id="detailModal"
     class="modal"
-  >
+    onclick="closeModalOutside(event, 'detailModal')">
 
-    <div class="modal-box">
+    <div class="modal-card">
 
       <button
-        id="closeDetailModal"
         class="modal-close"
-        type="button"
-        style="
-          position:absolute;
-          right:25px;
-          top:20px;
-          z-index:20;
-        "
-      >
+        onclick="closeDetailModal()">
         ×
       </button>
 
-
-      <div id="detailContent">
-
-      </div>
+      <div id="eventDetail"></div>
 
     </div>
 
   </div>
 
 
+  <div id="toast" class="toast"></div>
+
+
   <script>
 
     /* =====================================================
-       SUPABASE
-       ===================================================== */
+       SUPABASE CONFIG
+    ===================================================== */
 
-    const SUPABASE_URL =
-      "https://psqwnvgruyfgdoukvpid.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
     const supabaseClient =
       window.supabase.createClient(
@@ -1665,848 +1007,177 @@
       );
 
 
-    /* =====================================================
-       HELPERS
-       ===================================================== */
-
-    function $(id) {
-      return document.getElementById(id);
-    }
-
-
-    function escapeHTML(value) {
-
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    function initials(name) {
-
-      const words =
-        String(name || "Event")
-          .trim()
-          .split(/\s+/)
-          .filter(Boolean);
-
-      if (!words.length) {
-        return "E";
-      }
-
-      return words
-        .slice(0, 2)
-        .map(
-          word =>
-            word.charAt(0).toUpperCase()
-        )
-        .join("");
-
-    }
-
-
-    function normalizeImageUrl(url) {
-
-      if (!url) {
-        return "";
-      }
-
-      const value =
-        String(url).trim();
-
-      /*
-        Direct URL.
-      */
-
-      if (
-        value.startsWith("https://") ||
-        value.startsWith("http://")
-      ) {
-
-        /*
-          Google Drive file URL compatibility.
-        */
-
-        const driveMatch =
-          value.match(
-            /drive\.google\.com\/file\/d\/([^/]+)/
-          );
-
-        if (driveMatch) {
-
-          return (
-            "https://drive.google.com/uc?export=view&id=" +
-            driveMatch[1]
-          );
-
-        }
-
-        /*
-          Google Drive open?id=...
-        */
-
-        const openMatch =
-          value.match(
-            /drive\.google\.com\/open\?id=([^&]+)/
-          );
-
-        if (openMatch) {
-
-          return (
-            "https://drive.google.com/uc?export=view&id=" +
-            openMatch[1]
-          );
-
-        }
-
-        return value;
-
-      }
-
-      return "";
-
-    }
-
-
-    function formatDate(date) {
-
-      if (!date) {
-        return "Date TBA";
-      }
-
-      const d =
-        new Date(date + "T00:00:00");
-
-      if (Number.isNaN(d.getTime())) {
-        return date;
-      }
-
-      return d.toLocaleDateString(
-        undefined,
-        {
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        }
-      );
-
-    }
-
-
-    function getDateParts(date) {
-
-      if (!date) {
-
-        return {
-          day: "—",
-          month: "TBA"
-        };
-
-      }
-
-      const d =
-        new Date(date + "T00:00:00");
-
-      if (Number.isNaN(d.getTime())) {
-
-        return {
-          day: "—",
-          month: "TBA"
-        };
-
-      }
-
-      return {
-        day: d
-          .getDate()
-          .toString(),
-
-        month: d
-          .toLocaleDateString(
-            undefined,
-            {
-              month: "short"
-            }
-          )
-      };
-
-    }
-
-
-    function formatTime(
-      start,
-      end
-    ) {
-
-      if (!start && !end) {
-        return "Time TBA";
-      }
-
-      if (
-        start &&
-        end
-      ) {
-
-        return `${start} – ${end}`;
-
-      }
-
-      return start || end;
-
-    }
-
-
-    function isUpcoming(date) {
-
-      if (!date) {
-        return true;
-      }
-
-      const today =
-        new Date();
-
-      today.setHours(
-        0,
-        0,
-        0,
-        0
-      );
-
-      const eventDate =
-        new Date(
-          date + "T00:00:00"
-        );
-
-      return eventDate >= today;
-
-    }
-
-
-    /* =====================================================
-       AUTH
-       ===================================================== */
-
-    async function getCurrentUser() {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.getUser();
-
-
-      if (error) {
-        return null;
-      }
-
-      return data.user || null;
-
-    }
-
-
-    /* =====================================================
-       PROFILE CACHE
-       ===================================================== */
-
-    const profileCache = {};
-
-
-    async function getProfile(userId) {
-
-      if (
-        !userId
-      ) {
-
-        return null;
-
-      }
-
-
-      if (
-        profileCache[userId]
-      ) {
-
-        return profileCache[userId];
-
-      }
-
-
-      const {
-        data
-      } =
-        await supabaseClient
-          .from("profiles")
-          .select("*")
-          .eq(
-            "id",
-            userId
-          )
-          .maybeSingle();
-
-
-      profileCache[userId] =
-        data || null;
-
-
-      return data || null;
-
-    }
-
-
-    function profileName(profile) {
-
-      if (!profile) {
-        return "StateCrafter Contributor";
-      }
-
-      return (
-        profile.full_name ||
-        profile.name ||
-        profile.display_name ||
-        profile.student_name ||
-        "StateCrafter Contributor"
-      );
-
-    }
-
-
-    function profilePhoto(profile) {
-
-      if (!profile) {
-        return "";
-      }
-
-      return (
-        profile.photo_url ||
-        profile.avatar_url ||
-        profile.profile_photo ||
-        profile.profile_picture ||
-        profile.image_url ||
-        ""
-      );
-
-    }
-
-
-    /* =====================================================
-       EVENTS
-       ===================================================== */
-
     let allEvents = [];
 
 
+    /* =====================================================
+       INITIAL LOAD
+    ===================================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      async () => {
+
+        await loadEvents();
+
+      }
+    );
+
+
+    /* =====================================================
+       LOAD PUBLIC EVENTS
+       
+       IMPORTANT:
+       Only approved/published events are shown publicly.
+    ===================================================== */
+
     async function loadEvents() {
 
-      /*
-        We deliberately select common fields only.
-        If your current events table uses different
-        names, the error will tell you exactly which
-        column needs to be changed.
-      */
+      const grid =
+        document.getElementById("eventsGrid");
+
+      grid.innerHTML = `
+        <div class="state-box">
+          <div>
+            <h3>Loading events...</h3>
+            <p>Please wait.</p>
+          </div>
+        </div>
+      `;
+
 
       const {
         data,
         error
-      } =
-        await supabaseClient
-          .from("events")
-          .select("*")
-          .eq(
-            "status",
-            "published"
-          )
-          .order(
-            "event_date",
-            {
-              ascending: true
-            }
-          );
+      } = await supabaseClient
+        .from("events")
+        .select(`
+          id,
+          title,
+          description,
+          event_date,
+          location,
+          image_url,
+          youtube_url,
+          created_by,
+          status,
+          created_at,
+          updated_at
+        `)
+        .eq("status", "published")
+        .order("event_date", {
+          ascending: true,
+          nullsFirst: false
+        });
 
 
       if (error) {
 
-        console.error(
-          "Events query error:",
-          error
-        );
+        console.error(error);
 
-
-        $("eventGrid").innerHTML = `
-          <div class="empty">
-
-            <strong>
-              Could not load events.
-            </strong>
-
-            <br><br>
-
-            ${escapeHTML(
-              error.message
-            )}
-
+        grid.innerHTML = `
+          <div class="state-box">
+            <div>
+              <h3>Could not load events</h3>
+              <p>
+                ${escapeHtml(error.message)}
+              </p>
+            </div>
           </div>
         `;
 
         return;
-
       }
 
 
-      allEvents =
-        data || [];
+      allEvents = data || [];
 
-
-      renderEvents();
+      renderEvents(allEvents);
 
     }
 
 
-    function eventDateValue(event) {
+    /* =====================================================
+       RENDER EVENTS
+    ===================================================== */
 
-      return (
-        event.event_date ||
-        event.date ||
-        event.start_date ||
-        null
-      );
+    function renderEvents(events) {
 
-    }
+      const grid =
+        document.getElementById("eventsGrid");
 
 
-    function eventTitleValue(event) {
+      if (!events.length) {
 
-      return (
-        event.title ||
-        event.name ||
-        "Untitled Event"
-      );
-
-    }
-
-
-    function eventCategoryValue(event) {
-
-      return (
-        event.category ||
-        event.event_type ||
-        "other"
-      );
-
-    }
-
-
-    function eventLocationValue(event) {
-
-      return (
-        event.location ||
-        event.venue ||
-        event.place ||
-        "Location TBA"
-      );
-
-    }
-
-
-    function eventDescriptionValue(event) {
-
-      return (
-        event.short_description ||
-        event.description ||
-        event.details ||
-        ""
-      );
-
-    }
-
-
-    function eventCoverValue(event) {
-
-      return (
-        event.cover_image ||
-        event.cover_image_url ||
-        event.cover_url ||
-        event.thumbnail ||
-        event.image_url ||
-        event.image ||
-        ""
-      );
-
-    }
-
-
-    function eventExtraImageValue(event) {
-
-      return (
-        event.image_url ||
-        event.image ||
-        event.photo_url ||
-        ""
-      );
-
-    }
-
-
-    function eventStartTimeValue(event) {
-
-      return (
-        event.start_time ||
-        event.event_time ||
-        ""
-      );
-
-    }
-
-
-    function eventEndTimeValue(event) {
-
-      return (
-        event.end_time ||
-        ""
-      );
-
-    }
-
-
-    function eventOrganizerId(event) {
-
-      return (
-        event.organizer_id ||
-        event.created_by ||
-        event.user_id ||
-        event.author_id ||
-        null
-      );
-
-    }
-
-
-    function eventRegistration(event) {
-
-      return (
-        event.registration_url ||
-        event.registration_link ||
-        event.register_url ||
-        ""
-      );
-
-    }
-
-
-    function renderEvents() {
-
-      const search =
-        $("searchInput")
-          .value
-          .trim()
-          .toLowerCase();
-
-
-      const category =
-        $("categoryFilter")
-          .value;
-
-
-      const time =
-        $("timeFilter")
-          .value;
-
-
-      let filtered =
-        allEvents.filter(
-          function (event) {
-
-            const title =
-              eventTitleValue(
-                event
-              ).toLowerCase();
-
-
-            const description =
-              eventDescriptionValue(
-                event
-              ).toLowerCase();
-
-
-            const location =
-              eventLocationValue(
-                event
-              ).toLowerCase();
-
-
-            const matchesSearch =
-              !search ||
-              title.includes(search) ||
-              description.includes(search) ||
-              location.includes(search);
-
-
-            const eventCategory =
-              eventCategoryValue(
-                event
-              ).toLowerCase();
-
-
-            const matchesCategory =
-              category === "all" ||
-              eventCategory === category;
-
-
-            const upcoming =
-              isUpcoming(
-                eventDateValue(event)
-              );
-
-
-            const matchesTime =
-              time === "all" ||
-              (
-                time === "upcoming" &&
-                upcoming
-              ) ||
-              (
-                time === "past" &&
-                !upcoming
-              );
-
-
-            return (
-              matchesSearch &&
-              matchesCategory &&
-              matchesTime
-            );
-
-          }
-        );
-
-
-      /*
-        Upcoming first.
-      */
-
-      filtered.sort(
-        function (a, b) {
-
-          const aDate =
-            eventDateValue(a) ||
-            "9999-12-31";
-
-          const bDate =
-            eventDateValue(b) ||
-            "9999-12-31";
-
-          return (
-            aDate.localeCompare(bDate)
-          );
-
-        }
-      );
-
-
-      $("eventCount").textContent =
-        `${filtered.length} ${
-          filtered.length === 1
-            ? "event"
-            : "events"
-        }`;
-
-
-      if (!filtered.length) {
-
-        $("eventGrid").innerHTML = `
-
-          <div class="empty">
-
-            No events found.
-
-            <br>
-
-            Try changing the search or filters.
-
+        grid.innerHTML = `
+          <div class="state-box">
+            <div>
+              <h3>No events found</h3>
+              <p>
+                There are no published events yet.
+              </p>
+            </div>
           </div>
-
         `;
 
         return;
-
       }
 
 
-      $("eventGrid").innerHTML =
-        filtered
-          .map(
-            renderEventCard
-          )
+      grid.innerHTML =
+        events
+          .map(event => createEventCard(event))
           .join("");
 
-
-      /*
-        Attach image fallback.
-      */
-
-      document
-        .querySelectorAll(
-          ".event-card img"
-        )
-        .forEach(
-          function (img) {
-
-            img.addEventListener(
-              "error",
-              function () {
-
-                img.style.display =
-                  "none";
-
-                const parent =
-                  img.closest(
-                    ".event-cover"
-                  );
-
-                if (
-                  parent &&
-                  !parent.querySelector(
-                    ".event-cover-fallback"
-                  )
-                ) {
-
-                  const fallback =
-                    document.createElement(
-                      "div"
-                    );
-
-                  fallback.className =
-                    "event-cover-fallback";
-
-                  fallback.textContent =
-                    "E";
-
-                  parent.appendChild(
-                    fallback
-                  );
-
-                }
-
-              }
-            );
-
-          }
-        );
-
     }
 
 
-    function renderEventCard(event) {
+    /* =====================================================
+       EVENT CARD
+    ===================================================== */
 
-      const title =
-        eventTitleValue(
-          event
-        );
+    function createEventCard(event) {
+
+      const image = event.image_url
+        ? `
+          <img
+            src="${escapeAttribute(event.image_url)}"
+            alt="${escapeAttribute(event.title)}"
+            loading="lazy"
+            onerror="this.parentElement.innerHTML='<div class=&quot;event-image-placeholder&quot;>SC</div>'">
+        `
+        : `
+          <div class="event-image-placeholder">
+            SC
+          </div>
+        `;
 
 
       const date =
-        eventDateValue(
-          event
-        );
-
-
-      const parts =
-        getDateParts(date);
-
-
-      const cover =
-        normalizeImageUrl(
-          eventCoverValue(
-            event
-          )
-        );
-
-
-      const category =
-        eventCategoryValue(
-          event
-        );
-
-
-      const location =
-        eventLocationValue(
-          event
-        );
+        formatEventDate(event.event_date);
 
 
       const description =
-        eventDescriptionValue(
-          event
-        );
+        event.description ||
+        "No description available.";
 
 
-      const time =
-        formatTime(
-          eventStartTimeValue(
-            event
-          ),
-          eventEndTimeValue(
-            event
-          )
-        );
-
-
-      const organizer =
-        event.organizer_name ||
-        event.organizer ||
-        "StateCrafter Contributor";
-
-
-      const organizerInitials =
-        initials(
-          organizer
-        );
+      const location =
+        event.location ||
+        "Location not specified";
 
 
       return `
-
         <article
           class="event-card"
-          data-event-id="${escapeHTML(event.id)}"
-        >
+          onclick="openEventDetail(${event.id})">
 
-          <div class="event-cover">
+          <div class="event-image">
 
-            ${
-              cover
-                ? `
-                  <img
-                    src="${escapeHTML(cover)}"
-                    alt="${escapeHTML(title)}"
-                    loading="lazy"
-                  >
-                `
-                : `
-                  <div class="event-cover-fallback">
-                    E
-                  </div>
-                `
-            }
+            ${image}
 
-
-            <span class="event-category">
-              ${escapeHTML(category)}
-            </span>
-
-
-            <div class="event-date-badge">
-
-              <span class="event-date-day">
-                ${escapeHTML(parts.day)}
-              </span>
-
-              <span class="event-date-month">
-                ${escapeHTML(parts.month)}
-              </span>
-
+            <div class="event-status">
+              Published
             </div>
 
           </div>
@@ -2514,82 +1185,37 @@
 
           <div class="event-body">
 
+            <div class="event-date">
+              ${escapeHtml(date)}
+            </div>
+
             <h3 class="event-title">
-              ${escapeHTML(title)}
+              ${escapeHtml(event.title)}
             </h3>
 
-
             <p class="event-description">
-              ${escapeHTML(description)}
+              ${escapeHtml(description)}
             </p>
 
 
-            <div class="event-info">
-
-              <div class="event-info-row">
-
-                <span class="event-info-icon">
-                  ◷
-                </span>
-
-                <span>
-                  ${escapeHTML(formatDate(date))}
-                  ·
-                  ${escapeHTML(time)}
-                </span>
-
-              </div>
-
-
-              <div class="event-info-row">
-
-                <span class="event-info-icon">
-                  ⌖
-                </span>
-
-                <span>
-                  ${escapeHTML(location)}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div class="event-organizer">
-
-              <div
-                class="organizer-avatar"
-                data-organizer-id="${escapeHTML(
-                  eventOrganizerId(event) || ""
-                )}"
-              >
-                ${escapeHTML(organizerInitials)}
-              </div>
-
-              <span class="organizer-name">
-                By ${escapeHTML(organizer)}
+            <div class="event-meta">
+              <span>📍</span>
+              <span>
+                ${escapeHtml(location)}
               </span>
-
             </div>
 
 
             <div class="event-footer">
 
-              <button
-                type="button"
-                class="view-event"
-                onclick="openEventDetails('${escapeHTML(event.id)}')"
-              >
-                View Event
-              </button>
+              <span class="read-more">
+                View Event →
+              </span>
 
               <button
-                type="button"
-                class="share-event"
-                onclick="shareEvent('${escapeHTML(event.id)}')"
-                aria-label="Share event"
-              >
+                class="share-small"
+                onclick="shareEvent(event, ${event.id})"
+                aria-label="Share event">
                 ↗
               </button>
 
@@ -2598,663 +1224,274 @@
           </div>
 
         </article>
-
       `;
 
     }
 
 
     /* =====================================================
-       EVENT DETAILS
-       ===================================================== */
+       SEARCH
+    ===================================================== */
 
-    window.openEventDetails =
-      async function (eventId) {
+    function filterEvents() {
 
-        const event =
-          allEvents.find(
-            item =>
-              String(item.id) ===
-              String(eventId)
+      const query =
+        document
+          .getElementById("searchInput")
+          .value
+          .toLowerCase()
+          .trim();
+
+
+      if (!query) {
+
+        renderEvents(allEvents);
+
+        return;
+      }
+
+
+      const filtered =
+        allEvents.filter(event => {
+
+          return (
+            (event.title || "")
+              .toLowerCase()
+              .includes(query)
+            ||
+            (event.description || "")
+              .toLowerCase()
+              .includes(query)
+            ||
+            (event.location || "")
+              .toLowerCase()
+              .includes(query)
           );
 
-
-        if (!event) {
-          return;
-        }
+        });
 
 
-        const title =
-          eventTitleValue(event);
+      renderEvents(filtered);
 
-
-        const cover =
-          normalizeImageUrl(
-            eventCoverValue(event)
-          );
-
-
-        const date =
-          eventDateValue(event);
-
-
-        const location =
-          eventLocationValue(event);
-
-
-        const time =
-          formatTime(
-            eventStartTimeValue(event),
-            eventEndTimeValue(event)
-          );
-
-
-        const category =
-          eventCategoryValue(event);
-
-
-        const description =
-          event.description ||
-          event.details ||
-          eventDescriptionValue(event);
-
-
-        const organizerId =
-          eventOrganizerId(event);
-
-
-        let organizer =
-          event.organizer_name ||
-          event.organizer ||
-          "StateCrafter Contributor";
-
-
-        let registration =
-          eventRegistration(event);
-
-
-        /*
-          Try profile data if creator exists.
-        */
-
-        if (organizerId) {
-
-          const profile =
-            await getProfile(
-              organizerId
-            );
-
-
-          if (profile) {
-
-            organizer =
-              profileName(profile);
-
-          }
-
-        }
-
-
-        $("detailContent").innerHTML = `
-
-          ${
-            cover
-              ? `
-                <img
-                  class="detail-cover"
-                  src="${escapeHTML(cover)}"
-                  alt="${escapeHTML(title)}"
-                >
-              `
-              : `
-                <div
-                  class="detail-cover"
-                  style="
-                    display:grid;
-                    place-items:center;
-                    color:#102a4c;
-                    font-size:45px;
-                    font-weight:950;
-                  "
-                >
-                  E
-                </div>
-              `
-          }
-
-
-          <div class="detail-body">
-
-            <h2 class="detail-title">
-              ${escapeHTML(title)}
-            </h2>
-
-
-            <div class="detail-meta">
-
-              <span class="meta-chip">
-                ${escapeHTML(category)}
-              </span>
-
-              <span class="meta-chip">
-                ${escapeHTML(formatDate(date))}
-              </span>
-
-              <span class="meta-chip">
-                ${escapeHTML(time)}
-              </span>
-
-              <span class="meta-chip">
-                ${escapeHTML(location)}
-              </span>
-
-            </div>
-
-
-            <div class="detail-description">
-              ${escapeHTML(description)}
-            </div>
-
-
-            <div class="detail-meta">
-
-              <span class="meta-chip">
-                By ${escapeHTML(organizer)}
-              </span>
-
-            </div>
-
-
-            <div class="detail-actions">
-
-              ${
-                registration
-                  ? `
-                    <a
-                      href="${escapeHTML(registration)}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="btn btn-red"
-                    >
-                      Register / Join
-                    </a>
-                  `
-                  : ""
-              }
-
-
-              <button
-                type="button"
-                class="btn"
-                onclick="shareEvent('${escapeHTML(event.id)}')"
-              >
-                Share Event
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
-
-        $("detailModal")
-          .classList
-          .add("open");
-
-      };
+    }
 
 
     /* =====================================================
-       SHARE
-       ===================================================== */
+       CREATE EVENT
+    ===================================================== */
 
-    window.shareEvent =
-      async function (eventId) {
+    async function openCreateEvent() {
 
-        const event =
-          allEvents.find(
-            item =>
-              String(item.id) ===
-              String(eventId)
-          );
-
-
-        if (!event) {
-          return;
+      const {
+        data: {
+          user
         }
+      } =
+        await supabaseClient.auth.getUser();
 
 
-        const url =
-          window.location.origin +
-          window.location.pathname +
-          "?event=" +
-          encodeURIComponent(
-            eventId
-          );
+      if (!user) {
+
+        window.location.href =
+          "login.html?redirect=events.html";
+
+        return;
+      }
 
 
-        const title =
-          eventTitleValue(event);
+      document
+        .getElementById("createModal")
+        .classList.add("show");
+
+    }
 
 
-        if (
-          navigator.share
-        ) {
+    function closeCreateEvent() {
 
-          try {
+      document
+        .getElementById("createModal")
+        .classList.remove("show");
 
-            await navigator.share({
-              title: title,
-              text:
-                `Check out this event: ${title}`,
-              url: url
-            });
-
-            return;
-
-          }
-
-          catch (error) {
-
-            /*
-              User cancelled share.
-            */
-
-          }
-
-        }
-
-
-        try {
-
-          await navigator.clipboard.writeText(
-            url
-          );
-
-          alert(
-            "Event link copied."
-          );
-
-        }
-
-        catch (error) {
-
-          prompt(
-            "Copy this event link:",
-            url
-          );
-
-        }
-
-      };
+    }
 
 
     /* =====================================================
        IMAGE PREVIEW
-       ===================================================== */
+    ===================================================== */
 
-    function setupImagePreview(
-      inputId,
-      previewId
-    ) {
+    function previewEventImage() {
 
       const input =
-        $(inputId);
+        document.getElementById("eventImage");
 
       const preview =
-        $(previewId);
+        document.getElementById("imagePreview");
+
+      const image =
+        document.getElementById("previewImage");
 
 
-      input.addEventListener(
-        "input",
-        function () {
-
-          const url =
-            normalizeImageUrl(
-              input.value
-            );
+      const url =
+        input.value.trim();
 
 
-          if (!url) {
+      if (!url) {
 
-            preview.innerHTML = `
+        preview.classList.remove("show");
 
-              <div class="preview-content">
-
-                <p class="preview-title">
-                  Image preview
-                </p>
-
-                Paste an image URL above to preview it.
-
-              </div>
-
-            `;
-
-            return;
-
-          }
+        return;
+      }
 
 
-          preview.innerHTML = `
+      image.src = url;
 
-            <img
-              src="${escapeHTML(url)}"
-              alt="Image preview"
-            >
+      image.onload = () => {
 
-          `;
+        preview.classList.add("show");
 
-
-          const image =
-            preview.querySelector(
-              "img"
-            );
+      };
 
 
-          image.addEventListener(
-            "error",
-            function () {
+      image.onerror = () => {
 
-              preview.innerHTML = `
+        preview.classList.remove("show");
 
-                <div class="preview-content">
-
-                  <p class="preview-title">
-                    Preview unavailable
-                  </p>
-
-                  The URL could not be displayed as an image.
-                  Make sure the image is publicly accessible.
-
-                </div>
-
-              `;
-
-            }
-          );
-
-        }
-      );
+      };
 
     }
-
-
-    setupImagePreview(
-      "coverImageUrl",
-      "coverPreview"
-    );
-
-
-    setupImagePreview(
-      "imageUrl",
-      "imagePreview"
-    );
-
-
-    /* =====================================================
-       CREATE MODAL
-       ===================================================== */
-
-    function openCreateModal() {
-
-      $("createModal")
-        .classList
-        .add("open");
-
-    }
-
-
-    function closeCreateModal() {
-
-      $("createModal")
-        .classList
-        .remove("open");
-
-    }
-
-
-    $("createEventButton")
-      .addEventListener(
-        "click",
-        async function () {
-
-          const user =
-            await getCurrentUser();
-
-
-          if (!user) {
-
-            window.location.href =
-              "login.html";
-
-            return;
-
-          }
-
-
-          openCreateModal();
-
-        }
-      );
-
-
-    $("closeCreateModal")
-      .addEventListener(
-        "click",
-        closeCreateModal
-      );
-
-
-    $("cancelCreate")
-      .addEventListener(
-        "click",
-        closeCreateModal
-      );
-
-
-    $("createModal")
-      .addEventListener(
-        "click",
-        function (event) {
-
-          if (
-            event.target ===
-            $("createModal")
-          ) {
-
-            closeCreateModal();
-
-          }
-
-        }
-      );
 
 
     /* =====================================================
        SUBMIT EVENT
-       ===================================================== */
+       
+       IMPORTANT:
+       No category field.
+       Only existing columns are inserted.
+    ===================================================== */
 
-    $("eventForm")
+    document
+      .getElementById("eventForm")
       .addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
           event.preventDefault();
 
 
           const button =
-            $("submitEvent");
-
-          const message =
-            $("formMessage");
+            document.getElementById("submitEventBtn");
 
 
-          button.disabled =
-            true;
-
-          button.textContent =
-            "Submitting...";
-
-          message.textContent =
-            "";
-
-          message.className =
-            "form-message";
+          button.disabled = true;
+          button.textContent = "Submitting...";
 
 
           try {
 
-            const user =
-              await getCurrentUser();
+            const {
+              data: {
+                user
+              }
+            } =
+              await supabaseClient.auth.getUser();
 
 
             if (!user) {
 
               window.location.href =
-                "login.html";
+                "login.html?redirect=events.html";
 
               return;
-
             }
 
 
             const title =
-              $("eventTitle")
-                .value
-                .trim();
-
-
-            const category =
-              $("eventCategory")
-                .value;
-
-
-            const eventDate =
-              $("eventDate")
-                .value;
-
-
-            const startTime =
-              $("eventStartTime")
-                .value ||
-              null;
-
-
-            const endTime =
-              $("eventEndTime")
-                .value ||
-              null;
-
-
-            const location =
-              $("eventLocation")
-                .value
-                .trim();
-
-
-            const shortDescription =
-              $("eventShortDescription")
+              document
+                .getElementById("eventTitle")
                 .value
                 .trim();
 
 
             const description =
-              $("eventDescription")
+              document
+                .getElementById("eventDescription")
                 .value
                 .trim();
 
 
-            const coverImage =
-              normalizeImageUrl(
-                $("coverImageUrl")
-                  .value
-              );
+            const date =
+              document
+                .getElementById("eventDate")
+                .value;
+
+
+            const location =
+              document
+                .getElementById("eventLocation")
+                .value
+                .trim();
 
 
             const imageUrl =
-              normalizeImageUrl(
-                $("imageUrl")
-                  .value
+              document
+                .getElementById("eventImage")
+                .value
+                .trim();
+
+
+            const youtubeUrl =
+              document
+                .getElementById("youtubeUrl")
+                .value
+                .trim();
+
+
+            if (!title) {
+
+              showToast(
+                "Event title is required."
               );
 
-
-            const registrationUrl =
-              $("registrationUrl")
-                .value
-                .trim() ||
-              null;
-
-
-            const organizerName =
-              $("organizerName")
-                .value
-                .trim() ||
-              null;
+              return;
+            }
 
 
             /*
-              New event starts as pending.
-              Admin approval makes it public.
+              IMPORTANT:
+
+              These are the ONLY columns
+              being inserted.
+
+              No category.
+              No author_name.
+              No cover_image_url.
             */
 
             const payload = {
 
-              title:
-
-                title,
-
-              category:
-
-                category,
-
-              event_date:
-
-                eventDate,
-
-              start_time:
-
-                startTime,
-
-              end_time:
-
-                endTime,
-
-              location:
-
-                location,
-
-              short_description:
-
-                shortDescription,
+              title: title,
 
               description:
-
                 description || null,
 
-              cover_image:
+              event_date:
+                date
+                  ? new Date(date).toISOString()
+                  : null,
 
-                coverImage || null,
+              location:
+                location || null,
 
               image_url:
-
                 imageUrl || null,
 
-              registration_url:
-
-                registrationUrl,
-
-              organizer_name:
-
-                organizerName,
+              youtube_url:
+                youtubeUrl || null,
 
               created_by:
-
                 user.id,
 
               status:
-
                 "pending"
 
             };
@@ -3265,102 +1502,54 @@
             } =
               await supabaseClient
                 .from("events")
-                .insert(
-                  payload
-                );
+                .insert(payload);
 
 
             if (error) {
 
-              throw error;
+              console.error(error);
 
+              showToast(
+                error.message
+              );
+
+              return;
             }
 
 
-            message.textContent =
-              "Event submitted successfully. It is waiting for approval.";
-
-            message.className =
-              "form-message success";
+            showToast(
+              "Event submitted successfully. Waiting for approval."
+            );
 
 
-            $("eventForm")
+            document
+              .getElementById("eventForm")
               .reset();
 
 
-            $("coverPreview").innerHTML = `
-
-              <div class="preview-content">
-
-                <p class="preview-title">
-                  Cover preview
-                </p>
-
-                Paste an image URL above to preview it.
-
-              </div>
-
-            `;
+            document
+              .getElementById("imagePreview")
+              .classList.remove("show");
 
 
-            $("imagePreview").innerHTML = `
-
-              <div class="preview-content">
-
-                <p class="preview-title">
-                  Image preview
-                </p>
-
-                Paste an image URL above to preview it.
-
-              </div>
-
-            `;
-
-
-            setTimeout(
-              function () {
-
-                closeCreateModal();
-
-                message.textContent =
-                  "";
-
-                message.className =
-                  "form-message";
-
-                loadEvents();
-
-              },
-              1300
-            );
+            closeCreateEvent();
 
           }
 
-          catch (error) {
+          catch(error) {
 
-            console.error(
-              "Create event error:",
-              error
+            console.error(error);
+
+            showToast(
+              "Something went wrong."
             );
-
-
-            message.textContent =
-              error.message ||
-              "Could not submit event.";
-
-            message.className =
-              "form-message error";
 
           }
 
           finally {
 
-            button.disabled =
-              false;
-
-            button.textContent =
-              "Submit Event";
+            button.disabled = false;
+            button.textContent = "Submit Event";
 
           }
 
@@ -3369,70 +1558,245 @@
 
 
     /* =====================================================
-       SEARCH / FILTER
-       ===================================================== */
+       EVENT DETAIL
+    ===================================================== */
 
-    $("searchInput")
-      .addEventListener(
-        "input",
-        renderEvents
-      );
+    function openEventDetail(id) {
 
-
-    $("categoryFilter")
-      .addEventListener(
-        "change",
-        renderEvents
-      );
+      const event =
+        allEvents.find(
+          item => Number(item.id) === Number(id)
+        );
 
 
-    $("timeFilter")
-      .addEventListener(
-        "change",
-        renderEvents
-      );
+      if (!event) return;
+
+
+      const detail =
+        document.getElementById("eventDetail");
+
+
+      const image =
+        event.image_url
+          ? `
+            <img
+              class="detail-image"
+              src="${escapeAttribute(event.image_url)}"
+              alt="${escapeAttribute(event.title)}">
+          `
+          : "";
+
+
+      detail.innerHTML = `
+
+        ${image}
+
+        <div class="detail-date">
+          ${escapeHtml(
+            formatEventDate(event.event_date)
+          )}
+        </div>
+
+
+        <h2 class="modal-title">
+          ${escapeHtml(event.title)}
+        </h2>
+
+
+        ${
+          event.location
+            ? `
+              <div class="detail-location">
+                📍 ${escapeHtml(event.location)}
+              </div>
+            `
+            : ""
+        }
+
+
+        <div class="detail-description">
+          ${escapeHtml(
+            event.description ||
+            "No description available."
+          )}
+        </div>
+
+
+        ${
+          event.youtube_url
+            ? `
+              <div style="margin-top:22px;">
+                <a
+                  href="${escapeAttribute(event.youtube_url)}"
+                  target="_blank"
+                  rel="noopener"
+                  class="primary-btn"
+                  style="display:inline-block;">
+                  Watch on YouTube
+                </a>
+              </div>
+            `
+            : ""
+        }
+
+
+        <div class="detail-share">
+
+          <button
+            class="secondary-btn"
+            onclick="copyEventLink(${event.id})">
+            Copy Link
+          </button>
+
+
+          <button
+            class="primary-btn"
+            onclick="shareEvent(null, ${event.id})">
+            Share Event
+          </button>
+
+        </div>
+
+      `;
+
+
+      document
+        .getElementById("detailModal")
+        .classList.add("show");
+
+    }
+
+
+    function closeDetailModal() {
+
+      document
+        .getElementById("detailModal")
+        .classList.remove("show");
+
+    }
 
 
     /* =====================================================
-       CLOSE DETAIL
-       ===================================================== */
+       SHARE
+    ===================================================== */
 
-    $("closeDetailModal")
-      .addEventListener(
-        "click",
-        function () {
+    async function shareEvent(eventObject, id) {
 
-          $("detailModal")
-            .classList
-            .remove("open");
+      if (eventObject) {
+
+        eventObject.stopPropagation();
+
+      }
+
+
+      const url =
+        `${window.location.origin}${window.location.pathname}?event=${id}`;
+
+
+      const event =
+        allEvents.find(
+          item => Number(item.id) === Number(id)
+        );
+
+
+      const title =
+        event
+          ? event.title
+          : "StateCrafter DCU Event";
+
+
+      if (
+        navigator.share
+      ) {
+
+        try {
+
+          await navigator.share({
+
+            title: title,
+
+            text:
+              `Check out this event: ${title}`,
+
+            url: url
+
+          });
+
+          return;
 
         }
-      );
 
+        catch(error) {
 
-    $("detailModal")
-      .addEventListener(
-        "click",
-        function (event) {
-
-          if (
-            event.target ===
-            $("detailModal")
-          ) {
-
-            $("detailModal")
-              .classList
-              .remove("open");
-
-          }
+          console.log(
+            "Share cancelled."
+          );
 
         }
+
+      }
+
+
+      await copyText(url);
+
+      showToast(
+        "Event link copied."
       );
+
+    }
+
+
+    async function copyEventLink(id) {
+
+      const url =
+        `${window.location.origin}${window.location.pathname}?event=${id}`;
+
+      await copyText(url);
+
+      showToast(
+        "Event link copied."
+      );
+
+    }
+
+
+    async function copyText(text) {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          text
+        );
+
+      }
+
+      catch(error) {
+
+        const textarea =
+          document.createElement("textarea");
+
+        textarea.value = text;
+
+        document.body.appendChild(
+          textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        textarea.remove();
+
+      }
+
+    }
 
 
     /* =====================================================
-       URL EVENT
-       ===================================================== */
+       URL EVENT OPEN
+    ===================================================== */
 
     function openEventFromUrl() {
 
@@ -3442,25 +1806,23 @@
         );
 
 
-      const eventId =
-        params.get(
-          "event"
+      const id =
+        params.get("event");
+
+
+      if (!id) return;
+
+
+      const event =
+        allEvents.find(
+          item => String(item.id) === String(id)
         );
 
 
-      if (
-        eventId
-      ) {
+      if (event) {
 
-        setTimeout(
-          function () {
-
-            openEventDetails(
-              eventId
-            );
-
-          },
-          500
+        openEventDetail(
+          event.id
         );
 
       }
@@ -3469,19 +1831,153 @@
 
 
     /* =====================================================
-       INIT
-       ===================================================== */
+       HELPERS
+    ===================================================== */
 
-    async function initialize() {
+    function formatEventDate(value) {
 
-      await loadEvents();
+      if (!value) {
+        return "Date TBA";
+      }
 
-      openEventFromUrl();
+
+      const date =
+        new Date(value);
+
+
+      if (Number.isNaN(date.getTime())) {
+        return "Date TBA";
+      }
+
+
+      return date.toLocaleString(
+        "en-US",
+        {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        }
+      );
 
     }
 
 
-    initialize();
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function escapeAttribute(value) {
+
+      return escapeHtml(value);
+
+    }
+
+
+    function closeModalOutside(
+      event,
+      modalId
+    ) {
+
+      if (
+        event.target.id === modalId
+      ) {
+
+        document
+          .getElementById(modalId)
+          .classList.remove("show");
+
+      }
+
+    }
+
+
+    function toggleMobileMenu() {
+
+      const links =
+        document.querySelector(
+          ".nav-links"
+        );
+
+
+      if (
+        links.style.display === "flex"
+      ) {
+
+        links.style.display = "";
+
+      }
+
+      else {
+
+        links.style.display = "flex";
+
+        links.style.position = "absolute";
+        links.style.top = "74px";
+        links.style.left = "14px";
+        links.style.right = "14px";
+        links.style.padding = "12px";
+        links.style.background = "white";
+        links.style.border = "1px solid #e4e9ef";
+        links.style.borderRadius = "16px";
+        links.style.flexDirection = "column";
+        links.style.boxShadow =
+          "0 15px 40px rgba(0,0,0,.12)";
+
+      }
+
+    }
+
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById("toast");
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.add("show");
+
+
+      setTimeout(() => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      }, 3200);
+
+    }
+
+
+    /* =====================================================
+       RUN URL EVENT AFTER LOAD
+    ===================================================== */
+
+    const originalLoadEvents =
+      loadEvents;
+
+
+    loadEvents = async function() {
+
+      await originalLoadEvents();
+
+      openEventFromUrl();
+
+    };
 
   </script>
 
