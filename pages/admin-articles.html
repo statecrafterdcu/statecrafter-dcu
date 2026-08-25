@@ -1,0 +1,1556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article Approval | StateCrafter DCU</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --navy:#122b52;
+      --red:#a7181d;
+      --ink:#202b3b;
+      --muted:#6e7a8d;
+      --line:#dfe4eb;
+      --soft:#f6f8fa;
+      --green:#26713b;
+      --green-bg:#eef8f0;
+      --orange:#8a5b00;
+      --orange-bg:#fff7df;
+    }
+
+    body{background:#f7f8fa}
+
+    .hero{
+      padding:52px 0 42px;
+      background:linear-gradient(135deg,#f7f5f0,#fff 55%,#eef2f8);
+      border-bottom:1px solid var(--line);
+    }
+
+    .hero h1{
+      margin:0;
+      color:var(--navy);
+      font-size:clamp(40px,6vw,64px);
+      line-height:.98;
+      letter-spacing:-.055em;
+    }
+
+    .hero p:not(.eyebrow){
+      max-width:700px;
+      margin:16px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .section{padding:45px 0 80px}
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:18px;
+      margin-bottom:22px;
+      flex-wrap:wrap;
+    }
+
+    .topbar h2{
+      margin:0;
+      color:var(--navy);
+      font-size:27px;
+    }
+
+    .topbar p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:22px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:17px;
+    }
+
+    .stat span{
+      display:block;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .stat strong{
+      display:block;
+      margin-top:5px;
+      color:var(--navy);
+      font-size:27px;
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 180px 180px;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .controls input,
+    .controls select{
+      width:100%;
+      box-sizing:border-box;
+      height:44px;
+      border:1px solid #d5dce5;
+      border-radius:10px;
+      background:#fff;
+      padding:0 12px;
+      color:var(--ink);
+      font:inherit;
+      font-size:12px;
+      outline:none;
+    }
+
+    .controls input:focus,
+    .controls select:focus{
+      border-color:var(--navy);
+      box-shadow:0 0 0 3px rgba(18,43,82,.06);
+    }
+
+    .list{
+      display:grid;
+      gap:13px;
+    }
+
+    .article-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 7px 24px rgba(18,43,82,.045);
+    }
+
+    .article-head{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:start;
+    }
+
+    .article-title{
+      margin:0;
+      color:var(--navy);
+      font-size:20px;
+      line-height:1.3;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin-top:8px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      min-height:25px;
+      padding:0 9px;
+      border-radius:999px;
+      background:#f1f4f7;
+      color:#657184;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      min-height:27px;
+      padding:0 10px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      white-space:nowrap;
+    }
+
+    .status.pending{background:var(--orange-bg);color:var(--orange)}
+    .status.approved{background:var(--green-bg);color:var(--green)}
+    .status.rejected{background:#fdf0f0;color:var(--red)}
+
+    .excerpt{
+      margin:15px 0 0;
+      color:#5f6c7f;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    .author{
+      margin-top:11px;
+      color:#7a8594;
+      font-size:10px;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:17px;
+      padding-top:15px;
+      border-top:1px solid #edf0f3;
+    }
+
+    .action-btn{
+      min-height:38px;
+      padding:0 13px;
+      border:1px solid #d8dfe7;
+      border-radius:9px;
+      background:#fff;
+      color:var(--navy);
+      font:inherit;
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .action-btn:hover{background:#f7f9fb}
+
+    .action-btn.approve{
+      background:var(--navy);
+      border-color:var(--navy);
+      color:#fff;
+    }
+
+    .action-btn.reject{
+      color:var(--red);
+      border-color:#e6c4c5;
+      background:#fffafa;
+    }
+
+    .empty,
+    .loading,
+    .error-box{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:35px 22px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .error-box{
+      color:var(--red);
+      background:#fffafa;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(9,20,36,.62);
+      z-index:9999;
+    }
+
+    .modal.open{display:flex}
+
+    .modal-card{
+      width:min(900px,100%);
+      max-height:88vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:20px;
+      padding:25px;
+      box-shadow:0 25px 70px rgba(0,0,0,.22);
+    }
+
+    .modal-top{
+      display:flex;
+      justify-content:space-between;
+      gap:15px;
+      align-items:start;
+    }
+
+    .modal-top h3{
+      margin:0;
+      color:var(--navy);
+      font-size:25px;
+      line-height:1.25;
+    }
+
+    .close{
+      width:36px;
+      height:36px;
+      border:1px solid var(--line);
+      border-radius:9px;
+      background:#fff;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .article-body{
+      margin-top:22px;
+      color:#303b4c;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:16px;
+      line-height:1.85;
+      overflow-wrap:anywhere;
+    }
+
+    .article-body h1,
+    .article-body h2,
+    .article-body h3{
+      color:var(--navy);
+      line-height:1.3;
+    }
+
+    .article-body a{color:#1656a6}
+
+    .article-body img{
+      max-width:100%;
+      height:auto;
+      border-radius:9px;
+    }
+
+    .article-body blockquote{
+      margin:20px 0;
+      padding:10px 16px;
+      border-left:4px solid var(--red);
+      background:#f7f8fa;
+      color:#697589;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      margin-top:22px;
+      padding-top:17px;
+      border-top:1px solid var(--line);
+    }
+
+    .message{
+      display:none;
+      margin-bottom:16px;
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .message.success{
+      display:block;
+      color:var(--green);
+      background:var(--green-bg);
+      border:1px solid #cce7d1;
+    }
+
+    .message.error{
+      display:block;
+      color:var(--red);
+      background:#fdf0f0;
+      border:1px solid #efcaca;
+    }
+
+    @media(max-width:800px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .controls{grid-template-columns:1fr}
+    }
+
+    @media(max-width:560px){
+      .stats{grid-template-columns:1fr 1fr}
+      .article-head{display:block}
+      .status{margin-top:12px}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+
+    <a class="brand" href="../index.html">
+      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <a href="admin-dashboard.html">Admin Dashboard</a>
+      <a href="research.html">Research &amp; Articles</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="../index.html">Home</a>
+    </nav>
+
+    <button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+
+<section class="hero">
+  <div class="container">
+    <p class="eyebrow">ADMIN CONTROL</p>
+    <h1>Article<br>Approval.</h1>
+    <p>
+      Review submitted articles, open the full formatted content,
+      approve publication or reject submissions from one place.
+    </p>
+  </div>
+</section>
+
+
+<main>
+<section class="section">
+  <div class="container">
+
+    <div id="message" class="message"></div>
+
+    <div class="topbar">
+      <div>
+        <h2>Article Management</h2>
+        <p>Only approved articles should appear publicly on Research &amp; Articles.</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span>Total</span>
+        <strong id="totalCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Pending</span>
+        <strong id="pendingCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Approved</span>
+        <strong id="approvedCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Rejected</span>
+        <strong id="rejectedCount">0</strong>
+      </div>
+    </div>
+
+    <div class="controls">
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search title, author, course..."
+      >
+
+      <select id="statusFilter">
+        <option value="all">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+      </select>
+
+    </div>
+
+    <div id="articleList" class="list">
+      <div class="loading">Loading articles...</div>
+    </div>
+
+  </div>
+</section>
+</main>
+
+
+<div id="articleModal" class="modal" aria-hidden="true">
+
+  <div class="modal-card">
+
+    <div class="modal-top">
+      <div>
+        <p class="eyebrow">ARTICLE REVIEW</p>
+        <h3 id="modalTitle">Article</h3>
+        <div id="modalMeta" class="meta"></div>
+      </div>
+
+      <button
+        id="closeModal"
+        class="close"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
+
+    <div id="modalBody" class="article-body"></div>
+
+    <div class="modal-actions">
+
+      <button
+        id="modalApprove"
+        type="button"
+        class="action-btn approve"
+      >
+        Approve &amp; Publish
+      </button>
+
+      <button
+        id="modalReject"
+        type="button"
+        class="action-btn reject"
+      >
+        Reject
+      </button>
+
+      <button
+        id="modalCloseBottom"
+        type="button"
+        class="action-btn"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 StateCrafter DCU</span>
+    <span>Political Science Department • Dhaka Central University</span>
+  </div>
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+let currentUser = null;
+let currentProfile = null;
+let articles = [];
+let selectedArticle = null;
+
+
+const articleList =
+  document.getElementById("articleList");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const statusFilter =
+  document.getElementById("statusFilter");
+
+const categoryFilter =
+  document.getElementById("categoryFilter");
+
+const messageBox =
+  document.getElementById("message");
+
+const modal =
+  document.getElementById("articleModal");
+
+
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
+
+async function loadAdmin(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+  if(
+    error ||
+    !data ||
+    !data.user
+  ){
+
+    window.location.href =
+      "login.html";
+
+    return false;
+
+  }
+
+  currentUser =
+    data.user;
+
+
+  const {
+    data: profile,
+    error: profileError
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("id, full_name, role")
+      .eq("id", currentUser.id)
+      .single();
+
+
+  if(
+    profileError ||
+    !profile
+  ){
+
+    showMessage(
+      "Could not load your admin profile.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  currentProfile =
+    profile;
+
+
+  if(
+    profile.role !== "admin"
+  ){
+
+    window.location.href =
+      "student-dashboard.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   LOAD ARTICLES
+========================================================= */
+
+async function loadArticles(){
+
+  articleList.innerHTML =
+    '<div class="loading">Loading articles...</div>';
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("articles")
+      .select(
+        "id, title, category, course_name, excerpt, content, status, author_id, author_name, student_id, campus"
+      )
+      .order(
+        "id",
+        { ascending:false }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Article load error:",
+      error
+    );
+
+    articleList.innerHTML =
+      '<div class="error-box">Could not load articles. ' +
+      escapeHTML(error.message || "") +
+      '</div>';
+
+    return;
+
+  }
+
+
+  articles =
+    data || [];
+
+
+  buildCategoryFilter();
+
+  updateStats();
+  renderArticles();
+
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+function buildCategoryFilter(){
+
+  const current =
+    categoryFilter.value;
+
+
+  const categories =
+    [
+      ...new Set(
+        articles
+          .map(
+            article =>
+              article.category
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort();
+
+
+  categoryFilter.innerHTML =
+    '<option value="all">All Categories</option>';
+
+
+  categories.forEach(
+    category => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      categoryFilter.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if(
+    categories.includes(current)
+  ){
+
+    categoryFilter.value =
+      current;
+
+  }
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats(){
+
+  document.getElementById(
+    "totalCount"
+  ).textContent =
+    articles.length;
+
+
+  document.getElementById(
+    "pendingCount"
+  ).textContent =
+    articles.filter(
+      article =>
+        article.status === "pending"
+    ).length;
+
+
+  document.getElementById(
+    "approvedCount"
+  ).textContent =
+    articles.filter(
+      article =>
+        article.status === "approved"
+    ).length;
+
+
+  document.getElementById(
+    "rejectedCount"
+  ).textContent =
+    articles.filter(
+      article =>
+        article.status === "rejected"
+    ).length;
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderArticles(){
+
+  const query =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  const selectedStatus =
+    statusFilter.value;
+
+
+  const selectedCategory =
+    categoryFilter.value;
+
+
+  const filtered =
+    articles.filter(
+      article => {
+
+        const haystack =
+          [
+            article.title,
+            article.author_name,
+            article.course_name,
+            article.category,
+            article.student_id,
+            article.campus
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+        const matchesSearch =
+          !query ||
+          haystack.includes(query);
+
+
+        const matchesStatus =
+          selectedStatus === "all" ||
+          article.status === selectedStatus;
+
+
+        const matchesCategory =
+          selectedCategory === "all" ||
+          article.category === selectedCategory;
+
+
+        return (
+          matchesSearch &&
+          matchesStatus &&
+          matchesCategory
+        );
+
+      }
+    );
+
+
+  if(!filtered.length){
+
+    articleList.innerHTML =
+      '<div class="empty">No articles match your current filters.</div>';
+
+    return;
+
+  }
+
+
+  articleList.innerHTML =
+    filtered
+      .map(
+        article =>
+          articleCard(article)
+      )
+      .join("");
+
+
+  articleList
+    .querySelectorAll(
+      "[data-open]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.open;
+
+            const article =
+              articles.find(
+                item =>
+                  String(item.id) ===
+                  String(id)
+              );
+
+            if(article){
+              openModal(article);
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  articleList
+    .querySelectorAll(
+      "[data-approve]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            updateStatus(
+              button.dataset.approve,
+              "approved"
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  articleList
+    .querySelectorAll(
+      "[data-reject]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            updateStatus(
+              button.dataset.reject,
+              "rejected"
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function articleCard(article){
+
+  const status =
+    article.status ||
+    "pending";
+
+
+  const excerpt =
+    article.excerpt ||
+    plainText(
+      article.content
+    ).slice(
+      0,
+      240
+    );
+
+
+  const author =
+    article.author_name ||
+    "Unknown author";
+
+
+  return `
+    <article class="article-card">
+
+      <div class="article-head">
+
+        <div>
+
+          <h3 class="article-title">
+            ${escapeHTML(article.title || "Untitled Article")}
+          </h3>
+
+          <div class="meta">
+
+            <span class="tag">
+              ${escapeHTML(article.category || "Uncategorized")}
+            </span>
+
+            ${
+              article.course_name
+                ? `<span class="tag">${escapeHTML(article.course_name)}</span>`
+                : ""
+            }
+
+            ${
+              article.campus
+                ? `<span class="tag">${escapeHTML(article.campus)}</span>`
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+        <span class="status ${escapeHTML(status)}">
+          ${escapeHTML(status)}
+        </span>
+
+      </div>
+
+      <p class="excerpt">
+        ${escapeHTML(excerpt || "No description provided.")}
+      </p>
+
+      <div class="author">
+        Submitted by ${escapeHTML(author)}
+        ${
+          article.student_id
+            ? " • " + escapeHTML(article.student_id)
+            : ""
+        }
+      </div>
+
+      <div class="actions">
+
+        <button
+          type="button"
+          class="action-btn"
+          data-open="${escapeHTML(article.id)}"
+        >
+          Open Article
+        </button>
+
+        ${
+          status !== "approved"
+            ? `
+              <button
+                type="button"
+                class="action-btn approve"
+                data-approve="${escapeHTML(article.id)}"
+              >
+                Approve &amp; Publish
+              </button>
+            `
+            : ""
+        }
+
+        ${
+          status !== "rejected"
+            ? `
+              <button
+                type="button"
+                class="action-btn reject"
+                data-reject="${escapeHTML(article.id)}"
+              >
+                Reject
+              </button>
+            `
+            : ""
+        }
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================================
+   STATUS UPDATE
+========================================================= */
+
+async function updateStatus(
+  articleId,
+  newStatus
+){
+
+  const article =
+    articles.find(
+      item =>
+        String(item.id) ===
+        String(articleId)
+    );
+
+
+  if(!article){
+    return;
+  }
+
+
+  const actionText =
+    newStatus === "approved"
+      ? "approve and publish"
+      : "reject";
+
+
+  const confirmed =
+    window.confirm(
+      `Are you sure you want to ${actionText} "${article.title}"?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("articles")
+      .update({
+        status:newStatus
+      })
+      .eq(
+        "id",
+        articleId
+      );
+
+
+  if(error){
+
+    console.error(
+      "Status update error:",
+      error
+    );
+
+    showMessage(
+      "Could not update the article: " +
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    newStatus === "approved"
+      ? "Article approved and published successfully."
+      : "Article rejected successfully.",
+    "success"
+  );
+
+
+  if(
+    selectedArticle &&
+    String(selectedArticle.id) ===
+    String(articleId)
+  ){
+
+    selectedArticle.status =
+      newStatus;
+
+    closeModal();
+
+  }
+
+
+  await loadArticles();
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openModal(article){
+
+  selectedArticle =
+    article;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    article.title ||
+    "Untitled Article";
+
+
+  document.getElementById(
+    "modalMeta"
+  ).innerHTML =
+    `
+      <span class="tag">
+        ${escapeHTML(article.category || "Uncategorized")}
+      </span>
+
+      ${
+        article.course_name
+          ? `<span class="tag">${escapeHTML(article.course_name)}</span>`
+          : ""
+      }
+
+      ${
+        article.author_name
+          ? `<span class="tag">${escapeHTML(article.author_name)}</span>`
+          : ""
+      }
+
+      <span class="status ${escapeHTML(article.status || "pending")}">
+        ${escapeHTML(article.status || "pending")}
+      </span>
+    `;
+
+
+  document.getElementById(
+    "modalBody"
+  ).innerHTML =
+    article.content ||
+    (
+      article.excerpt
+        ? `<p>${escapeHTML(article.excerpt)}</p>`
+        : "<p>No article content was submitted.</p>"
+    );
+
+
+  const approve =
+    document.getElementById(
+      "modalApprove"
+    );
+
+  const reject =
+    document.getElementById(
+      "modalReject"
+    );
+
+
+  approve.style.display =
+    article.status === "approved"
+      ? "none"
+      : "inline-flex";
+
+
+  reject.style.display =
+    article.status === "rejected"
+      ? "none"
+      : "inline-flex";
+
+
+  modal.classList.add(
+    "open"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+}
+
+
+function closeModal(){
+
+  modal.classList.remove(
+    "open"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  selectedArticle =
+    null;
+
+}
+
+
+document
+  .getElementById(
+    "closeModal"
+  )
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+
+document
+  .getElementById(
+    "modalCloseBottom"
+  )
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+
+document
+  .getElementById(
+    "modalApprove"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      if(
+        selectedArticle
+      ){
+
+        updateStatus(
+          selectedArticle.id,
+          "approved"
+        );
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "modalReject"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      if(
+        selectedArticle
+      ){
+
+        updateStatus(
+          selectedArticle.id,
+          "rejected"
+        );
+
+      }
+
+    }
+  );
+
+
+modal.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target === modal
+    ){
+
+      closeModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+searchInput.addEventListener(
+  "input",
+  renderArticles
+);
+
+statusFilter.addEventListener(
+  "change",
+  renderArticles
+);
+
+categoryFilter.addEventListener(
+  "change",
+  renderArticles
+);
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function plainText(html){
+
+  if(!html){
+    return "";
+  }
+
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.innerHTML =
+    html;
+
+
+  return (
+    div.innerText ||
+    div.textContent ||
+    ""
+  )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+
+}
+
+
+function escapeHTML(value){
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function showMessage(
+  text,
+  type
+){
+
+  messageBox.textContent =
+    text;
+
+  messageBox.className =
+    "message " +
+    type;
+
+
+  setTimeout(
+    () => {
+
+      messageBox.className =
+        "message";
+
+      messageBox.textContent =
+        "";
+
+    },
+    4500
+  );
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuToggle =
+  document.querySelector(
+    ".menu-toggle"
+  );
+
+const nav =
+  document.querySelector(
+    ".nav"
+  );
+
+
+if(
+  menuToggle &&
+  nav
+){
+
+  menuToggle.addEventListener(
+    "click",
+    () => {
+
+      nav.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+(async function(){
+
+  const isAdmin =
+    await loadAdmin();
+
+
+  if(
+    isAdmin
+  ){
+
+    await loadArticles();
+
+  }
+
+})();
+
+</script>
+
+</body>
+</html>
