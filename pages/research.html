@@ -1,51 +1,2470 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Research & Articles | StateCrafter DCU</title>
-  <link rel="stylesheet" href="../style.css">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1"
+
+>
+
+  <title>
+    Research & Articles | StateCrafter DCU
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="../style.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .research-hero {
+
+      background:
+        linear-gradient(
+          135deg,
+          #f7f5f0 0%,
+          #ffffff 55%,
+          #eef2f8 100%
+        );
+
+      border-bottom: 1px solid var(--line);
+
+      padding: 60px 0 55px;
+
+    }
+
+
+    .research-hero h1 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size:
+        clamp(42px, 6vw, 70px);
+
+      line-height: .96;
+
+      letter-spacing: -.05em;
+
+    }
+
+
+    .research-hero p:not(.eyebrow) {
+
+      max-width: 700px;
+
+      margin: 20px 0 0;
+
+      color: var(--muted);
+
+      font-size: 16px;
+
+      line-height: 1.7;
+
+    }
+
+
+    .research-section {
+
+      padding: 55px 0 90px;
+
+    }
+
+
+    /* =====================================================
+       TOOLBAR
+    ===================================================== */
+
+    .research-toolbar {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        230px
+        auto;
+
+      gap: 12px;
+
+      margin-bottom: 32px;
+
+    }
+
+
+    .research-toolbar input,
+    .research-toolbar select {
+
+      width: 100%;
+
+      height: 48px;
+
+      box-sizing: border-box;
+
+      border: 1px solid #d8dde5;
+
+      border-radius: 12px;
+
+      background: #fff;
+
+      color: var(--ink);
+
+      font: inherit;
+
+      font-size: 14px;
+
+      padding: 0 14px;
+
+      outline: none;
+
+    }
+
+
+    .research-toolbar input:focus,
+    .research-toolbar select:focus {
+
+      border-color: var(--navy);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(18,43,82,.06);
+
+    }
+
+
+    .write-button {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-width: 155px;
+
+      white-space: nowrap;
+
+    }
+
+
+    /* =====================================================
+       FEATURED
+    ===================================================== */
+
+    .featured-section {
+
+      margin-bottom: 45px;
+
+    }
+
+
+    .featured-card {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(0, .9fr);
+
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+
+      border-radius: 24px;
+
+      background: #fff;
+
+      box-shadow:
+        0 15px 45px
+        rgba(18,43,82,.07);
+
+      cursor: pointer;
+
+      transition: transform .2s ease,
+                  box-shadow .2s ease;
+
+    }
+
+
+    .featured-card:hover {
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 20px 55px
+        rgba(18,43,82,.11);
+
+    }
+
+
+    .featured-image {
+
+      min-height: 330px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #122b52,
+          #294c7b
+        );
+
+      overflow: hidden;
+
+    }
+
+
+    .featured-image img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+    }
+
+
+    .featured-content {
+
+      padding: 34px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+    }
+
+
+    .featured-label {
+
+      color: var(--red);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: .12em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .featured-content h2 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size:
+        clamp(26px, 3vw, 40px);
+
+      line-height: 1.08;
+
+      letter-spacing: -.03em;
+
+    }
+
+
+    .featured-excerpt {
+
+      margin: 15px 0 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.75;
+
+    }
+
+
+    .article-meta {
+
+      display: flex;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 8px 14px;
+
+      margin-top: 20px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .category-pill {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      background: #eef2f8;
+
+      color: var(--navy);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+    }
+
+
+    /* =====================================================
+       SECTION HEADER
+    ===================================================== */
+
+    .articles-heading {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: end;
+
+      gap: 20px;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .articles-heading h2 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 28px;
+
+      letter-spacing: -.02em;
+
+    }
+
+
+    .articles-count {
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+    }
+
+
+    /* =====================================================
+       ARTICLE GRID
+    ===================================================== */
+
+    .article-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 22px;
+
+    }
+
+
+    .article-card {
+
+      display: flex;
+
+      flex-direction: column;
+
+      min-width: 0;
+
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+
+      border-radius: 19px;
+
+      background: #fff;
+
+      box-shadow:
+        0 8px 28px
+        rgba(18,43,82,.05);
+
+      cursor: pointer;
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+    }
+
+
+    .article-card:hover {
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 15px 38px
+        rgba(18,43,82,.09);
+
+    }
+
+
+    .article-image {
+
+      height: 190px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #122b52,
+          #7185a2
+        );
+
+    }
+
+
+    .article-image img {
+
+      width: 100%;
+
+      height: 100%;
+
+      display: block;
+
+      object-fit: cover;
+
+    }
+
+
+    .article-card-body {
+
+      display: flex;
+
+      flex-direction: column;
+
+      flex: 1;
+
+      padding: 20px;
+
+    }
+
+
+    .article-card-body h3 {
+
+      margin: 8px 0 0;
+
+      color: var(--navy);
+
+      font-size: 20px;
+
+      line-height: 1.2;
+
+    }
+
+
+    .article-card-excerpt {
+
+      margin: 10px 0 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.65;
+
+    }
+
+
+    .article-card .article-meta {
+
+      margin-top: auto;
+
+      padding-top: 18px;
+
+    }
+
+
+    .article-label {
+
+      color: var(--red);
+
+      font-size: 9px;
+
+      font-weight: 900;
+
+      letter-spacing: .1em;
+
+      text-transform: uppercase;
+
+    }
+
+
+    /* =====================================================
+       EMPTY / LOADING
+    ===================================================== */
+
+    .state-box {
+
+      padding: 45px 20px;
+
+      text-align: center;
+
+      border: 1px dashed #d8dde5;
+
+      border-radius: 18px;
+
+      color: var(--muted);
+
+      background: #fafbfc;
+
+    }
+
+
+    .state-box h3 {
+
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 20px;
+
+    }
+
+
+    .state-box p {
+
+      margin: 8px auto 0;
+
+      max-width: 520px;
+
+      font-size: 13px;
+
+      line-height: 1.6;
+
+    }
+
+
+    /* =====================================================
+       FULL ARTICLE VIEW
+    ===================================================== */
+
+    #articleView {
+
+      display: none;
+
+    }
+
+
+    .reader-top {
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .back-button {
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--navy);
+
+      font: inherit;
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+
+      padding: 0;
+
+    }
+
+
+    .back-button:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    .reader {
+
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+
+      border-radius: 24px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 15px 45px
+        rgba(18,43,82,.07);
+
+    }
+
+
+    .reader-cover {
+
+      width: 100%;
+
+      max-height: 480px;
+
+      object-fit: cover;
+
+      display: block;
+
+    }
+
+
+    .reader-header {
+
+      padding: 38px 45px 25px;
+
+    }
+
+
+    .reader-category {
+
+      color: var(--red);
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      letter-spacing: .12em;
+
+      text-transform: uppercase;
+
+    }
+
+
+    .reader-header h1 {
+
+      margin: 10px 0 0;
+
+      color: var(--navy);
+
+      font-size:
+        clamp(34px, 5vw, 55px);
+
+      line-height: 1.04;
+
+      letter-spacing: -.04em;
+
+    }
+
+
+    .reader-excerpt {
+
+      margin: 18px 0 0;
+
+      color: var(--muted);
+
+      font-size: 15px;
+
+      line-height: 1.7;
+
+    }
+
+
+    .reader-content {
+
+      padding: 10px 45px 55px;
+
+      color: #273246;
+
+      font-size: 17px;
+
+      line-height: 1.9;
+
+      overflow-wrap: anywhere;
+
+    }
+
+
+    .reader-content h1,
+    .reader-content h2,
+    .reader-content h3,
+    .reader-content h4 {
+
+      color: var(--navy);
+
+      line-height: 1.25;
+
+      margin-top: 35px;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .reader-content h2 {
+
+      font-size: 29px;
+
+    }
+
+
+    .reader-content h3 {
+
+      font-size: 23px;
+
+    }
+
+
+    .reader-content p {
+
+      margin: 0 0 18px;
+
+    }
+
+
+    .reader-content a {
+
+      color: #245a9c;
+
+      text-decoration: underline;
+
+    }
+
+
+    .reader-content img {
+
+      max-width: 100%;
+
+      height: auto;
+
+      display: block;
+
+      margin: 25px auto;
+
+      border-radius: 12px;
+
+    }
+
+
+    .reader-content blockquote {
+
+      margin: 25px 0;
+
+      padding: 14px 20px;
+
+      border-left: 4px solid var(--red);
+
+      background: #f7f5f0;
+
+      color: #5a6679;
+
+    }
+
+
+    .reader-content ul,
+    .reader-content ol {
+
+      padding-left: 28px;
+
+      margin: 18px 0;
+
+    }
+
+
+    .reader-content li {
+
+      margin: 7px 0;
+
+    }
+
+
+    .reader-footer {
+
+      margin: 0 45px;
+
+      padding: 22px 0 35px;
+
+      border-top: 1px solid var(--line);
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .reader-tags {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: 12px;
+
+    }
+
+
+    .tag {
+
+      padding: 5px 9px;
+
+      border-radius: 999px;
+
+      background: #f0f2f5;
+
+      color: #526075;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:1000px) {
+
+      .article-grid {
+
+        grid-template-columns:
+          repeat(2, minmax(0,1fr));
+
+      }
+
+    }
+
+
+    @media(max-width:800px) {
+
+      .research-toolbar {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .featured-card {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .featured-image {
+
+        min-height: 240px;
+
+      }
+
+    }
+
+
+    @media(max-width:600px) {
+
+      .research-section {
+
+        padding: 40px 0 65px;
+
+      }
+
+
+      .article-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .articles-heading {
+
+        align-items: start;
+
+        flex-direction: column;
+
+      }
+
+
+      .reader-header {
+
+        padding: 28px 22px 20px;
+
+      }
+
+
+      .reader-content {
+
+        padding: 5px 22px 35px;
+
+        font-size: 16px;
+
+      }
+
+
+      .reader-footer {
+
+        margin: 0 22px;
+
+      }
+
+
+      .featured-content {
+
+        padding: 25px;
+
+      }
+
+    }
+
+  </style>
+
 </head>
+
 <body>
+
 <header class="site-header">
+
   <div class="container nav-wrap">
-    <a class="brand" href="../index.html">
-      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
-      <span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
-    </a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
-    <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="archive.html">Academic Archive</a>
-      <a href="research.html">Research &amp; Articles</a>
-      <a href="events.html">Events</a>
-      <a href="about.html">About</a>
-      <a class="nav-login" href="login.html">Login</a>
-    </nav>
+
+```
+<a
+  class="brand"
+  href="../index.html"
+>
+
+  <img
+    src="../assets/statecrafter-logo.png"
+    alt="StateCrafter DCU"
+  >
+
+  <span class="brand-copy">
+
+    <strong>
+      StateCrafter DCU
+    </strong>
+
+    <small>
+      Political Science Department
+    </small>
+
+  </span>
+
+</a>
+
+
+<nav class="nav">
+
+  <a href="../index.html">
+    Home
+  </a>
+
+  <a href="archive.html">
+    Academic Archive
+  </a>
+
+  <a
+    href="research.html"
+    class="active"
+  >
+    Research &amp; Articles
+  </a>
+
+  <a href="events.html">
+    Events
+  </a>
+
+  <a href="about.html">
+    About
+  </a>
+
+  <a
+    href="student-dashboard.html"
+    class="nav-login"
+  >
+    Dashboard
+  </a>
+
+</nav>
+
+
+<button
+  class="menu-toggle"
+  type="button"
+  aria-label="Open menu"
+>
+  ☰
+</button>
+```
+
   </div>
+
 </header>
+
+<section class="research-hero">
+
+  <div class="container">
+
+```
+<p class="eyebrow">
+  RESEARCH &amp; ARTICLES
+</p>
+
+<h1>
+  Ideas Worth<br>
+  Reading.
+</h1>
+
+<p>
+  Explore academic writing, political analysis,
+  research and thoughtful perspectives from the
+  StateCrafter DCU community.
+</p>
+```
+
+  </div>
+
+</section>
+
 <main>
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">RESEARCH & ARTICLES</p>
-      <h1 style="font-size:clamp(40px,6vw,72px);line-height:1.02;color:var(--navy);margin:0 0 18px">Research & Articles</h1>
-      <p style="max-width:720px;color:var(--muted);font-size:17px">A space for student ideas, academic writing and research contributions, published after review.</p>
-      
-<div class="card-grid three" style="margin-top:42px">
-  <article class="feature-card"><span class="card-icon">A</span><h3>Articles</h3><p>Student-written academic articles will appear here after admin approval.</p></article>
-  <article class="feature-card"><span class="card-icon">R</span><h3>Research Papers</h3><p>Long-form research with optional PDF attachments and related video.</p></article>
-  <article class="feature-card"><span class="card-icon">V</span><h3>Video Resources</h3><p>YouTube lectures and presentations can be linked to relevant research.</p></article>
+
+<section class="research-section">
+
+  <div class="container">
+
+```
+<!-- =================================================
+     ARTICLE LIST
+================================================== -->
+
+<div id="articleListing">
+
+
+  <div class="research-toolbar">
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Search articles..."
+      autocomplete="off"
+    >
+
+
+    <select id="categoryFilter">
+
+      <option value="">
+        All Categories
+      </option>
+
+    </select>
+
+
+    <a
+      href="article-editor.html"
+      class="btn btn-primary write-button"
+    >
+      Write an Article
+    </a>
+
+  </div>
+
+
+  <div
+    id="featuredSection"
+    class="featured-section"
+    style="display:none;"
+  ></div>
+
+
+  <div class="articles-heading">
+
+    <h2>
+      Latest Articles
+    </h2>
+
+    <span
+      id="articlesCount"
+      class="articles-count"
+    >
+      Loading...
+    </span>
+
+  </div>
+
+
+  <div
+    id="articleGrid"
+    class="article-grid"
+  ></div>
+
+
+  <div
+    id="emptyState"
+    class="state-box"
+    style="display:none;"
+  >
+
+    <h3>
+      No articles found
+    </h3>
+
+    <p>
+      There are no published articles matching
+      your search or category selection.
+    </p>
+
+  </div>
+
+
 </div>
 
-    </div>
-  </section>
-</main>
-<footer class="site-footer">
-  <div class="container footer-bottom" style="border-top:0;margin-top:0">
-    <span>© 2026 StateCrafter DCU</span>
-    <span>Political Science Department • Dhaka Central University</span>
+
+<!-- =================================================
+     FULL ARTICLE READER
+================================================== -->
+
+<div id="articleView">
+
+  <div class="reader-top">
+
+    <button
+      id="backToArticles"
+      class="back-button"
+      type="button"
+    >
+      ← Back to Research &amp; Articles
+    </button>
+
   </div>
+
+
+  <article class="reader">
+
+    <img
+      id="readerCover"
+      class="reader-cover"
+      alt=""
+      style="display:none;"
+    >
+
+
+    <header class="reader-header">
+
+      <div
+        id="readerCategory"
+        class="reader-category"
+      ></div>
+
+
+      <h1
+        id="readerTitle"
+      ></h1>
+
+
+      <p
+        id="readerExcerpt"
+        class="reader-excerpt"
+      ></p>
+
+
+      <div
+        id="readerMeta"
+        class="article-meta"
+      ></div>
+
+    </header>
+
+
+    <div
+      id="readerContent"
+      class="reader-content"
+    ></div>
+
+
+    <footer class="reader-footer">
+
+      <div>
+        Published on
+        <strong id="readerDate"></strong>
+      </div>
+
+
+      <div
+        id="readerTags"
+        class="reader-tags"
+      ></div>
+
+    </footer>
+
+  </article>
+
+</div>
+
+
+<div
+  id="globalState"
+  class="state-box"
+  style="display:none;"
+>
+
+  <h3>
+    Unable to load articles
+  </h3>
+
+  <p id="globalStateText">
+    Please refresh the page and try again.
+  </p>
+
+</div>
+```
+
+  </div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+
+  <div class="container footer-bottom">
+
+```
+<span>
+  © 2026 StateCrafter DCU
+</span>
+
+<span>
+  Political Science Department • Dhaka Central University
+</span>
+```
+
+  </div>
+
 </footer>
-<script src="../app.js"></script>
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let allArticles = [];
+
+let currentArticle = null;
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const articleListing =
+  document.getElementById(
+    "articleListing"
+  );
+
+
+const articleView =
+  document.getElementById(
+    "articleView"
+  );
+
+
+const articleGrid =
+  document.getElementById(
+    "articleGrid"
+  );
+
+
+const featuredSection =
+  document.getElementById(
+    "featuredSection"
+  );
+
+
+const emptyState =
+  document.getElementById(
+    "emptyState"
+  );
+
+
+const globalState =
+  document.getElementById(
+    "globalState"
+  );
+
+
+const globalStateText =
+  document.getElementById(
+    "globalStateText"
+  );
+
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+
+const categoryFilter =
+  document.getElementById(
+    "categoryFilter"
+  );
+
+
+const articlesCount =
+  document.getElementById(
+    "articlesCount"
+  );
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function formatDate(dateValue) {
+
+  if (!dateValue) {
+
+    return "Date unavailable";
+
+  }
+
+
+  const date =
+    new Date(
+      dateValue
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "Date unavailable";
+
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  ).format(date);
+
+}
+
+
+function formatShortDate(dateValue) {
+
+  if (!dateValue) {
+    return "";
+  }
+
+
+  const date =
+    new Date(dateValue);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }
+  ).format(date);
+
+}
+
+
+function getExcerpt(article) {
+
+  if (
+    article.excerpt &&
+    article.excerpt.trim()
+  ) {
+
+    return article.excerpt.trim();
+
+  }
+
+
+  const temp =
+    document.createElement(
+      "div"
+    );
+
+
+  temp.innerHTML =
+    article.content_html ||
+    "";
+
+
+  const text =
+    temp.textContent ||
+    temp.innerText ||
+    "";
+
+
+  return text
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim()
+    .slice(
+      0,
+      190
+    );
+
+}
+
+
+function getArticleDate(article) {
+
+  return (
+    article.published_at ||
+    article.updated_at ||
+    article.created_at
+  );
+
+}
+
+
+/* =========================================================
+   LOAD ARTICLES
+========================================================= */
+
+async function loadArticles() {
+
+  globalState.style.display =
+    "none";
+
+
+  try {
+
+    /*
+      Only published articles are requested.
+
+      No draft, pending or rejected article
+      can appear on the public page.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("articles")
+
+        .select(
+          `
+          id,
+          title,
+          excerpt,
+          content_html,
+          cover_image_url,
+          category,
+          tags,
+          is_featured,
+          published_at,
+          updated_at,
+          created_at,
+          author_id
+          `
+        )
+
+        .eq(
+          "status",
+          "published"
+        )
+
+        .order(
+          "published_at",
+          {
+            ascending: false,
+            nullsFirst: false
+          }
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    allArticles =
+      data || [];
+
+
+    buildCategories();
+
+    renderArticles();
+
+
+    /*
+      If URL contains ?article=ID,
+      immediately open that article.
+    */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const articleId =
+      params.get(
+        "article"
+      );
+
+
+    if (articleId) {
+
+      const article =
+        allArticles.find(
+          item =>
+            String(item.id) ===
+            String(articleId)
+        );
+
+
+      if (article) {
+
+        openArticle(
+          article,
+          false
+        );
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Research page error:",
+      error
+    );
+
+
+    globalStateText.textContent =
+      error.message ||
+      "Could not load published articles.";
+
+
+    globalState.style.display =
+      "block";
+
+
+    articleListing.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+function buildCategories() {
+
+  const categories =
+    [
+      ...new Set(
+        allArticles
+          .map(
+            article =>
+              article.category
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort(
+      (a,b) =>
+        a.localeCompare(b)
+    );
+
+
+  categoryFilter.innerHTML = `
+    <option value="">All Categories</option>
+  `;
+
+
+  categories.forEach(
+    category => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      categoryFilter.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function getFilteredArticles() {
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  const category =
+    categoryFilter.value;
+
+
+  return allArticles.filter(
+    article => {
+
+      const searchable =
+        [
+          article.title,
+          article.excerpt,
+          article.category,
+          Array.isArray(article.tags)
+            ? article.tags.join(" ")
+            : ""
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+      const matchesSearch =
+        !search ||
+        searchable.includes(
+          search
+        );
+
+
+      const matchesCategory =
+        !category ||
+        article.category ===
+        category;
+
+
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER ARTICLES
+========================================================= */
+
+function renderArticles() {
+
+  const articles =
+    getFilteredArticles();
+
+
+  articlesCount.textContent =
+    `${articles.length} ${
+      articles.length === 1
+        ? "article"
+        : "articles"
+    }`;
+
+
+  articleGrid.innerHTML =
+    "";
+
+
+  featuredSection.innerHTML =
+    "";
+
+
+  featuredSection.style.display =
+    "none";
+
+
+  emptyState.style.display =
+    "none";
+
+
+  if (!articles.length) {
+
+    emptyState.style.display =
+      "block";
+
+    return;
+
+  }
+
+
+  /*
+    Featured article:
+    Only use featured articles.
+    If none are marked featured,
+    the latest article becomes featured.
+  */
+
+  let featured =
+    articles.find(
+      article =>
+        article.is_featured === true
+    );
+
+
+  /*
+    Don't duplicate the featured article
+    in the regular card grid.
+  */
+
+  let remaining =
+    articles;
+
+
+  if (featured) {
+
+    remaining =
+      articles.filter(
+        article =>
+          article.id !==
+          featured.id
+      );
+
+  }
+
+
+  renderFeatured(
+    featured
+  );
+
+
+  remaining.forEach(
+    article => {
+
+      articleGrid.appendChild(
+        createArticleCard(
+          article
+        )
+      );
+
+    }
+  );
+
+}
+
+
+function renderFeatured(article) {
+
+  if (!article) {
+
+    return;
+
+  }
+
+
+  const image =
+    article.cover_image_url
+      ? `
+        <img
+          src="${escapeHtml(article.cover_image_url)}"
+          alt="${escapeHtml(article.title)}"
+          loading="lazy"
+        >
+      `
+      : "";
+
+
+  const category =
+    article.category ||
+    "Research";
+
+
+  featuredSection.innerHTML = `
+
+    <div
+      class="featured-card"
+      data-article-id="${escapeHtml(article.id)}"
+    >
+
+      <div class="featured-image">
+        ${image}
+      </div>
+
+      <div class="featured-content">
+
+        <div class="featured-label">
+          Featured Article
+        </div>
+
+        <div>
+          <span class="category-pill">
+            ${escapeHtml(category)}
+          </span>
+        </div>
+
+        <h2>
+          ${escapeHtml(article.title)}
+        </h2>
+
+        <p class="featured-excerpt">
+          ${escapeHtml(
+            getExcerpt(article)
+          )}
+        </p>
+
+        <div class="article-meta">
+
+          <span>
+            ${formatShortDate(
+              getArticleDate(article)
+            )}
+          </span>
+
+          <span>
+            •
+          </span>
+
+          <span>
+            Read article →
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  featuredSection.style.display =
+    "block";
+
+
+  featuredSection
+    .querySelector(
+      ".featured-card"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        openArticle(
+          article
+        );
+
+      }
+    );
+
+}
+
+
+function createArticleCard(article) {
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+
+  card.className =
+    "article-card";
+
+
+  const image =
+    article.cover_image_url
+      ? `
+        <img
+          src="${escapeHtml(article.cover_image_url)}"
+          alt="${escapeHtml(article.title)}"
+          loading="lazy"
+        >
+      `
+      : "";
+
+
+  card.innerHTML = `
+
+    <div class="article-image">
+      ${image}
+    </div>
+
+    <div class="article-card-body">
+
+      <div class="article-label">
+        ${escapeHtml(
+          article.category ||
+          "Research"
+        )}
+      </div>
+
+      <h3>
+        ${escapeHtml(
+          article.title
+        )}
+      </h3>
+
+      <p class="article-card-excerpt">
+        ${escapeHtml(
+          getExcerpt(article)
+        )}
+      </p>
+
+      <div class="article-meta">
+
+        <span>
+          ${formatShortDate(
+            getArticleDate(article)
+          )}
+        </span>
+
+        <span>
+          •
+        </span>
+
+        <span>
+          Read →
+        </span>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  card.addEventListener(
+    "click",
+    () => {
+
+      openArticle(
+        article
+      );
+
+    }
+  );
+
+
+  return card;
+
+}
+
+
+/* =========================================================
+   OPEN ARTICLE
+========================================================= */
+
+function openArticle(
+  article,
+  updateUrl = true
+) {
+
+  if (!article) {
+
+    return;
+
+  }
+
+
+  currentArticle =
+    article;
+
+
+  document.getElementById(
+    "readerCategory"
+  ).textContent =
+    article.category ||
+    "Research & Articles";
+
+
+  document.getElementById(
+    "readerTitle"
+  ).textContent =
+    article.title ||
+    "Untitled Article";
+
+
+  document.getElementById(
+    "readerExcerpt"
+  ).textContent =
+    article.excerpt ||
+    "";
+
+
+  const date =
+    getArticleDate(
+      article
+    );
+
+
+  document.getElementById(
+    "readerDate"
+  ).textContent =
+    formatDate(
+      date
+    );
+
+
+  const meta =
+    document.getElementById(
+      "readerMeta"
+    );
+
+
+  meta.innerHTML = `
+
+    <span>
+      Published
+    </span>
+
+    <span>
+      •
+    </span>
+
+    <span>
+      ${formatDate(date)}
+    </span>
+
+  `;
+
+
+  const cover =
+    document.getElementById(
+      "readerCover"
+    );
+
+
+  if (
+    article.cover_image_url
+  ) {
+
+    cover.src =
+      article.cover_image_url;
+
+    cover.alt =
+      article.title ||
+      "Article cover";
+
+    cover.style.display =
+      "block";
+
+  } else {
+
+    cover.removeAttribute(
+      "src"
+    );
+
+    cover.style.display =
+      "none";
+
+  }
+
+
+  /*
+    content_html comes from the rich-text
+    article editor.
+
+    We render the stored HTML directly
+    so formatting such as headings,
+    bold, italic, links, lists and images
+    remains intact.
+  */
+
+  document.getElementById(
+    "readerContent"
+  ).innerHTML =
+    article.content_html ||
+    "<p>No article content available.</p>";
+
+
+  const tagsBox =
+    document.getElementById(
+      "readerTags"
+    );
+
+
+  if (
+    Array.isArray(
+      article.tags
+    ) &&
+    article.tags.length
+  ) {
+
+    tagsBox.innerHTML =
+      article.tags
+        .map(
+          tag =>
+            `<span class="tag">
+              ${escapeHtml(tag)}
+            </span>`
+        )
+        .join("");
+
+  } else {
+
+    tagsBox.innerHTML =
+      "";
+
+  }
+
+
+  articleListing.style.display =
+    "none";
+
+
+  articleView.style.display =
+    "block";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+
+  if (updateUrl) {
+
+    const url =
+      new URL(
+        window.location.href
+      );
+
+
+    url.searchParams.set(
+      "article",
+      article.id
+    );
+
+
+    history.pushState(
+      {
+        articleId:
+          article.id
+      },
+      "",
+      url
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CLOSE ARTICLE
+========================================================= */
+
+function closeArticle(
+  updateUrl = true
+) {
+
+  currentArticle =
+    null;
+
+
+  articleView.style.display =
+    "none";
+
+
+  articleListing.style.display =
+    "block";
+
+
+  if (updateUrl) {
+
+    const url =
+      new URL(
+        window.location.href
+      );
+
+
+    url.searchParams.delete(
+      "article"
+    );
+
+
+    history.pushState(
+      {},
+      "",
+      url
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+document
+  .getElementById(
+    "backToArticles"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      closeArticle();
+
+    }
+  );
+
+
+/* =========================================================
+   BROWSER BACK / FORWARD
+========================================================= */
+
+window.addEventListener(
+  "popstate",
+  () => {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const articleId =
+      params.get(
+        "article"
+      );
+
+
+    if (!articleId) {
+
+      closeArticle(
+        false
+      );
+
+      return;
+
+    }
+
+
+    const article =
+      allArticles.find(
+        item =>
+          String(item.id) ===
+          String(articleId)
+      );
+
+
+    if (article) {
+
+      openArticle(
+        article,
+        false
+      );
+
+    } else {
+
+      closeArticle(
+        false
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SEARCH / FILTER
+========================================================= */
+
+searchInput.addEventListener(
+  "input",
+  () => {
+
+    renderArticles();
+
+  }
+);
+
+
+categoryFilter.addEventListener(
+  "change",
+  () => {
+
+    renderArticles();
+
+  }
+);
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuToggle =
+  document.querySelector(
+    ".menu-toggle"
+  );
+
+
+const nav =
+  document.querySelector(
+    ".nav"
+  );
+
+
+if (
+  menuToggle &&
+  nav
+) {
+
+  menuToggle.addEventListener(
+    "click",
+    () => {
+
+      nav.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadArticles();
+
+</script>
+
 </body>
+
 </html>
