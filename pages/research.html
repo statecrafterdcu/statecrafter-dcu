@@ -161,7 +161,15 @@
       gap:20px;
     }
 
-    .article-card{
+    
+.article-card-cover{height:190px;border-radius:16px 16px 0 0;overflow:hidden;background:linear-gradient(135deg,#122b52,#a3151b);position:relative}
+.article-card-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.article-card-cover.placeholder{display:flex;align-items:flex-end;padding:20px;color:#fff}
+.article-card-cover.placeholder span{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;opacity:.9}
+.article-card-body{padding:20px}
+.article-author-link{color:inherit;text-decoration:none}
+.article-author-link:hover{color:var(--red);text-decoration:underline}
+.article-card{
       display:flex;
       flex-direction:column;
       min-width:0;
@@ -769,15 +777,21 @@ function getTitle(article) {
 
 
 function getAuthor(article) {
-
   return (
-    article.author_name ||
+    article.author_profile?.full_name ||
     article.full_name ||
     article.student_name ||
     article.created_by_name ||
     "StateCrafter Contributor"
   );
+}
 
+function getCover(article) {
+  return article.cover_image_url || article.cover_url || article.thumbnail_url || "";
+}
+
+function profileHref(article) {
+  return article.author_id ? `profile.html?id=${encodeURIComponent(article.author_id)}` : "#";
 }
 
 
@@ -939,154 +953,44 @@ function getCategoryLabel(
    ARTICLE CARD
 ========================================================= */
 
-function createArticleCard(
-  article
-) {
-
-  const id =
-    article.id;
-
-
-  const title =
-    escapeHTML(
-      getTitle(
-        article
-      )
-    );
-
-
-  const excerpt =
-    escapeHTML(
-      getExcerpt(
-        article
-      )
-    );
-
-
-  const author =
-    escapeHTML(
-      getAuthor(
-        article
-      )
-    );
-
-
-  const date =
-    escapeHTML(
-      formatDate(
-        getDate(
-          article
-        )
-      )
-    );
-
-
-  const category =
-    getCategory(
-      article
-    );
-
-
-  const categoryLabel =
-    escapeHTML(
-      getCategoryLabel(
-        category
-      )
-    );
-
-
-  const course =
-    article.course_name ||
-    article.course ||
-    "";
-
-
-  const campus =
-    article.campus ||
-    article.target_campus ||
-    "";
-
+function createArticleCard(article) {
+  const id = article.id;
+  const title = escapeHTML(getTitle(article));
+  const excerpt = escapeHTML(getExcerpt(article));
+  const author = escapeHTML(getAuthor(article));
+  const date = escapeHTML(formatDate(getDate(article)));
+  const category = getCategory(article);
+  const categoryLabel = escapeHTML(getCategoryLabel(category));
+  const course = article.course_name || article.course || "";
+  const campus = article.campus || article.target_campus || "";
+  const cover = getCover(article);
+  const coverHtml = cover
+    ? `<div class="article-card-cover"><img src="${escapeHTML(cover)}" alt="${title} cover" loading="lazy" onerror="this.parentElement.classList.add('placeholder');this.remove()"></div>`
+    : `<div class="article-card-cover placeholder"><span>StateCrafter DCU · Research & Articles</span></div>`;
 
   return `
-
-    <article
-      class="article-card"
-      data-category="${escapeHTML(category)}"
-    >
-
-      <div class="article-card-top">
-
-        <span class="article-badge">
-          ${categoryLabel}
-        </span>
-
-        <span class="article-date">
-          ${date}
-        </span>
-
+    <article class="article-card" data-category="${escapeHTML(category)}">
+      ${coverHtml}
+      <div class="article-card-body">
+        <div class="article-card-top">
+          <span class="article-badge">${categoryLabel}</span>
+          <span class="article-date">${date}</span>
+        </div>
+        <h3>${title}</h3>
+        <p class="article-excerpt">${excerpt || "Read the full article to explore this publication."}</p>
+        <div class="article-card-meta">
+          <span>By <a class="article-author-link" href="${profileHref(article)}"><strong>${author}</strong></a></span>
+          ${course ? `<span>${escapeHTML(course)}</span>` : ""}
+          ${campus ? `<span>${escapeHTML(campus)}</span>` : ""}
+        </div>
+        <div class="article-card-actions">
+          <a class="article-read" href="article-view.html?id=${encodeURIComponent(id)}" aria-label="Read ${title}">Read Full Article <span aria-hidden="true">→</span></a>
+        </div>
       </div>
-
-
-      <h3>
-        ${title}
-      </h3>
-
-
-      <p class="article-excerpt">
-        ${excerpt || "Read the full article to explore this publication."}
-      </p>
-
-
-      <div class="article-card-meta">
-
-        <span>
-          By
-          <strong>
-            ${author}
-          </strong>
-        </span>
-
-        ${
-          course
-            ? `
-              <span>
-                ${escapeHTML(course)}
-              </span>
-            `
-            : ""
-        }
-
-        ${
-          campus
-            ? `
-              <span>
-                ${escapeHTML(campus)}
-              </span>
-            `
-            : ""
-        }
-
-      </div>
-
-
-      <div class="article-card-actions">
-
-        <a
-          class="article-read"
-          href="article-view.html?id=${encodeURIComponent(id)}"
-          aria-label="Read ${title}"
-        >
-          Read Full Article
-          <span aria-hidden="true">→</span>
-        </a>
-
-      </div>
-
     </article>
-
   `;
-
 }
+
 
 
 /* =========================================================
@@ -1517,12 +1421,19 @@ async function loadArticles() {
     }
 
 
-    allArticles =
-      Array.isArray(
-        data
-      )
-        ? data
-        : [];
+    allArticles = Array.isArray(data) ? data : [];
+
+    const authorIds = [...new Set(allArticles.map(a => a.author_id).filter(Boolean))];
+    if (authorIds.length) {
+      const { data: profiles, error: profileError } = await supabaseClient
+        .from("public_author_profiles")
+        .select("id, full_name")
+        .in("id", authorIds);
+      if (!profileError) {
+        const profileMap = Object.fromEntries((profiles || []).map(p => [p.id, p]));
+        allArticles = allArticles.map(a => ({ ...a, author_profile: profileMap[a.author_id] || null }));
+      }
+    }
 
 
     /*
