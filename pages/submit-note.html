@@ -1,877 +1,462 @@
+```html
 <!doctype html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit Resource | StateCrafter DCU</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
-  <title>
-    Submit Resource | StateCrafter DCU
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="../style.css"
-  >
-
+  <link rel="stylesheet" href="../style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <style>
-
-    /* =====================================================
-       PAGE
-    ===================================================== */
-
     .submit-hero {
-
-      background:
-        linear-gradient(
-          135deg,
-          #f7f5f0 0%,
-          #ffffff 55%,
-          #eef2f8 100%
-        );
-
+      background: linear-gradient(135deg,#f7f5f0 0%,#fff 55%,#eef2f8 100%);
       border-bottom: 1px solid var(--line);
-
       padding: 58px 0 50px;
-
     }
-
 
     .submit-hero h1 {
-
       margin: 0;
-
       color: var(--navy);
-
-      font-size:
-        clamp(42px, 6vw, 68px);
-
+      font-size: clamp(42px,6vw,68px);
       line-height: .98;
-
       letter-spacing: -.05em;
-
     }
-
 
     .submit-hero p:not(.eyebrow) {
-
       max-width: 680px;
-
       margin: 20px 0 0;
-
       color: var(--muted);
-
       font-size: 16px;
-
+      line-height: 1.7;
     }
-
 
     .submit-section {
-
       padding: 65px 0 90px;
-
     }
-
 
     .submit-layout {
-
       display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.5fr)
-        minmax(280px, .7fr);
-
+      grid-template-columns: minmax(0,1.5fr) minmax(280px,.7fr);
       gap: 28px;
-
       align-items: start;
-
     }
-
-
-    /* =====================================================
-       FORM CARD
-    ===================================================== */
 
     .submit-card {
-
       background: #fff;
-
       border: 1px solid var(--line);
-
       border-radius: 24px;
-
       padding: 32px;
-
-      box-shadow:
-        0 12px 40px
-        rgba(18,43,82,.06);
-
+      box-shadow: 0 12px 40px rgba(18,43,82,.06);
     }
-
 
     .submit-card h2 {
-
       margin: 0;
-
       color: var(--navy);
-
       font-size: 28px;
-
-      line-height: 1.2;
-
     }
-
 
     .submit-card-intro {
-
       color: var(--muted);
-
       font-size: 13px;
-
       margin: 8px 0 28px;
-
+      line-height: 1.6;
     }
-
 
     .form-group {
-
       margin-bottom: 20px;
-
     }
-
 
     .form-group label {
-
       display: block;
-
       color: var(--navy);
-
       font-size: 12px;
-
       font-weight: 900;
-
       margin-bottom: 7px;
-
     }
-
 
     .required {
-
       color: var(--red);
-
     }
-
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-
       width: 100%;
-
       border: 1px solid #d8dde5;
-
       border-radius: 12px;
-
       background: #fff;
-
       color: var(--ink);
-
       font: inherit;
-
       font-size: 14px;
-
       outline: none;
-
       transition: .2s ease;
-
+      box-sizing: border-box;
     }
-
 
     .form-group input,
     .form-group select {
-
       height: 48px;
-
       padding: 0 14px;
-
     }
-
 
     .form-group textarea {
-
       min-height: 135px;
-
       resize: vertical;
-
       padding: 13px 14px;
-
       line-height: 1.6;
-
     }
-
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-
       border-color: var(--navy);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(18,43,82,.06);
-
+      box-shadow: 0 0 0 3px rgba(18,43,82,.06);
     }
-
 
     .form-help {
-
       margin: 6px 0 0;
-
       color: var(--muted);
-
       font-size: 11px;
-
       line-height: 1.5;
-
     }
-
 
     .two-columns {
-
       display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
+      grid-template-columns: 1fr 1fr;
       gap: 14px;
-
     }
-
-
-    /* =====================================================
-       PROFILE
-    ===================================================== */
 
     .profile-summary {
-
       background: #f7f8fa;
-
       border: 1px solid #e3e6eb;
-
       border-radius: 16px;
-
       padding: 18px;
-
       margin-bottom: 26px;
-
     }
-
 
     .profile-summary-title {
-
       color: var(--navy);
-
       font-size: 11px;
-
       font-weight: 900;
-
       letter-spacing: .08em;
-
       margin-bottom: 12px;
-
     }
-
 
     .profile-row {
-
       display: flex;
-
       justify-content: space-between;
-
       gap: 20px;
-
-      padding: 8px 0;
-
+      padding: 7px 0;
       border-bottom: 1px solid #e5e8ec;
-
       font-size: 12px;
-
     }
-
 
     .profile-row:last-child {
-
       border-bottom: 0;
-
     }
-
 
     .profile-row span {
-
       color: var(--muted);
-
     }
-
 
     .profile-row strong {
-
       color: var(--ink);
-
       text-align: right;
-
     }
 
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
 
+    .role-student {
+      background: #eaf2ff;
+      color: #24538d;
+    }
 
-    /* =====================================================
-       TYPE INFO
-    ===================================================== */
+    .role-admin {
+      background: #f8e9e9;
+      color: #8e272c;
+    }
 
     .resource-type-info {
-
       display: none;
-
       background: #f7f5f0;
-
       border-left: 3px solid var(--red);
-
       border-radius: 0 12px 12px 0;
-
       padding: 12px 14px;
-
       margin-top: -8px;
-
       margin-bottom: 20px;
-
       color: #536075;
-
       font-size: 12px;
-
       line-height: 1.6;
-
     }
-
 
     .resource-type-info.visible {
-
       display: block;
-
     }
-
-
-
-    /* =====================================================
-       DRIVE BOX
-    ===================================================== */
 
     .drive-box {
-
       background: #f8fafc;
-
       border: 1px solid #e1e5ea;
-
       border-radius: 15px;
-
       padding: 16px;
-
       margin-top: 8px;
-
     }
-
 
     .drive-box strong {
-
       display: block;
-
       color: var(--navy);
-
       font-size: 12px;
-
       margin-bottom: 5px;
-
     }
-
 
     .drive-box p {
-
       margin: 0;
-
       color: var(--muted);
-
       font-size: 11px;
-
       line-height: 1.6;
-
     }
-
-
-
-    /* =====================================================
-       BUTTON
-    ===================================================== */
 
     .submit-actions {
-
       display: flex;
-
       align-items: center;
-
       gap: 12px;
-
       flex-wrap: wrap;
-
       margin-top: 25px;
-
     }
-
 
     .submit-button {
-
-      min-width: 170px;
-
+      min-width: 180px;
       cursor: pointer;
-
     }
-
 
     .submit-button:disabled {
-
       opacity: .6;
-
       cursor: not-allowed;
-
       transform: none;
-
     }
-
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
 
     .form-message {
-
       display: none;
-
       border-radius: 12px;
-
       padding: 13px 15px;
-
       font-size: 12px;
-
       margin-top: 18px;
-
       line-height: 1.5;
-
+      white-space: pre-wrap;
     }
-
 
     .form-message.success {
-
       display: block;
-
       background: #eef8f0;
-
       border: 1px solid #cce7d1;
-
       color: #246233;
-
     }
-
 
     .form-message.error {
-
       display: block;
-
       background: #fdf0f0;
-
       border: 1px solid #efcaca;
-
       color: var(--red);
-
     }
-
-
-
-    /* =====================================================
-       SIDE
-    ===================================================== */
 
     .submit-side {
-
       position: sticky;
-
       top: 105px;
-
     }
-
 
     .info-card {
-
       background: var(--navy);
-
       color: #fff;
-
       border-radius: 22px;
-
       padding: 28px;
-
-      box-shadow:
-        0 15px 40px
-        rgba(18,43,82,.13);
-
+      box-shadow: 0 15px 40px rgba(18,43,82,.13);
     }
-
 
     .info-card .eyebrow {
-
       color: #efb4b7;
-
     }
-
 
     .info-card h3 {
-
       margin: 0 0 12px;
-
       color: #fff;
-
       font-size: 24px;
-
     }
-
 
     .info-card p {
-
       color: #c8d1df;
-
       font-size: 12px;
-
       line-height: 1.7;
-
     }
-
 
     .steps {
-
       margin: 22px 0 0;
-
       padding: 0;
-
       list-style: none;
-
     }
-
 
     .steps li {
-
       display: flex;
-
       gap: 12px;
-
       align-items: flex-start;
-
       padding: 10px 0;
-
-      border-bottom: 1px solid
-        rgba(255,255,255,.1);
-
+      border-bottom: 1px solid rgba(255,255,255,.1);
       color: #dbe3ee;
-
       font-size: 12px;
-
     }
-
 
     .steps li:last-child {
-
       border-bottom: 0;
-
     }
-
 
     .step-number {
-
       display: grid;
-
       place-items: center;
-
       flex: 0 0 25px;
-
       width: 25px;
-
       height: 25px;
-
       border-radius: 50%;
-
       background: rgba(255,255,255,.12);
-
       color: #fff;
-
       font-size: 10px;
-
       font-weight: 900;
-
     }
-
-
-
-    /* =====================================================
-       SUCCESS
-    ===================================================== */
 
     .success-panel {
-
       display: none;
-
       text-align: center;
-
-      padding: 35px 15px;
-
+      padding: 30px 15px;
     }
-
 
     .success-icon {
-
       display: grid;
-
       place-items: center;
-
       width: 64px;
-
       height: 64px;
-
       margin: 0 auto 18px;
-
       border-radius: 50%;
-
       background: #eef8f0;
-
       color: #246233;
-
       font-size: 28px;
-
       font-weight: 900;
-
     }
-
 
     .success-panel h3 {
-
       margin: 0;
-
       color: var(--navy);
-
       font-size: 26px;
-
     }
-
 
     .success-panel p {
-
       max-width: 550px;
-
       margin: 10px auto 0;
-
       color: var(--muted);
-
       font-size: 13px;
-
+      line-height: 1.6;
     }
-
 
     .success-actions {
-
       display: flex;
-
       justify-content: center;
-
       gap: 10px;
-
       flex-wrap: wrap;
-
       margin-top: 22px;
-
     }
 
+    .admin-note {
+      display: none;
+      background: #fff8e8;
+      border: 1px solid #ead7a7;
+      color: #76591d;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 22px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
 
+    .admin-note.visible {
+      display: block;
+    }
 
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media(max-width: 900px) {
-
+    @media(max-width:900px) {
       .submit-layout {
-
         grid-template-columns: 1fr;
-
       }
-
 
       .submit-side {
-
         position: static;
-
       }
-
     }
 
-
-    @media(max-width: 600px) {
-
+    @media(max-width:600px) {
       .submit-section {
-
         padding: 45px 0 65px;
-
       }
-
 
       .submit-card {
-
         padding: 22px;
-
         border-radius: 19px;
-
       }
-
 
       .two-columns {
-
         grid-template-columns: 1fr;
-
         gap: 0;
-
       }
-
 
       .profile-row {
-
         display: block;
-
       }
-
 
       .profile-row strong {
-
         display: block;
-
         text-align: left;
-
         margin-top: 2px;
-
       }
-
     }
-
   </style>
-
 </head>
-
-
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-====================================================== -->
-
 <header class="site-header">
-
   <div class="container nav-wrap">
 
-    <a
-      class="brand"
-      href="../index.html"
-    >
-
-      <img
-        src="../assets/statecrafter-logo.png"
-        alt="StateCrafter DCU"
-      >
-
+    <a class="brand" href="../index.html">
+      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
       <span class="brand-copy">
-
-        <strong>
-          StateCrafter DCU
-        </strong>
-
-        <small>
-          Political Science Department
-        </small>
-
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
       </span>
-
     </a>
 
-
     <nav class="nav">
-
-      <a href="../index.html">
-        Home
-      </a>
-
-      <a href="archive.html">
-        Academic Archive
-      </a>
-
-      <a href="research.html">
-        Research &amp; Articles
-      </a>
-
-      <a href="events.html">
-        Events
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-
-      <a
-        href="student-dashboard.html"
-        class="nav-login"
-      >
-        Dashboard
-      </a>
-
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a href="student-dashboard.html" class="nav-login">Dashboard</a>
     </nav>
 
-
-    <button
-      class="menu-toggle"
-      type="button"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
+    <button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
 
   </div>
-
 </header>
 
-
-
-<!-- =====================================================
-     HERO
-====================================================== -->
-
 <section class="submit-hero">
-
   <div class="container">
-
-    <p class="eyebrow">
-      CONTRIBUTE TO STATECRAFTER
-    </p>
+    <p class="eyebrow">CONTRIBUTE TO STATECRAFTER</p>
 
     <h1>
       Share Your<br>
@@ -883,183 +468,92 @@
       articles for review and publication in the
       StateCrafter DCU Academic Archive.
     </p>
-
   </div>
-
 </section>
 
-
-
-<!-- =====================================================
-     MAIN
-====================================================== -->
-
 <main>
-
 <section class="submit-section">
-
   <div class="container">
 
     <div class="submit-layout">
-
-
-      <!-- =================================================
-           FORM CARD
-      ================================================== -->
 
       <div class="submit-card">
 
         <div id="formArea">
 
-          <p class="eyebrow">
-            NEW SUBMISSION
-          </p>
+          <p class="eyebrow">NEW SUBMISSION</p>
 
-          <h2>
-            Submit a Resource
-          </h2>
+          <h2>Submit a Resource</h2>
 
           <p class="submit-card-intro">
-            Your name, session, student ID and own campus
-            are automatically taken from your student profile.
-            You only need to provide the resource information.
+            Your account information is automatically attached
+            to this submission. Select the course and the campus
+            where this resource should be published.
           </p>
 
-
-
-          <!-- PROFILE -->
+          <div id="adminNote" class="admin-note">
+            You are submitting as an administrator. Admins can
+            submit resources for any campus. This resource will
+            still follow the normal submission workflow unless
+            your database/RLS policy is configured for automatic
+            approval.
+          </div>
 
           <div class="profile-summary">
 
             <div class="profile-summary-title">
-              YOUR PROFILE
+              YOUR ACCOUNT
             </div>
 
-
             <div class="profile-row">
-
-              <span>
-                Name
-              </span>
-
-              <strong id="profileName">
-                Loading...
-              </strong>
-
+              <span>Name</span>
+              <strong id="profileName">Loading...</strong>
             </div>
 
-
             <div class="profile-row">
-
-              <span>
-                Session
-              </span>
-
-              <strong id="profileSession">
-                —
-              </strong>
-
+              <span>Session</span>
+              <strong id="profileSession">—</strong>
             </div>
 
-
             <div class="profile-row">
-
-              <span>
-                Student ID
-              </span>
-
-              <strong id="profileStudentId">
-                —
-              </strong>
-
+              <span>Student ID</span>
+              <strong id="profileStudentId">—</strong>
             </div>
 
+            <div class="profile-row">
+              <span>Your Campus</span>
+              <strong id="profileCampus">—</strong>
+            </div>
 
             <div class="profile-row">
-
-              <span>
-                Your Campus
-              </span>
-
-              <strong id="profileCampus">
-                —
-              </strong>
-
+              <span>Role</span>
+              <strong id="profileRole">—</strong>
             </div>
 
           </div>
 
-
-
-          <!-- FORM -->
-
-          <form
-            id="submissionForm"
-            novalidate
-          >
-
-
-            <!-- RESOURCE TYPE -->
+          <form id="submissionForm" novalidate>
 
             <div class="form-group">
-
               <label for="resourceType">
-
-                Resource Type
-                <span class="required">*</span>
-
+                Resource Type <span class="required">*</span>
               </label>
 
-
-              <select
-                id="resourceType"
-                required
-              >
-
-                <option value="">
-                  Select resource type
-                </option>
-
-                <option value="note">
-                  Academic Note
-                </option>
-
-                <option value="question">
-                  Previous Question
-                </option>
-
-                <option value="suggestion">
-                  Suggestion
-                </option>
-
-                <option value="article">
-                  Article
-                </option>
-
+              <select id="resourceType" required>
+                <option value="">Select resource type</option>
+                <option value="note">Academic Note</option>
+                <option value="question">Previous Question</option>
+                <option value="suggestion">Suggestion</option>
+                <option value="article">Article</option>
               </select>
-
             </div>
 
-
-
-            <div
-              id="resourceTypeInfo"
-              class="resource-type-info"
-            ></div>
-
-
-
-            <!-- TITLE -->
+            <div id="resourceTypeInfo" class="resource-type-info"></div>
 
             <div class="form-group">
-
               <label for="title">
-
-                Title
-                <span class="required">*</span>
-
+                Title <span class="required">*</span>
               </label>
-
 
               <input
                 id="title"
@@ -1068,162 +562,81 @@
                 placeholder="Enter the title of your resource"
                 required
               >
-
             </div>
 
+            <div class="two-columns">
 
+              <div class="form-group">
 
-            <!-- COURSE -->
+                <label for="courseCode">
+                  Course Code <span class="required">*</span>
+                </label>
 
-            <div class="form-group">
+                <select id="courseCode" required>
+                  <option value="">Select course code</option>
+                  <option value="PS 101">PS 101 — Ancient and Medieval Western Political Thought</option>
+                  <option value="PS 102">PS 102 — Political Theory and Organization</option>
+                  <option value="PS 103">PS 103 — Government and Politics: UK, USA and France</option>
+                  <option value="PS 104">PS 104 — Principles of Sociology</option>
+                  <option value="PS 105">PS 105 — Modern Western Political Thought</option>
+                  <option value="PS 211501">PS 211501 — History of the Emergence of Independent Bangladesh</option>
+                  <option value="PS 107">PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)</option>
+                  <option value="PS 108">PS 108 — Public Administration in Bangladesh</option>
+                </select>
 
-              <label for="course">
+              </div>
 
-                Course / Subject
-                <span class="required">*</span>
+              <div class="form-group">
 
-              </label>
+                <label for="courseName">
+                  Course / Subject <span class="required">*</span>
+                </label>
 
+                <input
+                  id="courseName"
+                  type="text"
+                  readonly
+                  placeholder="Select course code first"
+                  required
+                >
 
-              <select
-                id="course"
-                required
-              >
+                <p class="form-help">
+                  Course name is automatically filled from the selected course code.
+                </p>
 
-                <option value="">
-                  Select course / subject
-                </option>
-
-
-                <option value="PS 101|Ancient and Medieval Western Political Thought">
-                  PS 101 — Ancient and Medieval Western Political Thought
-                </option>
-
-
-                <option value="PS 102|Political Theory and Organization">
-                  PS 102 — Political Theory and Organization
-                </option>
-
-
-                <option value="PS 103|Government and Politics: UK, USA and France">
-                  PS 103 — Government and Politics: UK, USA and France
-                </option>
-
-
-                <option value="PS 104|Principles of Sociology">
-                  PS 104 — Principles of Sociology
-                </option>
-
-
-                <option value="PS 105|Modern Western Political Thought">
-                  PS 105 — Modern Western Political Thought
-                </option>
-
-
-                <option value="PS 211501|History of the Emergence of Independent Bangladesh">
-                  PS 211501 — History of the Emergence of Independent Bangladesh
-                </option>
-
-
-                <option value="PS 107|Socio-Political and Constitutional Development in British India (1757 to 1947)">
-                  PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)
-                </option>
-
-
-                <option value="PS 108|Public Administration in Bangladesh">
-                  PS 108 — Public Administration in Bangladesh
-                </option>
-
-              </select>
-
-
-              <p class="form-help">
-                Select the official course code and course name.
-              </p>
+              </div>
 
             </div>
-
-
-
-            <!-- TARGET CAMPUS -->
 
             <div class="form-group">
 
               <label for="targetCampus">
-
-                Resource Campus
-                <span class="required">*</span>
-
+                Resource Campus <span class="required">*</span>
               </label>
 
-
-              <select
-                id="targetCampus"
-                required
-              >
-
-                <option value="">
-                  Select campus
-                </option>
-
-
-                <option value="Dhaka College">
-                  Dhaka College
-                </option>
-
-
-                <option value="Eden Mohila College">
-                  Eden Mohila College
-                </option>
-
-
-                <option value="Titumir College">
-                  Titumir College
-                </option>
-
-
-                <option value="Bangla College">
-                  Bangla College
-                </option>
-
-
-                <option value="Kabi Nazrul College">
-                  Kabi Nazrul College
-                </option>
-
-
-                <option value="Begum Badrunnesa Mohila College">
-                  Begum Badrunnesa Mohila College
-                </option>
-
-
-                <option value="Shaheed Suhrawardy College">
-                  Shaheed Suhrawardy College
-                </option>
-
+              <select id="targetCampus" required>
+                <option value="">Select campus</option>
+                <option value="Dhaka College">Dhaka College</option>
+                <option value="Eden Mohila College">Eden Mohila College</option>
+                <option value="Titumir College">Titumir College</option>
+                <option value="Bangla College">Bangla College</option>
+                <option value="Kabi Nazrul College">Kabi Nazrul College</option>
+                <option value="Begum Badrunnesa Mohila College">Begum Badrunnesa Mohila College</option>
+                <option value="Shaheed Suhrawardy College">Shaheed Suhrawardy College</option>
               </select>
 
-
               <p class="form-help">
-                This is the campus the resource belongs to.
+                This is the campus for which the resource is intended.
                 It may be different from your own campus.
               </p>
 
             </div>
 
-
-
-            <!-- DESCRIPTION -->
-
             <div class="form-group">
 
               <label for="description">
-
-                Description
-                <span class="required">*</span>
-
+                Description <span class="required">*</span>
               </label>
-
 
               <textarea
                 id="description"
@@ -1232,27 +645,18 @@
                 required
               ></textarea>
 
-
               <p class="form-help">
-                A short description helps students understand
+                A clear description helps other students understand
                 the resource before opening it.
               </p>
 
             </div>
 
-
-
-            <!-- DRIVE -->
-
             <div class="form-group">
 
               <label for="driveLink">
-
-                Google Drive Link
-                <span class="required">*</span>
-
+                Google Drive Link <span class="required">*</span>
               </label>
-
 
               <input
                 id="driveLink"
@@ -1261,27 +665,17 @@
                 required
               >
 
-
               <div class="drive-box">
-
-                <strong>
-                  How to submit your file
-                </strong>
+                <strong>How to submit your file</strong>
 
                 <p>
-                  Upload your PDF or document to your own
-                  Google Drive. Set the sharing permission to
-                  <strong>Anyone with the link — Viewer</strong>,
-                  then paste the Google Drive link here.
+                  Upload your PDF or document to Google Drive,
+                  set the sharing permission to anyone with the
+                  link, then paste the Google Drive link here.
                 </p>
-
               </div>
 
             </div>
-
-
-
-            <!-- ACTION -->
 
             <div class="submit-actions">
 
@@ -1293,8 +687,8 @@
                 Submit for Review
               </button>
 
-
               <a
+                id="backButton"
                 href="student-dashboard.html"
                 class="btn btn-outline"
               >
@@ -1303,54 +697,33 @@
 
             </div>
 
-
-            <div
-              id="formMessage"
-              class="form-message"
-            ></div>
-
+            <div id="formMessage" class="form-message"></div>
 
           </form>
 
         </div>
 
+        <div id="successPanel" class="success-panel">
 
+          <div class="success-icon">✓</div>
 
-        <!-- =================================================
-             SUCCESS PANEL
-        ================================================== -->
-
-        <div
-          id="successPanel"
-          class="success-panel"
-        >
-
-          <div class="success-icon">
-            ✓
-          </div>
-
-
-          <h3>
-            Submission Received
-          </h3>
-
+          <h3>Submission Received</h3>
 
           <p>
-            Your resource has been submitted successfully
-            and is now waiting for admin review. It will appear
-            in the Academic Archive after approval.
+            Your resource has been submitted successfully.
+            It is now stored in your submissions and will follow
+            the configured review/approval workflow.
           </p>
-
 
           <div class="success-actions">
 
             <a
+              id="successDashboardLink"
               href="student-dashboard.html"
               class="btn btn-primary"
             >
-              View My Submissions
+              View Dashboard
             </a>
-
 
             <a
               href="archive.html"
@@ -1359,108 +732,62 @@
               Academic Archive
             </a>
 
+            <button
+              id="newSubmissionButton"
+              type="button"
+              class="btn btn-outline"
+            >
+              Submit Another
+            </button>
+
           </div>
 
         </div>
 
       </div>
 
-
-
-      <!-- =================================================
-           SIDE INFORMATION
-      ================================================== -->
-
       <aside class="submit-side">
 
         <div class="info-card">
 
-          <p class="eyebrow">
-            HOW IT WORKS
-          </p>
-
+          <p class="eyebrow">HOW IT WORKS</p>
 
           <h3>
             From your Drive to the Archive.
           </h3>
 
-
           <p>
-            Every submission is reviewed before publication.
-            This helps keep the StateCrafter Academic Archive
-            useful, accurate and organized.
+            Every resource is stored as a submission first.
+            The admin approval system controls when it becomes
+            publicly available in the Academic Archive.
           </p>
-
 
           <ol class="steps">
 
-
             <li>
-
-              <span class="step-number">
-                1
-              </span>
-
-              <span>
-                Upload your resource to your Google Drive.
-              </span>
-
+              <span class="step-number">1</span>
+              <span>Upload your resource to Google Drive.</span>
             </li>
 
-
             <li>
-
-              <span class="step-number">
-                2
-              </span>
-
-              <span>
-                Set the Drive permission to anyone with the
-                link as Viewer.
-              </span>
-
+              <span class="step-number">2</span>
+              <span>Make the Drive link accessible to anyone with the link.</span>
             </li>
 
-
             <li>
-
-              <span class="step-number">
-                3
-              </span>
-
-              <span>
-                Select resource type, course and target campus.
-              </span>
-
+              <span class="step-number">3</span>
+              <span>Select the resource type and course.</span>
             </li>
 
-
             <li>
-
-              <span class="step-number">
-                4
-              </span>
-
-              <span>
-                Submit the form for admin review.
-              </span>
-
+              <span class="step-number">4</span>
+              <span>Select the campus where the resource should be published.</span>
             </li>
 
-
             <li>
-
-              <span class="step-number">
-                5
-              </span>
-
-              <span>
-                After approval, the resource appears in the
-                Academic Archive.
-              </span>
-
+              <span class="step-number">5</span>
+              <span>Submit it for the configured review workflow.</span>
             </li>
-
 
           </ol>
 
@@ -1471,37 +798,17 @@
     </div>
 
   </div>
-
 </section>
-
 </main>
 
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
-
 <footer class="site-footer">
-
   <div class="container footer-bottom">
-
-    <span>
-      © 2026 StateCrafter DCU
-    </span>
-
-    <span>
-      Political Science Department • Dhaka Central University
-    </span>
-
+    <span>© 2026 StateCrafter DCU</span>
+    <span>Political Science Department • Dhaka Central University</span>
   </div>
-
 </footer>
 
-
-
 <script>
-
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -1509,10 +816,8 @@
 const SUPABASE_URL =
   "https://psqwnvgruyfgdoukvpid.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -1521,107 +826,119 @@ const supabaseClient =
   );
 
 
+/* =========================================================
+   COURSE DATA
+========================================================= */
+
+const COURSES = {
+  "PS 101":
+    "Ancient and Medieval Western Political Thought",
+
+  "PS 102":
+    "Political Theory and Organization",
+
+  "PS 103":
+    "Government and Politics: UK, USA and France",
+
+  "PS 104":
+    "Principles of Sociology",
+
+  "PS 105":
+    "Modern Western Political Thought",
+
+  "PS 211501":
+    "History of the Emergence of Independent Bangladesh",
+
+  "PS 107":
+    "Socio-Political and Constitutional Development in British India (1757 to 1947)",
+
+  "PS 108":
+    "Public Administration in Bangladesh"
+};
+
 
 /* =========================================================
    DOM
 ========================================================= */
 
 const submissionForm =
-  document.getElementById(
-    "submissionForm"
-  );
-
+  document.getElementById("submissionForm");
 
 const submitButton =
-  document.getElementById(
-    "submitButton"
-  );
-
+  document.getElementById("submitButton");
 
 const formMessage =
-  document.getElementById(
-    "formMessage"
-  );
-
+  document.getElementById("formMessage");
 
 const resourceType =
-  document.getElementById(
-    "resourceType"
-  );
-
+  document.getElementById("resourceType");
 
 const resourceTypeInfo =
-  document.getElementById(
-    "resourceTypeInfo"
-  );
+  document.getElementById("resourceTypeInfo");
 
+const courseCode =
+  document.getElementById("courseCode");
 
-const course =
-  document.getElementById(
-    "course"
-  );
-
+const courseName =
+  document.getElementById("courseName");
 
 const targetCampus =
-  document.getElementById(
-    "targetCampus"
-  );
-
+  document.getElementById("targetCampus");
 
 const formArea =
-  document.getElementById(
-    "formArea"
-  );
-
+  document.getElementById("formArea");
 
 const successPanel =
-  document.getElementById(
-    "successPanel"
-  );
+  document.getElementById("successPanel");
 
+const adminNote =
+  document.getElementById("adminNote");
+
+const backButton =
+  document.getElementById("backButton");
+
+const successDashboardLink =
+  document.getElementById("successDashboardLink");
+
+const newSubmissionButton =
+  document.getElementById("newSubmissionButton");
 
 
 /* =========================================================
-   USER / PROFILE
+   STATE
 ========================================================= */
 
 let currentUser = null;
-
 let currentProfile = null;
 
 
+/* =========================================================
+   LOAD USER
+========================================================= */
 
 async function loadUserProfile() {
 
   try {
 
     const {
-      data: {
-        user
-      },
-      error: userError
+      data: sessionData,
+      error: sessionError
     } =
-      await supabaseClient
-        .auth
-        .getUser();
-
+      await supabaseClient.auth.getSession();
 
     if (
-      userError ||
-      !user
+      sessionError ||
+      !sessionData ||
+      !sessionData.session
     ) {
 
-      window.location.href =
-        "login.html";
-
-      return false;
+      window.location.href = "login.html";
+      return;
 
     }
 
-
     currentUser =
-      user;
-
+      sessionData.session.user;
 
 
     const {
@@ -1629,18 +946,14 @@ async function loadUserProfile() {
       error: profileError
     } =
       await supabaseClient
-
         .from("profiles")
-
         .select(
           "id, full_name, session, student_id, campus, role"
         )
-
         .eq(
           "id",
-          user.id
+          currentUser.id
         )
-
         .single();
 
 
@@ -1654,18 +967,14 @@ async function loadUserProfile() {
         profileError
       );
 
-
       showMessage(
-        "Your student profile could not be loaded. Please complete your profile first.",
+        "Your profile could not be loaded. Please make sure your profile exists.",
         "error"
       );
 
+      submitButton.disabled = true;
 
-      submitButton.disabled =
-        true;
-
-
-      return false;
+      return;
 
     }
 
@@ -1674,50 +983,45 @@ async function loadUserProfile() {
       profile;
 
 
+    const role =
+      String(
+        profile.role || ""
+      ).toLowerCase().trim();
 
-    /* =====================================================
-       ROLE CHECK
-    ===================================================== */
+
+    /*
+      IMPORTANT FIX:
+
+      ADMIN IS NOT REDIRECTED.
+
+      Both student and admin are allowed to use
+      this submission page.
+    */
 
     if (
-      profile.role === "admin"
+      role !== "student" &&
+      role !== "admin"
     ) {
 
-      window.location.href =
-        "admin-dashboard.html";
+      showMessage(
+        "Your account does not have permission to submit resources.",
+        "error"
+      );
 
-      return false;
+      submitButton.disabled = true;
+
+      return;
 
     }
 
 
-    if (
-      profile.role !== "student"
-    ) {
-
-      await supabaseClient
-        .auth
-        .signOut();
-
-
-      window.location.href =
-        "login.html";
-
-      return false;
-
-    }
-
-
-
-    /* =====================================================
-       PROFILE DISPLAY
-    ===================================================== */
+    /* Profile information */
 
     document.getElementById(
       "profileName"
     ).textContent =
       profile.full_name ||
-      "Student";
+      "Not specified";
 
 
     document.getElementById(
@@ -1741,59 +1045,116 @@ async function loadUserProfile() {
       "Not specified";
 
 
+    const roleElement =
+      document.getElementById(
+        "profileRole"
+      );
+
+
+    roleElement.textContent =
+      role || "unknown";
+
+
+    roleElement.className =
+      "role-badge " +
+      (
+        role === "admin"
+          ? "role-admin"
+          : "role-student"
+      );
+
 
     /*
-      IMPORTANT:
+      Admin gets a small informational message.
 
-      We intentionally DO NOT automatically select
-      the student's own campus.
+      We DO NOT automatically change campus.
+      Admin can select any target campus.
+    */
 
-      Example:
+    if (
+      role === "admin"
+    ) {
 
-      Student campus = Dhaka College
+      adminNote.classList.add(
+        "visible"
+      );
 
-      Resource campus can be:
-      - Dhaka College
-      - Eden Mohila College
-      - Titumir College
-      - etc.
+    }
 
-      This allows a student to share another
-      campus's question/note.
+
+    /*
+      Keep target campus independent
+      from user's own campus.
+
+      This allows:
+
+      Student from Campus A
+      -> Resource Campus B
+
+      Admin
+      -> Any campus
     */
 
 
-    return true;
+    if (
+      role === "admin"
+    ) {
 
+      backButton.href =
+        "admin-dashboard.html";
+
+      successDashboardLink.href =
+        "admin-dashboard.html";
+
+    } else {
+
+      backButton.href =
+        "student-dashboard.html";
+
+      successDashboardLink.href =
+        "student-dashboard.html";
+
+    }
 
   } catch (error) {
 
     console.error(
-      "Profile loading error:",
+      "Load profile error:",
       error
     );
 
-
     showMessage(
-      "Unable to load your account. Please log in again.",
+      "Unable to load your account. Please refresh the page.",
       "error"
     );
 
-
-    submitButton.disabled =
-      true;
-
-
-    return false;
+    submitButton.disabled = true;
 
   }
 
 }
 
 
+/* =========================================================
+   COURSE SELECTION
+========================================================= */
+
+courseCode.addEventListener(
+  "change",
+  function () {
+
+    const code =
+      this.value;
+
+    courseName.value =
+      COURSES[code] || "";
+
+  }
+);
+
 
 /* =========================================================
-   RESOURCE TYPE DESCRIPTION
+   RESOURCE TYPE HELP
 ========================================================= */
 
 const typeDescriptions = {
@@ -1817,18 +1178,16 @@ resourceType.addEventListener(
   "change",
   function () {
 
-    const selectedType =
+    const type =
       this.value;
 
-
     if (
-      selectedType &&
-      typeDescriptions[selectedType]
+      type &&
+      typeDescriptions[type]
     ) {
 
       resourceTypeInfo.textContent =
-        typeDescriptions[selectedType];
-
+        typeDescriptions[type];
 
       resourceTypeInfo.classList.add(
         "visible"
@@ -1838,7 +1197,6 @@ resourceType.addEventListener(
 
       resourceTypeInfo.textContent =
         "";
-
 
       resourceTypeInfo.classList.remove(
         "visible"
@@ -1850,38 +1208,25 @@ resourceType.addEventListener(
 );
 
 
-
 /* =========================================================
    DRIVE LINK VALIDATION
 ========================================================= */
 
-function isValidDriveLink(
-  value
-) {
+function isValidDriveLink(value) {
 
   try {
 
     const url =
-      new URL(
-        value
-      );
+      new URL(value);
 
-
-    const hostname =
+    const host =
       url.hostname
-        .toLowerCase();
-
+        .toLowerCase()
+        .replace(/^www\./, "");
 
     return (
-
-      hostname ===
-        "drive.google.com"
-
-      ||
-
-      hostname ===
-        "docs.google.com"
-
+      host === "drive.google.com" ||
+      host === "docs.google.com"
     );
 
   } catch {
@@ -1893,37 +1238,123 @@ function isValidDriveLink(
 }
 
 
-
 /* =========================================================
-   COURSE PARSER
+   FORM MESSAGE
 ========================================================= */
 
-function getCourseData(
-  value
+function showMessage(
+  message,
+  type
 ) {
 
-  const parts =
-    value.split("|");
+  formMessage.textContent =
+    message;
 
-
-  return {
-
-    code:
-      parts[0] ||
-      "",
-
-    name:
-      parts.slice(1).join("|") ||
-      ""
-
-  };
+  formMessage.className =
+    "form-message " +
+    type;
 
 }
 
 
+function hideMessage() {
+
+  formMessage.textContent =
+    "";
+
+  formMessage.className =
+    "form-message";
+
+}
+
 
 /* =========================================================
-   FORM SUBMISSION
+   ERROR MESSAGE CLEANUP
+========================================================= */
+
+function getFriendlyError(error) {
+
+  const raw =
+    String(
+      error?.message ||
+      error ||
+      ""
+    );
+
+
+  if (
+    raw.includes(
+      "full_name"
+    ) &&
+    raw.includes(
+      "schema cache"
+    )
+  ) {
+
+    return (
+      "Database schema error: the submissions table is missing the full_name column."
+    );
+
+  }
+
+
+  if (
+    raw.includes(
+      "course_name"
+    ) &&
+    (
+      raw.includes("schema cache") ||
+      raw.includes("column")
+    )
+  ) {
+
+    return (
+      "Database schema error: the submissions table is missing the course_name column."
+    );
+
+  }
+
+
+  if (
+    raw.includes(
+      'column "type"'
+    ) &&
+    raw.includes(
+      "not-null"
+    )
+  ) {
+
+    return (
+      'Database schema error: the submissions table requires a "type" value.'
+    );
+
+  }
+
+
+  if (
+    raw.includes(
+      "row-level security"
+    ) ||
+    raw.includes(
+      "RLS"
+    )
+  ) {
+
+    return (
+      "Permission denied by Supabase Row Level Security. Check the submissions INSERT policy."
+    );
+
+  }
+
+
+  return raw ||
+    "Submission failed. Please try again.";
+
+}
+
+
+/* =========================================================
+   SUBMISSION
 ========================================================= */
 
 submissionForm.addEventListener(
@@ -1932,14 +1363,8 @@ submissionForm.addEventListener(
 
     event.preventDefault();
 
-
     hideMessage();
 
-
-
-    /* =====================================================
-       ACCOUNT CHECK
-    ===================================================== */
 
     if (
       !currentUser ||
@@ -1947,7 +1372,7 @@ submissionForm.addEventListener(
     ) {
 
       showMessage(
-        "Your account information is not ready. Please refresh the page.",
+        "Your account is not ready. Please refresh the page.",
         "error"
       );
 
@@ -1956,10 +1381,26 @@ submissionForm.addEventListener(
     }
 
 
+    const role =
+      String(
+        currentProfile.role || ""
+      ).toLowerCase().trim();
 
-    /* =====================================================
-       GET VALUES
-    ===================================================== */
+
+    if (
+      role !== "student" &&
+      role !== "admin"
+    ) {
+
+      showMessage(
+        "Your account does not have permission to submit resources.",
+        "error"
+      );
+
+      return;
+
+    }
+
 
     const type =
       resourceType.value.trim();
@@ -1972,8 +1413,12 @@ submissionForm.addEventListener(
         .trim();
 
 
-    const selectedCourse =
-      course.value.trim();
+    const selectedCourseCode =
+      courseCode.value.trim();
+
+
+    const selectedCourseName =
+      courseName.value.trim();
 
 
     const selectedCampus =
@@ -1994,29 +1439,7 @@ submissionForm.addEventListener(
         .trim();
 
 
-
-    /* =====================================================
-       COURSE
-    ===================================================== */
-
-    const courseData =
-      getCourseData(
-        selectedCourse
-      );
-
-
-    const courseCode =
-      courseData.code;
-
-
-    const courseName =
-      courseData.name;
-
-
-
-    /* =====================================================
-       VALIDATION
-    ===================================================== */
+    /* Validation */
 
     if (!type) {
 
@@ -2048,17 +1471,28 @@ submissionForm.addEventListener(
     }
 
 
-    if (
-      !courseCode ||
-      !courseName
-    ) {
+    if (!selectedCourseCode) {
 
       showMessage(
-        "Please select a course / subject.",
+        "Please select a course code.",
         "error"
       );
 
-      course.focus();
+      courseCode.focus();
+
+      return;
+
+    }
+
+
+    if (!selectedCourseName) {
+
+      showMessage(
+        "Course name could not be determined. Please select the course code again.",
+        "error"
+      );
+
+      courseCode.focus();
 
       return;
 
@@ -2068,7 +1502,7 @@ submissionForm.addEventListener(
     if (!selectedCampus) {
 
       showMessage(
-        "Please select the campus this resource belongs to.",
+        "Please select the resource campus.",
         "error"
       );
 
@@ -2131,111 +1565,78 @@ submissionForm.addEventListener(
     }
 
 
-
-    /* =====================================================
-       DISABLE BUTTON
-    ===================================================== */
+    /* Prevent double submission */
 
     submitButton.disabled =
       true;
-
 
     submitButton.textContent =
       "Submitting...";
 
 
-
     try {
 
+      /*
+        IMPORTANT:
 
-      /* ===================================================
-         SUBMISSION DATA
+        "type" is included because your current
+        submissions table requires it.
 
-         IMPORTANT:
+        "course_name" is included because your
+        current database expects this column.
 
-         "type" is included because your current
-         submissions table requires it as NOT NULL.
+        "course_code" is also sent for the course code.
 
-         "resource_type" is also included so the current
-         universal submission structure remains compatible.
-      =================================================== */
-
+        The student's own campus is stored separately
+        from target_campus.
+      */
 
       const submissionData = {
 
         user_id:
           currentUser.id,
 
-
         type:
           type,
-
 
         resource_type:
           type,
 
-
         title:
           title,
 
-
-        /*
-          Keep the complete course value for compatibility.
-        */
-
         course:
-          `${courseCode} — ${courseName}`,
-
-
-        /*
-          Separate values are also included.
-
-          If these columns exist in your table,
-          they will be useful for filtering.
-        */
+          selectedCourseName,
 
         course_code:
-          courseCode,
-
+          selectedCourseCode,
 
         course_name:
-          courseName,
-
+          selectedCourseName,
 
         description:
           description,
 
-
         target_campus:
           selectedCampus,
-
 
         drive_link:
           driveLink,
 
-
         status:
           "pending",
-
-
-        /*
-          Submitter profile information
-        */
 
         full_name:
           currentProfile.full_name ||
           null,
 
-
         session:
           currentProfile.session ||
           null,
 
-
         student_id:
           currentProfile.student_id ||
           null,
-
 
         submitter_campus:
           currentProfile.campus ||
@@ -2244,18 +1645,11 @@ submissionForm.addEventListener(
       };
 
 
-
-      /* ===================================================
-         INSERT
-      =================================================== */
-
       const {
         error
       } =
         await supabaseClient
-
           .from("submissions")
-
           .insert(
             submissionData
           );
@@ -2268,25 +1662,17 @@ submissionForm.addEventListener(
       }
 
 
-
-      /* ===================================================
-         SUCCESS
-      =================================================== */
+      /* Success */
 
       formArea.style.display =
         "none";
 
-
       successPanel.style.display =
         "block";
 
-
       window.scrollTo({
-
         top: 0,
-
         behavior: "smooth"
-
       });
 
 
@@ -2298,84 +1684,14 @@ submissionForm.addEventListener(
       );
 
 
-      let message =
-        "Submission failed. Please try again.";
-
-
-      if (
-        error &&
-        error.message
-      ) {
-
-        message =
-          error.message;
-
-      }
-
-
-
-      /*
-        Friendly messages for common Supabase errors.
-      */
-
-      if (
-        message.includes(
-          'column "type"'
-        )
-      ) {
-
-        message =
-          'Database error: the "type" field is required.';
-
-      }
-
-
-      if (
-        message.includes(
-          "full_name"
-        )
-      ) {
-
-        message =
-          'Database schema error: the submissions table is missing the "full_name" column.';
-
-      }
-
-
-      if (
-        message.includes(
-          "course_code"
-        )
-      ) {
-
-        message =
-          'Database schema error: the submissions table is missing the "course_code" column.';
-
-      }
-
-
-      if (
-        message.includes(
-          "course_name"
-        )
-      ) {
-
-        message =
-          'Database schema error: the submissions table is missing the "course_name" column.';
-
-      }
-
-
-
       showMessage(
-        message,
+        getFriendlyError(error),
         "error"
       );
 
 
       submitButton.disabled =
         false;
-
 
       submitButton.textContent =
         "Submit for Review";
@@ -2386,46 +1702,47 @@ submissionForm.addEventListener(
 );
 
 
-
 /* =========================================================
-   MESSAGE
+   NEW SUBMISSION
 ========================================================= */
 
-function showMessage(
-  message,
-  type
-) {
+newSubmissionButton.addEventListener(
+  "click",
+  function () {
 
-  formMessage.textContent =
-    message;
+    submissionForm.reset();
 
+    courseName.value =
+      "";
 
-  formMessage.className =
-    `form-message ${type}`;
+    resourceTypeInfo.textContent =
+      "";
 
+    resourceTypeInfo.classList.remove(
+      "visible"
+    );
 
-  formMessage.scrollIntoView({
+    hideMessage();
 
-    behavior: "smooth",
+    submitButton.disabled =
+      false;
 
-    block: "center"
+    submitButton.textContent =
+      "Submit for Review";
 
-  });
+    successPanel.style.display =
+      "none";
 
-}
+    formArea.style.display =
+      "block";
 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
 
-function hideMessage() {
-
-  formMessage.textContent =
-    "";
-
-
-  formMessage.className =
-    "form-message";
-
-}
-
+  }
+);
 
 
 /* =========================================================
@@ -2436,7 +1753,6 @@ const menuToggle =
   document.querySelector(
     ".menu-toggle"
   );
-
 
 const nav =
   document.querySelector(
@@ -2463,6 +1779,25 @@ if (
 }
 
 
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  function (event, session) {
+
+    if (
+      event === "SIGNED_OUT"
+    ) {
+
+      window.location.href =
+        "login.html";
+
+    }
+
+  }
+);
+
 
 /* =========================================================
    START
@@ -2472,7 +1807,6 @@ loadUserProfile();
 
 </script>
 
-
 </body>
-
 </html>
+```
