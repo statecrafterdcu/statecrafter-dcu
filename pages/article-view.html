@@ -54,6 +54,17 @@
 .article-meta strong{
   color:var(--navy);
 }
+
+.article-meta a{color:var(--navy);text-decoration:none;font-weight:900}
+.article-meta a:hover{color:var(--red);text-decoration:underline}
+.article-cover{display:none;margin-top:28px;border-radius:18px;overflow:hidden;background:#eef2f8;border:1px solid var(--line)}
+.article-cover.show{display:block}
+.article-cover img{display:block;width:100%;max-height:520px;object-fit:cover}.article-cover.placeholder{min-height:260px;background:linear-gradient(135deg,#122b52,#a3151b);display:flex;align-items:center;justify-content:center}.article-cover.placeholder img{display:none}.article-cover.placeholder:after{content:"STATECRAFTER DCU · RESEARCH & ARTICLES";color:#fff;font-weight:900;letter-spacing:.12em;font-size:13px}
+.share-menu{display:none;position:absolute;right:0;top:52px;z-index:20;width:220px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px rgba(18,43,82,.16)}
+.share-menu.show{display:grid;gap:6px}
+.share-menu button{width:100%;border:1px solid #e0e5eb;background:#fff;border-radius:9px;padding:10px 12px;text-align:left;color:var(--navy);font-weight:800;cursor:pointer}
+.share-menu button:hover{background:#f6f8fb}
+.share-wrap{position:relative}
 .article-body-section{
   padding:55px 0 90px;
 }
@@ -245,6 +256,7 @@
         <h1 id="articleTitle">Article</h1>
         <p id="articleLead" class="article-lead"></p>
         <div id="articleMeta" class="article-meta"></div>
+        <div id="articleCover" class="article-cover"><img id="articleCoverImage" alt="Article cover"></div>
       </div>
     </div>
   </section>
@@ -273,7 +285,17 @@
 
             <div class="article-actions">
               <a href="research.html" class="btn btn-outline">All Articles</a>
-              <button id="shareButton" type="button" class="btn btn-primary">Share</button>
+              <div class="share-wrap">
+                <button id="shareButton" type="button" class="btn btn-primary">Share</button>
+                <div id="shareMenu" class="share-menu" role="menu">
+                  <button type="button" data-share="facebook">Facebook</button>
+                  <button type="button" data-share="x">X / Twitter</button>
+                  <button type="button" data-share="whatsapp">WhatsApp</button>
+                  <button type="button" data-share="linkedin">LinkedIn</button>
+                  <button type="button" data-share="email">Email</button>
+                  <button type="button" data-share="copy">Copy Link</button>
+                </div>
+              </div>
             </div>
           </div>
         </aside>
@@ -312,6 +334,9 @@ const articleTitle = document.getElementById("articleTitle");
 const articleLead = document.getElementById("articleLead");
 const articleMeta = document.getElementById("articleMeta");
 const articleContent = document.getElementById("articleContent");
+const articleCover = document.getElementById("articleCover");
+const articleCoverImage = document.getElementById("articleCoverImage");
+const shareMenu = document.getElementById("shareMenu");
 const sideInfo = document.getElementById("sideInfo");
 const shareButton = document.getElementById("shareButton");
 
@@ -348,9 +373,8 @@ function getArticleContent(article) {
 
 function getArticleAuthor(article) {
   return (
-    article.author_name ||
+    article.author_profile?.full_name ||
     article.full_name ||
-    article.created_by_name ||
     article.student_name ||
     "StateCrafter Contributor"
   );
@@ -401,9 +425,11 @@ function renderArticle(article) {
   }
 
   articleMeta.innerHTML =
-    "<span>By <strong>" +
-    escapeHTML(author) +
-    "</strong></span>" +
+    "<span>By " +
+    (article.author_id
+      ? "<a href=\"profile.html?id=" + encodeURIComponent(article.author_id) + "\"><strong>" + escapeHTML(author) + "</strong></a>"
+      : "<strong>" + escapeHTML(author) + "</strong>") +
+    "</span>" +
     "<span>" +
     escapeHTML(formatDate(date)) +
     "</span>" +
@@ -417,6 +443,21 @@ function renderArticle(article) {
         escapeHTML(article.campus || article.target_campus) +
         "</span>"
       : "");
+
+  if (article.cover_image_url) {
+    articleCoverImage.src = article.cover_image_url;
+    articleCoverImage.alt = title + " cover";
+    articleCover.classList.add("show");
+    articleCoverImage.onerror = () => {
+      articleCoverImage.removeAttribute("src");
+      articleCover.classList.add("placeholder");
+      articleCoverImage.alt = "StateCrafter DCU article cover";
+    };
+  } else {
+    articleCoverImage.removeAttribute("src");
+    articleCover.classList.add("show", "placeholder");
+    articleCoverImage.alt = "StateCrafter DCU article cover";
+  }
 
   const cleanContent = DOMPurify.sanitize(
     getArticleContent(article) ||
@@ -515,10 +556,17 @@ async function loadArticle() {
     }
 
     if (!response.data) {
-      showError(
-        "This article could not be found or is not currently published."
-      );
+      showError("This article could not be found or is not currently published.");
       return;
+    }
+
+    if (response.data.author_id) {
+      const { data: profile } = await supabaseClient
+        .from("public_author_profiles")
+        .select("id, full_name")
+        .eq("id", response.data.author_id)
+        .maybeSingle();
+      response.data.author_profile = profile || null;
     }
 
     renderArticle(response.data);
@@ -532,30 +580,37 @@ async function loadArticle() {
   }
 }
 
-shareButton.addEventListener("click", async () => {
-  const shareData = {
-    title: document.title,
-    text: articleTitle.textContent,
-    url: window.location.href
-  };
-
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-      return;
-    }
-
-    await navigator.clipboard.writeText(window.location.href);
-    shareButton.textContent = "Link Copied";
-
-    setTimeout(() => {
-      shareButton.textContent = "Share";
-    }, 1800);
-
-  } catch (error) {
-    console.log("Share cancelled or unavailable.");
-  }
+shareButton.addEventListener("click", () => {
+  shareMenu.classList.toggle("show");
 });
+
+shareMenu.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-share]");
+  if (!button) return;
+  const url = window.location.href;
+  const title = document.title;
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(articleTitle.textContent);
+  const type = button.dataset.share;
+  let target = "";
+  if (type === "facebook") target = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+  if (type === "x") target = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+  if (type === "whatsapp") target = `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`;
+  if (type === "linkedin") target = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+  if (type === "email") target = `mailto:?subject=${encodeURIComponent(title)}&body=${encodedUrl}`;
+  if (type === "copy") {
+    try { await navigator.clipboard.writeText(url); button.textContent = "Copied ✓"; setTimeout(() => button.textContent = "Copy Link", 1400); }
+    catch { window.prompt("Copy this article link:", url); }
+    return;
+  }
+  if (target) window.open(target, "_blank", "noopener,noreferrer,width=720,height=620");
+  shareMenu.classList.remove("show");
+});
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".share-wrap")) shareMenu.classList.remove("show");
+});
+
 
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
