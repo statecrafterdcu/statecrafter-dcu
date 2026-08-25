@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Article | StateCrafter DCU</title>
+<link rel="stylesheet" href="../style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
+<style>
+.article-page{
+  background:#fff;
+  min-height:70vh;
+}
+.article-hero{
+  background:linear-gradient(135deg,#f7f5f0 0%,#fff 55%,#eef2f8 100%);
+  border-bottom:1px solid var(--line);
+  padding:65px 0 55px;
+}
+.article-hero-inner{
+  max-width:900px;
+}
+.article-kicker{
+  margin:0 0 15px;
+  color:var(--red);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.article-hero h1{
+  margin:0;
+  color:var(--navy);
+  font-size:clamp(38px,6vw,68px);
+  line-height:1.02;
+  letter-spacing:-.055em;
+}
+.article-lead{
+  max-width:760px;
+  margin:22px 0 0;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+}
+.article-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 22px;
+  margin-top:24px;
+  color:#69768a;
+  font-size:12px;
+}
+.article-meta strong{
+  color:var(--navy);
+}
+.article-body-section{
+  padding:55px 0 90px;
+}
+.article-layout{
+  display:grid;
+  grid-template-columns:minmax(0,780px) 240px;
+  gap:55px;
+  align-items:start;
+}
+.article-content{
+  color:#27354a;
+  font-size:17px;
+  line-height:1.9;
+  overflow-wrap:anywhere;
+}
+.article-content p{margin:0 0 1.2em}
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4{
+  color:var(--navy);
+  line-height:1.25;
+  margin:1.7em 0 .65em;
+}
+.article-content h1{font-size:34px}
+.article-content h2{font-size:29px}
+.article-content h3{font-size:24px}
+.article-content h4{font-size:20px}
+.article-content a{
+  color:#17539c;
+  text-decoration:underline;
+}
+.article-content img{
+  display:block;
+  max-width:100%;
+  height:auto;
+  margin:30px auto;
+  border-radius:14px;
+}
+.article-content figure{
+  max-width:100%;
+  margin:30px 0;
+}
+.article-content figure img{margin:0 auto}
+.article-content figcaption{
+  margin-top:8px;
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+}
+.article-content blockquote{
+  margin:28px 0;
+  padding:18px 22px;
+  background:#f7f5f0;
+  border-left:4px solid var(--red);
+  border-radius:0 12px 12px 0;
+  color:#536075;
+}
+.article-content ul,
+.article-content ol{
+  padding-left:28px;
+}
+.article-content li{margin:5px 0}
+.article-content pre{
+  max-width:100%;
+  overflow:auto;
+  padding:18px;
+  background:#f4f6f9;
+  border-radius:12px;
+}
+.article-content table{
+  display:block;
+  max-width:100%;
+  overflow:auto;
+  border-collapse:collapse;
+  margin:25px 0;
+}
+.article-content th,
+.article-content td{
+  border:1px solid #dce2e9;
+  padding:9px 12px;
+  text-align:left;
+}
+.article-sidebar{
+  position:sticky;
+  top:105px;
+}
+.article-side-card{
+  padding:20px;
+  background:#f7f8fa;
+  border:1px solid #e1e5eb;
+  border-radius:17px;
+}
+.article-side-card h3{
+  margin:0 0 12px;
+  color:var(--navy);
+  font-size:16px;
+}
+.article-side-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+.article-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.loading-panel,
+.error-panel{
+  max-width:760px;
+  margin:0 auto;
+  padding:70px 20px;
+  text-align:center;
+}
+.loading-panel h2,
+.error-panel h2{
+  margin:0;
+  color:var(--navy);
+}
+.loading-panel p,
+.error-panel p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:22px;
+  color:var(--navy);
+  font-size:12px;
+  font-weight:900;
+  text-decoration:none;
+}
+.back-link:hover{color:var(--red)}
+@media(max-width:900px){
+  .article-layout{grid-template-columns:1fr}
+  .article-sidebar{position:static}
+}
+@media(max-width:600px){
+  .article-hero{padding:45px 0 40px}
+  .article-body-section{padding:40px 0 65px}
+  .article-content{font-size:15px;line-height:1.8}
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="../index.html">
+      <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html" class="active">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+    </nav>
+
+    <button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main class="article-page">
+
+  <section class="article-hero">
+    <div class="container">
+      <div id="heroLoading" class="loading-panel">
+        <h2>Loading Article...</h2>
+        <p>Please wait while the article is being loaded.</p>
+      </div>
+
+      <div id="heroContent" class="article-hero-inner" style="display:none">
+        <a class="back-link" href="research.html">← Back to Research &amp; Articles</a>
+        <p id="articleType" class="article-kicker">ARTICLE</p>
+        <h1 id="articleTitle">Article</h1>
+        <p id="articleLead" class="article-lead"></p>
+        <div id="articleMeta" class="article-meta"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="article-body-section">
+    <div class="container">
+
+      <div id="errorPanel" class="error-panel" style="display:none">
+        <h2>Article Not Found</h2>
+        <p id="errorText">This article could not be found or is not currently published.</p>
+        <div class="article-actions" style="justify-content:center">
+          <a href="research.html" class="btn btn-primary">Back to Articles</a>
+        </div>
+      </div>
+
+      <div id="articleLayout" class="article-layout" style="display:none">
+
+        <article id="articleContent" class="article-content"></article>
+
+        <aside class="article-sidebar">
+          <div class="article-side-card">
+            <h3>About this article</h3>
+            <p id="sideInfo">
+              Published by the StateCrafter DCU community.
+            </p>
+
+            <div class="article-actions">
+              <a href="research.html" class="btn btn-outline">All Articles</a>
+              <button id="shareButton" type="button" class="btn btn-primary">Share</button>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    <span>© 2026 StateCrafter DCU</span>
+    <span>Political Science Department • Dhaka Central University</span>
+  </div>
+</footer>
+
+<script>
+const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co";
+const SUPABASE_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const heroLoading = document.getElementById("heroLoading");
+const heroContent = document.getElementById("heroContent");
+const errorPanel = document.getElementById("errorPanel");
+const errorText = document.getElementById("errorText");
+const articleLayout = document.getElementById("articleLayout");
+
+const articleType = document.getElementById("articleType");
+const articleTitle = document.getElementById("articleTitle");
+const articleLead = document.getElementById("articleLead");
+const articleMeta = document.getElementById("articleMeta");
+const articleContent = document.getElementById("articleContent");
+const sideInfo = document.getElementById("sideInfo");
+const shareButton = document.getElementById("shareButton");
+
+function formatDate(value) {
+  if (!value) return "Date not available";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Date not available";
+  }
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+function getParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+function getArticleContent(article) {
+  return (
+    article.content ||
+    article.body ||
+    article.article_content ||
+    article.description ||
+    ""
+  );
+}
+
+function getArticleAuthor(article) {
+  return (
+    article.author_name ||
+    article.full_name ||
+    article.created_by_name ||
+    article.student_name ||
+    "StateCrafter Contributor"
+  );
+}
+
+function getArticleDate(article) {
+  return (
+    article.published_at ||
+    article.created_at ||
+    article.updated_at ||
+    null
+  );
+}
+
+function getArticleType(article) {
+  return article.article_type || article.type || "Article";
+}
+
+function getLead(article) {
+  const source =
+    article.excerpt ||
+    article.summary ||
+    article.subtitle ||
+    article.description ||
+    "";
+
+  const temporary = document.createElement("div");
+  temporary.innerHTML = DOMPurify.sanitize(source);
+
+  return (temporary.textContent || "").replace(/\s+/g, " ").trim();
+}
+
+function renderArticle(article) {
+  const title = article.title || "Untitled Article";
+  const author = getArticleAuthor(article);
+  const date = getArticleDate(article);
+  const type = getArticleType(article);
+  const lead = getLead(article);
+
+  document.title = title + " | StateCrafter DCU";
+
+  articleType.textContent = String(type).toUpperCase();
+  articleTitle.textContent = title;
+  articleLead.textContent = lead;
+
+  if (!lead) {
+    articleLead.style.display = "none";
+  }
+
+  articleMeta.innerHTML =
+    "<span>By <strong>" +
+    escapeHTML(author) +
+    "</strong></span>" +
+    "<span>" +
+    escapeHTML(formatDate(date)) +
+    "</span>" +
+    (article.course_name || article.course
+      ? "<span>" +
+        escapeHTML(article.course_name || article.course) +
+        "</span>"
+      : "") +
+    (article.campus || article.target_campus
+      ? "<span>" +
+        escapeHTML(article.campus || article.target_campus) +
+        "</span>"
+      : "");
+
+  const cleanContent = DOMPurify.sanitize(
+    getArticleContent(article) ||
+    "<p>No article content is available.</p>",
+    {
+      ADD_ATTR: ["target", "rel"]
+    }
+  );
+
+  articleContent.innerHTML = cleanContent;
+
+  articleContent.querySelectorAll("a").forEach(link => {
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener noreferrer");
+  });
+
+  articleContent.querySelectorAll("img").forEach(img => {
+    img.setAttribute("loading", "lazy");
+    img.setAttribute("decoding", "async");
+  });
+
+  sideInfo.textContent =
+    "Published by " +
+    author +
+    " on " +
+    formatDate(date) +
+    ".";
+
+  heroLoading.style.display = "none";
+  heroContent.style.display = "block";
+  articleLayout.style.display = "grid";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function showError(message) {
+  heroLoading.style.display = "none";
+  heroContent.style.display = "none";
+  articleLayout.style.display = "none";
+  errorText.textContent = message;
+  errorPanel.style.display = "block";
+}
+
+async function loadArticle() {
+  const id = getParam("id");
+  const slug = getParam("slug");
+
+  if (!id && !slug) {
+    showError(
+      "No article was selected. Please return to Research & Articles and choose an article."
+    );
+    return;
+  }
+
+  try {
+    let query = supabaseClient
+      .from("articles")
+      .select("*")
+      .eq("status", "published");
+
+    if (id) {
+      query = query.eq("id", id);
+    } else {
+      query = query.eq("slug", slug);
+    }
+
+    let response = await query.maybeSingle();
+
+    if (
+      response.error &&
+      /slug/i.test(response.error.message || "")
+    ) {
+      if (id) {
+        response = await supabaseClient
+          .from("articles")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+      } else {
+        showError(
+          "This article link uses a slug, but the current articles table does not have a slug field."
+        );
+        return;
+      }
+    }
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    if (!response.data) {
+      showError(
+        "This article could not be found or is not currently published."
+      );
+      return;
+    }
+
+    renderArticle(response.data);
+
+  } catch (error) {
+    console.error("Article loading error:", error);
+
+    showError(
+      "We could not load this article right now. Please return to the Research & Articles page and try again."
+    );
+  }
+}
+
+shareButton.addEventListener("click", async () => {
+  const shareData = {
+    title: document.title,
+    text: articleTitle.textContent,
+    url: window.location.href
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+
+    await navigator.clipboard.writeText(window.location.href);
+    shareButton.textContent = "Link Copied";
+
+    setTimeout(() => {
+      shareButton.textContent = "Share";
+    }, 1800);
+
+  } catch (error) {
+    console.log("Share cancelled or unavailable.");
+  }
+});
+
+const menuToggle = document.querySelector(".menu-toggle");
+const nav = document.querySelector(".nav");
+
+if (menuToggle && nav) {
+  menuToggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+}
+
+loadArticle();
+</script>
+
+</body>
+</html>
