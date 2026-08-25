@@ -426,7 +426,6 @@
         db.from("articles")
           .select("id,title,category,excerpt,description,published_at,created_at,cover_image_url,author_id,status")
           .eq("author_id", id)
-          .eq("status", "approved")
           .order("published_at", { ascending: false }),
 
         db.from("academic_notes")
@@ -449,8 +448,31 @@
         return;
       }
 
-      const articles = articlesResponse.data || [];
-      const archive = archiveResponse.data || [];
+      if (articlesResponse.error) throw articlesResponse.error;
+      if (archiveResponse.error) throw archiveResponse.error;
+      if (eventsResponse.error) throw eventsResponse.error;
+
+      // Approved/published articles are public. We intentionally fetch all
+      // rows for this author first, then filter here so the profile does not
+      // break if the database stores the public state as "approved" or
+      // "published".
+      const publicArticleStatuses = new Set([
+        "approved",
+        "published",
+        "public",
+        "active"
+      ]);
+
+      const articles = (articlesResponse.data || []).filter(row => {
+        const status = String(row.status || "").trim().toLowerCase();
+        return publicArticleStatuses.has(status);
+      });
+
+      const archive = (archiveResponse.data || []).filter(row => {
+        const status = String(row.status || "").trim().toLowerCase();
+        return !status || ["approved", "published", "public", "active"].includes(status);
+      });
+
       const events = (eventsResponse.data || []).filter(publicEvent);
 
       $("loading").style.display = "none";
@@ -510,16 +532,6 @@
         : `<div class="empty">No public events yet.</div>`;
 
       document.title = `${name} | StateCrafter DCU`;
-
-      if (articlesResponse.error) {
-        console.warn("Articles could not be loaded:", articlesResponse.error);
-      }
-      if (archiveResponse.error) {
-        console.warn("Academic archive could not be loaded:", archiveResponse.error);
-      }
-      if (eventsResponse.error) {
-        console.warn("Events could not be loaded:", eventsResponse.error);
-      }
 
     } catch (error) {
       console.error(error);
