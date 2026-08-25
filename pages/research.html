@@ -21,12 +21,14 @@ content="width=device-width, initial-scale=1"
     href="../style.css"
   >
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
   <style>
 
     /* =====================================================
-       PAGE
+       HERO
     ===================================================== */
 
     .research-hero {
@@ -39,9 +41,11 @@ content="width=device-width, initial-scale=1"
           #eef2f8 100%
         );
 
-      border-bottom: 1px solid var(--line);
+      border-bottom:
+        1px solid var(--line);
 
-      padding: 60px 0 55px;
+      padding:
+        60px 0 52px;
 
     }
 
@@ -50,332 +54,170 @@ content="width=device-width, initial-scale=1"
 
       margin: 0;
 
-      color: var(--navy);
+      color:
+        var(--navy);
 
       font-size:
-        clamp(42px, 6vw, 70px);
+        clamp(44px, 6vw, 72px);
 
       line-height: .96;
 
-      letter-spacing: -.05em;
+      letter-spacing:
+        -.055em;
 
     }
 
 
     .research-hero p:not(.eyebrow) {
 
-      max-width: 700px;
+      max-width:
+        720px;
 
-      margin: 20px 0 0;
+      margin:
+        20px 0 0;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 16px;
+      font-size:
+        16px;
 
-      line-height: 1.7;
+      line-height:
+        1.7;
 
     }
 
+
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
 
     .research-section {
 
-      padding: 55px 0 90px;
+      padding:
+        60px 0 90px;
 
     }
 
-
-    /* =====================================================
-       TOOLBAR
-    ===================================================== */
 
     .research-toolbar {
 
-      display: grid;
+      display:
+        flex;
 
-      grid-template-columns:
-        minmax(0, 1fr)
-        230px
-        auto;
+      align-items:
+        flex-end;
 
-      gap: 12px;
+      justify-content:
+        space-between;
 
-      margin-bottom: 32px;
+      gap:
+        25px;
 
-    }
-
-
-    .research-toolbar input,
-    .research-toolbar select {
-
-      width: 100%;
-
-      height: 48px;
-
-      box-sizing: border-box;
-
-      border: 1px solid #d8dde5;
-
-      border-radius: 12px;
-
-      background: #fff;
-
-      color: var(--ink);
-
-      font: inherit;
-
-      font-size: 14px;
-
-      padding: 0 14px;
-
-      outline: none;
+      margin-bottom:
+        32px;
 
     }
 
 
-    .research-toolbar input:focus,
-    .research-toolbar select:focus {
+    .research-toolbar h2 {
 
-      border-color: var(--navy);
+      margin:
+        0;
+
+      color:
+        var(--navy);
+
+      font-size:
+        30px;
+
+      line-height:
+        1.2;
+
+    }
+
+
+    .research-toolbar p:not(.eyebrow) {
+
+      margin:
+        7px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+    }
+
+
+    .research-actions {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      flex-wrap:
+        wrap;
+
+    }
+
+
+    .article-search {
+
+      width:
+        280px;
+
+      height:
+        46px;
+
+      padding:
+        0 15px;
+
+      border:
+        1px solid #d8dde5;
+
+      border-radius:
+        12px;
+
+      background:
+        #fff;
+
+      color:
+        var(--ink);
+
+      font:
+        inherit;
+
+      font-size:
+        13px;
+
+      outline:
+        none;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .article-search:focus {
+
+      border-color:
+        var(--navy);
 
       box-shadow:
         0 0 0 3px
-        rgba(18,43,82,.06);
-
-    }
-
-
-    .write-button {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      min-width: 155px;
-
-      white-space: nowrap;
-
-    }
-
-
-    /* =====================================================
-       FEATURED
-    ===================================================== */
-
-    .featured-section {
-
-      margin-bottom: 45px;
-
-    }
-
-
-    .featured-card {
-
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1.1fr)
-        minmax(0, .9fr);
-
-      overflow: hidden;
-
-      border: 1px solid var(--line);
-
-      border-radius: 24px;
-
-      background: #fff;
-
-      box-shadow:
-        0 15px 45px
         rgba(18,43,82,.07);
 
-      cursor: pointer;
-
-      transition: transform .2s ease,
-                  box-shadow .2s ease;
-
     }
 
-
-    .featured-card:hover {
-
-      transform: translateY(-3px);
-
-      box-shadow:
-        0 20px 55px
-        rgba(18,43,82,.11);
-
-    }
-
-
-    .featured-image {
-
-      min-height: 330px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #122b52,
-          #294c7b
-        );
-
-      overflow: hidden;
-
-    }
-
-
-    .featured-image img {
-
-      width: 100%;
-
-      height: 100%;
-
-      object-fit: cover;
-
-      display: block;
-
-    }
-
-
-    .featured-content {
-
-      padding: 34px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      justify-content: center;
-
-    }
-
-
-    .featured-label {
-
-      color: var(--red);
-
-      font-size: 10px;
-
-      font-weight: 900;
-
-      letter-spacing: .12em;
-
-      text-transform: uppercase;
-
-      margin-bottom: 12px;
-
-    }
-
-
-    .featured-content h2 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size:
-        clamp(26px, 3vw, 40px);
-
-      line-height: 1.08;
-
-      letter-spacing: -.03em;
-
-    }
-
-
-    .featured-excerpt {
-
-      margin: 15px 0 0;
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      line-height: 1.75;
-
-    }
-
-
-    .article-meta {
-
-      display: flex;
-
-      align-items: center;
-
-      flex-wrap: wrap;
-
-      gap: 8px 14px;
-
-      margin-top: 20px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-    }
-
-
-    .category-pill {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      padding: 5px 9px;
-
-      border-radius: 999px;
-
-      background: #eef2f8;
-
-      color: var(--navy);
-
-      font-size: 10px;
-
-      font-weight: 900;
-
-    }
-
-
-    /* =====================================================
-       SECTION HEADER
-    ===================================================== */
-
-    .articles-heading {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: end;
-
-      gap: 20px;
-
-      margin-bottom: 20px;
-
-    }
-
-
-    .articles-heading h2 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: 28px;
-
-      letter-spacing: -.02em;
-
-    }
-
-
-    .articles-count {
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-    }
 
 
     /* =====================================================
@@ -384,565 +226,789 @@ content="width=device-width, initial-scale=1"
 
     .article-grid {
 
-      display: grid;
+      display:
+        grid;
 
       grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
-      gap: 22px;
+      gap:
+        24px;
 
     }
 
 
     .article-card {
 
-      display: flex;
+      display:
+        flex;
 
-      flex-direction: column;
+      flex-direction:
+        column;
 
-      min-width: 0;
+      min-height:
+        365px;
 
-      overflow: hidden;
+      overflow:
+        hidden;
 
-      border: 1px solid var(--line);
+      background:
+        #fff;
 
-      border-radius: 19px;
+      border:
+        1px solid var(--line);
 
-      background: #fff;
+      border-radius:
+        22px;
 
       box-shadow:
-        0 8px 28px
-        rgba(18,43,82,.05);
-
-      cursor: pointer;
+        0 10px 35px
+        rgba(18,43,82,.055);
 
       transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+        transform .22s ease,
+        box-shadow .22s ease;
 
     }
 
 
     .article-card:hover {
 
-      transform: translateY(-3px);
+      transform:
+        translateY(-5px);
 
       box-shadow:
-        0 15px 38px
-        rgba(18,43,82,.09);
+        0 20px 48px
+        rgba(18,43,82,.11);
 
     }
 
 
-    .article-image {
 
-      height: 190px;
+    /* =====================================================
+       ARTICLE COVER
+    ===================================================== */
 
-      overflow: hidden;
+    .article-cover {
+
+      position:
+        relative;
+
+      min-height:
+        155px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-end;
+
+      padding:
+        20px;
 
       background:
         linear-gradient(
           135deg,
-          #122b52,
-          #7185a2
+          #122b52 0%,
+          #234773 58%,
+          #9f1d20 100%
         );
 
     }
 
 
-    .article-image img {
+    .article-cover::after {
 
-      width: 100%;
+      content:
+        "";
 
-      height: 100%;
+      position:
+        absolute;
 
-      display: block;
+      width:
+        150px;
 
-      object-fit: cover;
+      height:
+        150px;
 
-    }
+      right:
+        -45px;
 
+      top:
+        -55px;
 
-    .article-card-body {
+      border:
+        1px solid
+        rgba(255,255,255,.12);
 
-      display: flex;
-
-      flex-direction: column;
-
-      flex: 1;
-
-      padding: 20px;
-
-    }
-
-
-    .article-card-body h3 {
-
-      margin: 8px 0 0;
-
-      color: var(--navy);
-
-      font-size: 20px;
-
-      line-height: 1.2;
+      border-radius:
+        50%;
 
     }
 
 
-    .article-card-excerpt {
+    .article-type {
 
-      margin: 10px 0 0;
+      position:
+        relative;
 
-      color: var(--muted);
+      z-index:
+        2;
 
-      font-size: 12px;
+      display:
+        inline-flex;
 
-      line-height: 1.65;
+      align-items:
+        center;
 
-    }
+      padding:
+        7px 11px;
 
+      border-radius:
+        999px;
 
-    .article-card .article-meta {
+      background:
+        rgba(255,255,255,.15);
 
-      margin-top: auto;
+      border:
+        1px solid
+        rgba(255,255,255,.12);
 
-      padding-top: 18px;
-
-    }
-
-
-    .article-label {
-
-      color: var(--red);
-
-      font-size: 9px;
-
-      font-weight: 900;
-
-      letter-spacing: .1em;
-
-      text-transform: uppercase;
-
-    }
-
-
-    /* =====================================================
-       EMPTY / LOADING
-    ===================================================== */
-
-    .state-box {
-
-      padding: 45px 20px;
-
-      text-align: center;
-
-      border: 1px dashed #d8dde5;
-
-      border-radius: 18px;
-
-      color: var(--muted);
-
-      background: #fafbfc;
-
-    }
-
-
-    .state-box h3 {
-
-      margin: 0;
-
-      color: var(--navy);
-
-      font-size: 20px;
-
-    }
-
-
-    .state-box p {
-
-      margin: 8px auto 0;
-
-      max-width: 520px;
-
-      font-size: 13px;
-
-      line-height: 1.6;
-
-    }
-
-
-    /* =====================================================
-       FULL ARTICLE VIEW
-    ===================================================== */
-
-    #articleView {
-
-      display: none;
-
-    }
-
-
-    .reader-top {
-
-      margin-bottom: 25px;
-
-    }
-
-
-    .back-button {
-
-      border: 0;
-
-      background: transparent;
-
-      color: var(--navy);
-
-      font: inherit;
-
-      font-size: 12px;
-
-      font-weight: 900;
-
-      cursor: pointer;
-
-      padding: 0;
-
-    }
-
-
-    .back-button:hover {
-
-      text-decoration: underline;
-
-    }
-
-
-    .reader {
-
-      max-width: 900px;
-
-      margin: 0 auto;
-
-      background: #fff;
-
-      border: 1px solid var(--line);
-
-      border-radius: 24px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 15px 45px
-        rgba(18,43,82,.07);
-
-    }
-
-
-    .reader-cover {
-
-      width: 100%;
-
-      max-height: 480px;
-
-      object-fit: cover;
-
-      display: block;
-
-    }
-
-
-    .reader-header {
-
-      padding: 38px 45px 25px;
-
-    }
-
-
-    .reader-category {
-
-      color: var(--red);
-
-      font-size: 10px;
-
-      font-weight: 900;
-
-      letter-spacing: .12em;
-
-      text-transform: uppercase;
-
-    }
-
-
-    .reader-header h1 {
-
-      margin: 10px 0 0;
-
-      color: var(--navy);
+      color:
+        #fff;
 
       font-size:
-        clamp(34px, 5vw, 55px);
+        9px;
 
-      line-height: 1.04;
+      font-weight:
+        900;
 
-      letter-spacing: -.04em;
+      letter-spacing:
+        .1em;
 
-    }
-
-
-    .reader-excerpt {
-
-      margin: 18px 0 0;
-
-      color: var(--muted);
-
-      font-size: 15px;
-
-      line-height: 1.7;
+      text-transform:
+        uppercase;
 
     }
 
 
-    .reader-content {
 
-      padding: 10px 45px 55px;
+    /* =====================================================
+       ARTICLE BODY
+    ===================================================== */
 
-      color: #273246;
+    .article-body {
 
-      font-size: 17px;
+      display:
+        flex;
 
-      line-height: 1.9;
+      flex-direction:
+        column;
 
-      overflow-wrap: anywhere;
+      flex:
+        1;
 
-    }
-
-
-    .reader-content h1,
-    .reader-content h2,
-    .reader-content h3,
-    .reader-content h4 {
-
-      color: var(--navy);
-
-      line-height: 1.25;
-
-      margin-top: 35px;
-
-      margin-bottom: 12px;
+      padding:
+        22px;
 
     }
 
 
-    .reader-content h2 {
+    .article-body h3 {
 
-      font-size: 29px;
+      margin:
+        0;
 
-    }
+      color:
+        var(--navy);
 
+      font-size:
+        21px;
 
-    .reader-content h3 {
+      line-height:
+        1.3;
 
-      font-size: 23px;
-
-    }
-
-
-    .reader-content p {
-
-      margin: 0 0 18px;
-
-    }
-
-
-    .reader-content a {
-
-      color: #245a9c;
-
-      text-decoration: underline;
+      letter-spacing:
+        -.015em;
 
     }
 
 
-    .reader-content img {
+    .article-excerpt {
 
-      max-width: 100%;
+      margin:
+        11px 0 0;
 
-      height: auto;
+      color:
+        var(--muted);
 
-      display: block;
+      font-size:
+        13px;
 
-      margin: 25px auto;
+      line-height:
+        1.65;
 
-      border-radius: 12px;
+      display:
+        -webkit-box;
 
-    }
+      -webkit-line-clamp:
+        4;
 
+      -webkit-box-orient:
+        vertical;
 
-    .reader-content blockquote {
-
-      margin: 25px 0;
-
-      padding: 14px 20px;
-
-      border-left: 4px solid var(--red);
-
-      background: #f7f5f0;
-
-      color: #5a6679;
-
-    }
-
-
-    .reader-content ul,
-    .reader-content ol {
-
-      padding-left: 28px;
-
-      margin: 18px 0;
+      overflow:
+        hidden;
 
     }
 
 
-    .reader-content li {
+    .article-meta {
 
-      margin: 7px 0;
+      display:
+        flex;
 
-    }
+      align-items:
+        center;
 
+      justify-content:
+        space-between;
 
-    .reader-footer {
+      gap:
+        12px;
 
-      margin: 0 45px;
+      margin-top:
+        auto;
 
-      padding: 22px 0 35px;
+      padding-top:
+        18px;
 
-      border-top: 1px solid var(--line);
+      color:
+        var(--muted);
 
-      color: var(--muted);
-
-      font-size: 11px;
-
-    }
-
-
-    .reader-tags {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 7px;
-
-      margin-top: 12px;
+      font-size:
+        10px;
 
     }
 
 
-    .tag {
+    .article-author {
 
-      padding: 5px 9px;
+      font-weight:
+        800;
 
-      border-radius: 999px;
-
-      background: #f0f2f5;
-
-      color: #526075;
+      color:
+        var(--navy);
 
     }
+
+
+    .article-read {
+
+      display:
+        inline-block;
+
+      margin-top:
+        14px;
+
+      color:
+        var(--navy);
+
+      font-size:
+        12px;
+
+      font-weight:
+        900;
+
+      text-decoration:
+        none;
+
+    }
+
+
+    .article-read:hover {
+
+      color:
+        var(--red);
+
+    }
+
+
+
+    /* =====================================================
+       STATES
+    ===================================================== */
+
+    .article-state {
+
+      padding:
+        60px 25px;
+
+      text-align:
+        center;
+
+      border:
+        1px dashed #d4dbe4;
+
+      border-radius:
+        20px;
+
+      background:
+        #fafbfc;
+
+    }
+
+
+    .article-state h3 {
+
+      margin:
+        0;
+
+      color:
+        var(--navy);
+
+      font-size:
+        21px;
+
+    }
+
+
+    .article-state p {
+
+      max-width:
+        520px;
+
+      margin:
+        10px auto 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.65;
+
+    }
+
+
+
+    /* =====================================================
+       ARTICLE MODAL
+    ===================================================== */
+
+    .article-modal {
+
+      display:
+        none;
+
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      z-index:
+        9999;
+
+      padding:
+        30px 15px;
+
+      background:
+        rgba(7,17,31,.72);
+
+      overflow-y:
+        auto;
+
+    }
+
+
+    .article-modal.open {
+
+      display:
+        block;
+
+    }
+
+
+    .article-modal-inner {
+
+      width:
+        min(920px, 100%);
+
+      margin:
+        0 auto;
+
+      overflow:
+        hidden;
+
+      background:
+        #fff;
+
+      border-radius:
+        24px;
+
+      box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.25);
+
+    }
+
+
+    .article-modal-header {
+
+      position:
+        relative;
+
+      padding:
+        32px 36px 28px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f7f5f0,
+          #eef2f8
+        );
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .article-modal-header h2 {
+
+      max-width:
+        780px;
+
+      margin:
+        10px 45px 0 0;
+
+      color:
+        var(--navy);
+
+      font-size:
+        clamp(30px, 4vw, 46px);
+
+      line-height:
+        1.1;
+
+      letter-spacing:
+        -.04em;
+
+    }
+
+
+    .article-modal-meta {
+
+      margin-top:
+        13px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+    }
+
+
+    .modal-close {
+
+      position:
+        absolute;
+
+      top:
+        24px;
+
+      right:
+        24px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      width:
+        40px;
+
+      height:
+        40px;
+
+      border:
+        0;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(18,43,82,.08);
+
+      color:
+        var(--navy);
+
+      cursor:
+        pointer;
+
+      font-size:
+        22px;
+
+    }
+
+
+    .modal-close:hover {
+
+      background:
+        rgba(159,29,32,.1);
+
+      color:
+        var(--red);
+
+    }
+
+
+
+    /* =====================================================
+       ARTICLE CONTENT
+    ===================================================== */
+
+    .article-content {
+
+      padding:
+        38px;
+
+      color:
+        #27354a;
+
+      font-size:
+        16px;
+
+      line-height:
+        1.85;
+
+      overflow-wrap:
+        anywhere;
+
+    }
+
+
+    .article-content p {
+
+      margin:
+        0 0 1.1em;
+
+    }
+
+
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4 {
+
+      color:
+        var(--navy);
+
+      line-height:
+        1.25;
+
+      margin:
+        1.5em 0 .6em;
+
+    }
+
+
+    .article-content h1:first-child,
+    .article-content h2:first-child,
+    .article-content h3:first-child {
+
+      margin-top:
+        0;
+
+    }
+
+
+    .article-content a {
+
+      color:
+        #17539c;
+
+      text-decoration:
+        underline;
+
+    }
+
+
+    .article-content img {
+
+      display:
+        block;
+
+      max-width:
+        100%;
+
+      height:
+        auto;
+
+      margin:
+        25px auto;
+
+      border-radius:
+        13px;
+
+    }
+
+
+    .article-content blockquote {
+
+      margin:
+        25px 0;
+
+      padding:
+        16px 20px;
+
+      background:
+        #f7f5f0;
+
+      border-left:
+        4px solid var(--red);
+
+      border-radius:
+        0 10px 10px 0;
+
+      color:
+        #536075;
+
+    }
+
+
+    .article-content ul,
+    .article-content ol {
+
+      padding-left:
+        26px;
+
+    }
+
+
+    .article-content pre {
+
+      max-width:
+        100%;
+
+      overflow-x:
+        auto;
+
+      padding:
+        15px;
+
+      background:
+        #f4f6f9;
+
+      border-radius:
+        10px;
+
+    }
+
 
 
     /* =====================================================
        RESPONSIVE
     ===================================================== */
 
-    @media(max-width:1000px) {
+    @media(max-width: 950px) {
 
       .article-grid {
 
         grid-template-columns:
-          repeat(2, minmax(0,1fr));
+          repeat(2, minmax(0, 1fr));
 
       }
 
     }
 
 
-    @media(max-width:800px) {
+    @media(max-width: 760px) {
 
       .research-toolbar {
 
-        grid-template-columns: 1fr;
+        align-items:
+          stretch;
+
+        flex-direction:
+          column;
 
       }
 
 
-      .featured-card {
+      .research-actions {
 
-        grid-template-columns: 1fr;
+        width:
+          100%;
 
       }
 
 
-      .featured-image {
+      .article-search {
 
-        min-height: 240px;
+        width:
+          100%;
 
       }
 
     }
 
 
-    @media(max-width:600px) {
+    @media(max-width: 620px) {
 
       .research-section {
 
-        padding: 40px 0 65px;
+        padding:
+          45px 0 65px;
 
       }
 
 
       .article-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
 
       }
 
 
-      .articles-heading {
+      .article-cover {
 
-        align-items: start;
-
-        flex-direction: column;
-
-      }
-
-
-      .reader-header {
-
-        padding: 28px 22px 20px;
+        min-height:
+          135px;
 
       }
 
 
-      .reader-content {
+      .article-modal {
 
-        padding: 5px 22px 35px;
-
-        font-size: 16px;
-
-      }
-
-
-      .reader-footer {
-
-        margin: 0 22px;
+        padding:
+          12px;
 
       }
 
 
-      .featured-content {
+      .article-modal-header {
 
-        padding: 25px;
+        padding:
+          25px 22px;
+
+      }
+
+
+      .article-content {
+
+        padding:
+          25px 22px;
+
+        font-size:
+          15px;
 
       }
 
@@ -953,6 +1019,10 @@ content="width=device-width, initial-scale=1"
 </head>
 
 <body>
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
 
 <header class="site-header">
 
@@ -1032,6 +1102,10 @@ content="width=device-width, initial-scale=1"
 
 </header>
 
+<!-- =====================================================
+     HERO
+====================================================== -->
+
 <section class="research-hero">
 
   <div class="container">
@@ -1047,9 +1121,8 @@ content="width=device-width, initial-scale=1"
 </h1>
 
 <p>
-  Explore academic writing, political analysis,
-  research and thoughtful perspectives from the
-  StateCrafter DCU community.
+  Explore research, academic writing and original articles
+  published by the StateCrafter DCU community.
 </p>
 ```
 
@@ -1057,203 +1130,145 @@ content="width=device-width, initial-scale=1"
 
 </section>
 
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
 <main>
 
-<section class="research-section">
-
-  <div class="container">
+  <section class="research-section">
 
 ```
-<!-- =================================================
-     ARTICLE LIST
-================================================== -->
-
-<div id="articleListing">
+<div class="container">
 
 
   <div class="research-toolbar">
 
-    <input
-      id="searchInput"
-      type="search"
-      placeholder="Search articles..."
-      autocomplete="off"
-    >
+    <div>
+
+      <p class="eyebrow">
+        ACADEMIC PUBLICATIONS
+      </p>
+
+      <h2>
+        Latest Articles
+      </h2>
+
+      <p>
+        Read published articles from students and contributors.
+      </p>
+
+    </div>
 
 
-    <select id="categoryFilter">
+    <div class="research-actions">
 
-      <option value="">
-        All Categories
-      </option>
+      <input
+        id="articleSearch"
+        class="article-search"
+        type="search"
+        placeholder="Search articles..."
+        aria-label="Search articles"
+      >
 
-    </select>
+      <a
+        href="article-editor.html"
+        class="btn btn-primary"
+      >
+        Write an Article
+      </a>
 
-
-    <a
-      href="article-editor.html"
-      class="btn btn-primary write-button"
-    >
-      Write an Article
-    </a>
-
-  </div>
-
-
-  <div
-    id="featuredSection"
-    class="featured-section"
-    style="display:none;"
-  ></div>
-
-
-  <div class="articles-heading">
-
-    <h2>
-      Latest Articles
-    </h2>
-
-    <span
-      id="articlesCount"
-      class="articles-count"
-    >
-      Loading...
-    </span>
+    </div>
 
   </div>
 
 
-  <div
-    id="articleGrid"
-    class="article-grid"
-  ></div>
 
+  <div id="articleContainer">
 
-  <div
-    id="emptyState"
-    class="state-box"
-    style="display:none;"
-  >
+    <div class="article-state">
 
-    <h3>
-      No articles found
-    </h3>
+      <h3>
+        Loading Articles...
+      </h3>
 
-    <p>
-      There are no published articles matching
-      your search or category selection.
-    </p>
+      <p>
+        Please wait while we load the latest publications.
+      </p>
+
+    </div>
 
   </div>
 
-
-</div>
-
-
-<!-- =================================================
-     FULL ARTICLE READER
-================================================== -->
-
-<div id="articleView">
-
-  <div class="reader-top">
-
-    <button
-      id="backToArticles"
-      class="back-button"
-      type="button"
-    >
-      ← Back to Research &amp; Articles
-    </button>
-
-  </div>
-
-
-  <article class="reader">
-
-    <img
-      id="readerCover"
-      class="reader-cover"
-      alt=""
-      style="display:none;"
-    >
-
-
-    <header class="reader-header">
-
-      <div
-        id="readerCategory"
-        class="reader-category"
-      ></div>
-
-
-      <h1
-        id="readerTitle"
-      ></h1>
-
-
-      <p
-        id="readerExcerpt"
-        class="reader-excerpt"
-      ></p>
-
-
-      <div
-        id="readerMeta"
-        class="article-meta"
-      ></div>
-
-    </header>
-
-
-    <div
-      id="readerContent"
-      class="reader-content"
-    ></div>
-
-
-    <footer class="reader-footer">
-
-      <div>
-        Published on
-        <strong id="readerDate"></strong>
-      </div>
-
-
-      <div
-        id="readerTags"
-        class="reader-tags"
-      ></div>
-
-    </footer>
-
-  </article>
-
-</div>
-
-
-<div
-  id="globalState"
-  class="state-box"
-  style="display:none;"
->
-
-  <h3>
-    Unable to load articles
-  </h3>
-
-  <p id="globalStateText">
-    Please refresh the page and try again.
-  </p>
 
 </div>
 ```
 
-  </div>
-
-</section>
+  </section>
 
 </main>
+
+<!-- =====================================================
+     ARTICLE MODAL
+====================================================== -->
+
+<div
+  id="articleModal"
+  class="article-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+
+  <div class="article-modal-inner">
+
+```
+<div class="article-modal-header">
+
+  <button
+    id="modalClose"
+    class="modal-close"
+    type="button"
+    aria-label="Close article"
+  >
+    ×
+  </button>
+
+
+  <p
+    id="modalType"
+    class="eyebrow"
+  >
+    ARTICLE
+  </p>
+
+
+  <h2 id="modalTitle">
+    Article
+  </h2>
+
+
+  <div
+    id="modalMeta"
+    class="article-modal-meta"
+  ></div>
+
+</div>
+
+
+<article
+  id="modalContent"
+  class="article-content"
+></article>
+```
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
 
 <footer class="site-footer">
 
@@ -1294,112 +1309,95 @@ const supabaseClient =
   );
 
 
-/* =========================================================
-   STATE
-========================================================= */
-
-let allArticles = [];
-
-let currentArticle = null;
-
 
 /* =========================================================
    DOM
 ========================================================= */
 
-const articleListing =
+const articleContainer =
   document.getElementById(
-    "articleListing"
+    "articleContainer"
   );
 
 
-const articleView =
+const articleSearch =
   document.getElementById(
-    "articleView"
+    "articleSearch"
   );
 
 
-const articleGrid =
+const articleModal =
   document.getElementById(
-    "articleGrid"
+    "articleModal"
   );
 
 
-const featuredSection =
+const modalClose =
   document.getElementById(
-    "featuredSection"
+    "modalClose"
   );
 
 
-const emptyState =
+const modalTitle =
   document.getElementById(
-    "emptyState"
+    "modalTitle"
   );
 
 
-const globalState =
+const modalType =
   document.getElementById(
-    "globalState"
+    "modalType"
   );
 
 
-const globalStateText =
+const modalMeta =
   document.getElementById(
-    "globalStateText"
+    "modalMeta"
   );
 
 
-const searchInput =
+const modalContent =
   document.getElementById(
-    "searchInput"
+    "modalContent"
   );
 
 
-const categoryFilter =
-  document.getElementById(
-    "categoryFilter"
-  );
+let allArticles = [];
 
-
-const articlesCount =
-  document.getElementById(
-    "articlesCount"
-  );
 
 
 /* =========================================================
-   HELPERS
+   ESCAPE TEXT
 ========================================================= */
 
-function escapeHtml(value) {
+function escapeHTML(
+  value
+) {
 
-  if (
-    value === null ||
-    value === undefined
-  ) {
+  return String(
+    value ?? ""
+  )
 
-    return "";
-
-  }
-
-
-  return String(value)
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -1408,19 +1406,24 @@ function escapeHtml(value) {
 }
 
 
-function formatDate(dateValue) {
 
-  if (!dateValue) {
+/* =========================================================
+   DATE
+========================================================= */
 
-    return "Date unavailable";
+function formatDate(
+  value
+) {
+
+  if (!value) {
+
+    return "Date not available";
 
   }
 
 
   const date =
-    new Date(
-      dateValue
-    );
+    new Date(value);
 
 
   if (
@@ -1429,554 +1432,321 @@ function formatDate(dateValue) {
     )
   ) {
 
-    return "Date unavailable";
+    return "Date not available";
 
   }
 
 
-  return new Intl.DateTimeFormat(
+  return date.toLocaleDateString(
     "en-US",
     {
       year: "numeric",
       month: "long",
       day: "numeric"
     }
-  ).format(date);
+  );
 
 }
 
 
-function formatShortDate(dateValue) {
 
-  if (!dateValue) {
-    return "";
-  }
+/* =========================================================
+   ARTICLE FIELD HELPERS
+========================================================= */
 
+function getArticleContent(
+  article
+) {
 
-  const date =
-    new Date(dateValue);
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return "";
-
-  }
-
-
-  return new Intl.DateTimeFormat(
-    "en-US",
-    {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
-    }
-  ).format(date);
+  return (
+    article.content ||
+    article.body ||
+    article.article_content ||
+    article.description ||
+    ""
+  );
 
 }
 
 
-function getExcerpt(article) {
+function getArticleAuthor(
+  article
+) {
 
-  if (
-    article.excerpt &&
-    article.excerpt.trim()
-  ) {
+  return (
+    article.author_name ||
+    article.full_name ||
+    article.created_by_name ||
+    "StateCrafter Contributor"
+  );
 
-    return article.excerpt.trim();
-
-  }
+}
 
 
-  const temp =
+function getArticleDate(
+  article
+) {
+
+  return (
+    article.published_at ||
+    article.created_at ||
+    article.updated_at ||
+    null
+  );
+
+}
+
+
+function getArticleType(
+  article
+) {
+
+  return (
+    article.article_type ||
+    article.type ||
+    "Article"
+  );
+
+}
+
+
+
+/* =========================================================
+   EXCERPT
+========================================================= */
+
+function createExcerpt(
+  article
+) {
+
+  const content =
+    getArticleContent(
+      article
+    );
+
+
+  const temporary =
     document.createElement(
       "div"
     );
 
 
-  temp.innerHTML =
-    article.content_html ||
-    "";
+  temporary.innerHTML =
+    content;
 
 
   const text =
-    temp.textContent ||
-    temp.innerText ||
+    temporary.textContent ||
+    temporary.innerText ||
     "";
 
 
-  return text
-    .replace(
-      /\s+/g,
-      " "
-    )
-    .trim()
-    .slice(
-      0,
-      190
-    );
-
-}
+  const clean =
+    text
+      .replace(
+        /\s+/g,
+        " "
+      )
+      .trim();
 
 
-function getArticleDate(article) {
+  if (
+    clean.length <= 180
+  ) {
 
-  return (
-    article.published_at ||
-    article.updated_at ||
-    article.created_at
-  );
-
-}
-
-
-/* =========================================================
-   LOAD ARTICLES
-========================================================= */
-
-async function loadArticles() {
-
-  globalState.style.display =
-    "none";
-
-
-  try {
-
-    /*
-      Only published articles are requested.
-
-      No draft, pending or rejected article
-      can appear on the public page.
-    */
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-
-        .from("articles")
-
-        .select(
-          `
-          id,
-          title,
-          excerpt,
-          content_html,
-          cover_image_url,
-          category,
-          tags,
-          is_featured,
-          published_at,
-          updated_at,
-          created_at,
-          author_id
-          `
-        )
-
-        .eq(
-          "status",
-          "published"
-        )
-
-        .order(
-          "published_at",
-          {
-            ascending: false,
-            nullsFirst: false
-          }
-        );
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    allArticles =
-      data || [];
-
-
-    buildCategories();
-
-    renderArticles();
-
-
-    /*
-      If URL contains ?article=ID,
-      immediately open that article.
-    */
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-
-    const articleId =
-      params.get(
-        "article"
-      );
-
-
-    if (articleId) {
-
-      const article =
-        allArticles.find(
-          item =>
-            String(item.id) ===
-            String(articleId)
-        );
-
-
-      if (article) {
-
-        openArticle(
-          article,
-          false
-        );
-
-      }
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      "Research page error:",
-      error
-    );
-
-
-    globalStateText.textContent =
-      error.message ||
-      "Could not load published articles.";
-
-
-    globalState.style.display =
-      "block";
-
-
-    articleListing.style.display =
-      "none";
+    return clean;
 
   }
 
-}
 
-
-/* =========================================================
-   CATEGORIES
-========================================================= */
-
-function buildCategories() {
-
-  const categories =
-    [
-      ...new Set(
-        allArticles
-          .map(
-            article =>
-              article.category
-          )
-          .filter(Boolean)
-      )
-    ]
-    .sort(
-      (a,b) =>
-        a.localeCompare(b)
-    );
-
-
-  categoryFilter.innerHTML = `
-    <option value="">All Categories</option>
-  `;
-
-
-  categories.forEach(
-    category => {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        category;
-
-      option.textContent =
-        category;
-
-      categoryFilter.appendChild(
-        option
-      );
-
-    }
+  return (
+    clean.slice(
+      0,
+      180
+    ) +
+    "..."
   );
 
 }
 
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-function getFilteredArticles() {
-
-  const search =
-    searchInput.value
-      .trim()
-      .toLowerCase();
-
-
-  const category =
-    categoryFilter.value;
-
-
-  return allArticles.filter(
-    article => {
-
-      const searchable =
-        [
-          article.title,
-          article.excerpt,
-          article.category,
-          Array.isArray(article.tags)
-            ? article.tags.join(" ")
-            : ""
-        ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-
-      const matchesSearch =
-        !search ||
-        searchable.includes(
-          search
-        );
-
-
-      const matchesCategory =
-        !category ||
-        article.category ===
-        category;
-
-
-      return (
-        matchesSearch &&
-        matchesCategory
-      );
-
-    }
-  );
-
-}
 
 
 /* =========================================================
    RENDER ARTICLES
 ========================================================= */
 
-function renderArticles() {
+function renderArticles(
+  articles
+) {
 
-  const articles =
-    getFilteredArticles();
+  if (
+    !articles.length
+  ) {
 
+    articleContainer.innerHTML = `
 
-  articlesCount.textContent =
-    `${articles.length} ${
-      articles.length === 1
-        ? "article"
-        : "articles"
-    }`;
+      <div class="article-state">
 
+        <h3>
+          No Articles Found
+        </h3>
 
-  articleGrid.innerHTML =
-    "";
-
-
-  featuredSection.innerHTML =
-    "";
-
-
-  featuredSection.style.display =
-    "none";
-
-
-  emptyState.style.display =
-    "none";
-
-
-  if (!articles.length) {
-
-    emptyState.style.display =
-      "block";
-
-    return;
-
-  }
-
-
-  /*
-    Featured article:
-    Only use featured articles.
-    If none are marked featured,
-    the latest article becomes featured.
-  */
-
-  let featured =
-    articles.find(
-      article =>
-        article.is_featured === true
-    );
-
-
-  /*
-    Don't duplicate the featured article
-    in the regular card grid.
-  */
-
-  let remaining =
-    articles;
-
-
-  if (featured) {
-
-    remaining =
-      articles.filter(
-        article =>
-          article.id !==
-          featured.id
-      );
-
-  }
-
-
-  renderFeatured(
-    featured
-  );
-
-
-  remaining.forEach(
-    article => {
-
-      articleGrid.appendChild(
-        createArticleCard(
-          article
-        )
-      );
-
-    }
-  );
-
-}
-
-
-function renderFeatured(article) {
-
-  if (!article) {
-
-    return;
-
-  }
-
-
-  const image =
-    article.cover_image_url
-      ? `
-        <img
-          src="${escapeHtml(article.cover_image_url)}"
-          alt="${escapeHtml(article.title)}"
-          loading="lazy"
-        >
-      `
-      : "";
-
-
-  const category =
-    article.category ||
-    "Research";
-
-
-  featuredSection.innerHTML = `
-
-    <div
-      class="featured-card"
-      data-article-id="${escapeHtml(article.id)}"
-    >
-
-      <div class="featured-image">
-        ${image}
-      </div>
-
-      <div class="featured-content">
-
-        <div class="featured-label">
-          Featured Article
-        </div>
-
-        <div>
-          <span class="category-pill">
-            ${escapeHtml(category)}
-          </span>
-        </div>
-
-        <h2>
-          ${escapeHtml(article.title)}
-        </h2>
-
-        <p class="featured-excerpt">
-          ${escapeHtml(
-            getExcerpt(article)
-          )}
+        <p>
+          There are no published articles matching your search.
         </p>
 
-        <div class="article-meta">
-
-          <span>
-            ${formatShortDate(
-              getArticleDate(article)
-            )}
-          </span>
-
-          <span>
-            •
-          </span>
-
-          <span>
-            Read article →
-          </span>
-
-        </div>
-
       </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  articleContainer.innerHTML = `
+
+    <div class="article-grid">
+
+      ${articles.map(
+        (
+          article,
+          index
+        ) => {
+
+          const title =
+            article.title ||
+            "Untitled Article";
+
+
+          const type =
+            getArticleType(
+              article
+            );
+
+
+          const author =
+            getArticleAuthor(
+              article
+            );
+
+
+          const date =
+            getArticleDate(
+              article
+            );
+
+
+          const excerpt =
+            createExcerpt(
+              article
+            );
+
+
+          return `
+
+            <article
+              class="article-card"
+            >
+
+              <div
+                class="article-cover"
+              >
+
+                <span
+                  class="article-type"
+                >
+                  ${escapeHTML(type)}
+                </span>
+
+              </div>
+
+
+              <div
+                class="article-body"
+              >
+
+                <h3>
+                  ${escapeHTML(title)}
+                </h3>
+
+
+                <p
+                  class="article-excerpt"
+                >
+                  ${escapeHTML(
+                    excerpt ||
+                    "Read the full article to explore this publication."
+                  )}
+                </p>
+
+
+                <div
+                  class="article-meta"
+                >
+
+                  <span
+                    class="article-author"
+                  >
+                    ${escapeHTML(author)}
+                  </span>
+
+                  <span>
+                    ${escapeHTML(
+                      formatDate(date)
+                    )}
+                  </span>
+
+                </div>
+
+
+                <a
+                  href="#"
+                  class="article-read"
+                  data-index="${index}"
+                >
+                  Read Full Article →
+                </a>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("")}
 
     </div>
 
   `;
 
 
-  featuredSection.style.display =
-    "block";
-
-
-  featuredSection
-    .querySelector(
-      ".featured-card"
+  articleContainer
+    .querySelectorAll(
+      ".article-read"
     )
-    .addEventListener(
-      "click",
-      () => {
+    .forEach(
+      link => {
 
-        openArticle(
-          article
+        link.addEventListener(
+          "click",
+          event => {
+
+            event.preventDefault();
+
+
+            const index =
+              Number(
+                link.dataset.index
+              );
+
+
+            openArticle(
+              articles[index]
+            );
+
+          }
         );
 
       }
@@ -1984,96 +1754,6 @@ function renderFeatured(article) {
 
 }
 
-
-function createArticleCard(article) {
-
-  const card =
-    document.createElement(
-      "article"
-    );
-
-
-  card.className =
-    "article-card";
-
-
-  const image =
-    article.cover_image_url
-      ? `
-        <img
-          src="${escapeHtml(article.cover_image_url)}"
-          alt="${escapeHtml(article.title)}"
-          loading="lazy"
-        >
-      `
-      : "";
-
-
-  card.innerHTML = `
-
-    <div class="article-image">
-      ${image}
-    </div>
-
-    <div class="article-card-body">
-
-      <div class="article-label">
-        ${escapeHtml(
-          article.category ||
-          "Research"
-        )}
-      </div>
-
-      <h3>
-        ${escapeHtml(
-          article.title
-        )}
-      </h3>
-
-      <p class="article-card-excerpt">
-        ${escapeHtml(
-          getExcerpt(article)
-        )}
-      </p>
-
-      <div class="article-meta">
-
-        <span>
-          ${formatShortDate(
-            getArticleDate(article)
-          )}
-        </span>
-
-        <span>
-          •
-        </span>
-
-        <span>
-          Read →
-        </span>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  card.addEventListener(
-    "click",
-    () => {
-
-      openArticle(
-        article
-      );
-
-    }
-  );
-
-
-  return card;
-
-}
 
 
 /* =========================================================
@@ -2081,40 +1761,24 @@ function createArticleCard(article) {
 ========================================================= */
 
 function openArticle(
-  article,
-  updateUrl = true
+  article
 ) {
 
-  if (!article) {
-
-    return;
-
-  }
-
-
-  currentArticle =
-    article;
-
-
-  document.getElementById(
-    "readerCategory"
-  ).textContent =
-    article.category ||
-    "Research & Articles";
-
-
-  document.getElementById(
-    "readerTitle"
-  ).textContent =
+  const title =
     article.title ||
     "Untitled Article";
 
 
-  document.getElementById(
-    "readerExcerpt"
-  ).textContent =
-    article.excerpt ||
-    "";
+  const type =
+    getArticleType(
+      article
+    );
+
+
+  const author =
+    getArticleAuthor(
+      article
+    );
 
 
   const date =
@@ -2123,247 +1787,131 @@ function openArticle(
     );
 
 
-  document.getElementById(
-    "readerDate"
-  ).textContent =
-    formatDate(
-      date
+  const content =
+    getArticleContent(
+      article
     );
 
 
-  const meta =
-    document.getElementById(
-      "readerMeta"
-    );
+  modalTitle.textContent =
+    title;
 
 
-  meta.innerHTML = `
-
-    <span>
-      Published
-    </span>
-
-    <span>
-      •
-    </span>
-
-    <span>
-      ${formatDate(date)}
-    </span>
-
-  `;
+  modalType.textContent =
+    type.toUpperCase();
 
 
-  const cover =
-    document.getElementById(
-      "readerCover"
-    );
+  modalMeta.textContent =
+    `By ${author} • ${formatDate(date)}`;
 
 
-  if (
-    article.cover_image_url
-  ) {
-
-    cover.src =
-      article.cover_image_url;
-
-    cover.alt =
-      article.title ||
-      "Article cover";
-
-    cover.style.display =
-      "block";
-
-  } else {
-
-    cover.removeAttribute(
-      "src"
-    );
-
-    cover.style.display =
-      "none";
-
-  }
+  modalContent.innerHTML =
+    content ||
+    "<p>No article content is available.</p>";
 
 
-  /*
-    content_html comes from the rich-text
-    article editor.
-
-    We render the stored HTML directly
-    so formatting such as headings,
-    bold, italic, links, lists and images
-    remains intact.
-  */
-
-  document.getElementById(
-    "readerContent"
-  ).innerHTML =
-    article.content_html ||
-    "<p>No article content available.</p>";
+  articleModal.classList.add(
+    "open"
+  );
 
 
-  const tagsBox =
-    document.getElementById(
-      "readerTags"
-    );
+  articleModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
 
-  if (
-    Array.isArray(
-      article.tags
-    ) &&
-    article.tags.length
-  ) {
-
-    tagsBox.innerHTML =
-      article.tags
-        .map(
-          tag =>
-            `<span class="tag">
-              ${escapeHtml(tag)}
-            </span>`
-        )
-        .join("");
-
-  } else {
-
-    tagsBox.innerHTML =
-      "";
-
-  }
-
-
-  articleListing.style.display =
-    "none";
-
-
-  articleView.style.display =
-    "block";
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-
-  if (updateUrl) {
-
-    const url =
-      new URL(
-        window.location.href
-      );
-
-
-    url.searchParams.set(
-      "article",
-      article.id
-    );
-
-
-    history.pushState(
-      {
-        articleId:
-          article.id
-      },
-      "",
-      url
-    );
-
-  }
+  document.body.style.overflow =
+    "hidden";
 
 }
+
 
 
 /* =========================================================
    CLOSE ARTICLE
 ========================================================= */
 
-function closeArticle(
-  updateUrl = true
-) {
+function closeArticle() {
 
-  currentArticle =
-    null;
-
-
-  articleView.style.display =
-    "none";
+  articleModal.classList.remove(
+    "open"
+  );
 
 
-  articleListing.style.display =
-    "block";
+  articleModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
 
 
-  if (updateUrl) {
-
-    const url =
-      new URL(
-        window.location.href
-      );
-
-
-    url.searchParams.delete(
-      "article"
-    );
-
-
-    history.pushState(
-      {},
-      "",
-      url
-    );
-
-  }
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  document.body.style.overflow =
+    "";
 
 }
 
 
-document
-  .getElementById(
-    "backToArticles"
-  )
-  .addEventListener(
-    "click",
-    () => {
+modalClose.addEventListener(
+  "click",
+  closeArticle
+);
+
+
+articleModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      articleModal
+    ) {
 
       closeArticle();
 
     }
-  );
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      articleModal.classList.contains(
+        "open"
+      )
+    ) {
+
+      closeArticle();
+
+    }
+
+  }
+);
+
 
 
 /* =========================================================
-   BROWSER BACK / FORWARD
+   SEARCH
 ========================================================= */
 
-window.addEventListener(
-  "popstate",
+articleSearch.addEventListener(
+  "input",
   () => {
 
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
+    const query =
+      articleSearch.value
+        .trim()
+        .toLowerCase();
 
 
-    const articleId =
-      params.get(
-        "article"
-      );
+    if (!query) {
 
-
-    if (!articleId) {
-
-      closeArticle(
-        false
+      renderArticles(
+        allArticles
       );
 
       return;
@@ -2371,55 +1919,181 @@ window.addEventListener(
     }
 
 
-    const article =
-      allArticles.find(
-        item =>
-          String(item.id) ===
-          String(articleId)
+    const filtered =
+      allArticles.filter(
+        article => {
+
+          const title =
+            String(
+              article.title || ""
+            ).toLowerCase();
+
+
+          const content =
+            String(
+              getArticleContent(
+                article
+              )
+            ).toLowerCase();
+
+
+          const author =
+            String(
+              getArticleAuthor(
+                article
+              )
+            ).toLowerCase();
+
+
+          return (
+            title.includes(
+              query
+            ) ||
+            content.includes(
+              query
+            ) ||
+            author.includes(
+              query
+            )
+          );
+
+        }
       );
 
 
-    if (article) {
-
-      openArticle(
-        article,
-        false
-      );
-
-    } else {
-
-      closeArticle(
-        false
-      );
-
-    }
+    renderArticles(
+      filtered
+    );
 
   }
 );
+
 
 
 /* =========================================================
-   SEARCH / FILTER
+   LOAD ARTICLES
 ========================================================= */
 
-searchInput.addEventListener(
-  "input",
-  () => {
+async function loadArticles() {
 
-    renderArticles();
+  try {
+
+    let response =
+      await supabaseClient
+        .from("articles")
+        .select("*")
+        .eq(
+          "status",
+          "published"
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    /*
+      If status is not available,
+      retry without the status filter.
+    */
+
+    if (
+      response.error &&
+      /status/i.test(
+        response.error.message || ""
+      )
+    ) {
+
+      response =
+        await supabaseClient
+          .from("articles")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+    }
+
+
+    if (
+      response.error
+    ) {
+
+      throw response.error;
+
+    }
+
+
+    allArticles =
+      (
+        response.data ||
+        []
+      ).filter(
+        article => {
+
+          if (
+            article.status ===
+              undefined ||
+            article.status ===
+              null
+          ) {
+
+            return true;
+
+          }
+
+
+          return (
+            String(
+              article.status
+            ).toLowerCase() ===
+            "published"
+          );
+
+        }
+      );
+
+
+    renderArticles(
+      allArticles
+    );
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Article loading error:",
+      error
+    );
+
+
+    articleContainer.innerHTML = `
+
+      <div class="article-state">
+
+        <h3>
+          Could Not Load Articles
+        </h3>
+
+        <p>
+          We could not load the published articles right now.
+          Please refresh the page and try again.
+        </p>
+
+      </div>
+
+    `;
 
   }
-);
 
+}
 
-categoryFilter.addEventListener(
-  "change",
-  () => {
-
-    renderArticles();
-
-  }
-);
 
 
 /* =========================================================
@@ -2455,6 +2129,7 @@ if (
   );
 
 }
+
 
 
 /* =========================================================
