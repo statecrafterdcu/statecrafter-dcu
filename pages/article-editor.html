@@ -1,383 +1,465 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Article Editor | StateCrafter DCU</title>
+  <title>Write Article | StateCrafter DCU</title>
 
   <link rel="stylesheet" href="../style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    :root {
-      --editor-border: #d9dee7;
-      --editor-bg: #f7f8fa;
-      --editor-muted: #667085;
+    :root{
+      --editor-navy:#122b52;
+      --editor-red:#a7181d;
+      --editor-ink:#1f2937;
+      --editor-muted:#6b778a;
+      --editor-line:#dce2e9;
+      --editor-soft:#f7f8fa;
     }
 
-    .editor-hero {
-      padding: 55px 0 45px;
-      background: linear-gradient(135deg,#f7f5f0,#fff 55%,#eef2f8);
-      border-bottom: 1px solid var(--line);
+    body{
+      background:#f7f8fa;
     }
 
-    .editor-hero h1 {
-      margin: 0;
-      color: var(--navy);
-      font-size: clamp(40px,6vw,64px);
-      line-height: .98;
-      letter-spacing: -.05em;
+    .editor-hero{
+      padding:58px 0 48px;
+      background:
+        linear-gradient(
+          135deg,
+          #f7f5f0 0%,
+          #ffffff 55%,
+          #eef2f8 100%
+        );
+      border-bottom:1px solid var(--line);
     }
 
-    .editor-hero p:not(.eyebrow) {
-      max-width: 720px;
-      color: var(--muted);
-      margin-top: 18px;
+    .editor-hero h1{
+      margin:0;
+      color:var(--editor-navy);
+      font-size:clamp(42px,6vw,68px);
+      line-height:1;
+      letter-spacing:-.055em;
     }
 
-    .editor-section {
-      padding: 55px 0 90px;
+    .editor-hero p:not(.eyebrow){
+      max-width:700px;
+      margin:17px 0 0;
+      color:var(--editor-muted);
+      line-height:1.7;
+      font-size:15px;
     }
 
-    .editor-layout {
-      display: grid;
-      grid-template-columns: minmax(0,1.65fr) minmax(280px,.65fr);
-      gap: 28px;
-      align-items: start;
+    .editor-section{
+      padding:55px 0 90px;
+    }
+
+    .editor-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.55fr) minmax(270px,.65fr);
+      gap:26px;
+      align-items:start;
     }
 
     .editor-card,
-    .side-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: 0 12px 40px rgba(18,43,82,.06);
+    .preview-card{
+      background:#fff;
+      border:1px solid var(--editor-line);
+      border-radius:22px;
+      box-shadow:0 12px 38px rgba(18,43,82,.055);
     }
 
-    .editor-card {
-      padding: 28px;
+    .editor-card{
+      padding:30px;
     }
 
-    .editor-card h2 {
-      margin: 0;
-      color: var(--navy);
-      font-size: 27px;
+    .preview-card{
+      position:sticky;
+      top:105px;
+      padding:25px;
     }
 
-    .intro {
-      margin: 7px 0 25px;
-      color: var(--muted);
-      font-size: 13px;
+    .section-label{
+      margin:0 0 7px;
+      color:var(--editor-red);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.12em;
     }
 
-    .form-group {
-      margin-bottom: 20px;
+    .editor-card h2,
+    .preview-card h2{
+      margin:0;
+      color:var(--editor-navy);
+      font-size:27px;
+      letter-spacing:-.03em;
     }
 
-    label {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--navy);
-      font-size: 12px;
-      font-weight: 900;
+    .intro{
+      margin:8px 0 26px;
+      color:var(--editor-muted);
+      font-size:12px;
+      line-height:1.6;
     }
 
-    .required {
-      color: var(--red);
+    .form-group{
+      margin-bottom:19px;
     }
 
-    input,
-    textarea,
-    select {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid var(--editor-border);
-      border-radius: 11px;
-      background: #fff;
-      color: var(--ink);
-      font: inherit;
-      outline: none;
+    .form-group label{
+      display:block;
+      margin-bottom:7px;
+      color:var(--editor-navy);
+      font-size:11px;
+      font-weight:900;
     }
 
-    input,
-    select {
-      height: 47px;
-      padding: 0 13px;
+    .required{
+      color:var(--editor-red);
     }
 
-    textarea {
-      min-height: 110px;
-      padding: 12px 13px;
-      resize: vertical;
-      line-height: 1.6;
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+      width:100%;
+      box-sizing:border-box;
+      border:1px solid #d6dde6;
+      border-radius:11px;
+      background:#fff;
+      color:var(--editor-ink);
+      font:inherit;
+      font-size:14px;
+      outline:none;
+      transition:.2s ease;
     }
 
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--navy);
-      box-shadow: 0 0 0 3px rgba(18,43,82,.06);
+    .form-group input,
+    .form-group select{
+      height:47px;
+      padding:0 13px;
     }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+    .form-group textarea{
+      min-height:100px;
+      padding:12px 13px;
+      resize:vertical;
+      line-height:1.6;
     }
 
-    .editor-shell {
-      border: 1px solid var(--editor-border);
-      border-radius: 14px;
-      overflow: hidden;
-      background: #fff;
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus{
+      border-color:var(--editor-navy);
+      box-shadow:0 0 0 3px rgba(18,43,82,.06);
     }
 
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      padding: 9px;
-      background: var(--editor-bg);
-      border-bottom: 1px solid var(--editor-border);
+    .two-columns{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .editor-wrap{
+      overflow:hidden;
+      border:1px solid #d6dde6;
+      border-radius:14px;
+      background:#fff;
+    }
+
+    .toolbar{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:4px;
+      padding:8px;
+      background:#f5f7fa;
+      border-bottom:1px solid #dfe4ea;
     }
 
     .toolbar button,
-    .toolbar select {
-      width: auto;
-      height: 34px;
-      min-width: 34px;
-      padding: 0 8px;
-      border: 1px solid #d5dae2;
-      border-radius: 7px;
-      background: #fff;
-      color: var(--navy);
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
+    .toolbar select{
+      height:34px;
+      border:1px solid #d9dfe6;
+      border-radius:7px;
+      background:#fff;
+      color:#344258;
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .toolbar button{
+      min-width:34px;
+      padding:0 8px;
     }
 
     .toolbar button:hover,
-    .toolbar select:hover {
-      border-color: var(--navy);
+    .toolbar select:hover{
+      border-color:#aeb8c6;
+      background:#fafbfc;
     }
 
-    .toolbar .separator {
-      width: 1px;
-      height: 25px;
-      margin: 4px 2px;
-      background: #d8dde5;
+    .toolbar button.active{
+      background:var(--editor-navy);
+      border-color:var(--editor-navy);
+      color:#fff;
     }
 
-    #editor {
-      min-height: 430px;
-      padding: 22px;
-      outline: none;
-      line-height: 1.8;
-      color: #202939;
-      font-size: 16px;
+    .toolbar select{
+      padding:0 7px;
     }
 
-    #editor:empty:before {
-      content: "Start writing your article here...";
-      color: #98a2b3;
+    .toolbar-separator{
+      width:1px;
+      height:24px;
+      margin:0 3px;
+      background:#d9dfe6;
     }
 
-    #editor h2,
-    #editor h3 {
-      color: var(--navy);
-      margin-top: 25px;
+    #articleContent{
+      min-height:430px;
+      padding:22px;
+      color:#202a38;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:17px;
+      line-height:1.85;
+      outline:none;
     }
 
-    #editor blockquote {
-      margin: 20px 0;
-      padding: 12px 18px;
-      border-left: 4px solid var(--red);
-      background: #f7f5f0;
-      color: #596579;
+    #articleContent:empty:before{
+      content:attr(data-placeholder);
+      color:#a0a9b6;
+      pointer-events:none;
     }
 
-    #editor img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
+    #articleContent h1,
+    #articleContent h2,
+    #articleContent h3{
+      color:var(--editor-navy);
+      line-height:1.25;
     }
 
-    .word-count {
-      padding: 8px 13px;
-      border-top: 1px solid var(--editor-border);
-      color: var(--editor-muted);
-      font-size: 11px;
-      background: #fafbfc;
+    #articleContent h1{
+      font-size:34px;
     }
 
-    .profile-box {
-      margin-bottom: 24px;
-      padding: 16px;
-      border: 1px solid #e1e5ea;
-      border-radius: 14px;
-      background: #f7f8fa;
+    #articleContent h2{
+      font-size:28px;
     }
 
-    .profile-title {
-      margin-bottom: 10px;
-      color: var(--navy);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .08em;
+    #articleContent h3{
+      font-size:23px;
     }
 
-    .profile-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 6px 0;
-      border-bottom: 1px solid #e5e8ec;
-      font-size: 12px;
+    #articleContent a{
+      color:#1656a6;
+      text-decoration:underline;
     }
 
-    .profile-row:last-child {
-      border-bottom: 0;
+    #articleContent blockquote{
+      margin:22px 0;
+      padding:12px 18px;
+      border-left:4px solid var(--editor-red);
+      background:#f7f8fa;
+      color:#5d697a;
     }
 
-    .profile-row span {
-      color: var(--muted);
+    #articleContent img{
+      max-width:100%;
+      height:auto;
+      border-radius:10px;
     }
 
-    .profile-row strong {
-      text-align: right;
+    .editor-help{
+      margin:7px 0 0;
+      color:#7a8595;
+      font-size:10px;
+      line-height:1.5;
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 25px;
+    .form-message{
+      display:none;
+      margin-top:17px;
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:12px;
+      line-height:1.5;
     }
 
-    .actions button {
-      cursor: pointer;
+    .form-message.success{
+      display:block;
+      background:#eef8f0;
+      border:1px solid #cce7d1;
+      color:#246233;
     }
 
-    .actions button:disabled {
-      opacity: .55;
-      cursor: not-allowed;
+    .form-message.error{
+      display:block;
+      background:#fdf0f0;
+      border:1px solid #efcaca;
+      color:var(--editor-red);
     }
 
-    .message {
-      display: none;
-      margin-top: 17px;
-      padding: 12px 14px;
-      border-radius: 11px;
-      font-size: 12px;
-      line-height: 1.5;
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:23px;
     }
 
-    .message.success {
-      display: block;
-      color: #246233;
-      background: #eef8f0;
-      border: 1px solid #cce7d1;
+    .actions button,
+    .actions a{
+      min-height:46px;
     }
 
-    .message.error {
-      display: block;
-      color: #9d252b;
-      background: #fdf0f0;
-      border: 1px solid #efcaca;
+    .preview-label{
+      margin:0 0 8px;
+      color:var(--editor-red);
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.12em;
     }
 
-    .side-card {
-      position: sticky;
-      top: 105px;
-      padding: 24px;
+    #previewTitle{
+      margin:0;
+      color:var(--editor-navy);
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:31px;
+      line-height:1.15;
+      letter-spacing:-.025em;
     }
 
-    .side-card h3 {
-      margin: 0 0 10px;
-      color: var(--navy);
-      font-size: 22px;
+    .preview-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin:13px 0 20px;
+      color:#7c8797;
+      font-size:10px;
     }
 
-    .side-card p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
+    .preview-meta span{
+      padding:5px 8px;
+      border-radius:999px;
+      background:#f3f5f8;
     }
 
-    .tips {
-      margin: 18px 0 0;
-      padding: 0;
-      list-style: none;
+    #previewContent{
+      color:#303a49;
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:15px;
+      line-height:1.8;
+      overflow-wrap:anywhere;
     }
 
-    .tips li {
-      padding: 10px 0;
-      border-bottom: 1px solid #e8ebef;
-      color: #4e5b70;
-      font-size: 12px;
-      line-height: 1.6;
+    #previewContent:empty:after{
+      content:"Your formatted article will appear here.";
+      color:#9aa4b1;
+      font-family:inherit;
+      font-style:italic;
     }
 
-    .tips li:last-child {
-      border-bottom: 0;
+    #previewContent h1,
+    #previewContent h2,
+    #previewContent h3{
+      color:var(--editor-navy);
+      line-height:1.3;
     }
 
-    .status-pill {
-      display: inline-flex;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: #eef2f8;
-      color: var(--navy);
-      font-size: 10px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .05em;
+    #previewContent a{
+      color:#1656a6;
     }
 
-    .hidden {
-      display: none !important;
+    #previewContent blockquote{
+      margin:18px 0;
+      padding:10px 14px;
+      border-left:3px solid var(--editor-red);
+      background:#f7f8fa;
+      color:#647084;
     }
 
-    @media(max-width:900px) {
-      .editor-layout {
-        grid-template-columns: 1fr;
+    #previewContent img{
+      max-width:100%;
+      height:auto;
+      border-radius:9px;
+    }
+
+    .account-box{
+      margin-top:25px;
+      padding:14px;
+      border:1px solid #e1e5ea;
+      border-radius:13px;
+      background:#f8fafc;
+    }
+
+    .account-box-title{
+      margin-bottom:8px;
+      color:var(--editor-navy);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.08em;
+    }
+
+    .account-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:5px 0;
+      color:#7b8695;
+      font-size:10px;
+      border-bottom:1px solid #e7eaee;
+    }
+
+    .account-row:last-child{
+      border-bottom:0;
+    }
+
+    .account-row strong{
+      color:#344258;
+      text-align:right;
+    }
+
+    .saving{
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    @media(max-width:950px){
+      .editor-layout{
+        grid-template-columns:1fr;
       }
 
-      .side-card {
-        position: static;
+      .preview-card{
+        position:static;
       }
     }
 
-    @media(max-width:600px) {
-      .editor-card {
-        padding: 20px;
+    @media(max-width:650px){
+      .editor-card{
+        padding:21px;
+        border-radius:18px;
       }
 
-      .two-col {
-        grid-template-columns: 1fr;
-        gap: 0;
+      .two-columns{
+        grid-template-columns:1fr;
+        gap:0;
       }
 
-      .profile-row {
-        display: block;
+      .toolbar{
+        overflow-x:auto;
+        flex-wrap:nowrap;
       }
 
-      .profile-row strong {
-        display: block;
-        margin-top: 2px;
-        text-align: left;
-      }
-
-      #editor {
-        min-height: 350px;
-        padding: 16px;
+      #articleContent{
+        min-height:360px;
+        padding:17px;
       }
     }
   </style>
-
 </head>
 
 <body>
@@ -385,111 +467,95 @@
 <header class="site-header">
   <div class="container nav-wrap">
 
-```
-<a class="brand" href="../index.html">
-  <img
-    src="../assets/statecrafter-logo.png"
-    alt="StateCrafter DCU"
-  >
+    <a class="brand" href="../index.html">
+      <img
+        src="../assets/statecrafter-logo.png"
+        alt="StateCrafter DCU"
+      >
 
-  <span class="brand-copy">
-    <strong>StateCrafter DCU</strong>
-    <small>Political Science Department</small>
-  </span>
-</a>
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+    </a>
 
-<nav class="nav">
-  <a href="../index.html">Home</a>
-  <a href="archive.html">Academic Archive</a>
-  <a href="research.html">Research &amp; Articles</a>
-  <a href="events.html">Events</a>
-  <a href="about.html">About</a>
-  <a href="student-dashboard.html" class="nav-login">Dashboard</a>
-</nav>
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+    </nav>
 
-<button class="menu-toggle" type="button" aria-label="Open menu">
-  ☰
-</button>
-```
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
   </div>
 </header>
 
+
 <section class="editor-hero">
+
   <div class="container">
-    <p class="eyebrow">RESEARCH &amp; ARTICLES</p>
 
-```
-<h1>
-  Write Your<br>
-  Article.
-</h1>
+    <p class="eyebrow">
+      RESEARCH &amp; ARTICLES
+    </p>
 
-<p>
-  Create an academic article using the rich text editor.
-  Save your work as a draft or submit it for review.
-</p>
-```
+    <h1>
+      Write Your<br>
+      Article.
+    </h1>
+
+    <p>
+      Create a polished academic article using the rich text
+      editor. Your submission will be reviewed before it is
+      published on StateCrafter DCU.
+    </p>
 
   </div>
+
 </section>
 
+
 <main>
-  <section class="editor-section">
 
-```
-<div class="container">
+<section class="editor-section">
 
-  <div class="editor-layout">
+  <div class="container">
 
-    <div class="editor-card">
+    <div class="editor-layout">
 
-      <div id="editorArea">
+      <div class="editor-card">
 
-        <p class="eyebrow">ARTICLE EDITOR</p>
-
-        <h2>Create Article</h2>
-
-        <p class="intro">
-          Write your article clearly and use the formatting
-          tools to organize your academic work.
+        <p class="section-label">
+          NEW ARTICLE
         </p>
 
+        <h2>
+          Article Editor
+        </h2>
 
-        <div class="profile-box">
-
-          <div class="profile-title">
-            AUTHOR
-          </div>
-
-          <div class="profile-row">
-            <span>Name</span>
-            <strong id="profileName">Loading...</strong>
-          </div>
-
-          <div class="profile-row">
-            <span>Student ID</span>
-            <strong id="profileStudentId">—</strong>
-          </div>
-
-          <div class="profile-row">
-            <span>Campus</span>
-            <strong id="profileCampus">—</strong>
-          </div>
-
-          <div class="profile-row">
-            <span>Account</span>
-            <strong id="profileRole">—</strong>
-          </div>
-
-        </div>
+        <p class="intro">
+          Add your article information and write the full
+          article below. The formatted article is saved directly
+          to the database <strong>content</strong> field.
+        </p>
 
 
         <form id="articleForm" novalidate>
 
           <div class="form-group">
+
             <label for="title">
-              Article Title <span class="required">*</span>
+              Article Title
+              <span class="required">*</span>
             </label>
 
             <input
@@ -499,180 +565,298 @@
               placeholder="Enter your article title"
               required
             >
+
           </div>
 
 
-          <div class="two-col">
+          <div class="two-columns">
 
             <div class="form-group">
+
               <label for="category">
                 Category
+                <span class="required">*</span>
               </label>
 
-              <select id="category">
-                <option value="">Select category</option>
-                <option value="Political Theory">Political Theory</option>
-                <option value="Political Thought">Political Thought</option>
-                <option value="Comparative Politics">Comparative Politics</option>
-                <option value="International Relations">International Relations</option>
-                <option value="Public Administration">Public Administration</option>
-                <option value="Sociology">Sociology</option>
-                <option value="Bangladesh Politics">Bangladesh Politics</option>
-                <option value="Research">Research</option>
-                <option value="Opinion">Opinion</option>
-                <option value="Other">Other</option>
+              <select id="category" required>
+
+                <option value="">
+                  Select category
+                </option>
+
+                <option value="research">
+                  Research
+                </option>
+
+                <option value="analysis">
+                  Analysis
+                </option>
+
+                <option value="opinion">
+                  Opinion
+                </option>
+
+                <option value="academic">
+                  Academic
+                </option>
+
+                <option value="other">
+                  Other
+                </option>
+
               </select>
+
             </div>
 
 
             <div class="form-group">
-              <label for="tags">
-                Tags
+
+              <label for="course">
+                Course / Subject
               </label>
 
               <input
-                id="tags"
+                id="course"
                 type="text"
-                maxlength="500"
-                placeholder="politics, democracy, Bangladesh"
+                maxlength="180"
+                placeholder="e.g. PS 102 — Political Theory and Organization"
               >
+
             </div>
 
           </div>
 
 
           <div class="form-group">
+
             <label for="excerpt">
               Short Introduction
             </label>
 
             <textarea
               id="excerpt"
-              maxlength="500"
-              placeholder="Write a short introduction for your article..."
+              maxlength="600"
+              placeholder="Write a short introduction or summary for the article..."
             ></textarea>
+
+            <p class="editor-help">
+              This may appear as the article preview on the Research &amp; Articles page.
+            </p>
+
           </div>
 
 
           <div class="form-group">
 
             <label>
-              Article Content <span class="required">*</span>
+              Article Content
+              <span class="required">*</span>
             </label>
 
-            <div class="editor-shell">
 
-              <div class="toolbar">
+            <div class="editor-wrap">
 
-                <button type="button" data-command="bold" title="Bold">
-                  <strong>B</strong>
+              <div
+                id="toolbar"
+                class="toolbar"
+                role="toolbar"
+                aria-label="Article formatting tools"
+              >
+
+                <button
+                  type="button"
+                  data-command="bold"
+                  title="Bold"
+                >
+                  B
                 </button>
 
-                <button type="button" data-command="italic" title="Italic">
-                  <em>I</em>
+                <button
+                  type="button"
+                  data-command="italic"
+                  title="Italic"
+                >
+                  I
                 </button>
 
-                <button type="button" data-command="underline" title="Underline">
-                  <u>U</u>
+                <button
+                  type="button"
+                  data-command="underline"
+                  title="Underline"
+                >
+                  U
                 </button>
 
-                <span class="separator"></span>
+                <div class="toolbar-separator"></div>
 
-                <select id="formatBlock" title="Text format">
-                  <option value="p">Paragraph</option>
-                  <option value="h2">Heading 2</option>
-                  <option value="h3">Heading 3</option>
-                  <option value="blockquote">Quote</option>
+                <select
+                  id="formatBlock"
+                  title="Text style"
+                >
+
+                  <option value="p">
+                    Paragraph
+                  </option>
+
+                  <option value="h1">
+                    Heading 1
+                  </option>
+
+                  <option value="h2">
+                    Heading 2
+                  </option>
+
+                  <option value="h3">
+                    Heading 3
+                  </option>
+
+                  <option value="blockquote">
+                    Quote
+                  </option>
+
                 </select>
 
-                <select id="fontSize" title="Font size">
-                  <option value="">Size</option>
-                  <option value="1">Small</option>
-                  <option value="3">Normal</option>
-                  <option value="4">Large</option>
-                  <option value="5">Extra Large</option>
-                  <option value="6">Huge</option>
+                <select
+                  id="fontSize"
+                  title="Font size"
+                >
+
+                  <option value="">
+                    Size
+                  </option>
+
+                  <option value="2">
+                    Small
+                  </option>
+
+                  <option value="3">
+                    Normal
+                  </option>
+
+                  <option value="4">
+                    Large
+                  </option>
+
+                  <option value="5">
+                    X-Large
+                  </option>
+
+                  <option value="6">
+                    XX-Large
+                  </option>
+
                 </select>
 
-                <span class="separator"></span>
+                <div class="toolbar-separator"></div>
 
-                <button type="button" data-command="justifyLeft">
-                  Left
+                <button
+                  type="button"
+                  data-command="justifyLeft"
+                  title="Align left"
+                >
+                  L
                 </button>
 
-                <button type="button" data-command="justifyCenter">
-                  Center
+                <button
+                  type="button"
+                  data-command="justifyCenter"
+                  title="Align center"
+                >
+                  C
                 </button>
 
-                <button type="button" data-command="justifyRight">
-                  Right
+                <button
+                  type="button"
+                  data-command="justifyRight"
+                  title="Align right"
+                >
+                  R
                 </button>
 
-                <span class="separator"></span>
+                <div class="toolbar-separator"></div>
 
-                <button type="button" data-command="insertUnorderedList">
+                <button
+                  type="button"
+                  data-command="insertUnorderedList"
+                  title="Bullet list"
+                >
                   • List
                 </button>
 
-                <button type="button" data-command="insertOrderedList">
+                <button
+                  type="button"
+                  data-command="insertOrderedList"
+                  title="Numbered list"
+                >
                   1. List
                 </button>
 
-                <span class="separator"></span>
-
-                <button type="button" id="linkButton">
-                  🔗 Link
+                <button
+                  type="button"
+                  id="quoteButton"
+                  title="Quote"
+                >
+                  Quote
                 </button>
 
-                <button type="button" id="imageButton">
-                  🖼 Image
+                <div class="toolbar-separator"></div>
+
+                <button
+                  type="button"
+                  id="linkButton"
+                  title="Insert link"
+                >
+                  Link
                 </button>
 
-                <button type="button" data-command="removeFormat">
+                <button
+                  type="button"
+                  id="imageButton"
+                  title="Insert image"
+                >
+                  Image
+                </button>
+
+                <input
+                  id="imageUrl"
+                  type="url"
+                  placeholder="Image URL"
+                  style="display:none"
+                >
+
+                <div class="toolbar-separator"></div>
+
+                <button
+                  type="button"
+                  id="clearFormat"
+                  title="Clear formatting"
+                >
                   Clear
                 </button>
 
               </div>
 
+
               <div
-                id="editor"
+                id="articleContent"
                 contenteditable="true"
                 spellcheck="true"
+                data-placeholder="Start writing your article here..."
               ></div>
-
-              <div class="word-count">
-                <span id="wordCount">0</span> words
-              </div>
 
             </div>
 
-          </div>
 
-
-          <div class="form-group">
-
-            <label for="coverImage">
-              Cover Image URL
-            </label>
-
-            <input
-              id="coverImage"
-              type="url"
-              placeholder="https://example.com/image.jpg"
-            >
+            <p class="editor-help">
+              You can format text, add headings, links, lists,
+              quotes and images. The resulting HTML is stored in
+              the <strong>content</strong> database field.
+            </p>
 
           </div>
 
 
           <div class="actions">
-
-            <button
-              id="draftButton"
-              type="button"
-              class="btn btn-outline"
-            >
-              Save Draft
-            </button>
 
             <button
               id="submitButton"
@@ -682,95 +866,112 @@
               Submit for Review
             </button>
 
+            <button
+              id="previewButton"
+              type="button"
+              class="btn btn-outline"
+            >
+              Update Preview
+            </button>
+
             <a
               href="research.html"
               class="btn btn-outline"
             >
-              Back
+              Cancel
             </a>
 
           </div>
 
 
           <div
-            id="message"
-            class="message"
+            id="formMessage"
+            class="form-message"
           ></div>
 
         </form>
 
+
+        <div class="account-box">
+
+          <div class="account-box-title">
+            SUBMITTER
+          </div>
+
+          <div class="account-row">
+            <span>Name</span>
+            <strong id="profileName">Loading...</strong>
+          </div>
+
+          <div class="account-row">
+            <span>Student ID</span>
+            <strong id="profileStudentId">—</strong>
+          </div>
+
+          <div class="account-row">
+            <span>Campus</span>
+            <strong id="profileCampus">—</strong>
+          </div>
+
+        </div>
+
       </div>
+
+
+      <aside class="preview-card">
+
+        <p class="preview-label">
+          LIVE PREVIEW
+        </p>
+
+        <h2 id="previewTitle">
+          Your Article Title
+        </h2>
+
+        <div class="preview-meta">
+
+          <span id="previewCategory">
+            Category
+          </span>
+
+          <span id="previewCourse">
+            Course / Subject
+          </span>
+
+        </div>
+
+        <div id="previewContent"></div>
+
+      </aside>
 
     </div>
 
-
-    <aside class="side-card">
-
-      <p class="eyebrow">EDITOR GUIDE</p>
-
-      <h3>
-        Make it clear. Make it useful.
-      </h3>
-
-      <p>
-        A well-structured article is easier for students
-        to read and more useful as an academic resource.
-      </p>
-
-      <ul class="tips">
-
-        <li>
-          <strong>1. Start with a clear title.</strong><br>
-          Make the subject of your article obvious.
-        </li>
-
-        <li>
-          <strong>2. Use headings.</strong><br>
-          Break longer articles into logical sections.
-        </li>
-
-        <li>
-          <strong>3. Use links carefully.</strong><br>
-          Add useful sources and references where appropriate.
-        </li>
-
-        <li>
-          <strong>4. Save your draft.</strong><br>
-          You can work on an article before submitting it.
-        </li>
-
-        <li>
-          <strong>5. Submit for review.</strong><br>
-          Published articles appear on Research &amp; Articles
-          only after approval.
-        </li>
-
-      </ul>
-
-      <div style="margin-top:20px;">
-        <span class="status-pill">
-          Draft → Review → Published
-        </span>
-      </div>
-
-    </aside>
-
   </div>
 
-</div>
-```
+</section>
 
-  </section>
 </main>
 
+
 <footer class="site-footer">
+
   <div class="container footer-bottom">
-    <span>© 2026 StateCrafter DCU</span>
-    <span>Political Science Department • Dhaka Central University</span>
+
+    <span>
+      © 2026 StateCrafter DCU
+    </span>
+
+    <span>
+      Political Science Department • Dhaka Central University
+    </span>
+
   </div>
+
 </footer>
 
+
 <script>
+
 const SUPABASE_URL =
   "https://psqwnvgruyfgdoukvpid.supabase.co";
 
@@ -784,694 +985,1067 @@ const supabaseClient =
   );
 
 
-let currentUser = null;
-let currentProfile = null;
-let editingArticleId = null;
-
-
 const articleForm =
-  document.getElementById("articleForm");
-
-const editor =
-  document.getElementById("editor");
-
-const message =
-  document.getElementById("message");
-
-const draftButton =
-  document.getElementById("draftButton");
-
-const submitButton =
-  document.getElementById("submitButton");
-
-const wordCount =
-  document.getElementById("wordCount");
-
-
-function showMessage(text, type) {
-  message.textContent = text;
-  message.className = "message " + type;
-}
-
-
-function hideMessage() {
-  message.textContent = "";
-  message.className = "message";
-}
-
-
-function getEditorText() {
-  return editor.innerText
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-
-function updateWordCount() {
-  const text = getEditorText();
-
-  if (!text) {
-    wordCount.textContent = "0";
-    return;
-  }
-
-  const words =
-    text.split(" ").filter(Boolean);
-
-  wordCount.textContent =
-    words.length;
-}
-
-
-editor.addEventListener(
-  "input",
-  updateWordCount
-);
-
-
-function execCommand(command, value = null) {
-  editor.focus();
-
-  document.execCommand(
-    command,
-    false,
-    value
+  document.getElementById(
+    "articleForm"
   );
 
-  updateWordCount();
+const submitButton =
+  document.getElementById(
+    "submitButton"
+  );
+
+const previewButton =
+  document.getElementById(
+    "previewButton"
+  );
+
+const formMessage =
+  document.getElementById(
+    "formMessage"
+  );
+
+const titleInput =
+  document.getElementById(
+    "title"
+  );
+
+const categoryInput =
+  document.getElementById(
+    "category"
+  );
+
+const courseInput =
+  document.getElementById(
+    "course"
+  );
+
+const excerptInput =
+  document.getElementById(
+    "excerpt"
+  );
+
+const editor =
+  document.getElementById(
+    "articleContent"
+  );
+
+const previewTitle =
+  document.getElementById(
+    "previewTitle"
+  );
+
+const previewCategory =
+  document.getElementById(
+    "previewCategory"
+  );
+
+const previewCourse =
+  document.getElementById(
+    "previewCourse"
+  );
+
+const previewContent =
+  document.getElementById(
+    "previewContent"
+  );
+
+
+let currentUser = null;
+let currentProfile = null;
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(
+      error ||
+      !data ||
+      !data.user
+    ){
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    currentUser =
+      data.user;
+
+
+    const {
+      data: profile,
+      error: profileError
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id, full_name, student_id, campus, session, role"
+        )
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .single();
+
+
+    if(
+      profileError ||
+      !profile
+    ){
+
+      showMessage(
+        "Your profile could not be loaded. Please contact the administrator.",
+        "error"
+      );
+
+      submitButton.disabled =
+        true;
+
+      return;
+
+    }
+
+
+    currentProfile =
+      profile;
+
+
+    document.getElementById(
+      "profileName"
+    ).textContent =
+      profile.full_name ||
+      "Student";
+
+
+    document.getElementById(
+      "profileStudentId"
+    ).textContent =
+      profile.student_id ||
+      "Not specified";
+
+
+    document.getElementById(
+      "profileCampus"
+    ).textContent =
+      profile.campus ||
+      "Not specified";
+
+
+  }catch(error){
+
+    console.error(
+      "Profile error:",
+      error
+    );
+
+    showMessage(
+      "Unable to load your account.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EDITOR
+========================================================= */
+
+function focusEditor(){
+
+  editor.focus();
+
 }
 
 
 document
-  .querySelectorAll("[data-command]")
-  .forEach(button => {
+  .querySelectorAll(
+    "[data-command]"
+  )
+  .forEach(
+    button => {
 
-    button.addEventListener(
-      "click",
-      () => {
+      button.addEventListener(
+        "mousedown",
+        event => {
 
-        execCommand(
-          button.dataset.command
+          event.preventDefault();
+
+        }
+      );
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          focusEditor();
+
+          const command =
+            button.dataset.command;
+
+
+          document.execCommand(
+            command,
+            false,
+            null
+          );
+
+
+          updatePreview();
+
+        }
+      );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "formatBlock"
+  )
+  .addEventListener(
+    "change",
+    event => {
+
+      focusEditor();
+
+      const value =
+        event.target.value;
+
+
+      if(value){
+
+        document.execCommand(
+          "formatBlock",
+          false,
+          value
         );
+
+      }
+
+
+      event.target.value =
+        "p";
+
+      updatePreview();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "fontSize"
+  )
+  .addEventListener(
+    "change",
+    event => {
+
+      focusEditor();
+
+      const value =
+        event.target.value;
+
+
+      if(value){
+
+        document.execCommand(
+          "fontSize",
+          false,
+          value
+        );
+
+      }
+
+
+      event.target.value =
+        "";
+
+      updatePreview();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "quoteButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      focusEditor();
+
+      document.execCommand(
+        "formatBlock",
+        false,
+        "blockquote"
+      );
+
+      updatePreview();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "linkButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      focusEditor();
+
+      const url =
+        window.prompt(
+          "Enter the URL:"
+        );
+
+
+      if(
+        !url
+      ){
+
+        return;
+
+      }
+
+
+      let finalUrl =
+        url.trim();
+
+
+      if(
+        !/^https?:\/\//i.test(
+          finalUrl
+        )
+      ){
+
+        finalUrl =
+          "https://" +
+          finalUrl;
+
+      }
+
+
+      document.execCommand(
+        "createLink",
+        false,
+        finalUrl
+      );
+
+
+      updatePreview();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "imageButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      focusEditor();
+
+      const url =
+        window.prompt(
+          "Enter the image URL:"
+        );
+
+
+      if(
+        !url
+      ){
+
+        return;
+
+      }
+
+
+      let finalUrl =
+        url.trim();
+
+
+      if(
+        !/^https?:\/\//i.test(
+          finalUrl
+        )
+      ){
+
+        finalUrl =
+          "https://" +
+          finalUrl;
+
+      }
+
+
+      document.execCommand(
+        "insertImage",
+        false,
+        finalUrl
+      );
+
+
+      updatePreview();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "clearFormat"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      focusEditor();
+
+      document.execCommand(
+        "removeFormat",
+        false,
+        null
+      );
+
+      updatePreview();
+
+    }
+  );
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function updatePreview(){
+
+  const title =
+    titleInput.value.trim();
+
+
+  const category =
+    categoryInput.value;
+
+
+  const course =
+    courseInput.value.trim();
+
+
+  const excerpt =
+    excerptInput.value.trim();
+
+
+  previewTitle.textContent =
+    title ||
+    "Your Article Title";
+
+
+  previewCategory.textContent =
+    category
+      ? category.charAt(0).toUpperCase() +
+        category.slice(1)
+      : "Category";
+
+
+  previewCourse.textContent =
+    course ||
+    "Course / Subject";
+
+
+  const content =
+    editor.innerHTML.trim();
+
+
+  if(
+    content
+  ){
+
+    previewContent.innerHTML =
+      content;
+
+  }else if(
+    excerpt
+  ){
+
+    previewContent.innerHTML =
+      "<p>" +
+      escapeHTML(excerpt) +
+      "</p>";
+
+  }else{
+
+    previewContent.innerHTML =
+      "";
+
+  }
+
+}
+
+
+function escapeHTML(value){
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+titleInput.addEventListener(
+  "input",
+  updatePreview
+);
+
+categoryInput.addEventListener(
+  "change",
+  updatePreview
+);
+
+courseInput.addEventListener(
+  "input",
+  updatePreview
+);
+
+excerptInput.addEventListener(
+  "input",
+  updatePreview
+);
+
+editor.addEventListener(
+  "input",
+  updatePreview
+);
+
+previewButton.addEventListener(
+  "click",
+  updatePreview
+);
+
+
+/* =========================================================
+   CONTENT VALIDATION
+========================================================= */
+
+function getPlainTextFromEditor(){
+
+  return (
+    editor.innerText ||
+    editor.textContent ||
+    ""
+  )
+    .replace(
+      /\u00a0/g,
+      " "
+    )
+    .replace(
+      /\s+/g,
+      " "
+    )
+    .trim();
+
+}
+
+
+function getCleanArticleHTML(){
+
+  const clone =
+    editor.cloneNode(
+      true
+    );
+
+
+  clone
+    .querySelectorAll(
+      "script, iframe, object, embed, form"
+    )
+    .forEach(
+      element => {
+
+        element.remove();
 
       }
     );
 
-  });
+
+  clone
+    .querySelectorAll(
+      "*"
+    )
+    .forEach(
+      element => {
+
+        [
+          "onclick",
+          "ondblclick",
+          "onload",
+          "onerror",
+          "onmouseover",
+          "onfocus",
+          "onblur"
+        ]
+          .forEach(
+            attribute => {
+
+              element.removeAttribute(
+                attribute
+              );
+
+            }
+          );
 
 
-document
-  .getElementById("formatBlock")
-  .addEventListener(
-    "change",
-    event => {
-
-      const value =
-        event.target.value;
-
-      if (!value) return;
-
-      execCommand(
-        "formatBlock",
-        value
-      );
-
-      event.target.value = "p";
-
-    }
-  );
+        const href =
+          element.getAttribute(
+            "href"
+          );
 
 
-document
-  .getElementById("fontSize")
-  .addEventListener(
-    "change",
-    event => {
+        if(
+          href &&
+          !/^(https?:|mailto:|#)/i.test(
+            href
+          )
+        ){
 
-      const value =
-        event.target.value;
+          element.removeAttribute(
+            "href"
+          );
 
-      if (!value) return;
-
-      execCommand(
-        "fontSize",
-        value
-      );
-
-      event.target.value = "";
-
-    }
-  );
+        }
 
 
-document
-  .getElementById("linkButton")
-  .addEventListener(
-    "click",
-    () => {
-
-      editor.focus();
-
-      const url =
-        prompt(
-          "Enter the URL:"
-        );
-
-      if (!url) return;
-
-      execCommand(
-        "createLink",
-        url
-      );
-
-    }
-  );
+        const src =
+          element.getAttribute(
+            "src"
+          );
 
 
-document
-  .getElementById("imageButton")
-  .addEventListener(
-    "click",
-    () => {
+        if(
+          src &&
+          !/^(https?:|data:image\/)/i.test(
+            src
+          )
+        ){
 
-      editor.focus();
+          element.removeAttribute(
+            "src"
+          );
 
-      const url =
-        prompt(
-          "Enter image URL:"
-        );
+        }
 
-      if (!url) return;
-
-      execCommand(
-        "insertImage",
-        url
-      );
-
-    }
-  );
-
-
-async function loadProfile() {
-
-  const {
-    data: {
-      user
-    },
-    error: userError
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
-
-
-  if (
-    userError ||
-    !user
-  ) {
-
-    window.location.href =
-      "login.html";
-
-    return false;
-
-  }
-
-
-  currentUser = user;
-
-
-  const {
-    data: profile,
-    error: profileError
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select(
-        "id, full_name, student_id, campus, role"
-      )
-      .eq("id", user.id)
-      .single();
-
-
-  if (
-    profileError ||
-    !profile
-  ) {
-
-    showMessage(
-      "Your profile could not be loaded.",
-      "error"
+      }
     );
 
-    draftButton.disabled = true;
-    submitButton.disabled = true;
 
-    return false;
-
-  }
-
-
-  currentProfile =
-    profile;
-
-
-  document.getElementById(
-    "profileName"
-  ).textContent =
-    profile.full_name ||
-    "Student";
-
-
-  document.getElementById(
-    "profileStudentId"
-  ).textContent =
-    profile.student_id ||
-    "Not specified";
-
-
-  document.getElementById(
-    "profileCampus"
-  ).textContent =
-    profile.campus ||
-    "Not specified";
-
-
-  document.getElementById(
-    "profileRole"
-  ).textContent =
-    profile.role ||
-    "Student";
-
-
-  return true;
+  return clone.innerHTML.trim();
 
 }
 
 
-function getTags() {
-
-  const raw =
-    document
-      .getElementById("tags")
-      .value
-      .trim();
-
-  if (!raw) return [];
-
-  return raw
-    .split(",")
-    .map(tag => tag.trim())
-    .filter(Boolean);
-
-}
-
-
-function buildArticleData(status) {
-
-  const title =
-    document
-      .getElementById("title")
-      .value
-      .trim();
-
-  const excerpt =
-    document
-      .getElementById("excerpt")
-      .value
-      .trim();
-
-  const category =
-    document
-      .getElementById("category")
-      .value
-      .trim();
-
-  const coverImage =
-    document
-      .getElementById("coverImage")
-      .value
-      .trim();
-
-  return {
-
-    author_id:
-      currentUser.id,
-
-    title:
-      title,
-
-    excerpt:
-      excerpt || null,
-
-    content_html:
-      editor.innerHTML.trim(),
-
-    cover_image_url:
-      coverImage || null,
-
-    category:
-      category || null,
-
-    tags:
-      getTags(),
-
-    status:
-      status,
-
-    is_featured:
-      false
-
-  };
-
-}
-
-
-function validateArticle() {
-
-  const title =
-    document
-      .getElementById("title")
-      .value
-      .trim();
-
-  const content =
-    getEditorText();
-
-
-  if (!title) {
-
-    showMessage(
-      "Please enter an article title.",
-      "error"
-    );
-
-    document
-      .getElementById("title")
-      .focus();
-
-    return false;
-
-  }
-
-
-  if (!content) {
-
-    showMessage(
-      "Please write some article content.",
-      "error"
-    );
-
-    editor.focus();
-
-    return false;
-
-  }
-
-
-  return true;
-
-}
-
-
-async function saveArticle(status) {
-
-  hideMessage();
-
-
-  if (!currentUser) {
-
-    showMessage(
-      "Your account is not ready. Please refresh the page.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if (!validateArticle()) {
-    return;
-  }
-
-
-  draftButton.disabled = true;
-  submitButton.disabled = true;
-
-
-  if (status === "draft") {
-    draftButton.textContent = "Saving...";
-  } else {
-    submitButton.textContent = "Submitting...";
-  }
-
-
-  try {
-
-    const articleData =
-      buildArticleData(status);
-
-
-    let result;
-
-
-    if (editingArticleId) {
-
-      result =
-        await supabaseClient
-          .from("articles")
-          .update(articleData)
-          .eq("id", editingArticleId)
-          .eq("author_id", currentUser.id)
-          .select()
-          .single();
-
-    } else {
-
-      result =
-        await supabaseClient
-          .from("articles")
-          .insert(articleData)
-          .select()
-          .single();
-
-    }
-
-
-    if (result.error) {
-      throw result.error;
-    }
-
-
-    editingArticleId =
-      result.data.id;
-
-
-    if (status === "draft") {
-
-      showMessage(
-        "Your article has been saved as a draft.",
-        "success"
-      );
-
-    } else {
-
-      showMessage(
-        "Your article has been submitted for admin review.",
-        "success"
-      );
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      "Article save error:",
-      error
-    );
-
-
-    showMessage(
-      error.message ||
-      "Could not save your article.",
-      "error"
-    );
-
-
-  } finally {
-
-    draftButton.disabled = false;
-    submitButton.disabled = false;
-
-    draftButton.textContent =
-      "Save Draft";
-
-    submitButton.textContent =
-      "Submit for Review";
-
-  }
-
-}
-
-
-draftButton.addEventListener(
-  "click",
-  () => saveArticle("draft")
-);
-
+/* =========================================================
+   SUBMIT
+========================================================= */
 
 articleForm.addEventListener(
   "submit",
-  event => {
+  async event => {
 
     event.preventDefault();
 
-    saveArticle("pending");
+    hideMessage();
+
+
+    if(
+      !currentUser ||
+      !currentProfile
+    ){
+
+      showMessage(
+        "Your account is not ready. Please refresh the page.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const title =
+      titleInput.value.trim();
+
+
+    const category =
+      categoryInput.value.trim();
+
+
+    const course =
+      courseInput.value.trim();
+
+
+    const excerpt =
+      excerptInput.value.trim();
+
+
+    const content =
+      getCleanArticleHTML();
+
+
+    const plainText =
+      getPlainTextFromEditor();
+
+
+    /* -----------------------------------------------
+       VALIDATION
+    ------------------------------------------------ */
+
+    if(
+      !title
+    ){
+
+      showMessage(
+        "Please enter an article title.",
+        "error"
+      );
+
+      titleInput.focus();
+
+      return;
+
+    }
+
+
+    if(
+      !category
+    ){
+
+      showMessage(
+        "Please select an article category.",
+        "error"
+      );
+
+      categoryInput.focus();
+
+      return;
+
+    }
+
+
+    if(
+      !plainText
+    ){
+
+      showMessage(
+        "Please write your article before submitting.",
+        "error"
+      );
+
+      editor.focus();
+
+      return;
+
+    }
+
+
+    if(
+      !content
+    ){
+
+      showMessage(
+        "Article content is empty. Please add some content.",
+        "error"
+      );
+
+      editor.focus();
+
+      return;
+
+    }
+
+
+    submitButton.disabled =
+      true;
+
+    articleForm.classList.add(
+      "saving"
+    );
+
+    submitButton.textContent =
+      "Submitting...";
+
+
+    try{
+
+      /*
+        IMPORTANT DATABASE FIX
+
+        The database requires:
+        articles.content NOT NULL
+
+        Therefore the exact HTML from the editor
+        is explicitly sent as "content".
+      */
+
+      const articleData = {
+
+        title:
+          title,
+
+        category:
+          category,
+
+        course_name:
+          course ||
+          null,
+
+        excerpt:
+          excerpt ||
+          null,
+
+        content:
+          content,
+
+        status:
+          "pending",
+
+        author_id:
+          currentUser.id,
+
+        author_name:
+          currentProfile.full_name ||
+          null,
+
+        student_id:
+          currentProfile.student_id ||
+          null,
+
+        campus:
+          currentProfile.campus ||
+          null
+
+      };
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "articles"
+          )
+          .insert(
+            articleData
+          )
+          .select()
+          .single();
+
+
+      if(
+        error
+      ){
+
+        throw error;
+
+      }
+
+
+      showMessage(
+        "Article submitted successfully. It is now waiting for admin review.",
+        "success"
+      );
+
+
+      articleForm.reset();
+
+      editor.innerHTML =
+        "";
+
+      updatePreview();
+
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+
+      setTimeout(
+        () => {
+
+          window.location.href =
+            "research.html";
+
+        },
+        1600
+      );
+
+
+    }catch(error){
+
+      console.error(
+        "Article submission error:",
+        error
+      );
+
+
+      let message =
+        "Article submission failed. Please try again.";
+
+
+      if(
+        error &&
+        error.message
+      ){
+
+        message =
+          error.message;
+
+      }
+
+
+      showMessage(
+        message,
+        "error"
+      );
+
+
+      submitButton.disabled =
+        false;
+
+      articleForm.classList.remove(
+        "saving"
+      );
+
+      submitButton.textContent =
+        "Submit for Review";
+
+    }
 
   }
 );
 
 
-async function loadArticleForEditing() {
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+function showMessage(
+  message,
+  type
+){
 
-  const id =
-    params.get("id");
+  formMessage.textContent =
+    message;
 
-
-  if (!id) return;
-
-
-  if (!currentUser) return;
-
-
-  const {
-    data: article,
-    error
-  } =
-    await supabaseClient
-      .from("articles")
-      .select("*")
-      .eq("id", id)
-      .eq("author_id", currentUser.id)
-      .single();
-
-
-  if (error || !article) {
-
-    showMessage(
-      "This article could not be loaded.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  editingArticleId =
-    article.id;
-
-
-  document.getElementById(
-    "title"
-  ).value =
-    article.title || "";
-
-
-  document.getElementById(
-    "excerpt"
-  ).value =
-    article.excerpt || "";
-
-
-  document.getElementById(
-    "category"
-  ).value =
-    article.category || "";
-
-
-  document.getElementById(
-    "coverImage"
-  ).value =
-    article.cover_image_url || "";
-
-
-  document.getElementById(
-    "tags"
-  ).value =
-    Array.isArray(article.tags)
-      ? article.tags.join(", ")
-      : "";
-
-
-  editor.innerHTML =
-    article.content_html || "";
-
-
-  updateWordCount();
-
-
-  document.querySelector(
-    ".editor-card h2"
-  ).textContent =
-    "Edit Article";
-
-
-  if (article.status === "published") {
-
-    showMessage(
-      "This article is already published.",
-      "success"
-    );
-
-  }
+  formMessage.className =
+    "form-message " +
+    type;
 
 }
 
 
-async function init() {
+function hideMessage(){
 
-  const ready =
-    await loadProfile();
+  formMessage.textContent =
+    "";
 
-
-  if (!ready) return;
-
-
-  await loadArticleForEditing();
+  formMessage.className =
+    "form-message";
 
 }
 
 
-init();
-
+/* =========================================================
+   MOBILE MENU
+========================================================= */
 
 const menuToggle =
-  document.querySelector(".menu-toggle");
+  document.querySelector(
+    ".menu-toggle"
+  );
 
 const nav =
-  document.querySelector(".nav");
+  document.querySelector(
+    ".nav"
+  );
 
 
-if (menuToggle && nav) {
+if(
+  menuToggle &&
+  nav
+){
 
   menuToggle.addEventListener(
     "click",
     () => {
 
-      nav.classList.toggle("open");
+      nav.classList.toggle(
+        "open"
+      );
 
     }
   );
 
 }
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadProfile();
+
+updatePreview();
+
 </script>
 
 </body>
