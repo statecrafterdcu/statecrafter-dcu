@@ -1,730 +1,1649 @@
-<!doctype html> <html lang="en"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Research & Articles | StateCrafter DCU</title> <link rel="stylesheet" href="../style.css"> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <style> .research-hero { background: linear-gradient(135deg, #f7f5f0 0%, #ffffff 55%, #eef2f8 100%); border-bottom: 1px solid var(--line); padding: 58px 0 50px; } .research-hero h1 { margin: 0; color: var(--navy); font-size: clamp(42px, 6vw, 70px); line-height: .98; letter-spacing: -.05em; } .research-hero p:not(.eyebrow) { max-width: 720px; margin: 20px 0 0; color: var(--muted); font-size: 16px; line-height: 1.7; } .research-section { padding: 55px 0 90px; } .research-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 30px; } .research-toolbar h2 { margin: 0; color: var(--navy); font-size: 28px; } .research-toolbar p { margin: 6px 0 0; color: var(--muted); font-size: 13px; } .research-actions { display: flex; gap: 10px; flex-wrap: wrap; } .article-search { width: 280px; max-width: 100%; height: 46px; padding: 0 14px; border: 1px solid #d8dde5; border-radius: 12px; background: #fff; color: var(--ink); font: inherit; outline: none; } .article-search:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(18,43,82,.06); } .article-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; } .article-card { display: flex; flex-direction: column; min-height: 330px; background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 32px rgba(18,43,82,.05); transition: transform .2s ease, box-shadow .2s ease; } .article-card:hover { transform: translateY(-4px); box-shadow: 0 18px 42px rgba(18,43,82,.10); } .article-cover { min-height: 145px; padding: 20px; display: flex; align-items: flex-end; background: linear-gradient(135deg, #122b52 0%, #203f6e 58%, #9f1d20 100%); color: #fff; } .article-cover .article-type { display: inline-block; padding: 6px 9px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; } .article-body { display: flex; flex-direction: column; flex: 1; padding: 21px; } .article-body h3 { margin: 0; color: var(--navy); font-size: 21px; line-height: 1.25; } .article-excerpt { margin: 11px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; } .article-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; color: var(--muted); font-size: 11px; } .article-read { margin-top: 14px; color: var(--navy); font-size: 12px; font-weight: 900; text-decoration: none; } .article-read:hover { color: var(--red); } .empty-state, .loading-state, .error-state { padding: 55px 20px; text-align: center; border: 1px dashed #d6dce4; border-radius: 20px; background: #fafbfc; } .empty-state h3, .loading-state h3, .error-state h3 { margin: 0; color: var(--navy); } .empty-state p, .loading-state p, .error-state p { max-width: 560px; margin: 9px auto 0; color: var(--muted); font-size: 13px; line-height: 1.6; } .article-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(8,18,32,.68); padding: 30px 15px; overflow-y: auto; } .article-modal.open { display: block; } .article-modal-inner { width: min(900px, 100%); margin: 0 auto; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.25); } .article-modal-header { padding: 30px 34px 25px; background: linear-gradient(135deg, #f7f5f0, #eef2f8); border-bottom: 1px solid var(--line); } .article-modal-header h2 { margin: 9px 0 0; color: var(--navy); font-size: clamp(28px, 4vw, 42px); line-height: 1.1; } .article-modal-meta { margin-top: 12px; color: var(--muted); font-size: 12px; } .article-modal-content { padding: 35px; color: #263347; font-size: 16px; line-height: 1.85; overflow-wrap: anywhere; } .article-modal-content h1, .article-modal-content h2, .article-modal-content h3, .article-modal-content h4 { color: var(--navy); line-height: 1.25; margin-top: 1.5em; } .article-modal-content h1:first-child, .article-modal-content h2:first-child, .article-modal-content h3:first-child { margin-top: 0; } .article-modal-content p { margin: 0 0 1em; } .article-modal-content img { display: block; max-width: 100%; height: auto; margin: 22px auto; border-radius: 12px; } .article-modal-content blockquote { margin: 20px 0; padding: 14px 18px; border-left: 4px solid var(--red); background: #f7f5f0; color: #536075; } .article-modal-content a { color: #174f9a; text-decoration: underline; } .article-modal-content ul, .article-modal-content ol { padding-left: 25px; } .modal-close { float: right; width: 38px; height: 38px; border: 0; border-radius: 50%; background: rgba(18,43,82,.08); color: var(--navy); cursor: pointer; font-size: 20px; line-height: 1; } .modal-close:hover { background: rgba(159,29,32,.12); color: var(--red); } @media(max-width: 950px) { .article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } } @media(max-width: 650px) { .research-section { padding: 42px 0 65px; } .article-grid { grid-template-columns: 1fr; } .research-actions { width: 100%; } .article-search { width: 100%; } .article-modal-header, .article-modal-content { padding: 24px; } } </style> </head> <body> <header class="site-header"> <div class="container nav-wrap">
-<a class="brand" href="../index.html">
-  <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
-  <span class="brand-copy">
-    <strong>StateCrafter DCU</strong>
-    <small>Political Science Department</small>
-  </span>
-</a>
-
-<nav class="nav">
-  <a href="../index.html">Home</a>
-  <a href="archive.html">Academic Archive</a>
-  <a href="research.html" class="active">Research &amp; Articles</a>
-  <a href="events.html">Events</a>
-  <a href="about.html">About</a>
-  <a href="student-dashboard.html" class="nav-login">Dashboard</a>
-</nav>
-
-<button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
-</div> </header> <section class="research-hero"> <div class="container">
-<p class="eyebrow">RESEARCH &amp; ARTICLES</p>
-
-<h1>
-  Ideas Worth<br>
-  Reading.
-</h1>
-
-<p>
-  Explore research, academic writing and original articles
-  published by the StateCrafter DCU community.
-</p>
-</div> </section> <main> <section class="research-section"> <div class="container">
-  <div class="research-toolbar">
-
-    <div>
-      <p class="eyebrow">ACADEMIC PUBLICATIONS</p>
-      <h2>Latest Articles</h2>
-      <p>Read published articles from students and contributors.</p>
-    </div>
-
-    <div class="research-actions">
-
-      <input
-        id="articleSearch"
-        class="article-search"
-        type="search"
-        placeholder="Search articles..."
-        aria-label="Search articles"
-      >
-
-      <a
-        href="article-editor.html"
-        class="btn btn-primary"
-      >
-        Write an Article
-      </a>
-
-    </div>
-
-  </div>
-
-  <div id="articleContainer">
-
-    <div class="loading-state">
-      <h3>Loading Articles...</h3>
-      <p>Please wait while we load the latest publications.</p>
-    </div>
-
-  </div>
-
-</div>
-</section> </main> <footer class="site-footer"> <div class="container footer-bottom">
-<span>© 2026 StateCrafter DCU</span>
-
-<span>
-  Political Science Department • Dhaka Central University
-</span>
-</div> </footer> <div id="articleModal" class="article-modal" role="dialog" aria-modal="true" aria-hidden="true" > <div class="article-modal-inner">
-<div class="article-modal-header">
-
-  <button
-    id="modalClose"
-    class="modal-close"
-    type="button"
-    aria-label="Close article"
-  >
-    ×
-  </button>
-
-  <p id="modalType" class="eyebrow">
-    ARTICLE
-  </p>
-
-  <h2 id="modalTitle">
-    Article
-  </h2>
-
-  <div id="modalMeta" class="article-modal-meta"></div>
-
-</div>
-
-<article
-  id="modalContent"
-  class="article-modal-content"
-></article>
-</div> </div> <script> const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co"; const SUPABASE_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"; const supabaseClient = window.supabase.createClient( SUPABASE_URL, SUPABASE_KEY ); const articleContainer = document.getElementById("articleContainer"); const articleSearch = document.getElementById("articleSearch"); const articleModal = document.getElementById("articleModal"); const modalClose = document.getElementById("modalClose"); const modalTitle = document.getElementById("modalTitle"); const modalType = document.getElementById("modalType"); const modalMeta = document.getElementById("modalMeta"); const modalContent = document.getElementById("modalContent"); let allArticles = []; function escapeHTML(value) { return String(value ?? "") .replace(/&/g, "&amp;") .replace(/</g, "&lt;") .replace(/>/g, "&gt;") .replace(/"/g, "&quot;") .replace(/'/g, "&#039;"); } function formatDate(value) { if (!value) return "Date not available"; const date = new Date(value); if (Number.isNaN(date.getTime())) { return "Date not available"; } return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }); } function getArticleContent(article) { return ( article.content || article.body || article.article_content || article.description || "" ); } function getArticleAuthor(article) { return ( article.author_name || article.full_name || article.created_by_name || "StateCrafter Contributor" ); } function getArticleDate(article) { return ( article.published_at || article.created_at || article.updated_at || null ); } function getArticleType(article) { return ( article.article_type || article.type || "Article" ); } function createExcerpt(article) { const content = getArticleContent(article); const temporary = document.createElement("div"); temporary.innerHTML = content; const text = temporary.textContent || temporary.innerText || ""; const clean = text.replace(/\s+/g, " ").trim(); if (clean.length <= 180) { return clean; } return clean.slice(0, 180) + "..."; } function renderArticles(articles) { if (!articles.length) { articleContainer.innerHTML = ` <div class="empty-state"> <h3>No Articles Found</h3> <p> There are no published articles matching your search. </p> </div> `; return; } articleContainer.innerHTML = ` <div class="article-grid"> ${articles.map((article, index) => { const title = article.title || "Untitled Article"; const type = getArticleType(article); const author = getArticleAuthor(article); const date = getArticleDate(article); const excerpt = createExcerpt(article); return ` <article class="article-card"> <div class="article-cover"> <span class="article-type"> ${escapeHTML(type)} </span> </div> <div class="article-body"> <h3> ${escapeHTML(title)} </h3> <p class="article-excerpt"> ${escapeHTML( excerpt || "Read the full article to explore this publication." )} </p> <div class="article-meta"> <span> ${escapeHTML(author)} </span> <span> ${escapeHTML(formatDate(date))} </span> </div> <a href="#" class="article-read" data-index="${index}" > Read Full Article → </a> </div> </article> `; }).join("")} </div> `; articleContainer .querySelectorAll(".article-read") .forEach(link => { link.addEventListener( "click", event => { event.preventDefault(); const index = Number( link.dataset.index ); openArticle( articles[index] ); } ); }); } function openArticle(article) { const title = article.title || "Untitled Article"; const type = getArticleType(article); const author = getArticleAuthor(article); const date = getArticleDate(article); const content = getArticleContent(article); modalTitle.textContent = title; modalType.textContent = type.toUpperCase(); modalMeta.textContent = `By ${author} • ${formatDate(date)}`; modalContent.innerHTML = content || "<p>No article content is available.</p>"; articleModal.classList.add( "open" ); articleModal.setAttribute( "aria-hidden", "false" ); document.body.style.overflow = "hidden"; } function closeArticle() { articleModal.classList.remove( "open" ); articleModal.setAttribute( "aria-hidden", "true" ); document.body.style.overflow = ""; } modalClose.addEventListener( "click", closeArticle ); articleModal.addEventListener( "click", event => { if ( event.target === articleModal ) { closeArticle(); } } ); document.addEventListener( "keydown", event => { if ( event.key === "Escape" && articleModal.classList.contains("open") ) { closeArticle(); } } ); articleSearch.addEventListener( "input", () => { const query = articleSearch.value .trim() .toLowerCase(); if (!query) { renderArticles( allArticles ); return; } const filtered = allArticles.filter( article => { const title = String( article.title || "" ).toLowerCase(); const content = String( getArticleContent(article) ).toLowerCase(); const author = String( getArticleAuthor(article) ).toLowerCase(); return ( title.includes(query) || content.includes(query) || author.includes(query) ); } ); renderArticles( filtered ); } ); async function loadArticles() { try { /* This page loads only published articles. The query intentionally selects common fields without depending on published_at, because the database schema may use created_at for publication timing. */ let response = await supabaseClient .from("articles") .select("*") .eq("status", "published") .order("created_at", { ascending: false }); /* If the articles table does not have a status column, retry with a simple query and filter published values in JavaScript. */ if ( response.error && /status/i.test( response.error.message || "" ) ) { response = await supabaseClient .from("articles") .select("*") .order("created_at", { ascending: false }); } if (response.error) { throw response.error; } allArticles = (response.data || []).filter( article => { if ( article.status === undefined || article.status === null ) { return true; } return ( String(article.status) .toLowerCase() === "published" ); } ); renderArticles( allArticles ); } catch (error) { console.error( "Article loading error:", error ); articleContainer.innerHTML = ` <div class="error-state"> <h3>Could Not Load Articles</h3> <p> We could not load the published articles right now. Please refresh the page and try again. </p> </div> `; } } const menuToggle = document.querySelector( ".menu-toggle" ); const nav = document.querySelector( ".nav" ); if ( menuToggle && nav ) { menuToggle.addEventListener( "click", () => { nav.classList.toggle( "open" ); } ); } loadArticles(); </script> </body> </html>
-are sundor kore code akare dao 
-
-অবশ্যই। নিচেরটা সুন্দরভাবে formatted research.html — কোনো ``` code fence নেই। সরাসরি পুরোটা কপি করে তোমার existing research.html-এ replace করো।
-
 <!doctype html>
-
 <html lang="en">
-
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta charset="utf-8">
+  <title>Research & Articles | StateCrafter DCU</title>
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1"
+  <link rel="stylesheet" href="../style.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <style>
+    :root{
+      --article-navy:#122b52;
+      --article-red:#a7181d;
+      --article-ink:#1e293b;
+      --article-muted:#69768a;
+      --article-line:#e1e6ed;
+      --article-soft:#f7f8fa;
+    }
 
+    .research-hero{
+      padding:70px 0 64px;
+      background:
+        linear-gradient(
+          135deg,
+          #f7f5f0 0%,
+          #ffffff 55%,
+          #eef2f8 100%
+        );
+      border-bottom:1px solid var(--line);
+    }
 
-<title> Research & Articles | StateCrafter DCU </title>
+    .research-hero-inner{
+      max-width:900px;
+    }
 
-<link rel="stylesheet" href="../style.css" >
+    .research-hero h1{
+      margin:0;
+      color:var(--article-navy);
+      font-size:clamp(44px,7vw,78px);
+      line-height:.98;
+      letter-spacing:-.06em;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" ></script>
+    .research-hero p:not(.eyebrow){
+      max-width:760px;
+      margin:22px 0 0;
+      color:var(--article-muted);
+      font-size:17px;
+      line-height:1.7;
+    }
 
-<style> /* ===================================================== HERO ===================================================== */ .research-hero { background: linear-gradient( 135deg, #f7f5f0 0%, #ffffff 55%, #eef2f8 100% ); border-bottom: 1px solid var(--line); padding: 60px 0 52px; } .research-hero h1 { margin: 0; color: var(--navy); font-size: clamp(44px, 6vw, 72px); line-height: .96; letter-spacing: -.055em; } .research-hero p:not(.eyebrow) { max-width: 720px; margin: 20px 0 0; color: var(--muted); font-size: 16px; line-height: 1.7; } /* ===================================================== MAIN ===================================================== */ .research-section { padding: 60px 0 90px; } .research-toolbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; margin-bottom: 32px; } .research-toolbar h2 { margin: 0; color: var(--navy); font-size: 30px; line-height: 1.2; } .research-toolbar p:not(.eyebrow) { margin: 7px 0 0; color: var(--muted); font-size: 13px; } .research-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .article-search { width: 280px; height: 46px; padding: 0 15px; border: 1px solid #d8dde5; border-radius: 12px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; outline: none; transition: .2s ease; } .article-search:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(18,43,82,.07); } /* ===================================================== ARTICLE GRID ===================================================== */ .article-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; } .article-card { display: flex; flex-direction: column; min-height: 365px; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 10px 35px rgba(18,43,82,.055); transition: transform .22s ease, box-shadow .22s ease; } .article-card:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(18,43,82,.11); } /* ===================================================== ARTICLE COVER ===================================================== */ .article-cover { position: relative; min-height: 155px; display: flex; align-items: flex-end; padding: 20px; background: linear-gradient( 135deg, #122b52 0%, #234773 58%, #9f1d20 100% ); } .article-cover::after { content: ""; position: absolute; width: 150px; height: 150px; right: -45px; top: -55px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; } .article-type { position: relative; z-index: 2; display: inline-flex; align-items: center; padding: 7px 11px; border-radius: 999px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.12); color: #fff; font-size: 9px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; } /* ===================================================== ARTICLE BODY ===================================================== */ .article-body { display: flex; flex-direction: column; flex: 1; padding: 22px; } .article-body h3 { margin: 0; color: var(--navy); font-size: 21px; line-height: 1.3; letter-spacing: -.015em; } .article-excerpt { margin: 11px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; } .article-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; color: var(--muted); font-size: 10px; } .article-author { font-weight: 800; color: var(--navy); } .article-read { display: inline-block; margin-top: 14px; color: var(--navy); font-size: 12px; font-weight: 900; text-decoration: none; } .article-read:hover { color: var(--red); } /* ===================================================== STATES ===================================================== */ .article-state { padding: 60px 25px; text-align: center; border: 1px dashed #d4dbe4; border-radius: 20px; background: #fafbfc; } .article-state h3 { margin: 0; color: var(--navy); font-size: 21px; } .article-state p { max-width: 520px; margin: 10px auto 0; color: var(--muted); font-size: 13px; line-height: 1.65; } /* ===================================================== ARTICLE MODAL ===================================================== */ .article-modal { display: none; position: fixed; inset: 0; z-index: 9999; padding: 30px 15px; background: rgba(7,17,31,.72); overflow-y: auto; } .article-modal.open { display: block; } .article-modal-inner { width: min(920px, 100%); margin: 0 auto; overflow: hidden; background: #fff; border-radius: 24px; box-shadow: 0 30px 90px rgba(0,0,0,.25); } .article-modal-header { position: relative; padding: 32px 36px 28px; background: linear-gradient( 135deg, #f7f5f0, #eef2f8 ); border-bottom: 1px solid var(--line); } .article-modal-header h2 { max-width: 780px; margin: 10px 45px 0 0; color: var(--navy); font-size: clamp(30px, 4vw, 46px); line-height: 1.1; letter-spacing: -.04em; } .article-modal-meta { margin-top: 13px; color: var(--muted); font-size: 12px; } .modal-close { position: absolute; top: 24px; right: 24px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(18,43,82,.08); color: var(--navy); cursor: pointer; font-size: 22px; } .modal-close:hover { background: rgba(159,29,32,.1); color: var(--red); } /* ===================================================== ARTICLE CONTENT ===================================================== */ .article-content { padding: 38px; color: #27354a; font-size: 16px; line-height: 1.85; overflow-wrap: anywhere; } .article-content p { margin: 0 0 1.1em; } .article-content h1, .article-content h2, .article-content h3, .article-content h4 { color: var(--navy); line-height: 1.25; margin: 1.5em 0 .6em; } .article-content h1:first-child, .article-content h2:first-child, .article-content h3:first-child { margin-top: 0; } .article-content a { color: #17539c; text-decoration: underline; } .article-content img { display: block; max-width: 100%; height: auto; margin: 25px auto; border-radius: 13px; } .article-content blockquote { margin: 25px 0; padding: 16px 20px; background: #f7f5f0; border-left: 4px solid var(--red); border-radius: 0 10px 10px 0; color: #536075; } .article-content ul, .article-content ol { padding-left: 26px; } .article-content pre { max-width: 100%; overflow-x: auto; padding: 15px; background: #f4f6f9; border-radius: 10px; } /* ===================================================== RESPONSIVE ===================================================== */ @media(max-width: 950px) { .article-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } } @media(max-width: 760px) { .research-toolbar { align-items: stretch; flex-direction: column; } .research-actions { width: 100%; } .article-search { width: 100%; } } @media(max-width: 620px) { .research-section { padding: 45px 0 65px; } .article-grid { grid-template-columns: 1fr; } .article-cover { min-height: 135px; } .article-modal { padding: 12px; } .article-modal-header { padding: 25px 22px; } .article-content { padding: 25px 22px; font-size: 15px; } } </style>
+    .research-section{
+      padding:62px 0 95px;
+    }
 
+    .research-toolbar{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:18px;
+      align-items:end;
+      margin-bottom:30px;
+    }
+
+    .research-heading h2{
+      margin:0;
+      color:var(--article-navy);
+      font-size:32px;
+      letter-spacing:-.035em;
+    }
+
+    .research-heading p{
+      margin:8px 0 0;
+      color:var(--article-muted);
+      font-size:13px;
+    }
+
+    .research-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .article-search{
+      width:330px;
+      max-width:100%;
+      height:50px;
+      padding:0 16px;
+      border:1px solid #d8dee7;
+      border-radius:13px;
+      background:#fff;
+      color:var(--article-ink);
+      font:inherit;
+      font-size:14px;
+      outline:none;
+      transition:.2s ease;
+    }
+
+    .article-search:focus{
+      border-color:var(--article-navy);
+      box-shadow:0 0 0 3px rgba(18,43,82,.07);
+    }
+
+    .write-article-btn{
+      min-height:50px;
+      white-space:nowrap;
+    }
+
+    .category-bar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:5px;
+      margin-bottom:28px;
+      background:var(--article-soft);
+      border:1px solid var(--article-line);
+      border-radius:15px;
+    }
+
+    .category-btn{
+      border:0;
+      border-radius:10px;
+      padding:10px 15px;
+      background:transparent;
+      color:#68758a;
+      cursor:pointer;
+      font:inherit;
+      font-size:12px;
+      font-weight:800;
+      transition:.2s ease;
+    }
+
+    .category-btn:hover{
+      color:var(--article-navy);
+      background:#fff;
+    }
+
+    .category-btn.active{
+      background:var(--article-navy);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(18,43,82,.12);
+    }
+
+    .article-status{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      margin-bottom:18px;
+      color:var(--article-muted);
+      font-size:12px;
+    }
+
+    .article-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+    }
+
+    .article-card{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      padding:23px;
+      background:#fff;
+      border:1px solid var(--article-line);
+      border-radius:20px;
+      box-shadow:0 9px 28px rgba(18,43,82,.045);
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+    }
+
+    .article-card:hover{
+      transform:translateY(-4px);
+      border-color:#cbd4df;
+      box-shadow:0 16px 38px rgba(18,43,82,.09);
+    }
+
+    .article-card-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:17px;
+    }
+
+    .article-badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:25px;
+      padding:0 9px;
+      border-radius:999px;
+      background:#f9eeee;
+      color:var(--article-red);
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .article-date{
+      color:#8993a2;
+      font-size:10px;
+      white-space:nowrap;
+    }
+
+    .article-card h3{
+      margin:0;
+      color:var(--article-navy);
+      font-size:22px;
+      line-height:1.25;
+      letter-spacing:-.025em;
+      overflow-wrap:anywhere;
+    }
+
+    .article-excerpt{
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:4;
+      overflow:hidden;
+      margin:13px 0 0;
+      color:#667388;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .article-card-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px 12px;
+      margin-top:18px;
+      padding-top:15px;
+      border-top:1px solid #edf0f3;
+      color:#7b8797;
+      font-size:10px;
+    }
+
+    .article-card-meta strong{
+      color:#39485d;
+    }
+
+    .article-card-actions{
+      margin-top:auto;
+      padding-top:19px;
+    }
+
+    .article-read{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      text-decoration:none;
+      color:var(--article-navy);
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .article-read:hover{
+      color:var(--article-red);
+    }
+
+    .empty-state,
+    .loading-state,
+    .error-state{
+      grid-column:1 / -1;
+      padding:65px 25px;
+      text-align:center;
+      background:#fbfcfd;
+      border:1px dashed #cfd7e1;
+      border-radius:20px;
+    }
+
+    .empty-state h3,
+    .loading-state h3,
+    .error-state h3{
+      margin:0;
+      color:var(--article-navy);
+      font-size:24px;
+    }
+
+    .empty-state p,
+    .loading-state p,
+    .error-state p{
+      max-width:540px;
+      margin:10px auto 0;
+      color:var(--article-muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .pagination{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      margin-top:32px;
+    }
+
+    .page-btn{
+      min-width:38px;
+      height:38px;
+      padding:0 11px;
+      border:1px solid #d8dee7;
+      border-radius:10px;
+      background:#fff;
+      color:var(--article-navy);
+      cursor:pointer;
+      font:inherit;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .page-btn:hover{
+      border-color:var(--article-navy);
+    }
+
+    .page-btn.active{
+      background:var(--article-navy);
+      border-color:var(--article-navy);
+      color:#fff;
+    }
+
+    .page-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    @media(max-width:1050px){
+      .article-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media(max-width:850px){
+      .research-toolbar{
+        grid-template-columns:1fr;
+      }
+
+      .research-actions{
+        justify-content:flex-start;
+      }
+
+      .article-search{
+        width:100%;
+      }
+    }
+
+    @media(max-width:650px){
+      .research-hero{
+        padding:48px 0 45px;
+      }
+
+      .research-section{
+        padding:45px 0 65px;
+      }
+
+      .article-grid{
+        grid-template-columns:1fr;
+      }
+
+      .category-bar{
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        scrollbar-width:thin;
+      }
+
+      .category-btn{
+        flex:0 0 auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- ===================================================== HEADER ====================================================== -->
-
 <header class="site-header">
+  <div class="container nav-wrap">
 
-<div class="container nav-wrap">
+    <a class="brand" href="../index.html">
+      <img
+        src="../assets/statecrafter-logo.png"
+        alt="StateCrafter DCU"
+      >
 
-<a
-  class="brand"
-  href="../index.html"
->
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
+    </a>
 
-  <img
-    src="../assets/statecrafter-logo.png"
-    alt="StateCrafter DCU"
-  >
+    <nav class="nav">
+      <a href="../index.html">Home</a>
+      <a href="archive.html">Academic Archive</a>
+      <a href="research.html" class="active">Research &amp; Articles</a>
+      <a href="events.html">Events</a>
+      <a href="about.html">About</a>
+      <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+    </nav>
 
-  <span class="brand-copy">
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
 
-    <strong>
-      StateCrafter DCU
-    </strong>
-
-    <small>
-      Political Science Department
-    </small>
-
-  </span>
-
-</a>
-
-
-<nav class="nav">
-
-  <a href="../index.html">
-    Home
-  </a>
-
-  <a href="archive.html">
-    Academic Archive
-  </a>
-
-  <a
-    href="research.html"
-    class="active"
-  >
-    Research &amp; Articles
-  </a>
-
-  <a href="events.html">
-    Events
-  </a>
-
-  <a href="about.html">
-    About
-  </a>
-
-  <a
-    href="student-dashboard.html"
-    class="nav-login"
-  >
-    Dashboard
-  </a>
-
-</nav>
-
-
-<button
-  class="menu-toggle"
-  type="button"
-  aria-label="Open menu"
->
-  ☰
-</button>
-
-</div>
-
+  </div>
 </header>
 
 
-
-
-<!-- ===================================================== HERO ====================================================== -->
-
 <section class="research-hero">
 
-<div class="container">
+  <div class="container research-hero-inner">
 
-<p class="eyebrow">
-  RESEARCH &amp; ARTICLES
-</p>
+    <p class="eyebrow">
+      RESEARCH &amp; ARTICLES
+    </p>
 
-<h1>
-  Ideas Worth<br>
-  Reading.
-</h1>
+    <h1>
+      Ideas Worth<br>
+      Reading.
+    </h1>
 
-<p>
-  Explore research, academic writing and original articles
-  published by the StateCrafter DCU community.
-</p>
+    <p>
+      Explore research, academic writing and original
+      articles published by the StateCrafter DCU community.
+    </p>
 
-</div>
+  </div>
 
 </section>
 
-
-
-
-<!-- ===================================================== MAIN ====================================================== -->
 
 <main>
 
 <section class="research-section">
 
-<div class="container">
+  <div class="container">
 
+    <div class="research-toolbar">
 
-  <div class="research-toolbar">
+      <div class="research-heading">
 
-    <div>
+        <p class="eyebrow">
+          ACADEMIC PUBLICATIONS
+        </p>
 
-      <p class="eyebrow">
-        ACADEMIC PUBLICATIONS
-      </p>
+        <h2>
+          Latest Articles
+        </h2>
 
-      <h2>
-        Latest Articles
-      </h2>
+        <p>
+          Read published articles from students and contributors.
+        </p>
 
-      <p>
-        Read published articles from students and contributors.
-      </p>
+      </div>
+
+      <div class="research-actions">
+
+        <input
+          id="articleSearch"
+          class="article-search"
+          type="search"
+          placeholder="Search articles..."
+          autocomplete="off"
+          aria-label="Search articles"
+        >
+
+        <a
+          href="article-editor.html"
+          class="btn btn-primary write-article-btn"
+        >
+          Write an Article
+        </a>
+
+      </div>
 
     </div>
 
 
-    <div class="research-actions">
+    <div
+      id="categoryBar"
+      class="category-bar"
+      aria-label="Article categories"
+    >
 
-      <input
-        id="articleSearch"
-        class="article-search"
-        type="search"
-        placeholder="Search articles..."
-        aria-label="Search articles"
+      <button
+        class="category-btn active"
+        type="button"
+        data-category="all"
       >
+        All Articles
+      </button>
 
-      <a
-        href="article-editor.html"
-        class="btn btn-primary"
+      <button
+        class="category-btn"
+        type="button"
+        data-category="research"
       >
-        Write an Article
-      </a>
+        Research
+      </button>
+
+      <button
+        class="category-btn"
+        type="button"
+        data-category="analysis"
+      >
+        Analysis
+      </button>
+
+      <button
+        class="category-btn"
+        type="button"
+        data-category="opinion"
+      >
+        Opinion
+      </button>
+
+      <button
+        class="category-btn"
+        type="button"
+        data-category="academic"
+      >
+        Academic
+      </button>
+
+      <button
+        class="category-btn"
+        type="button"
+        data-category="other"
+      >
+        Other
+      </button>
 
     </div>
+
+
+    <div class="article-status">
+
+      <span id="resultCount">
+        Loading articles...
+      </span>
+
+      <span>
+        Published articles
+      </span>
+
+    </div>
+
+
+    <div
+      id="articleGrid"
+      class="article-grid"
+    >
+
+      <div class="loading-state">
+
+        <h3>
+          Loading Articles
+        </h3>
+
+        <p>
+          Please wait while the latest publications are loaded.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="pagination"
+      class="pagination"
+      aria-label="Article pagination"
+    ></div>
 
   </div>
-
-
-
-  <div id="articleContainer">
-
-    <div class="article-state">
-
-      <h3>
-        Loading Articles...
-      </h3>
-
-      <p>
-        Please wait while we load the latest publications.
-      </p>
-
-    </div>
-
-  </div>
-
-
-</div>
 
 </section>
 
 </main>
 
 
-
-
-<!-- ===================================================== ARTICLE MODAL ====================================================== -->
-
-<div id="articleModal" class="article-modal" role="dialog" aria-modal="true" aria-hidden="true" >
-
-<div class="article-modal-inner">
-
-<div class="article-modal-header">
-
-  <button
-    id="modalClose"
-    class="modal-close"
-    type="button"
-    aria-label="Close article"
-  >
-    ×
-  </button>
-
-
-  <p
-    id="modalType"
-    class="eyebrow"
-  >
-    ARTICLE
-  </p>
-
-
-  <h2 id="modalTitle">
-    Article
-  </h2>
-
-
-  <div
-    id="modalMeta"
-    class="article-modal-meta"
-  ></div>
-
-</div>
-
-
-<article
-  id="modalContent"
-  class="article-content"
-></article>
-
-</div>
-
-</div>
-
-
-
-
-<!-- ===================================================== FOOTER ====================================================== -->
-
 <footer class="site-footer">
 
-<div class="container footer-bottom">
+  <div class="container footer-bottom">
 
-<span>
-  © 2026 StateCrafter DCU
-</span>
+    <span>
+      © 2026 StateCrafter DCU
+    </span>
 
-<span>
-  Political Science Department • Dhaka Central University
-</span>
+    <span>
+      Political Science Department • Dhaka Central University
+    </span>
 
-</div>
+  </div>
 
 </footer>
 
-
-
-
-<script> /* ========================================================= SUPABASE ========================================================= */ const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co"; const SUPABASE_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"; const supabaseClient = window.supabase.createClient( SUPABASE_URL, SUPABASE_KEY ); /* ========================================================= DOM ========================================================= */ const articleContainer = document.getElementById( "articleContainer" ); const articleSearch = document.getElementById( "articleSearch" ); const articleModal = document.getElementById( "articleModal" ); const modalClose = document.getElementById( "modalClose" ); const modalTitle = document.getElementById( "modalTitle" ); const modalType = document.getElementById( "modalType" ); const modalMeta = document.getElementById( "modalMeta" ); const modalContent = document.getElementById( "modalContent" ); let allArticles = []; /* ========================================================= ESCAPE TEXT ========================================================= */ function escapeHTML( value ) { return String( value ?? "" ) .replace( /&/g, "&amp;" ) .replace( /</g, "&lt;" ) .replace( />/g, "&gt;" ) .replace( /"/g, "&quot;" ) .replace( /'/g, "&#039;" ); } /* ========================================================= DATE ========================================================= */ function formatDate( value ) { if (!value) { return "Date not available"; } const date = new Date(value); if ( Number.isNaN( date.getTime() ) ) { return "Date not available"; } return date.toLocaleDateString( "en-US", { year: "numeric", month: "long", day: "numeric" } ); } /* ========================================================= ARTICLE FIELD HELPERS ========================================================= */ function getArticleContent( article ) { return ( article.content || article.body || article.article_content || article.description || "" ); } function getArticleAuthor( article ) { return ( article.author_name || article.full_name || article.created_by_name || "StateCrafter Contributor" ); } function getArticleDate( article ) { return ( article.published_at || article.created_at || article.updated_at || null ); } function getArticleType( article ) { return ( article.article_type || article.type || "Article" ); } /* ========================================================= EXCERPT ========================================================= */ function createExcerpt( article ) { const content = getArticleContent( article ); const temporary = document.createElement( "div" ); temporary.innerHTML = content; const text = temporary.textContent || temporary.innerText || ""; const clean = text .replace( /\s+/g, " " ) .trim(); if ( clean.length <= 180 ) { return clean; } return ( clean.slice( 0, 180 ) + "..." ); } /* ========================================================= RENDER ARTICLES ========================================================= */ function renderArticles( articles ) { if ( !articles.length ) { articleContainer.innerHTML = ` <div class="article-state"> <h3> No Articles Found </h3> <p> There are no published articles matching your search. </p> </div> `; return; } articleContainer.innerHTML = ` <div class="article-grid"> ${articles.map( ( article, index ) => { const title = article.title || "Untitled Article"; const type = getArticleType( article ); const author = getArticleAuthor( article ); const date = getArticleDate( article ); const excerpt = createExcerpt( article ); return ` <article class="article-card" > <div class="article-cover" > <span class="article-type" > ${escapeHTML(type)} </span> </div> <div class="article-body" > <h3> ${escapeHTML(title)} </h3> <p class="article-excerpt" > ${escapeHTML( excerpt || "Read the full article to explore this publication." )} </p> <div class="article-meta" > <span class="article-author" > ${escapeHTML(author)} </span> <span> ${escapeHTML( formatDate(date) )} </span> </div> <a href="#" class="article-read" data-index="${index}" > Read Full Article → </a> </div> </article> `; } ).join("")} </div> `; articleContainer .querySelectorAll( ".article-read" ) .forEach( link => { link.addEventListener( "click", event => { event.preventDefault(); const index = Number( link.dataset.index ); openArticle( articles[index] ); } ); } ); } /* ========================================================= OPEN ARTICLE ========================================================= */ function openArticle( article ) { const title = article.title || "Untitled Article"; const type = getArticleType( article ); const author = getArticleAuthor( article ); const date = getArticleDate( article ); const content = getArticleContent( article ); modalTitle.textContent = title; modalType.textContent = type.toUpperCase(); modalMeta.textContent = `By ${author} • ${formatDate(date)}`; modalContent.innerHTML = content || "<p>No article content is available.</p>"; articleModal.classList.add( "open" ); articleModal.setAttribute( "aria-hidden", "false" ); document.body.style.overflow = "hidden"; } /* ========================================================= CLOSE ARTICLE ========================================================= */ function closeArticle() { articleModal.classList.remove( "open" ); articleModal.setAttribute( "aria-hidden", "true" ); document.body.style.overflow = ""; } modalClose.addEventListener( "click", closeArticle ); articleModal.addEventListener( "click", event => { if ( event.target === articleModal ) { closeArticle(); } } ); document.addEventListener( "keydown", event => { if ( event.key === "Escape" && articleModal.classList.contains( "open" ) ) { closeArticle(); } } ); /* ========================================================= SEARCH ========================================================= */ articleSearch.addEventListener( "input", () => { const query = articleSearch.value .trim() .toLowerCase(); if (!query) { renderArticles( allArticles ); return; } const filtered = allArticles.filter( article => { const title = String( article.title || "" ).toLowerCase(); const content = String( getArticleContent( article ) ).toLowerCase(); const author = String( getArticleAuthor( article ) ).toLowerCase(); return ( title.includes( query ) || content.includes( query ) || author.includes( query ) ); } ); renderArticles( filtered ); } ); /* ========================================================= LOAD ARTICLES ========================================================= */ async function loadArticles() { try { let response = await supabaseClient .from("articles") .select("*") .eq( "status", "published" ) .order( "created_at", { ascending: false } ); /* If status is not available, retry without the status filter. */ if ( response.error && /status/i.test( response.error.message || "" ) ) { response = await supabaseClient .from("articles") .select("*") .order( "created_at", { ascending: false } ); } if ( response.error ) { throw response.error; } allArticles = ( response.data || [] ).filter( article => { if ( article.status === undefined || article.status === null ) { return true; } return ( String( article.status ).toLowerCase() === "published" ); } ); renderArticles( allArticles ); } catch ( error ) { console.error( "Article loading error:", error ); articleContainer.innerHTML = ` <div class="article-state"> <h3> Could Not Load Articles </h3> <p> We could not load the published articles right now. Please refresh the page and try again. </p> </div> `; } } /* ========================================================= MOBILE MENU ========================================================= */ const menuToggle = document.querySelector( ".menu-toggle" ); const nav = document.querySelector( ".nav" ); if ( menuToggle && nav ) { menuToggle.addEventListener( "click", () => { nav.classList.toggle( "open" ); } ); } /* ========================================================= START ========================================================= */ loadArticles(); </script>
-
-</body>
-
-</html>
-
-dekho vibinno jaygay 
-amon ache  . ata bad diye fix kore dao
-Analysis paused
-Analysis paused
-
-হ্যাঁ, screenshot দেখে সমস্যাটা পরিষ্কার—``` এগুলো HTML page-এর ভেতরে literal text হিসেবে চলে এসেছে।
-
-আমি নতুন করে research.html বানিয়ে দিয়েছি এবং সব literal ``` সরিয়ে দিয়েছি। পাশাপাশি article rendering-এর জন্য HTML sanitization-ও রাখা হয়েছে।
-
-Download the fixed research.html
-
-এটা দিয়ে তোমার পুরোনো research.html পুরো replace করো। তারপর Netlify-তে নতুন deploy দিলে ওই ``` আর দেখাবে না।
-
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research & Articles | StateCrafter DCU</title>
-<link rel="stylesheet" href="../style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-<style>
-.research-hero{background:linear-gradient(135deg,#f7f5f0 0%,#fff 55%,#eef2f8 100%);border-bottom:1px solid var(--line);padding:60px 0 52px}
-.research-hero h1{margin:0;color:var(--navy);font-size:clamp(44px,6vw,72px);line-height:.96;letter-spacing:-.055em}
-.research-hero p:not(.eyebrow){max-width:720px;margin:20px 0 0;color:var(--muted);font-size:16px;line-height:1.7}
-.research-section{padding:60px 0 90px}
-.research-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:25px;margin-bottom:32px}
-.research-toolbar h2{margin:0;color:var(--navy);font-size:30px;line-height:1.2}
-.research-toolbar p:not(.eyebrow){margin:7px 0 0;color:var(--muted);font-size:13px}
-.research-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.article-search{width:280px;height:46px;padding:0 15px;border:1px solid #d8dde5;border-radius:12px;background:#fff;color:var(--ink);font:inherit;font-size:13px;outline:none}
-.article-search:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,43,82,.07)}
-.article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.article-card{display:flex;flex-direction:column;min-height:365px;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 35px rgba(18,43,82,.055);transition:transform .22s ease,box-shadow .22s ease}
-.article-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(18,43,82,.11)}
-.article-cover{position:relative;min-height:155px;display:flex;align-items:flex-end;padding:20px;background:linear-gradient(135deg,#122b52 0%,#234773 58%,#9f1d20 100%)}
-.article-cover:after{content:"";position:absolute;width:150px;height:150px;right:-45px;top:-55px;border:1px solid rgba(255,255,255,.12);border-radius:50%}
-.article-type{position:relative;z-index:2;display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-.article-body{display:flex;flex-direction:column;flex:1;padding:22px}
-.article-body h3{margin:0;color:var(--navy);font-size:21px;line-height:1.3}
-.article-excerpt{margin:11px 0 0;color:var(--muted);font-size:13px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.article-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:18px;color:var(--muted);font-size:10px}
-.article-author{font-weight:800;color:var(--navy)}
-.article-read{display:inline-block;margin-top:14px;color:var(--navy);font-size:12px;font-weight:900;text-decoration:none}
-.article-read:hover{color:var(--red)}
-.article-state{padding:60px 25px;text-align:center;border:1px dashed #d4dbe4;border-radius:20px;background:#fafbfc}
-.article-state h3{margin:0;color:var(--navy);font-size:21px}
-.article-state p{max-width:520px;margin:10px auto 0;color:var(--muted);font-size:13px;line-height:1.65}
-.article-modal{display:none;position:fixed;inset:0;z-index:9999;padding:30px 15px;background:rgba(7,17,31,.72);overflow-y:auto}
-.article-modal.open{display:block}
-.article-modal-inner{width:min(920px,100%);margin:0 auto;overflow:hidden;background:#fff;border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.25)}
-.article-modal-header{position:relative;padding:32px 36px 28px;background:linear-gradient(135deg,#f7f5f0,#eef2f8);border-bottom:1px solid var(--line)}
-.article-modal-header h2{max-width:780px;margin:10px 45px 0 0;color:var(--navy);font-size:clamp(30px,4vw,46px);line-height:1.1;letter-spacing:-.04em}
-.article-modal-meta{margin-top:13px;color:var(--muted);font-size:12px}
-.modal-close{position:absolute;top:24px;right:24px;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:50%;background:rgba(18,43,82,.08);color:var(--navy);cursor:pointer;font-size:22px}
-.article-content{padding:38px;color:#27354a;font-size:16px;line-height:1.85;overflow-wrap:anywhere}
-.article-content p{margin:0 0 1.1em}
-.article-content h1,.article-content h2,.article-content h3,.article-content h4{color:var(--navy);line-height:1.25;margin:1.5em 0 .6em}
-.article-content a{color:#17539c;text-decoration:underline}
-.article-content img{display:block;max-width:100%;height:auto;margin:25px auto;border-radius:13px}
-.article-content blockquote{margin:25px 0;padding:16px 20px;background:#f7f5f0;border-left:4px solid var(--red);border-radius:0 10px 10px 0;color:#536075}
-.article-content ul,.article-content ol{padding-left:26px}
-.article-content pre{max-width:100%;overflow-x:auto;padding:15px;background:#f4f6f9;border-radius:10px}
-@media(max-width:950px){.article-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){.research-toolbar{align-items:stretch;flex-direction:column}.research-actions{width:100%}.article-search{width:100%}}
-@media(max-width:620px){.research-section{padding:45px 0 65px}.article-grid{grid-template-columns:1fr}.article-cover{min-height:135px}.article-modal{padding:12px}.article-modal-header{padding:25px 22px}.article-content{padding:25px 22px;font-size:15px}}
-</style>
-</head>
-<body>
-
-<header class="site-header">
-<div class="container nav-wrap">
-<a class="brand" href="../index.html">
-<img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
-<span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
-</a>
-<nav class="nav">
-<a href="../index.html">Home</a>
-<a href="archive.html">Academic Archive</a>
-<a href="research.html" class="active">Research &amp; Articles</a>
-<a href="events.html">Events</a>
-<a href="about.html">About</a>
-<a href="student-dashboard.html" class="nav-login">Dashboard</a>
-</nav>
-<button class="menu-toggle" type="button" aria-label="Open menu">☰</button>
-</div>
-</header>
-
-<section class="research-hero">
-<div class="container">
-<p class="eyebrow">RESEARCH &amp; ARTICLES</p>
-<h1>Ideas Worth<br>Reading.</h1>
-<p>Explore research, academic writing and original articles published by the StateCrafter DCU community.</p>
-</div>
-</section>
-
-<main>
-<section class="research-section">
-<div class="container">
-
-<div class="research-toolbar">
-<div>
-<p class="eyebrow">ACADEMIC PUBLICATIONS</p>
-<h2>Latest Articles</h2>
-<p>Read published articles from students and contributors.</p>
-</div>
-<div class="research-actions">
-<input id="articleSearch" class="article-search" type="search" placeholder="Search articles..." aria-label="Search articles">
-<a href="article-editor.html" class="btn btn-primary">Write an Article</a>
-</div>
-</div>
-
-<div id="articleContainer">
-<div class="article-state">
-<h3>Loading Articles...</h3>
-<p>Please wait while we load the latest publications.</p>
-</div>
-</div>
-
-</div>
-</section>
-</main>
-
-<div id="articleModal" class="article-modal" role="dialog" aria-modal="true" aria-hidden="true">
-<div class="article-modal-inner">
-<div class="article-modal-header">
-<button id="modalClose" class="modal-close" type="button" aria-label="Close article">×</button>
-<p id="modalType" class="eyebrow">ARTICLE</p>
-<h2 id="modalTitle">Article</h2>
-<div id="modalMeta" class="article-modal-meta"></div>
-</div>
-<article id="modalContent" class="article-content"></article>
-</div>
-</div>
-
-<footer class="site-footer">
-<div class="container footer-bottom">
-<span>© 2026 StateCrafter DCU</span>
-<span>Political Science Department • Dhaka Central University</span>
-</div>
-</footer>
 
 <script>
-const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co";
-const SUPABASE_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const articleContainer = document.getElementById("articleContainer");
-const articleSearch = document.getElementById("articleSearch");
-const articleModal = document.getElementById("articleModal");
-const modalClose = document.getElementById("modalClose");
-const modalTitle = document.getElementById("modalTitle");
-const modalType = document.getElementById("modalType");
-const modalMeta = document.getElementById("modalMeta");
-const modalContent = document.getElementById("modalContent");
+const SUPABASE_URL =
+  "https://psqwnvgruyfgdoukvpid.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+const articleGrid =
+  document.getElementById(
+    "articleGrid"
+  );
+
+const articleSearch =
+  document.getElementById(
+    "articleSearch"
+  );
+
+const categoryBar =
+  document.getElementById(
+    "categoryBar"
+  );
+
+const resultCount =
+  document.getElementById(
+    "resultCount"
+  );
+
+const pagination =
+  document.getElementById(
+    "pagination"
+  );
+
+
+const ARTICLES_PER_PAGE = 9;
 
 let allArticles = [];
 
+let filteredArticles = [];
+
+let currentCategory = "all";
+
+let currentPage = 1;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
 function escapeHTML(value) {
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
+
+
+function stripHTML(value) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.innerHTML =
+    value || "";
+
+  return (
+    div.textContent ||
+    div.innerText ||
+    ""
+  )
+
+    .replace(
+      /\s+/g,
+      " "
+    )
+
+    .trim();
+
+}
+
 
 function formatDate(value) {
-if (!value) return "Date not available";
-const date = new Date(value);
-if (Number.isNaN(date.getTime())) return "Date not available";
-return date.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+
+  if (!value) {
+
+    return "Date unavailable";
+
+  }
+
+
+  const date =
+    new Date(
+      value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "Date unavailable";
+
+  }
+
+
+  return date.toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  );
+
 }
 
-function getArticleContent(article) {
-return article.content || article.body || article.article_content || article.description || "";
+
+function getTitle(article) {
+
+  return (
+    article.title ||
+    "Untitled Article"
+  );
+
 }
 
-function getArticleAuthor(article) {
-return article.author_name || article.full_name || article.created_by_name || article.student_name || "StateCrafter Contributor";
+
+function getAuthor(article) {
+
+  return (
+    article.author_name ||
+    article.full_name ||
+    article.student_name ||
+    article.created_by_name ||
+    "StateCrafter Contributor"
+  );
+
 }
 
-function getArticleDate(article) {
-return article.published_at || article.created_at || article.updated_at || null;
+
+function getDate(article) {
+
+  return (
+    article.published_at ||
+    article.created_at ||
+    article.updated_at ||
+    null
+  );
+
 }
 
-function getArticleType(article) {
-return article.article_type || article.type || "Article";
+
+function getContent(article) {
+
+  return (
+    article.content ||
+    article.body ||
+    article.article_content ||
+    article.description ||
+    ""
+  );
+
 }
 
-function createExcerpt(article) {
-const temporary = document.createElement("div");
-temporary.innerHTML = DOMPurify.sanitize(getArticleContent(article));
-const text = temporary.textContent || temporary.innerText || "";
-const clean = text.replace(/\s+/g," ").trim();
-return clean.length <= 180 ? clean : clean.slice(0,180) + "...";
+
+function getExcerpt(article) {
+
+  const source =
+    article.excerpt ||
+    article.summary ||
+    article.subtitle ||
+    article.description ||
+    getContent(article);
+
+  const clean =
+    stripHTML(
+      source
+    );
+
+  if (
+    clean.length <= 190
+  ) {
+
+    return clean;
+
+  }
+
+
+  return (
+    clean.slice(
+      0,
+      187
+    ) +
+    "..."
+  );
+
 }
 
-function renderArticles(articles) {
-if (!articles.length) {
-articleContainer.innerHTML = '<div class="article-state"><h3>No Articles Found</h3><p>There are no published articles matching your search.</p></div>';
-return;
+
+function getCategory(article) {
+
+  const raw =
+    article.category ||
+    article.article_category ||
+    article.article_type ||
+    article.type ||
+    "other";
+
+  const normalized =
+    String(
+      raw
+    )
+      .trim()
+      .toLowerCase();
+
+  if (
+    normalized.includes(
+      "research"
+    )
+  ) {
+
+    return "research";
+
+  }
+
+  if (
+    normalized.includes(
+      "analysis"
+    )
+  ) {
+
+    return "analysis";
+
+  }
+
+  if (
+    normalized.includes(
+      "opinion"
+    )
+  ) {
+
+    return "opinion";
+
+  }
+
+  if (
+    normalized.includes(
+      "academic"
+    )
+  ) {
+
+    return "academic";
+
+  }
+
+  return "other";
+
 }
 
-articleContainer.innerHTML = '<div class="article-grid">' +
-articles.map((article,index) => {
-const title = article.title || "Untitled Article";
-const type = getArticleType(article);
-const author = getArticleAuthor(article);
-const date = getArticleDate(article);
-const excerpt = createExcerpt(article);
 
-return '<article class="article-card">' +
-'<div class="article-cover"><span class="article-type">' + escapeHTML(type) + '</span></div>' +
-'<div class="article-body">' +
-'<h3>' + escapeHTML(title) + '</h3>' +
-'<p class="article-excerpt">' + escapeHTML(excerpt || "Read the full article to explore this publication.") + '</p>' +
-'<div class="article-meta"><span class="article-author">' + escapeHTML(author) + '</span><span>' + escapeHTML(formatDate(date)) + '</span></div>' +
-'<a href="#" class="article-read" data-index="' + index + '">Read Full Article →</a>' +
-'</div></article>';
-}).join("") +
-'</div>';
+function getCategoryLabel(
+  category
+) {
 
-articleContainer.querySelectorAll(".article-read").forEach(link => {
-link.addEventListener("click",event => {
-event.preventDefault();
-openArticle(articles[Number(link.dataset.index)]);
-});
-});
+  const labels = {
+
+    research:
+      "Research",
+
+    analysis:
+      "Analysis",
+
+    opinion:
+      "Opinion",
+
+    academic:
+      "Academic",
+
+    other:
+      "Article"
+
+  };
+
+
+  return (
+    labels[
+      category
+    ] ||
+    "Article"
+  );
+
 }
 
-function openArticle(article) {
-modalTitle.textContent = article.title || "Untitled Article";
-modalType.textContent = String(getArticleType(article)).toUpperCase();
-modalMeta.textContent = "By " + getArticleAuthor(article) + " • " + formatDate(getArticleDate(article));
 
-modalContent.innerHTML = DOMPurify.sanitize(
-getArticleContent(article) || "<p>No article content is available.</p>",
-{ADD_ATTR:["target","rel"]}
+/* =========================================================
+   ARTICLE CARD
+========================================================= */
+
+function createArticleCard(
+  article
+) {
+
+  const id =
+    article.id;
+
+
+  const title =
+    escapeHTML(
+      getTitle(
+        article
+      )
+    );
+
+
+  const excerpt =
+    escapeHTML(
+      getExcerpt(
+        article
+      )
+    );
+
+
+  const author =
+    escapeHTML(
+      getAuthor(
+        article
+      )
+    );
+
+
+  const date =
+    escapeHTML(
+      formatDate(
+        getDate(
+          article
+        )
+      )
+    );
+
+
+  const category =
+    getCategory(
+      article
+    );
+
+
+  const categoryLabel =
+    escapeHTML(
+      getCategoryLabel(
+        category
+      )
+    );
+
+
+  const course =
+    article.course_name ||
+    article.course ||
+    "";
+
+
+  const campus =
+    article.campus ||
+    article.target_campus ||
+    "";
+
+
+  return `
+
+    <article
+      class="article-card"
+      data-category="${escapeHTML(category)}"
+    >
+
+      <div class="article-card-top">
+
+        <span class="article-badge">
+          ${categoryLabel}
+        </span>
+
+        <span class="article-date">
+          ${date}
+        </span>
+
+      </div>
+
+
+      <h3>
+        ${title}
+      </h3>
+
+
+      <p class="article-excerpt">
+        ${excerpt || "Read the full article to explore this publication."}
+      </p>
+
+
+      <div class="article-card-meta">
+
+        <span>
+          By
+          <strong>
+            ${author}
+          </strong>
+        </span>
+
+        ${
+          course
+            ? `
+              <span>
+                ${escapeHTML(course)}
+              </span>
+            `
+            : ""
+        }
+
+        ${
+          campus
+            ? `
+              <span>
+                ${escapeHTML(campus)}
+              </span>
+            `
+            : ""
+        }
+
+      </div>
+
+
+      <div class="article-card-actions">
+
+        <a
+          class="article-read"
+          href="article-view.html?id=${encodeURIComponent(id)}"
+          aria-label="Read ${title}"
+        >
+          Read Full Article
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function applyFilters() {
+
+  const searchTerm =
+    articleSearch
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  filteredArticles =
+    allArticles.filter(
+      article => {
+
+        const category =
+          getCategory(
+            article
+          );
+
+
+        const searchableText =
+          [
+            getTitle(article),
+            getAuthor(article),
+            getExcerpt(article),
+            article.course_name || "",
+            article.course || "",
+            article.campus || "",
+            article.target_campus || "",
+            category,
+            getCategoryLabel(category)
+          ]
+
+            .join(" ")
+            .toLowerCase();
+
+
+        const matchesSearch =
+          !searchTerm ||
+          searchableText.includes(
+            searchTerm
+          );
+
+
+        const matchesCategory =
+          currentCategory === "all" ||
+          category === currentCategory;
+
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+
+      }
+    );
+
+
+  currentPage = 1;
+
+  renderArticles();
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderArticles() {
+
+  const total =
+    filteredArticles.length;
+
+
+  resultCount.textContent =
+    total === 1
+      ? "1 article found"
+      : `${total} articles found`;
+
+
+  if (!total) {
+
+    articleGrid.innerHTML = `
+
+      <div class="empty-state">
+
+        <h3>
+          No Articles Found
+        </h3>
+
+        <p>
+          ${
+            articleSearch.value.trim() ||
+            currentCategory !== "all"
+              ? "Try a different search term or category."
+              : "Published articles will appear here after approval."
+          }
+        </p>
+
+      </div>
+
+    `;
+
+    pagination.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  const totalPages =
+    Math.ceil(
+      total /
+      ARTICLES_PER_PAGE
+    );
+
+
+  if (
+    currentPage >
+    totalPages
+  ) {
+
+    currentPage =
+      totalPages;
+
+  }
+
+
+  const start =
+    (
+      currentPage -
+      1
+    ) *
+    ARTICLES_PER_PAGE;
+
+
+  const visibleArticles =
+    filteredArticles.slice(
+      start,
+      start +
+      ARTICLES_PER_PAGE
+    );
+
+
+  articleGrid.innerHTML =
+    visibleArticles
+      .map(
+        createArticleCard
+      )
+      .join("");
+
+
+  renderPagination(
+    totalPages
+  );
+
+}
+
+
+function renderPagination(
+  totalPages
+) {
+
+  if (
+    totalPages <= 1
+  ) {
+
+    pagination.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  let html = `
+
+    <button
+      class="page-btn"
+      type="button"
+      data-page="${currentPage - 1}"
+      ${currentPage === 1 ? "disabled" : ""}
+      aria-label="Previous page"
+    >
+      ←
+    </button>
+
+  `;
+
+
+  for (
+    let page = 1;
+    page <= totalPages;
+    page++
+  ) {
+
+    html += `
+
+      <button
+        class="page-btn ${
+          page === currentPage
+            ? "active"
+            : ""
+        }"
+        type="button"
+        data-page="${page}"
+        aria-label="Page ${page}"
+        ${
+          page === currentPage
+            ? 'aria-current="page"'
+            : ""
+        }
+      >
+        ${page}
+      </button>
+
+    `;
+
+  }
+
+
+  html += `
+
+    <button
+      class="page-btn"
+      type="button"
+      data-page="${currentPage + 1}"
+      ${currentPage === totalPages ? "disabled" : ""}
+      aria-label="Next page"
+    >
+      →
+    </button>
+
+  `;
+
+
+  pagination.innerHTML =
+    html;
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+articleSearch.addEventListener(
+  "input",
+  () => {
+
+    applyFilters();
+
+  }
 );
 
-modalContent.querySelectorAll("a").forEach(link => {
-link.setAttribute("target","_blank");
-link.setAttribute("rel","noopener noreferrer");
-});
 
-articleModal.classList.add("open");
-articleModal.setAttribute("aria-hidden","false");
-document.body.style.overflow = "hidden";
-}
+categoryBar.addEventListener(
+  "click",
+  event => {
 
-function closeArticle() {
-articleModal.classList.remove("open");
-articleModal.setAttribute("aria-hidden","true");
-document.body.style.overflow = "";
-}
+    const button =
+      event.target.closest(
+        ".category-btn"
+      );
 
-modalClose.addEventListener("click",closeArticle);
 
-articleModal.addEventListener("click",event => {
-if (event.target === articleModal) closeArticle();
-});
+    if (!button) {
 
-document.addEventListener("keydown",event => {
-if (event.key === "Escape" && articleModal.classList.contains("open")) closeArticle();
-});
+      return;
 
-articleSearch.addEventListener("input",() => {
-const query = articleSearch.value.trim().toLowerCase();
+    }
 
-if (!query) {
-renderArticles(allArticles);
-return;
-}
 
-const filtered = allArticles.filter(article => {
-const title = String(article.title || "").toLowerCase();
-const content = String(getArticleContent(article)).toLowerCase();
-const author = String(getArticleAuthor(article)).toLowerCase();
-return title.includes(query) || content.includes(query) || author.includes(query);
-});
+    currentCategory =
+      button.dataset.category ||
+      "all";
 
-renderArticles(filtered);
-});
+
+    document
+      .querySelectorAll(
+        ".category-btn"
+      )
+      .forEach(
+        item => {
+
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+
+        }
+      );
+
+
+    applyFilters();
+
+  }
+);
+
+
+pagination.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        ".page-btn"
+      );
+
+
+    if (
+      !button ||
+      button.disabled
+    ) {
+
+      return;
+
+    }
+
+
+    const page =
+      Number(
+        button.dataset.page
+      );
+
+
+    if (
+      !Number.isFinite(page) ||
+      page < 1
+    ) {
+
+      return;
+
+    }
+
+
+    currentPage =
+      page;
+
+
+    renderArticles();
+
+
+    window.scrollTo({
+      top:
+        document
+          .querySelector(
+            ".research-section"
+          )
+          .offsetTop -
+        20,
+
+      behavior:
+        "smooth"
+
+    });
+
+  }
+);
+
+
+/* =========================================================
+   LOAD ARTICLES
+========================================================= */
 
 async function loadArticles() {
-try {
-let response = await supabaseClient
-.from("articles")
-.select("*")
-.eq("status","published")
-.order("created_at",{ascending:false});
 
-if (response.error && /status/i.test(response.error.message || "")) {
-response = await supabaseClient
-.from("articles")
-.select("*")
-.order("created_at",{ascending:false});
+  articleGrid.innerHTML = `
+
+    <div class="loading-state">
+
+      <h3>
+        Loading Articles
+      </h3>
+
+      <p>
+        Please wait while the latest publications are loaded.
+      </p>
+
+    </div>
+
+  `;
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from(
+          "articles"
+        )
+
+        .select(
+          "*"
+        )
+
+        .eq(
+          "status",
+          "published"
+        )
+
+        .order(
+          "published_at",
+          {
+            ascending:
+              false
+          }
+        );
+
+
+    if (
+      error
+    ) {
+
+      throw error;
+
+    }
+
+
+    allArticles =
+      Array.isArray(
+        data
+      )
+        ? data
+        : [];
+
+
+    /*
+      Some existing article rows may not have
+      published_at. Keep them usable by falling
+      back to created_at during display.
+    */
+
+    allArticles.sort(
+      (
+        a,
+        b
+      ) => {
+
+        const dateA =
+          new Date(
+            getDate(a) ||
+            0
+          ).getTime();
+
+
+        const dateB =
+          new Date(
+            getDate(b) ||
+            0
+          ).getTime();
+
+
+        return (
+          dateB -
+          dateA
+        );
+
+      }
+    );
+
+
+    applyFilters();
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Research page error:",
+      error
+    );
+
+
+    resultCount.textContent =
+      "Unable to load articles";
+
+
+    articleGrid.innerHTML = `
+
+      <div class="error-state">
+
+        <h3>
+          Could Not Load Articles
+        </h3>
+
+        <p>
+          Please refresh the page and try again.
+          If the problem continues, check the articles
+          table and its Row Level Security policies.
+        </p>
+
+      </div>
+
+    `;
+
+    pagination.innerHTML =
+      "";
+
+  }
+
 }
 
-if (response.error) throw response.error;
 
-allArticles = (response.data || []).filter(article => {
-if (article.status === undefined || article.status === null) return true;
-return String(article.status).toLowerCase() === "published";
-});
+/* =========================================================
+   MOBILE MENU
+========================================================= */
 
-renderArticles(allArticles);
+const menuToggle =
+  document.querySelector(
+    ".menu-toggle"
+  );
 
-} catch (error) {
-console.error("Article loading error:",error);
-articleContainer.innerHTML = '<div class="article-state"><h3>Could Not Load Articles</h3><p>We could not load the published articles right now. Please refresh the page and try again.</p></div>';
+
+const nav =
+  document.querySelector(
+    ".nav"
+  );
+
+
+if (
+  menuToggle &&
+  nav
+) {
+
+  menuToggle.addEventListener(
+    "click",
+    () => {
+
+      nav.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
 }
-}
 
-const menuToggle = document.querySelector(".menu-toggle");
-const nav = document.querySelector(".nav");
 
-if (menuToggle && nav) {
-menuToggle.addEventListener("click",() => {
-nav.classList.toggle("open");
-});
-}
+/* =========================================================
+   START
+========================================================= */
 
 loadArticles();
+
 </script>
-  
+
 </body>
 </html>
