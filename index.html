@@ -32,10 +32,12 @@
     .about-home{display:grid;grid-template-columns:1fr .8fr;gap:25px;align-items:stretch}.about-copy,.dcu-card{padding:34px;border:1px solid var(--home-line);border-radius:24px;background:#fff;box-shadow:0 10px 35px rgba(16,42,67,.045)}.about-copy h2{margin:0;color:var(--home-navy);font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em}.about-copy p{max-width:760px;color:var(--home-muted);font-size:14px;line-height:1.8}.about-copy .mini-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.mini-link{padding:9px 11px;border-radius:9px;background:#f3f6f9;color:var(--home-navy);font-size:9px;font-weight:900}.dcu-card{background:linear-gradient(145deg,#102a43,#193f5f);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.dcu-card img{width:130px;margin-bottom:20px;filter:drop-shadow(0 15px 22px rgba(0,0,0,.22))}.dcu-card h3{margin:0;color:#fff;font-size:24px}.dcu-card p{margin:8px 0 0;color:rgba(255,255,255,.72);font-size:11px;line-height:1.6}
     .home-cta{position:relative;overflow:hidden;padding:55px 0;background:var(--home-red);color:#fff}.home-cta:after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-90px;top:-140px;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 30px rgba(255,255,255,.035)}.cta-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:25px}.cta-inner h2{margin:0;color:#fff;font-size:clamp(28px,4vw,44px);letter-spacing:-.04em}.cta-inner p{max-width:620px;margin:9px 0 0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.65}.cta-actions{display:flex;flex-wrap:wrap;gap:8px}.cta-actions .home-btn{border-color:rgba(255,255,255,.25)}
     .loading-home{padding:35px;text-align:center;color:var(--home-muted);font-size:10px}.empty-home{padding:35px;text-align:center;color:var(--home-muted);font-size:10px}.error-home{padding:25px;color:var(--home-muted);font-size:10px}
+    .mobile-hero-brand{display:none}
+    .home-footer{background:#081a2c;color:#fff;padding:64px 0 24px;border-top:1px solid rgba(255,255,255,.08)}.footer-main-grid{display:grid;grid-template-columns:1.65fr .85fr .95fr 1fr;gap:38px}.footer-brand{display:inline-flex;align-items:center;gap:13px}.footer-brand img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}.footer-brand strong{display:block;color:#fff;font-size:22px;letter-spacing:-.035em}.footer-brand strong em{font-style:normal;background:linear-gradient(90deg,#f4b4b7,#ffd978,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.footer-brand small{display:block;margin-top:3px;color:rgba(255,255,255,.56);font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.footer-brand-block p{max-width:430px;margin:18px 0 0;color:rgba(255,255,255,.62);font-size:11px;line-height:1.8}.footer-socials{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.footer-socials a{padding:8px 10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;color:rgba(255,255,255,.78);font-size:9px;font-weight:850;transition:.2s ease}.footer-socials a:hover{color:#fff;border-color:rgba(255,255,255,.3);transform:translateY(-2px)}.footer-col h3{margin:2px 0 14px;color:#fff;font-size:12px;letter-spacing:.04em}.footer-col a{display:block;width:max-content;max-width:100%;margin:0 0 10px;color:rgba(255,255,255,.58);font-size:10px;line-height:1.45;transition:.2s ease}.footer-col a:hover{color:#fff;transform:translateX(3px)}.footer-divider{height:1px;margin:42px 0 18px;background:rgba(255,255,255,.1)}.footer-bottom-pro{display:flex;justify-content:space-between;gap:20px;color:rgba(255,255,255,.42);font-size:8px;line-height:1.7}.footer-bottom-pro a{color:rgba(255,255,255,.72);font-weight:800}.footer-bottom-pro a:hover{color:#fff}
     .mobile-only-menu{display:none}
-    @media(max-width:1100px){.quick-grid{grid-template-columns:repeat(2,1fr)}.campus-grid{grid-template-columns:repeat(4,1fr)}.hero-grid{grid-template-columns:1fr}.hero-visual{display:none}.content-grid,.about-home{grid-template-columns:1fr}}
-    @media(max-width:760px){.home-hero{min-height:auto;padding:68px 0 58px}.hero-copy{font-size:15px}.home-section,.campus-section{padding:58px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:22px}.quick-grid{grid-template-columns:1fr}.campus-grid{grid-template-columns:repeat(2,1fr)}.cta-inner{align-items:flex-start;flex-direction:column}.marquee-item{padding:15px 20px;font-size:9px}.home-item{grid-template-columns:68px minmax(0,1fr)}.thumb{width:68px;height:58px}.panel-head{padding:20px}.about-copy,.dcu-card{padding:25px}}
-    @media(max-width:480px){.campus-grid{grid-template-columns:1fr 1fr}.hero-title{font-size:45px}.home-btn{width:100%}.hero-actions{display:grid;grid-template-columns:1fr}.item-top{align-items:flex-start;flex-direction:column;gap:3px}}
+    @media(max-width:1100px){.quick-grid{grid-template-columns:repeat(2,1fr)}.campus-grid{grid-template-columns:repeat(4,1fr)}.hero-grid{grid-template-columns:1fr}.hero-visual{display:none}.content-grid,.about-home{grid-template-columns:1fr}.footer-main-grid{grid-template-columns:1.5fr 1fr 1fr}.footer-col:last-child{grid-column:auto}}
+    @media(max-width:760px){.home-hero{min-height:auto;padding:36px 0 58px}.hero-copy{font-size:15px}.home-section,.campus-section{padding:58px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:22px}.quick-grid{grid-template-columns:1fr}.campus-grid{grid-template-columns:repeat(2,1fr)}.cta-inner{align-items:flex-start;flex-direction:column}.marquee-item{padding:15px 20px;font-size:9px}.home-item{grid-template-columns:68px minmax(0,1fr)}.thumb{width:68px;height:58px}.panel-head{padding:20px}.about-copy,.dcu-card{padding:25px}.mobile-hero-brand{display:flex;flex-direction:column;align-items:center;text-align:center;margin:0 0 28px}.mobile-logo-orbit{position:relative;width:118px;height:118px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 12px rgba(255,255,255,.025),0 18px 50px rgba(0,0,0,.22);animation:mobileLogoFloat 5s ease-in-out infinite}.mobile-logo-orbit:before{content:"";position:absolute;inset:-8px;border:1px dashed rgba(255,255,255,.25);border-radius:50%;animation:spin 18s linear infinite}.mobile-logo-orbit:after{content:"";position:absolute;top:4px;left:50%;width:7px;height:7px;border-radius:50%;background:#ffd978;box-shadow:0 0 16px #ffd978;transform:translateX(-50%)}.mobile-logo-orbit img{width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.28))}.mobile-brand-name{margin-top:18px;font-size:34px;font-weight:950;line-height:1;letter-spacing:-.055em}.mobile-brand-name span:first-child{color:#fff}.mobile-brand-name span:nth-child(2){background:linear-gradient(90deg,#f4b4b7,#ffd978,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.mobile-brand-name b{color:#fff;font-weight:950}.mobile-hero-brand small{margin-top:8px;color:rgba(255,255,255,.62);font-size:8px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}@keyframes mobileLogoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}.footer-main-grid{grid-template-columns:1fr 1fr;gap:30px}.footer-brand-block{grid-column:1/-1}.footer-bottom-pro{flex-direction:column;gap:7px}}
+    @media(max-width:480px){.campus-grid{grid-template-columns:1fr 1fr}.hero-title{font-size:43px}.mobile-brand-name{font-size:31px}.home-btn{width:100%}.hero-actions{display:grid;grid-template-columns:1fr}.item-top{align-items:flex-start;flex-direction:column;gap:3px}}
   </style>
 </head>
 <body>
@@ -62,6 +64,11 @@
     <section class="home-hero">
       <span class="hero-orb orb1"></span><span class="hero-orb orb2"></span><span class="hero-orb orb3"></span><span class="hero-orb orb4"></span>
       <div class="container hero-grid">
+        <div class="mobile-hero-brand" aria-label="StateCrafter DCU">
+          <div class="mobile-logo-orbit"><img src="assets/statecrafter-logo.png" alt="StateCrafter DCU logo"></div>
+          <div class="mobile-brand-name"><span>State</span><span>Crafter</span> <b>DCU</b></div>
+          <small>Political Science Department</small>
+        </div>
         <div>
           <p class="hero-kicker">Knowledge · Research · Community</p>
           <h1 class="hero-title">Political Science,<br><span class="accent">connected.</span></h1>
@@ -176,8 +183,31 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-bottom"><span>© 2026 StateCrafter DCU</span><span>Political Science Department • Dhaka Central University</span></div>
+  <footer class="home-footer">
+    <div class="container">
+      <div class="footer-main-grid">
+        <div class="footer-brand-block">
+          <a class="footer-brand" href="index.html">
+            <img src="assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
+            <span><strong>StateCrafter <em>DCU</em></strong><small>Political Science Department</small></span>
+          </a>
+          <p>A student-focused academic platform connecting Political Science learners, researchers and campus communities across the seven campuses of Dhaka Central University.</p>
+          <div class="footer-socials">
+            <a href="mailto:statecrafterdcu@gmail.com" aria-label="Email StateCrafter DCU">✉ Email</a>
+            <a href="pages/about.html">About DCU</a>
+            <a href="pages/events.html">Events</a>
+          </div>
+        </div>
+        <div class="footer-col"><h3>Explore</h3><a href="index.html">Home</a><a href="pages/archive.html">Academic Archive</a><a href="pages/research.html">Research &amp; Articles</a><a href="pages/events.html">Events</a><a href="pages/about.html">About</a></div>
+        <div class="footer-col"><h3>Community</h3><a href="pages/student-dashboard.html">Student Dashboard</a><a href="pages/login.html">Login</a><a href="pages/register.html">Create Account</a><a href="pages/about.html#campuses">Seven Campuses</a><a href="mailto:statecrafterdcu@gmail.com">Suggestions &amp; Complaints</a></div>
+        <div class="footer-col"><h3>Institution</h3><a href="pages/about.html#dcu">Dhaka Central University</a><a href="pages/about.html#campuses">Political Science</a><a href="mailto:statecrafterdcu@gmail.com">statecrafterdcu@gmail.com</a><a href="https://www.facebook.com/JahidurNayeem" target="_blank" rel="noopener">Website Designer</a></div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom-pro">
+        <span>© 2026 StateCrafter DCU. All rights reserved.</span>
+        <span>Designed by <a href="https://www.facebook.com/JahidurNayeem" target="_blank" rel="noopener">JAHIDUR RAHMAN NAYEEM</a> · Department of Political Science 24–25, Titumir College Campus</span>
+      </div>
+    </div>
   </footer>
 </div>
 
