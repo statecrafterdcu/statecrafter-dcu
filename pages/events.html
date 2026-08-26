@@ -563,16 +563,16 @@
         </span>
       </a>
 
-      <nav class="nav" aria-label="Main navigation">
+      <button id="mobileMenu" class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+
+      <nav id="mainNav" class="nav" aria-label="Main navigation">
         <a href="../index.html">Home</a>
         <a href="archive.html">Academic Archive</a>
         <a href="research.html">Research &amp; Articles</a>
-        <a href="events.html" aria-current="page">Events</a>
-        <a href="student-dashboard.html">Student Dashboard</a>
+        <a href="events.html" class="active" aria-current="page">Events</a>
+        <a href="about.html">About</a>
         <button id="authButton" class="btn nav-login" type="button">Login</button>
       </nav>
-
-      <button id="mobileMenu" class="menu-toggle" type="button" aria-label="Open menu">☰</button>
     </div>
   </header>
 
@@ -607,8 +607,8 @@
             </select>
 
             <select id="timeFilter" class="event-select" aria-label="Filter by time">
+              <option value="all" selected>All Events</option>
               <option value="upcoming">Upcoming</option>
-              <option value="all">All Events</option>
               <option value="past">Past Events</option>
             </select>
 
@@ -1464,9 +1464,10 @@
     }
 
     $("mobileMenu").addEventListener("click",()=>{
-      const nav = document.querySelector(".nav");
+      const nav = $("mainNav");
       if(!nav) return;
-      nav.classList.toggle("mobile-open");
+      const open = nav.classList.toggle("mobile-open");
+      $("mobileMenu").setAttribute("aria-expanded", open ? "true" : "false");
     });
 
     initAuthButton();
