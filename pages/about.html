@@ -3,15 +3,126 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="About StateCrafter DCU — a student-focused Political Science academic platform connecting the seven colleges of Dhaka Central University.">
   <title>About | StateCrafter DCU</title>
   <link rel="stylesheet" href="../style.css">
+
+  <style>
+    /* About-page additions — intentionally scoped so the existing site theme remains intact. */
+    .about-hero{
+      position:relative;
+      overflow:hidden;
+      padding:76px 0 70px;
+      background:
+        radial-gradient(circle at 82% 20%, rgba(255,255,255,.10), transparent 28%),
+        linear-gradient(135deg, var(--navy,#102a43), #193f5f 55%, #0d2238);
+      color:#fff;
+    }
+    .about-hero:after{
+      content:"";
+      position:absolute; inset:auto -8% -75% auto;
+      width:520px;height:520px;border-radius:50%;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 70px rgba(255,255,255,.018);
+    }
+    .about-hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:42px;align-items:center}
+    .about-kicker{letter-spacing:.16em;text-transform:uppercase;font-size:12px;font-weight:800;opacity:.78;margin:0 0 14px}
+    .about-hero h1{font-size:clamp(42px,6vw,76px);line-height:1.02;margin:0 0 18px;color:#fff}
+    .about-hero p{max-width:760px;margin:0;color:rgba(255,255,255,.82);font-size:18px;line-height:1.8}
+    .dcu-crest{
+      display:flex;justify-content:center;align-items:center;min-height:230px;
+      padding:28px;border:1px solid rgba(255,255,255,.18);border-radius:28px;
+      background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+    }
+    .dcu-crest img{width:min(190px,80%);height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.22))}
+    .about-section{padding:74px 0}
+    .about-section.alt{background:#f6f9fc}
+    .about-section h2{color:var(--navy,#102a43);font-size:clamp(30px,4vw,46px);line-height:1.1;margin:0 0 12px}
+    .section-lead{max-width:820px;color:var(--muted,#607286);font-size:17px;line-height:1.8;margin:0}
+    .about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:stretch}
+    .about-card{
+      background:#fff;border:1px solid rgba(16,42,67,.10);border-radius:22px;
+      padding:30px;box-shadow:0 14px 38px rgba(16,42,67,.07)
+    }
+    .about-card h3{color:var(--navy,#102a43);margin:0 0 10px;font-size:23px}
+    .about-card p{color:var(--muted,#607286);line-height:1.85;margin:0}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+    .stat{
+      padding:22px 18px;border-radius:18px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);text-align:center
+    }
+    .stat strong{display:block;font-size:30px;color:#fff;line-height:1.1}
+    .stat span{display:block;color:rgba(255,255,255,.72);font-size:12px;margin-top:7px}
+    .campus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:34px}
+    .campus-card{
+      position:relative;background:#fff;border:1px solid rgba(16,42,67,.09);border-radius:22px;
+      padding:27px;box-shadow:0 10px 28px rgba(16,42,67,.055);overflow:hidden
+    }
+    .campus-card:before{
+      content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+      background:linear-gradient(#234e70,#6b879d)
+    }
+    .campus-no{font-size:12px;font-weight:900;letter-spacing:.12em;color:#7890a4}
+    .campus-card h3{font-size:22px;line-height:1.25;color:var(--navy,#102a43);margin:7px 0 6px}
+    .campus-meta{font-size:13px;color:#7a8b9a;margin-bottom:13px}
+    .campus-card p{margin:0;color:var(--muted,#607286);line-height:1.72}
+    .ps-tag{
+      display:inline-flex;align-items:center;gap:7px;margin-top:17px;
+      padding:7px 11px;border-radius:999px;background:#eef4f8;color:#31566f;font-size:12px;font-weight:800
+    }
+    .provided{
+      margin-top:18px;padding:14px 16px;border-left:3px solid #9ab0c0;
+      background:#f7fafc;color:#647789;border-radius:0 12px 12px 0;font-size:13px;line-height:1.7
+    }
+    .timeline{display:grid;gap:14px;margin-top:28px}
+    .timeline-item{display:grid;grid-template-columns:95px 1fr;gap:20px;align-items:start}
+    .timeline-year{font-weight:900;color:#47677f}
+    .timeline-copy{color:var(--muted,#607286);line-height:1.75}
+    .contact-box{
+      display:flex;justify-content:space-between;gap:30px;align-items:center;
+      padding:34px;border-radius:26px;background:linear-gradient(135deg,#edf5fa,#f8fbfd);
+      border:1px solid rgba(16,42,67,.08)
+    }
+    .contact-box h3{margin:0 0 8px;color:var(--navy,#102a43);font-size:27px}
+    .contact-box p{margin:0;color:var(--muted,#607286);line-height:1.7}
+    .contact-btn{
+      display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+      padding:13px 19px;border-radius:12px;background:var(--navy,#102a43);color:#fff!important;
+      text-decoration:none;font-weight:800;box-shadow:0 10px 24px rgba(16,42,67,.16)
+    }
+    .developer{
+      display:flex;justify-content:space-between;gap:30px;align-items:center;
+      padding:26px 0 6px;border-top:1px solid rgba(16,42,67,.10);margin-top:30px
+    }
+    .developer p{margin:0;color:var(--muted,#607286);line-height:1.7}
+    .developer a{color:var(--navy,#102a43);font-weight:800;text-decoration:none}
+    .source-note{margin-top:22px;color:#8796a4;font-size:12px;line-height:1.7}
+    .source-note a{color:#5b7388}
+    @media(max-width:900px){
+      .about-hero-grid,.about-grid{grid-template-columns:1fr}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .campus-grid{grid-template-columns:1fr}
+      .dcu-crest{min-height:180px}
+    }
+    @media(max-width:620px){
+      .about-hero{padding:55px 0 50px}
+      .about-section{padding:52px 0}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .contact-box,.developer{flex-direction:column;align-items:flex-start}
+      .timeline-item{grid-template-columns:1fr;gap:3px}
+    }
+  </style>
 </head>
+
 <body>
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="brand" href="../index.html">
       <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
-      <span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
+      <span class="brand-copy">
+        <strong>StateCrafter DCU</strong>
+        <small>Political Science Department</small>
+      </span>
     </a>
     <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
     <nav class="nav">
@@ -19,39 +130,316 @@
       <a href="archive.html">Academic Archive</a>
       <a href="research.html">Research &amp; Articles</a>
       <a href="events.html">Events</a>
-      <a href="about.html">About</a>
+      <a href="about.html" aria-current="page">About</a>
       <a class="nav-login" href="login.html">Login</a>
     </nav>
   </div>
 </header>
-<main>
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">ABOUT STATECRAFTER</p>
-      <h1 style="font-size:clamp(40px,6vw,72px);line-height:1.02;color:var(--navy);margin:0 0 18px">About</h1>
-      <p style="max-width:720px;color:var(--muted);font-size:17px">A student-focused academic platform for the Political Science community.</p>
-      
-<div class="split" style="margin-top:42px">
-  <div>
-    <h2 style="color:var(--navy)">An academic home for Political Science.</h2>
-    <p style="color:var(--muted)">StateCrafter DCU is being built as a clean, student-focused academic platform for notes, previous questions, research, articles, events and shared resources.</p>
-  </div>
-  <div class="feature-card">
-    <h3>Institution</h3>
-    <p>Political Science Department<br>Dhaka Central University</p>
-    <div style="margin-top:20px"><img src="../assets/dcu-logo.png" alt="Dhaka Central University crest" style="width:130px"></div>
-  </div>
-</div>
 
+<main>
+
+  <!-- HERO -->
+  <section class="about-hero">
+    <div class="container about-hero-grid">
+      <div>
+        <p class="about-kicker">About StateCrafter DCU</p>
+        <h1>Seven Campuses.<br>One Political Science Community.</h1>
+        <p>
+          StateCrafter DCU is a student-focused academic platform for Political Science,
+          created to connect learners across the seven government colleges that now form
+          the academic ecosystem of Dhaka Central University.
+        </p>
+        <div class="stats-grid" aria-label="StateCrafter highlights">
+          <div class="stat"><strong>7</strong><span>DCU Campuses</span></div>
+          <div class="stat"><strong>1</strong><span>University Community</span></div>
+          <div class="stat"><strong>PS</strong><span>Political Science Focus</span></div>
+          <div class="stat"><strong>∞</strong><span>Ideas &amp; Collaboration</span></div>
+        </div>
+      </div>
+      <div class="dcu-crest">
+        <img src="../assets/dcu-logo.png" alt="Dhaka Central University logo">
+      </div>
     </div>
   </section>
+
+  <!-- STATECRAFTER -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-grid">
+        <article class="about-card">
+          <p class="about-kicker" style="color:#6e879a">Our platform</p>
+          <h2>What is StateCrafter DCU?</h2>
+          <p>
+            StateCrafter DCU is being developed as a shared academic home for Political Science
+            students of the seven campuses. The goal is simple: make useful academic resources,
+            previous questions, research, articles, events, study materials and student-led
+            knowledge easier to discover and share.
+          </p>
+          <p style="margin-top:14px">
+            The platform is designed around the idea that Political Science is not only a subject
+            to study for examinations—it is also a way to understand institutions, governance,
+            citizenship, public policy, political ideas, society and the changing world around us.
+          </p>
+        </article>
+
+        <aside class="about-card">
+          <h3>Our academic direction</h3>
+          <p>
+            A cleaner, more connected and student-friendly digital space where students from
+            different campuses can learn from one another, publish ideas, discover events and
+            build an academic culture beyond the classroom.
+          </p>
+          <div class="provided">
+            StateCrafter is a student-oriented initiative; it is not presented as the official
+            website of Dhaka Central University or any individual college.
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- DCU -->
+  <section class="about-section alt">
+    <div class="container">
+      <p class="about-kicker" style="color:#6e879a">The university behind the seven campuses</p>
+      <h2>Dhaka Central University</h2>
+      <p class="section-lead">
+        Dhaka Central University (DCU) is the new public university framework bringing seven
+        historic government colleges in Dhaka together under a unified academic system.
+        The official DCU website describes the institution as a 2026-established university
+        created to strengthen and modernize higher education, research and academic management
+        across the seven colleges.
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2026</div>
+          <div class="timeline-copy">
+            The Dhaka Central University framework was established under the 2026 legal framework,
+            bringing the seven colleges into a unified university system.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">7 Colleges</div>
+          <div class="timeline-copy">
+            Dhaka College, Eden Mohila College, Government Titumir College, Government Bangla College,
+            Begum Badrunnessa Government Mohila College, Government Shaheed Suhrawardy College and
+            Kabi Nazrul Government College.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Mission</div>
+          <div class="timeline-copy">
+            Academic excellence, research, innovation, integrity and socially responsible graduates
+            are central themes presented by DCU in its institutional introduction.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEVEN CAMPUSES -->
+  <section class="about-section">
+    <div class="container">
+      <p class="about-kicker" style="color:#6e879a">Seven campuses</p>
+      <h2>Political Science across DCU</h2>
+      <p class="section-lead">
+        The seven colleges have different histories, campus cultures and student communities.
+        Together they create a broad academic landscape for Political Science in Dhaka.
+      </p>
+
+      <div class="campus-grid">
+
+        <article class="campus-card">
+          <div class="campus-no">01</div>
+          <h3>Dhaka College</h3>
+          <div class="campus-meta">Established 1841 • New Market / Dhanmondi area</div>
+          <p>
+            One of the oldest institutions in the DCU group. Political Science is included among
+            its honours and master's subjects, giving students access to a long-established
+            academic environment in the heart of Dhaka.
+          </p>
+          <span class="ps-tag">Political Science • Honours &amp; Masters</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">02</div>
+          <h3>Eden Mohila College</h3>
+          <div class="campus-meta">Historic women's higher-education institution • Azimpur</div>
+          <p>
+            Eden Mohila College is a major centre of women's higher education in Bangladesh.
+            The Political Science department offers honours and postgraduate-level study and
+            has a large student community.
+          </p>
+          <div class="provided">
+            Source profile supplied for this page notes the department's honours programme began
+            in the 1996–1997 academic session and lists honours, MSS, preliminary, B.A. and
+            B.S.S. (pass) programmes.
+          </div>
+          <span class="ps-tag">Political Science • Women's Education</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">03</div>
+          <h3>Government Titumir College</h3>
+          <div class="campus-meta">Established 1968 • Mohakhali</div>
+          <p>
+            Government Titumir College is one of Dhaka's major government colleges. Its Political
+            Science department sits within the Social Science group alongside Economics, Sociology
+            and Social Work.
+          </p>
+          <span class="ps-tag">Political Science • Social Science</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">04</div>
+          <h3>Government Bangla College</h3>
+          <div class="campus-meta">Established 1962 • Mirpur</div>
+          <p>
+            Founded in the context of the movement to strengthen Bangla in higher education,
+            Government Bangla College has grown into a large multidisciplinary public college.
+            Political Science is offered at honours level, with postgraduate study also recorded
+            in institutional academic reports.
+          </p>
+          <div class="provided">
+            The college's public profile describes its founding role in promoting Bangla in higher
+            education and lists Political Science among its academic departments.
+          </div>
+          <span class="ps-tag">Political Science • Honours &amp; Postgraduate</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">05</div>
+          <h3>Begum Badrunnessa Government Mohila College</h3>
+          <div class="campus-meta">Established 1948 • Bakshi Bazar • Women's college</div>
+          <p>
+            The Political Science department has a strong academic profile and a large student
+            community. The supplied department profile describes honours and master's programmes,
+            qualified education-cadre teachers, seminar facilities and a range of academic and
+            co-curricular activities.
+          </p>
+          <div class="provided">
+            Supplied profile: honours began in 2006 and the master's programme in 2010; the
+            department also highlights seminars, counselling, study tours, cultural activities
+            and book reviews.
+          </div>
+          <span class="ps-tag">Political Science • Women's Education</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">06</div>
+          <h3>Government Shaheed Suhrawardy College</h3>
+          <div class="campus-meta">Established 1949 • Laxmibazar, Old Dhaka</div>
+          <p>
+            Established as Quaid-i-Azam College in 1949, the institution later became Shaheed
+            Suhrawardy College and was nationalised in 1984. Political Science is one of its
+            Social Science subjects, alongside Economics and Social Work.
+          </p>
+          <span class="ps-tag">Political Science • Social Science</span>
+        </article>
+
+        <article class="campus-card">
+          <div class="campus-no">07</div>
+          <h3>Kabi Nazrul Government College</h3>
+          <div class="campus-meta">Historic Dhaka institution • Laxmibazar</div>
+          <p>
+            Kabi Nazrul Government College has a long academic history and offers Political Science
+            within its Arts and Social Science faculty. Its academic structure includes higher
+            secondary, honours and master's-level programmes across multiple disciplines.
+          </p>
+          <div class="provided">
+            Source profile supplied for this page presents Political Science as one of the major
+            departments in the college's Arts and Social Science faculty.
+          </div>
+          <span class="ps-tag">Political Science • Arts &amp; Social Science</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- POLITICAL SCIENCE -->
+  <section class="about-section alt">
+    <div class="container">
+      <div class="about-grid">
+        <article class="about-card">
+          <p class="about-kicker" style="color:#6e879a">Why Political Science?</p>
+          <h2>More than a degree.</h2>
+          <p>
+            Political Science helps students understand how power, institutions, states, citizens,
+            public policy and international relations interact. Across the seven campuses, students
+            encounter different academic traditions while studying a common field.
+          </p>
+          <p style="margin-top:14px">
+            StateCrafter DCU aims to turn that shared academic identity into a practical community:
+            a place for learning resources, research discussions, student writing, events and
+            collaboration.
+          </p>
+        </article>
+
+        <aside class="about-card">
+          <h3>What you can find here</h3>
+          <p>
+            Academic archive • Previous questions • Research &amp; articles • Events • Student
+            resources • Campus knowledge • Community contributions
+          </p>
+          <div class="provided">
+            Have an idea, correction, complaint or useful information for the platform?
+            We want to hear from you.
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="about-section">
+    <div class="container">
+      <div class="contact-box">
+        <div>
+          <p class="about-kicker" style="color:#6e879a">Talk to StateCrafter</p>
+          <h3>পরামর্শ, অভিযোগ বা কোনো তথ্য জানতে চান?</h3>
+          <p>
+            StateCrafter DCU সম্পর্কে কোনো পরামর্শ, অভিযোগ, ভুল তথ্যের সংশোধন বা নতুন কিছু জানাতে
+            সরাসরি আমাদের ইমেইল করুন।
+          </p>
+          <p style="margin-top:8px;font-weight:800;color:#31566f">statecrafterdcu@gmail.com</p>
+        </div>
+        <a class="contact-btn" href="mailto:statecrafterdcu@gmail.com?subject=StateCrafter%20DCU%20Feedback">
+          Email StateCrafter
+        </a>
+      </div>
+
+      <!-- DEVELOPER CREDIT -->
+      <div class="developer">
+        <p>
+          <strong>Website Design &amp; Development</strong><br>
+          JAHIDUR RAHMAN NAYEEM<br>
+          Department of Political Science • Session 2024–25 • Titumir College Campus
+        </p>
+        <a href="https://www.facebook.com/JahidurNayeem" target="_blank" rel="noopener noreferrer">
+          JAHIDUR RAHMAN NAYEEM ↗
+        </a>
+      </div>
+
+      <p class="source-note">
+        Institutional overview is based on the supplied StateCrafter material and publicly available
+        institutional records. DCU's official site identifies the seven constituent colleges and
+        its 2026 establishment; University of Dhaka annual reports record Political Science among
+        the programmes of several former seven-college institutions.
+      </p>
+    </div>
+  </section>
+
 </main>
+
 <footer class="site-footer">
   <div class="container footer-bottom" style="border-top:0;margin-top:0">
     <span>© 2026 StateCrafter DCU</span>
     <span>Political Science Department • Dhaka Central University</span>
   </div>
 </footer>
+
 <script src="../app.js"></script>
 </body>
 </html>
