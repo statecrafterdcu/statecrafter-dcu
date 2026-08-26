@@ -1,557 +1,3253 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Student Dashboard | StateCrafter DCU</title>
 
   <link rel="stylesheet" href="../style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-.article-status-panel{margin-top:50px;padding:24px;border:1px solid #dfe5ec;border-radius:18px;background:#fff;box-shadow:0 10px 35px rgba(18,43,82,.05)}
-.article-status-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.article-status-head h2{margin:0;color:#122b52}.article-status-head p{margin:6px 0 0;color:#68758a;font-size:13px}.article-status-counts{display:flex;gap:8px;flex-wrap:wrap}.article-status-counts span{padding:7px 10px;border-radius:999px;background:#f3f5f8;color:#526176;font-size:10px;font-weight:900}.article-status-counts .pending{background:#fff3dc;color:#98600d}.article-status-list{display:grid;gap:10px;margin-top:18px}.article-status-item{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:14px;border:1px solid #e5e9ee;border-radius:13px;background:#fafbfd}.article-status-item strong{color:#122b52;font-size:13px}.article-status-item small{display:block;color:#7a8595;margin-top:4px}.article-status-pill{white-space:nowrap;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:900}.article-status-pill.pending{background:#fff3dc;color:#98600d}.article-status-pill.approved{background:#eaf7ed;color:#28743c}.article-status-pill.rejected{background:#fbecec;color:#9a2025}.article-status-pill.draft{background:#eef2f7;color:#5c6b80}
-    .archive-card-panel { grid-column: 1 / -1; }
-  </style></head>
 
+  <style>
+    :root {
+      --navy: #102a4c;
+      --navy-light: #183d69;
+      --red: #a71920;
+      --red-light: #fdf0f1;
+
+      --green: #26733b;
+      --green-light: #eaf7ed;
+
+      --amber: #9a620d;
+      --amber-light: #fff4df;
+
+      --danger: #a12a31;
+      --danger-light: #fbecee;
+
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --line: #e2e8f0;
+
+      --text: #1c2d42;
+      --muted: #718096;
+
+      --shadow: 0 12px 35px rgba(16, 42, 76, 0.08);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 70px;
+    }
+
+    /* =====================================================
+       TOP HEADER
+       ===================================================== */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--red);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(30px, 5vw, 45px);
+      line-height: 1;
+      letter-spacing: -0.045em;
+    }
+
+    .topbar-subtitle {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button {
+      min-height: 42px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(16, 42, 76, 0.08);
+    }
+
+    .button-primary {
+      color: #fff;
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .button-red {
+      color: #fff;
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    /* =====================================================
+       PROFILE CARD
+       ===================================================== */
+
+    .profile-card {
+      position: relative;
+      overflow: hidden;
+
+      display: grid;
+      grid-template-columns: 145px minmax(0, 1fr);
+      gap: 25px;
+
+      padding: 28px;
+
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--red);
+    }
+
+    .profile-photo-area {
+      text-align: center;
+    }
+
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+
+      display: block;
+      margin: 0 auto;
+
+      object-fit: cover;
+
+      border-radius: 50%;
+      border: 5px solid #fff;
+
+      background: #edf2f7;
+
+      box-shadow:
+        0 8px 25px rgba(16, 42, 76, 0.15);
+    }
+
+    .profile-photo-placeholder {
+      width: 120px;
+      height: 120px;
+
+      margin: 0 auto;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          #e9eef5,
+          #d9e2ed
+        );
+
+      color: var(--navy);
+
+      font-size: 36px;
+      font-weight: 950;
+
+      border: 5px solid #fff;
+
+      box-shadow:
+        0 8px 25px rgba(16, 42, 76, 0.12);
+    }
+
+    .profile-main {
+      min-width: 0;
+    }
+
+    .profile-name {
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: clamp(26px, 4vw, 37px);
+      line-height: 1.05;
+
+      letter-spacing: -0.035em;
+    }
+
+    .profile-role {
+      display: inline-flex;
+
+      margin-top: 9px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      background: #eef3f8;
+      color: var(--navy);
+
+      font-size: 9px;
+      font-weight: 900;
+
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      gap: 10px;
+
+      margin-top: 22px;
+    }
+
+    .detail-box {
+      min-width: 0;
+
+      padding: 13px;
+
+      background: #fafbfd;
+
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+
+    .detail-label {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #8793a2;
+
+      font-size: 9px;
+      font-weight: 900;
+
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      display: block;
+
+      overflow: hidden;
+
+      color: var(--navy);
+
+      font-size: 13px;
+      font-weight: 800;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* =====================================================
+       SECTION
+       ===================================================== */
+
+    .section {
+      margin-top: 35px;
+    }
+
+    .section-heading {
+      margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 25px;
+      line-height: 1.1;
+
+      letter-spacing: -0.03em;
+    }
+
+    .section-heading p {
+      margin: 6px 0 0;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+    /* =====================================================
+       STATS
+       ===================================================== */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+
+      gap: 13px;
+    }
+
+    .stat-card {
+      display: block;
+
+      padding: 19px;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: 17px;
+
+      box-shadow:
+        0 7px 25px rgba(16, 42, 76, 0.045);
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 15px 35px rgba(16, 42, 76, 0.1);
+    }
+
+    .stat-icon {
+      width: 39px;
+      height: 39px;
+
+      display: grid;
+      place-items: center;
+
+      margin-bottom: 13px;
+
+      border-radius: 11px;
+
+      background: #edf3f9;
+      color: var(--navy);
+
+      font-size: 15px;
+      font-weight: 950;
+    }
+
+    .stat-card:nth-child(2) .stat-icon {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    .stat-card:nth-child(3) .stat-icon {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .stat-card:nth-child(4) .stat-icon {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .stat-number {
+      display: block;
+
+      color: var(--navy);
+
+      font-size: 32px;
+      font-weight: 950;
+
+      line-height: 1;
+    }
+
+    .stat-label {
+      display: block;
+
+      margin-top: 7px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .stat-description {
+      display: block;
+
+      margin-top: 7px;
+
+      color: #929eac;
+
+      font-size: 9px;
+    }
+
+    /* =====================================================
+       MAIN CONTENT
+       ===================================================== */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+
+      gap: 17px;
+
+      margin-top: 19px;
+    }
+
+    .panel {
+      overflow: hidden;
+
+      background: #fff;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+
+      box-shadow:
+        0 8px 30px rgba(16, 42, 76, 0.05);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 19px 21px 16px;
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-header h3 {
+      margin: 0;
+
+      color: var(--navy);
+
+      font-size: 17px;
+    }
+
+    .panel-header p {
+      margin: 4px 0 0;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+    .panel-body {
+      padding: 16px 21px 21px;
+    }
+
+    /* =====================================================
+       ARTICLE SUMMARY
+       ===================================================== */
+
+    .article-summary {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-bottom: 14px;
+    }
+
+    .summary-chip {
+      padding: 6px 9px;
+
+      border-radius: 999px;
+
+      background: #eef2f6;
+      color: #657386;
+
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .summary-chip.pending {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .summary-chip.published {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .summary-chip.rejected {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    /* =====================================================
+       ARTICLE LIST
+       ===================================================== */
+
+    .article-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .article-item {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 13px;
+
+      background: #fbfcfe;
+
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+
+    .article-info {
+      min-width: 0;
+    }
+
+    .article-title {
+      display: block;
+
+      overflow: hidden;
+
+      color: var(--navy);
+
+      font-size: 12px;
+      font-weight: 850;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .article-meta {
+      display: block;
+
+      margin-top: 4px;
+
+      color: #7b8796;
+
+      font-size: 9px;
+    }
+
+    .article-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      flex-shrink: 0;
+    }
+
+    .status {
+      padding: 6px 8px;
+
+      border-radius: 999px;
+
+      font-size: 8px;
+      font-weight: 900;
+    }
+
+    .status-draft {
+      background: #eef2f6;
+      color: #637083;
+    }
+
+    .status-pending {
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .status-approved,
+    .status-published {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .status-rejected {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .article-link {
+      color: var(--navy);
+
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       QUICK ACTIONS
+       ===================================================== */
+
+    .quick-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .quick-link {
+      display: flex;
+
+      align-items: center;
+
+      gap: 11px;
+
+      padding: 12px;
+
+      border: 1px solid var(--line);
+      border-radius: 13px;
+
+      transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+    }
+
+    .quick-link:hover {
+      background: #fafbfd;
+      transform: translateY(-1px);
+    }
+
+    .quick-icon {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 auto;
+
+      border-radius: 11px;
+
+      background: #edf3f9;
+      color: var(--navy);
+
+      font-weight: 950;
+    }
+
+    .quick-title {
+      display: block;
+
+      color: var(--navy);
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .quick-description {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 9px;
+    }
+
+    /* =====================================================
+       EMPTY / ERROR
+       ===================================================== */
+
+    .empty-state {
+      padding: 24px 14px;
+
+      border: 1px dashed #d7e0ea;
+      border-radius: 13px;
+
+      color: var(--muted);
+
+      text-align: center;
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .error-state {
+      padding: 16px;
+
+      background: var(--danger-light);
+
+      border-radius: 13px;
+
+      color: var(--danger);
+
+      font-size: 11px;
+
+      line-height: 1.55;
+    }
+
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+
+    /* =====================================================
+       MY ACADEMIC ARCHIVE
+       ===================================================== */
+
+    .archive-panel {
+      margin-top: 18px;
+    }
+
+    .archive-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .archive-summary-chip {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #eef2f6;
+      color: #657386;
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .archive-summary-chip.pending { background: var(--amber-light); color: var(--amber); }
+    .archive-summary-chip.published { background: var(--green-light); color: var(--green); }
+    .archive-summary-chip.rejected { background: var(--danger-light); color: var(--danger); }
+
+    .archive-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .archive-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px;
+      background: #fbfcfe;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+
+    .archive-info { min-width: 0; }
+
+    .archive-title {
+      display: block;
+      overflow: hidden;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .archive-meta {
+      display: block;
+      margin-top: 4px;
+      color: #7b8796;
+      font-size: 9px;
+    }
+
+    .archive-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .archive-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(16, 42, 76, .52);
+    }
+
+    .archive-modal-backdrop.open { display: flex; }
+
+    .archive-modal {
+      width: min(560px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 25px 70px rgba(16, 42, 76, .25);
+    }
+
+    .archive-modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 20px 21px 15px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .archive-modal-head h3 { margin: 0; color: var(--navy); font-size: 18px; }
+    .archive-modal-head p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
+
+    .archive-close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--navy);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .archive-form { display: grid; gap: 12px; padding: 18px 21px 21px; }
+    .archive-field { display: grid; gap: 6px; }
+    .archive-field label { color: var(--navy); font-size: 10px; font-weight: 900; }
+
+    .archive-field input,
+    .archive-field select,
+    .archive-field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--text);
+      padding: 10px 11px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .archive-field textarea { min-height: 95px; resize: vertical; }
+
+    .archive-field input:focus,
+    .archive-field select:focus,
+    .archive-field textarea:focus {
+      border-color: #aebdce;
+      box-shadow: 0 0 0 3px rgba(16, 42, 76, .06);
+    }
+
+    .archive-form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .archive-form-message {
+      display: none;
+      padding: 10px 11px;
+      border-radius: 10px;
+      background: var(--danger-light);
+      color: var(--danger);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .archive-header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 950px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .site-header .nav.mobile-open {
+        display: flex !important;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 12px;
+        right: 12px;
+        z-index: 120;
+        padding: 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(16,42,76,.14);
+      }
+
+      .site-header .nav.mobile-open a,
+      .site-header .nav.mobile-open button {
+        width: 100%;
+        min-height: 40px;
+        justify-content: flex-start;
+        padding: 0 12px;
+        border-radius: 10px;
+      }
+
+      .page {
+        width: min(100% - 24px, 1180px);
+        padding: 18px 0 88px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .top-actions .logout-button {
+        display: none;
+      }
+
+      .profile-card {
+        grid-template-columns: 1fr;
+
+        padding: 22px 16px;
+
+        text-align: center;
+      }
+
+      .profile-photo-area {
+        margin: 0 auto;
+      }
+
+      .profile-details {
+        grid-template-columns: 1fr;
+
+        text-align: left;
+      }
+
+      .stats-grid {
+        gap: 8px;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-number {
+        font-size: 28px;
+      }
+
+      .panel-header {
+        padding: 16px 14px 13px;
+      }
+
+      .panel-body {
+        padding: 14px;
+      }
+
+      .article-item {
+        align-items: flex-start;
+      }
+
+      .article-actions {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .archive-item {
+        align-items: flex-start;
+      }
+
+      .archive-actions {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .mobile-nav {
+        position: fixed;
+
+        left: 9px;
+        right: 9px;
+        bottom: 9px;
+
+        z-index: 100;
+
+        display: flex !important;
+
+        padding: 6px;
+
+        background: rgba(16, 42, 76, 0.98);
+
+        border-radius: 17px;
+
+        box-shadow:
+          0 15px 40px rgba(16, 42, 76, 0.25);
+      }
+
+      .mobile-nav a,
+      .mobile-nav button {
+        flex: 1;
+        pointer-events: auto;
+        position: relative;
+        z-index: 2;
+        pointer-events: auto;
+        position: relative;
+        z-index: 2;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #fff;
+
+        padding: 9px 3px;
+
+        text-align: center;
+
+        font-size: 8px;
+        font-weight: 850;
+
+        cursor: pointer;
+      }
+    }
+  </style>
+</head>
 
 <body>
 
-<header class="site-header">
+  <header class="site-header" style="position:relative;z-index:110;">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html">
+        <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
+        <span class="brand-copy">
+          <strong>StateCrafter DCU</strong>
+          <small>Political Science Department</small>
+        </span>
+      </a>
 
-  <div class="container nav-wrap">
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="archive.html">Academic Archive</a>
+        <a href="research.html">Research &amp; Articles</a>
+        <a href="events.html">Events</a>
+        <a href="about.html">About</a>
+        <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+        <button id="headerLogoutButton" class="btn" type="button">Logout</button>
+      </nav>
 
-    <a class="brand" href="../index.html">
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </header>
 
-      <img
-        src="../assets/statecrafter-logo.png"
-        alt="StateCrafter DCU"
+  <main class="page">
+
+    <!-- ===================================================
+         HEADER
+         =================================================== -->
+
+    <header class="topbar">
+
+      <div>
+        <p class="eyebrow">
+          STUDENT DASHBOARD
+        </p>
+
+        <h1 id="welcome">
+          Welcome back.
+        </h1>
+
+        <p class="topbar-subtitle">
+          Your profile, submissions and academic activity.
+        </p>
+      </div>
+
+      <div class="top-actions">
+
+        <a
+          href="article-editor.html"
+          class="button button-primary"
+        >
+          Write an Article
+        </a>
+
+        <button
+          id="logoutButton"
+          class="button logout-button"
+          type="button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- ===================================================
+         PROFILE
+         =================================================== -->
+
+    <section class="profile-card">
+
+      <div class="profile-photo-area">
+
+        <div
+          id="profilePhotoPlaceholder"
+          class="profile-photo-placeholder"
+        >
+          S
+        </div>
+
+        <img
+          id="profilePhoto"
+          class="profile-photo"
+          alt="Student profile picture"
+          style="display:none"
+        >
+
+      </div>
+
+
+      <div class="profile-main">
+
+        <h2
+          id="profileName"
+          class="profile-name"
+        >
+          Loading...
+        </h2>
+
+        <span class="profile-role">
+          Student
+        </span>
+
+
+        <div class="profile-details">
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Session
+            </span>
+
+            <strong
+              id="sessionValue"
+              class="detail-value"
+            >
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Student ID
+            </span>
+
+            <strong
+              id="studentIdValue"
+              class="detail-value"
+            >
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Campus
+            </span>
+
+            <strong
+              id="campusValue"
+              class="detail-value"
+            >
+              —
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CONTRIBUTION COUNTS
+         =================================================== -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <h2>
+          Academic Contributions
+        </h2>
+
+        <p>
+          Click a card to open the related section.
+        </p>
+
+      </div>
+
+
+      <div class="stats-grid">
+
+        <!-- ARTICLES -->
+
+        <a
+          href="#myArticles"
+          class="stat-card"
+        >
+
+          <div class="stat-icon">
+            A
+          </div>
+
+          <strong
+            id="articleCount"
+            class="stat-number"
+          >
+            0
+          </strong>
+
+          <span class="stat-label">
+            Articles
+          </span>
+
+          <small class="stat-description">
+            Your submitted articles
+          </small>
+
+        </a>
+
+
+        <!-- ACADEMIC ARCHIVE -->
+
+        <a
+          href="#myArchive"
+          class="stat-card"
+          aria-label="View my Academic Archive"
+        >
+
+          <div class="stat-icon">
+            R
+          </div>
+
+          <strong
+            id="archiveCount"
+            class="stat-number"
+          >
+            0
+          </strong>
+
+          <span class="stat-label">
+            Academic Archive
+          </span>
+
+          <small class="stat-description">
+            Your archive submissions
+          </small>
+
+        </a>
+
+
+        <!-- EVENTS -->
+
+        <a
+          href="events.html"
+          class="stat-card"
+        >
+
+          <div class="stat-icon">
+            E
+          </div>
+
+          <strong
+            id="eventCount"
+            class="stat-number"
+          >
+            0
+          </strong>
+
+          <span class="stat-label">
+            Events
+          </span>
+
+          <small class="stat-description">
+            Events you created
+          </small>
+
+        </a>
+
+
+        <!-- TOTAL -->
+
+        <a
+          href="#myArticles"
+          class="stat-card"
+          aria-label="View total contributions"
+        >
+
+          <div class="stat-icon">
+            +
+          </div>
+
+          <strong
+            id="totalCount"
+            class="stat-number"
+          >
+            0
+          </strong>
+
+          <span class="stat-label">
+            Total Contributions
+          </span>
+
+          <small class="stat-description">
+            Articles + Archive + Events
+          </small>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         MAIN GRID
+         =================================================== -->
+
+    <section class="content-grid">
+
+
+      <!-- =================================================
+           MY ARTICLES
+           ================================================= -->
+
+      <div
+        id="myArticles"
+        class="panel"
       >
 
-      <span class="brand-copy">
-        <strong>StateCrafter DCU</strong>
-        <small>Political Science Department</small>
-      </span>
+        <div class="panel-header">
 
+          <div>
+
+            <h3>
+              My Articles
+            </h3>
+
+            <p>
+              Drafts, pending submissions and published articles.
+            </p>
+
+          </div>
+
+
+          <a
+            href="article-editor.html"
+            class="button button-red"
+          >
+            New Article
+          </a>
+
+        </div>
+
+
+        <div class="panel-body">
+
+
+          <div class="article-summary">
+
+            <span class="summary-chip">
+              Drafts:
+              <b id="draftCount">0</b>
+            </span>
+
+            <span class="summary-chip pending">
+              Pending:
+              <b id="pendingCount">0</b>
+            </span>
+
+            <span class="summary-chip published">
+              Published:
+              <b id="publishedCount">0</b>
+            </span>
+
+            <span class="summary-chip rejected">
+              Rejected:
+              <b id="rejectedCount">0</b>
+            </span>
+
+          </div>
+
+
+          <div
+            id="articleList"
+            class="article-list"
+          >
+
+            <div class="empty-state">
+              Loading your articles...
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           QUICK ACTIONS
+           ================================================= -->
+
+      <aside class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h3>
+              Quick Actions
+            </h3>
+
+            <p>
+              Jump to important sections.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel-body">
+
+          <div class="quick-list">
+
+
+            <a
+              href="article-editor.html"
+              class="quick-link"
+            >
+
+              <div class="quick-icon">
+                ✎
+              </div>
+
+              <div>
+
+                <strong class="quick-title">
+                  Write an Article
+                </strong>
+
+                <span class="quick-description">
+                  Create a new article or draft
+                </span>
+
+              </div>
+
+            </a>
+
+
+            <a
+              href="research.html"
+              class="quick-link"
+            >
+
+              <div class="quick-icon">
+                R
+              </div>
+
+              <div>
+
+                <strong class="quick-title">
+                  Research & Articles
+                </strong>
+
+                <span class="quick-description">
+                  Read published articles
+                </span>
+
+              </div>
+
+            </a>
+
+
+            <a
+              href="archive.html"
+              class="quick-link"
+            >
+
+              <div class="quick-icon">
+                A
+              </div>
+
+              <div>
+
+                <strong class="quick-title">
+                  Academic Archive
+                </strong>
+
+                <span class="quick-description">
+                  Browse academic resources
+                </span>
+
+              </div>
+
+            </a>
+
+
+            <a
+              href="events.html"
+              class="quick-link"
+            >
+
+              <div class="quick-icon">
+                E
+              </div>
+
+              <div>
+
+                <strong class="quick-title">
+                  Events
+                </strong>
+
+                <span class="quick-description">
+                  Explore academic events
+                </span>
+
+              </div>
+
+            </a>
+
+
+            <a
+              href="profile.html"
+              class="quick-link"
+            >
+
+              <div class="quick-icon">
+                P
+              </div>
+
+              <div>
+
+                <strong class="quick-title">
+                  My Profile
+                </strong>
+
+                <span class="quick-description">
+                  View your public profile
+                </span>
+
+              </div>
+
+            </a>
+
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+    <!-- =================================================
+         MY ACADEMIC ARCHIVE
+         ================================================= -->
+
+    <section id="myArchive" class="panel archive-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h3>My Academic Archive</h3>
+          <p>Submit, track and view your academic archive resources.</p>
+        </div>
+
+        <div class="archive-header-actions">
+          <button id="openArchiveForm" class="button button-red" type="button">
+            Add Resource
+          </button>
+
+          <a href="archive.html" class="button">
+            View Archive
+          </a>
+        </div>
+
+      </div>
+
+      <div class="panel-body">
+
+        <div class="archive-summary">
+          <span class="archive-summary-chip">Total: <b id="archiveTotal">0</b></span>
+          <span class="archive-summary-chip pending">Pending: <b id="archivePending">0</b></span>
+          <span class="archive-summary-chip published">Published: <b id="archivePublished">0</b></span>
+          <span class="archive-summary-chip rejected">Rejected: <b id="archiveRejected">0</b></span>
+        </div>
+
+        <div id="archiveList" class="archive-list">
+          <div class="empty-state">Loading your academic archive...</div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       ADD ARCHIVE RESOURCE MODAL
+       ===================================================== -->
+
+  <div id="archiveModalBackdrop" class="archive-modal-backdrop" aria-hidden="true">
+    <div class="archive-modal" role="dialog" aria-modal="true" aria-labelledby="archiveModalTitle">
+
+      <div class="archive-modal-head">
+        <div>
+          <h3 id="archiveModalTitle">Add Academic Archive Resource</h3>
+          <p>Your submission will be sent for admin review.</p>
+        </div>
+        <button id="closeArchiveForm" class="archive-close" type="button" aria-label="Close">×</button>
+      </div>
+
+      <form id="archiveForm" class="archive-form">
+
+        <div class="archive-field">
+          <label for="archiveResourceType">Resource Type</label>
+          <select id="archiveResourceType" required>
+            <option value="note">Academic Note</option>
+            <option value="question">Previous Question</option>
+            <option value="suggestion">Suggestion</option>
+            <option value="article">Academic Resource</option>
+          </select>
+        </div>
+
+        <div class="archive-field">
+          <label for="archiveTitleInput">Title</label>
+          <input id="archiveTitleInput" type="text" maxlength="180" required placeholder="Resource title">
+        </div>
+
+        <div class="archive-field">
+          <label for="archiveCourseInput">Course / Subject</label>
+          <input id="archiveCourseInput" type="text" maxlength="120" placeholder="Example: Political Theory">
+        </div>
+
+        <div class="archive-field">
+          <label for="archiveCampusInput">Target Campus</label>
+          <input id="archiveCampusInput" type="text" maxlength="120" placeholder="Your campus">
+        </div>
+
+        <div class="archive-field">
+          <label for="archiveDescriptionInput">Description</label>
+          <textarea id="archiveDescriptionInput" maxlength="2000" required placeholder="Briefly describe this resource"></textarea>
+        </div>
+
+        <div class="archive-field">
+          <label for="archiveDriveInput">Google Drive / Docs Link</label>
+          <input id="archiveDriveInput" type="url" placeholder="https://drive.google.com/...">
+        </div>
+
+        <div id="archiveFormMessage" class="archive-form-message"></div>
+
+        <div class="archive-form-actions">
+          <button id="cancelArchiveForm" class="button" type="button">Cancel</button>
+          <button id="submitArchiveForm" class="button button-red" type="submit">Submit Resource</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© 2026 StateCrafter DCU</span>
+      <span>Political Science Department • Dhaka Central University</span>
+    </div>
+  </footer>
+
+  <!-- =====================================================
+       MOBILE NAVIGATION
+       ===================================================== -->
+
+  <nav class="mobile-nav">
+
+    <a href="../index.html">
+      Home
     </a>
 
-    <nav class="nav">
+    <a href="research.html">
+      Articles
+    </a>
 
-      <a href="../index.html">Home</a>
+    <a href="archive.html">
+      Archive
+    </a>
 
-      <a href="archive.html">
-        Academic Archive
-      </a>
+    <a href="events.html">
+      Events
+    </a>
 
-      <a href="research.html">
-        Research &amp; Articles
-      </a>
-
-      <a href="events.html">
-        Events
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-
-      <button
-        id="logoutButton"
-        class="btn"
-        type="button"
-      >
-        Logout
-      </button>
-
-    </nav>
-
-  </div>
-
-</header>
-
-
-<main>
-
-<section class="section">
-
-<div class="container">
-
-
-  <p class="eyebrow">
-    STUDENT DASHBOARD
-  </p>
-
-
-  <!-- PROFILE -->
-  <div class="student-profile-card">
-    <div class="student-photo-column">
-      <img
-        id="profilePhoto"
-        class="student-profile-photo"
-        src="../assets/default-avatar.svg"
-        alt="Profile photo"
-      >
-
-      <label
-        id="changePhotoButton"
-        for="photoInput"
-        class="btn btn-outline photo-button"
-      >
-        Change Photo
-      </label>
-
-      <input
-        type="file"
-        id="photoInput"
-        accept="image/jpeg,image/png,image/webp"
-        hidden
-      >
-
-      <p id="photoMessage" class="photo-message"></p>
-    </div>
-
-    <div class="student-profile-info">
-      <h1 id="studentName">Loading...</h1>
-
-      <div class="student-details">
-        <p>
-          <span>Department :</span>
-          <strong>Political Science</strong>
-        </p>
-
-        <p>
-          <span>Session :</span>
-          <strong id="studentSession">—</strong>
-        </p>
-
-        <p>
-          <span>Student ID :</span>
-          <strong id="studentId">—</strong>
-        </p>
-
-        <p>
-          <span>Campus :</span>
-          <strong id="studentCampus">—</strong>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTRIBUTIONS -->
-
-  <div style="margin-top:50px">
-
-    <p class="eyebrow" id="contributionsEyebrow">
-      MY CONTRIBUTIONS
-    </p>
-
-    <h2 id="contributionsTitle">
-      Your Academic Contributions
-    </h2>
-
-
-    <div
-      class="grid-4"
-      style="margin-top:25px"
+    <button
+      id="mobileLogoutButton"
+      type="button"
     >
+      Logout
+    </button>
 
-      <div class="feature-card">
+  </nav>
 
-        <strong
-          id="articleCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
 
-        <p>Articles</p>
+  <script>
 
-      </div>
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
 
+    const SUPABASE_URL =
+      "https://psqwnvgruyfgdoukvpid.supabase.co";
 
-      <div class="feature-card">
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
 
-        <strong
-          id="noteCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
 
-        <p>Notes</p>
 
-      </div>
+    /* =====================================================
+       HELPERS
+       ===================================================== */
 
-
-      <div class="feature-card">
-
-        <strong
-          id="questionCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Questions</p>
-
-      </div>
-
-
-      <div class="feature-card">
-
-        <strong
-          id="suggestionCount"
-          style="font-size:35px"
-        >
-          0
-        </strong>
-
-        <p>Suggestions</p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ARTICLE STATUS -->
-  <section class="article-status-panel" aria-labelledby="myArticlesTitle">
-    <div class="article-status-head">
-      <div>
-        <p class="eyebrow" style="margin:0 0 7px">MY ARTICLES</p>
-        <h2 id="myArticlesTitle">Article Submissions</h2>
-        <p>Track your drafts, pending reviews, published articles and rejected articles.</p>
-      </div>
-      <div class="article-status-counts">
-        <span>Drafts: <strong id="articleDraftCount">0</strong></span>
-        <span class="pending">Pending: <strong id="articlePendingCount">0</strong></span>
-        <span class="approved">Published: <strong id="articlePublishedCount">0</strong></span>
-        <span class="rejected">Rejected: <strong id="articleRejectedCount">0</strong></span>
-      </div>
-    </div>
-    <div id="myArticleList" class="article-status-list"><p style="color:var(--muted);font-size:12px">Loading your articles...</p></div>
-  </section>
-
-  <!-- FUTURE ACTIONS -->
-
-  <div style="margin-top:50px">
-
-    <p class="eyebrow">
-      CONTRIBUTE
-    </p>
-
-    <h2>
-      Share Academic Resources
-    </h2>
-
-    <p style="max-width:650px;color:var(--muted)">
-      You will be able to submit notes, previous questions,
-      suggestions and research articles from your dashboard.
-      All submissions will be reviewed before publication.
-    </p>
-
-
-    <div
-      style="
-        display:flex;
-        gap:12px;
-        flex-wrap:wrap;
-        margin-top:20px;
-      "
-    >
-
-      <button class="btn" disabled>
-        Submit Note
-      </button>
-
-      <button class="btn" disabled>
-        Submit Question
-      </button>
-
-      <button class="btn" disabled>
-        Submit Suggestion
-      </button>
-
-      <a class="btn" href="article-editor.html">
-        Write Article
-      </a>
-
-    </div>
-
-  </div>
-
-
-</div>
-
-</section>
-
-</main>
-
-
-<footer class="site-footer">
-
-  <div class="container footer-bottom">
-
-    <span>
-      © 2026 StateCrafter DCU
-    </span>
-
-    <span>
-      Political Science Department • Dhaka Central University
-    </span>
-
-  </div>
-
-</footer>
-
-
-<script src="../auth.js"></script>
-
-
-<script>
-
-const supabaseClient =
-  window.supabase.createClient(
-    "https://psqwnvgruyfgdoukvpid.supabase.co",
-    "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c"
-  );
-
-
-const DEFAULT_AVATAR = "../assets/default-avatar.svg";
-
-async function getCurrentUser() {
-  const { data, error } = await supabaseClient.auth.getUser();
-  if (error) throw error;
-  return data.user;
-}
-
-async function loadStudentDashboard() {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const requestedProfileId = params.get("id");
-  const profileId = requestedProfileId || user.id;
-  const isOwnProfile = profileId === user.id;
-
-  const { data: currentProfile, error: currentProfileError } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-  if (currentProfileError || !currentProfile) {
-    alert("Your profile could not be loaded.");
-    return;
-  }
-
-  // Keep the dashboard student-only.
-  if (currentProfile.role === "admin") {
-    window.location.href = "admin-dashboard.html";
-    return;
-  }
-
-  if (currentProfile.role !== "student") {
-    await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
-    return;
-  }
-
-  const { data: profile, error: profileError } =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", profileId)
-      .single();
-
-  if (profileError || !profile) {
-    alert("This student profile could not be loaded.");
-    return;
-  }
-
-  // Profile information
-  document.getElementById("studentName").textContent =
-    profile.full_name || "Student";
-
-  document.getElementById("studentSession").textContent =
-    profile.session || "Not specified";
-
-  document.getElementById("studentId").textContent =
-    profile.student_id || "Not specified";
-
-  document.getElementById("studentCampus").textContent =
-    profile.campus || "Not specified";
-
-  // Photo
-  document.getElementById("profilePhoto").src =
-    profile.photo_url || DEFAULT_AVATAR;
-
-  // Contributions wording
-  const displayName = profile.full_name || "Student";
-  const eyebrow = document.getElementById("contributionsEyebrow");
-  const title = document.getElementById("contributionsTitle");
-
-  if (isOwnProfile) {
-    eyebrow.textContent = "MY CONTRIBUTIONS";
-    title.textContent = "Your Academic Contributions";
-  } else {
-    eyebrow.textContent = `${displayName.toUpperCase()}'S CONTRIBUTIONS`;
-    title.textContent = `${displayName}'s Academic Contributions`;
-  }
-
-  // Only the owner can change their own photo.
-  if (!isOwnProfile) {
-    document.getElementById("changePhotoButton").style.display = "none";
-  }
-
-  // Load the signed-in student's own article submissions.
-  // Public profile views still show only the selected profile's basic information.
-  if (isOwnProfile) {
-    await loadMyArticleData(user.id);
-  }
-}
-
-
-// PHOTO UPLOAD — owner only, maximum 1 MB
-document.getElementById("photoInput").addEventListener("change", async function () {
-  const file = this.files[0];
-  if (!file) return;
-
-  const message = document.getElementById("photoMessage");
-
-  if (file.size > 1048576) {
-    message.textContent = "Photo must be 1 MB or smaller.";
-    this.value = "";
-    return;
-  }
-
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-
-  if (!allowedTypes.includes(file.type)) {
-    message.textContent = "Please upload JPG, PNG or WebP.";
-    this.value = "";
-    return;
-  }
-
-  message.textContent = "Uploading photo...";
-
-  try {
-    const user = await getCurrentUser();
-
-    if (!user) {
-      window.location.href = "login.html";
-      return;
+    function $(id) {
+      return document.getElementById(id);
     }
 
-    const extension = file.name.split(".").pop().toLowerCase();
-    const filePath = `${user.id}/profile.${extension}`;
 
-    const { error: uploadError } =
-      await supabaseClient.storage
-        .from("profile-photos")
-        .upload(filePath, file, {
-          upsert: true,
-          contentType: file.type
-        });
+    function escapeHTML(value) {
 
-    if (uploadError) throw uploadError;
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
-    const { data: publicData } =
-      supabaseClient.storage
-        .from("profile-photos")
-        .getPublicUrl(filePath);
-
-    const photoUrl = publicData.publicUrl + "?v=" + Date.now();
-
-    const { error: profileError } =
-      await supabaseClient
-        .from("profiles")
-        .update({ photo_url: photoUrl })
-        .eq("id", user.id);
-
-    if (profileError) throw profileError;
-
-    document.getElementById("profilePhoto").src = photoUrl;
-    message.textContent = "Photo updated successfully.";
-    this.value = "";
-
-  } catch (error) {
-    console.error(error);
-    message.textContent =
-      error.message || "Photo upload failed.";
-  }
-});
+    }
 
 
+    function getValue(
+      object,
+      keys,
+      fallback = "—"
+    ) {
 
-async function loadMyArticleData(userId) {
-  const list = document.getElementById("myArticleList");
-  const { data, error } = await supabaseClient
-    .from("articles")
-    .select("id,title,status,category,created_at,updated_at,published_at,rejection_reason")
-    .eq("author_id", userId)
-    .order("created_at", { ascending: false });
+      if (!object) {
+        return fallback;
+      }
 
-  if (error) {
-    console.error("Article dashboard query error:", error);
-    list.innerHTML = `<p style="color:#9a2025;font-size:12px">Could not load your article submissions.</p>`;
-    return;
-  }
+      for (const key of keys) {
 
-  const rows = data || [];
-  const count = status => rows.filter(x => String(x.status || "").toLowerCase() === status).length;
-  document.getElementById("articleCount").textContent = rows.length;
-  document.getElementById("articleDraftCount").textContent = count("draft");
-  document.getElementById("articlePendingCount").textContent = count("pending");
-  document.getElementById("articlePublishedCount").textContent = rows.filter(x => ["approved","published"].includes(String(x.status || "").toLowerCase())).length;
-  document.getElementById("articleRejectedCount").textContent = count("rejected");
+        const value =
+          object[key];
 
-  if (!rows.length) {
-    list.innerHTML = `<p style="color:var(--muted);font-size:12px">You have not submitted an article yet.</p>`;
-    return;
-  }
+        if (
+          value !== null &&
+          value !== undefined &&
+          String(value).trim() !== ""
+        ) {
 
-  const label = status => {
-    const value = String(status || "draft").toLowerCase();
-    return value === "approved" || value === "published" ? "Published" : value.charAt(0).toUpperCase() + value.slice(1);
-  };
+          return String(value).trim();
 
-  list.innerHTML = rows.slice(0, 10).map(article => {
-    const status = String(article.status || "draft").toLowerCase();
-    const date = new Date(article.updated_at || article.created_at).toLocaleDateString();
-    const canEdit = status === "draft";
-    return `<div class="article-status-item">
-      <div><strong>${escapeHtml(article.title || "Untitled article")}</strong><small>${escapeHtml(article.category || "Uncategorized")} · Updated ${escapeHtml(date)}</small>${status === "rejected" && article.rejection_reason ? `<small style="color:#9a2025">Reason: ${escapeHtml(article.rejection_reason)}</small>` : ""}</div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-        <span class="article-status-pill ${status}">${label(status)}</span>
-        ${canEdit ? `<a class="btn btn-outline" href="article-editor.html?id=${encodeURIComponent(article.id)}">Continue Draft</a>` : ""}
-      </div>
-    </div>`;
-  }).join("");
-}
+        }
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-}
+      }
 
-// LOGOUT
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
-});
+      return fallback;
 
-loadStudentDashboard();
+    }
 
 
-</script>
+    function normalizeStatus(value) {
+
+      return String(
+        value || "draft"
+      )
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    function isPublished(status) {
+
+      return [
+        "approved",
+        "published",
+        "public",
+        "active"
+      ].includes(
+        normalizeStatus(status)
+      );
+
+    }
+
+
+    function displayStatus(status) {
+
+      const value =
+        normalizeStatus(status);
+
+      if (isPublished(value)) {
+        return "Published";
+      }
+
+      return (
+        value.charAt(0).toUpperCase() +
+        value.slice(1)
+      );
+
+    }
+
+
+    /* =====================================================
+       AUTH PROTECTION
+       ===================================================== */
+
+    async function requireAuthenticatedUser() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data.user) {
+
+        window.location.replace(
+          "login.html"
+        );
+
+        return null;
+
+      }
+
+
+      return data.user;
+
+    }
+
+
+    /*
+      If the user logs out from another tab,
+      immediately leave the dashboard.
+    */
+
+    supabaseClient.auth.onAuthStateChange(
+      function (event, session) {
+
+        if (
+          event === "SIGNED_OUT" ||
+          !session?.user
+        ) {
+
+          window.location.replace(
+            "login.html"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       PROFILE
+       ===================================================== */
+
+    async function loadStudentProfile(user) {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      const metadata =
+        user.user_metadata || {};
+
+
+      const name =
+        getValue(
+          data,
+          [
+            "full_name",
+            "name",
+            "display_name",
+            "student_name"
+          ],
+          getValue(
+            metadata,
+            [
+              "full_name",
+              "name",
+              "display_name"
+            ],
+            "Student"
+          )
+        );
+
+
+      const session =
+        getValue(
+          data,
+          [
+            "session",
+            "academic_session",
+            "session_name"
+          ],
+          getValue(
+            metadata,
+            [
+              "session",
+              "academic_session"
+            ]
+          )
+        );
+
+
+      const studentId =
+        getValue(
+          data,
+          [
+            "student_id",
+            "studentId",
+            "studentid",
+            "roll",
+            "student_roll"
+          ],
+          getValue(
+            metadata,
+            [
+              "student_id",
+              "studentId",
+              "roll"
+            ]
+          )
+        );
+
+
+      const campus =
+        getValue(
+          data,
+          [
+            "campus",
+            "campus_name",
+            "student_campus"
+          ],
+          getValue(
+            metadata,
+            [
+              "campus",
+              "campus_name"
+            ]
+          )
+        );
+
+
+      $("profileName").textContent =
+        name;
+
+
+      $("welcome").textContent =
+        `Welcome back, ${
+          name.split(" ")[0] || "Student"
+        }.`;
+
+
+      $("sessionValue").textContent =
+        session;
+
+
+      $("studentIdValue").textContent =
+        studentId;
+
+
+      $("campusValue").textContent =
+        campus;
+
+
+      /*
+        Profile picture compatibility:
+        several possible column names are checked.
+      */
+
+      const photoUrl =
+        getValue(
+          data,
+          [
+            "photo_url",
+            "avatar_url",
+            "profile_photo",
+            "profile_picture",
+            "image_url"
+          ],
+          getValue(
+            metadata,
+            [
+              "photo_url",
+              "avatar_url",
+              "profile_photo"
+            ],
+            ""
+          )
+        );
+
+
+      if (
+        photoUrl &&
+        photoUrl !== "—"
+      ) {
+
+        $("profilePhoto").src =
+          photoUrl;
+
+        $("profilePhoto").style.display =
+          "block";
+
+        $("profilePhotoPlaceholder").style.display =
+          "none";
+
+      } else {
+
+        const initial =
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+          "S";
+
+        $("profilePhotoPlaceholder").textContent =
+          initial;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       ARTICLES
+       ===================================================== */
+
+    async function loadArticles(userId) {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("articles")
+          .select(
+            "id,title,status,category,created_at,updated_at,published_at"
+          )
+          .eq(
+            "author_id",
+            userId
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(
+          "Articles error:",
+          error
+        );
+
+
+        $("articleList").innerHTML = `
+          <div class="error-state">
+            Could not load your articles.
+            <br>
+            ${escapeHTML(error.message)}
+          </div>
+        `;
+
+        return 0;
+
+      }
+
+
+      const articles =
+        data || [];
+
+
+      let drafts = 0;
+      let pending = 0;
+      let published = 0;
+      let rejected = 0;
+
+
+      articles.forEach(
+        function (article) {
+
+          const status =
+            normalizeStatus(
+              article.status
+            );
+
+
+          if (status === "draft") {
+            drafts++;
+          }
+
+          else if (status === "pending") {
+            pending++;
+          }
+
+          else if (
+            isPublished(status)
+          ) {
+            published++;
+          }
+
+          else if (status === "rejected") {
+            rejected++;
+          }
+
+        }
+      );
+
+
+      $("articleCount").textContent =
+        articles.length;
+
+      $("draftCount").textContent =
+        drafts;
+
+      $("pendingCount").textContent =
+        pending;
+
+      $("publishedCount").textContent =
+        published;
+
+      $("rejectedCount").textContent =
+        rejected;
+
+
+      if (!articles.length) {
+
+        $("articleList").innerHTML = `
+          <div class="empty-state">
+
+            You have not submitted any article yet.
+
+            <br><br>
+
+            <a
+              href="article-editor.html"
+              class="article-link"
+            >
+              Write your first article →
+            </a>
+
+          </div>
+        `;
+
+        return 0;
+
+      }
+
+
+      $("articleList").innerHTML =
+        articles
+          .slice(0, 15)
+          .map(
+            function (article) {
+
+              const status =
+                normalizeStatus(
+                  article.status
+                );
+
+
+              const dateValue =
+                article.updated_at ||
+                article.created_at;
+
+
+              let formattedDate = "";
+
+
+              if (dateValue) {
+
+                formattedDate =
+                  new Date(
+                    dateValue
+                  ).toLocaleDateString(
+                    undefined,
+                    {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric"
+                    }
+                  );
+
+              }
+
+
+              let action = "";
+
+
+              /*
+                Draft:
+                Continue editing
+              */
+
+              if (
+                status === "draft"
+              ) {
+
+                action = `
+                  <a
+                    href="article-editor.html?id=${encodeURIComponent(article.id)}"
+                    class="article-link"
+                  >
+                    Continue →
+                  </a>
+                `;
+
+              }
+
+
+              /*
+                Approved/published:
+                Open public article
+              */
+
+              else if (
+                isPublished(status)
+              ) {
+
+                action = `
+                  <a
+                    href="article.html?id=${encodeURIComponent(article.id)}"
+                    class="article-link"
+                  >
+                    View →
+                  </a>
+                `;
+
+              }
+
+
+              return `
+
+                <div class="article-item">
+
+                  <div class="article-info">
+
+                    <strong class="article-title">
+                      ${escapeHTML(
+                        article.title ||
+                        "Untitled Article"
+                      )}
+                    </strong>
+
+                    <small class="article-meta">
+                      ${escapeHTML(
+                        article.category ||
+                        "Research & Articles"
+                      )}
+
+                      ${
+                        formattedDate
+                          ? ` · ${escapeHTML(formattedDate)}`
+                          : ""
+                      }
+
+                    </small>
+
+                  </div>
+
+
+                  <div class="article-actions">
+
+                    <span
+                      class="status status-${escapeHTML(status)}"
+                    >
+                      ${escapeHTML(
+                        displayStatus(status)
+                      )}
+                    </span>
+
+                    ${action}
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join("");
+
+
+      return articles.length;
+
+    }
+
+
+    /* =====================================================
+       GENERIC COUNT
+       ===================================================== */
+
+    async function countUsingPossibleFields(
+      table,
+      fields,
+      userId
+    ) {
+
+      for (
+        const field of fields
+      ) {
+
+        try {
+
+          const result =
+            await supabaseClient
+              .from(table)
+              .select(
+                "id",
+                {
+                  count: "exact",
+                  head: true
+                }
+              )
+              .eq(
+                field,
+                userId
+              );
+
+
+          /*
+            If the column exists and the query succeeds,
+            use the result.
+          */
+
+          if (!result.error) {
+
+            return Number(
+              result.count || 0
+            );
+
+          }
+
+        }
+
+        catch (error) {
+
+          console.warn(
+            table,
+            field,
+            error
+          );
+
+        }
+
+      }
+
+
+      return 0;
+
+    }
+
+
+    /* =====================================================
+       ACADEMIC ARCHIVE + EVENTS + TOTAL
+       ===================================================== */
+
+    async function loadArchiveData(userId) {
+
+      const list = $("archiveList");
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("submissions")
+        .select(
+          "id,title,status,resource_type,type,course,course_name,course_code,target_campus,description,drive_link,created_at,updated_at"
+        )
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+
+        console.error(
+          "Academic archive submissions query error:",
+          error
+        );
+
+        /*
+          Fallback to academic_notes so an existing project/RLS setup
+          still shows the student's published archive resources.
+        */
+
+        const fallback = await supabaseClient
+          .from("academic_notes")
+          .select(
+            "id,title,description,campus,target_campus,course,course_name,course_code,drive_link,status,published_at,created_at,user_id"
+          )
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false });
+
+        if (fallback.error) {
+
+          console.error(
+            "Academic archive fallback query error:",
+            fallback.error
+          );
+
+          $("archiveCount").textContent = "0";
+          $("archiveTotal").textContent = "0";
+          $("archivePending").textContent = "0";
+          $("archivePublished").textContent = "0";
+          $("archiveRejected").textContent = "0";
+
+          list.innerHTML = `
+            <div class="error-state">
+              Academic archive could not be loaded right now.
+            </div>
+          `;
+
+          updateTotal();
+          return;
+
+        }
+
+        const rows = fallback.data || [];
+
+        $("archiveCount").textContent = rows.length;
+        $("archiveTotal").textContent = rows.length;
+        $("archivePending").textContent = rows.filter(
+          row => normalizeStatus(row.status) === "pending"
+        ).length;
+        $("archivePublished").textContent = rows.filter(
+          row =>
+            !row.status ||
+            isPublished(row.status)
+        ).length;
+        $("archiveRejected").textContent = rows.filter(
+          row => normalizeStatus(row.status) === "rejected"
+        ).length;
+
+        renderArchiveRows(rows);
+        updateTotal();
+        return;
+
+      }
+
+      const rows = (data || []).filter(
+        function (row) {
+
+          const type = String(
+            row.resource_type ||
+            row.type ||
+            "note"
+          ).toLowerCase();
+
+          return [
+            "note",
+            "question",
+            "suggestion",
+            "article"
+          ].includes(type);
+
+        }
+      );
+
+      $("archiveCount").textContent = rows.length;
+      $("archiveTotal").textContent = rows.length;
+      $("archivePending").textContent = rows.filter(
+        row => normalizeStatus(row.status) === "pending"
+      ).length;
+      $("archivePublished").textContent = rows.filter(
+        row => isPublished(row.status)
+      ).length;
+      $("archiveRejected").textContent = rows.filter(
+        row => normalizeStatus(row.status) === "rejected"
+      ).length;
+
+      renderArchiveRows(rows);
+      updateTotal();
+
+    }
+
+
+    function renderArchiveRows(rows) {
+
+      const list = $("archiveList");
+
+      if (!rows.length) {
+
+        list.innerHTML = `
+          <div class="empty-state">
+            You have not submitted an academic archive resource yet.
+            <br><br>
+            <button
+              class="button button-red"
+              type="button"
+              onclick="openArchiveForm()"
+            >
+              Add your first resource →
+            </button>
+          </div>
+        `;
+
+        return;
+
+      }
+
+      list.innerHTML = rows
+        .slice(0, 15)
+        .map(
+          function (row) {
+
+            const status = normalizeStatus(
+              row.status || "published"
+            );
+
+            const type = String(
+              row.resource_type ||
+              row.type ||
+              "note"
+            ).toLowerCase();
+
+            const typeLabel = {
+              note: "Academic Note",
+              question: "Previous Question",
+              suggestion: "Suggestion",
+              article: "Academic Resource"
+            }[type] || "Academic Resource";
+
+            const course =
+              row.course_name ||
+              row.course ||
+              row.course_code ||
+              "Academic Archive";
+
+            const dateValue =
+              row.updated_at ||
+              row.created_at ||
+              row.published_at;
+
+            const date = dateValue
+              ? new Date(
+                  dateValue
+                ).toLocaleDateString(
+                  undefined,
+                  {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                  }
+                )
+              : "";
+
+            const driveAction = row.drive_link
+              ? `
+                <a
+                  class="article-link"
+                  href="${escapeHTML(row.drive_link)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open →
+                </a>
+              `
+              : "";
+
+            return `
+              <div class="archive-item">
+
+                <div class="archive-info">
+
+                  <strong class="archive-title">
+                    ${escapeHTML(
+                      row.title ||
+                      "Untitled resource"
+                    )}
+                  </strong>
+
+                  <small class="archive-meta">
+                    ${escapeHTML(typeLabel)}
+                    ·
+                    ${escapeHTML(course)}
+                    ${
+                      date
+                        ? ` · ${escapeHTML(date)}`
+                        : ""
+                    }
+                  </small>
+
+                </div>
+
+                <div class="archive-actions">
+
+                  <span
+                    class="status status-${escapeHTML(status)}"
+                  >
+                    ${escapeHTML(
+                      displayStatus(status)
+                    )}
+                  </span>
+
+                  ${driveAction}
+
+                </div>
+
+              </div>
+            `;
+
+          }
+        )
+        .join("");
+
+    }
+
+
+    function updateTotal() {
+
+      const article = Number(
+        $("articleCount").textContent
+      ) || 0;
+
+      const archive = Number(
+        $("archiveCount").textContent
+      ) || 0;
+
+      const event = Number(
+        $("eventCount").textContent
+      ) || 0;
+
+      $("totalCount").textContent =
+        article + archive + event;
+
+    }
+
+
+    async function loadEventCount(userId) {
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("events")
+        .select("id")
+        .eq("created_by", userId);
+
+      if (error) {
+
+        console.error(
+          "Event count error:",
+          error
+        );
+
+        $("eventCount").textContent = "0";
+        updateTotal();
+        return;
+
+      }
+
+      $("eventCount").textContent =
+        String(
+          (data || []).length
+        );
+
+      updateTotal();
+
+    }
+
+
+    function openArchiveForm() {
+
+      const backdrop =
+        $("archiveModalBackdrop");
+
+      backdrop.classList.add("open");
+      backdrop.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      $("archiveTitleInput").focus();
+
+    }
+
+
+    function closeArchiveForm() {
+
+      const backdrop =
+        $("archiveModalBackdrop");
+
+      backdrop.classList.remove("open");
+      backdrop.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      $("archiveFormMessage").style.display =
+        "none";
+
+    }
+
+
+    async function submitArchiveResource(event) {
+
+      event.preventDefault();
+
+      const message =
+        $("archiveFormMessage");
+
+      const submitButton =
+        $("submitArchiveForm");
+
+      const user =
+        await requireAuthenticatedUser();
+
+      if (!user) {
+        return;
+      }
+
+      const type =
+        $("archiveResourceType").value;
+
+      const title =
+        $("archiveTitleInput").value.trim();
+
+      const course =
+        $("archiveCourseInput").value.trim();
+
+      const targetCampus =
+        $("archiveCampusInput").value.trim();
+
+      const description =
+        $("archiveDescriptionInput").value.trim();
+
+      const driveLink =
+        $("archiveDriveInput").value.trim();
+
+      message.style.display = "none";
+
+      if (!title || !description) {
+
+        message.textContent =
+          "Please complete the title and description.";
+
+        message.style.display = "block";
+        return;
+
+      }
+
+      if (driveLink) {
+
+        try {
+
+          const url =
+            new URL(driveLink);
+
+          const host =
+            url.hostname.toLowerCase();
+
+          if (
+            host !== "drive.google.com" &&
+            host !== "docs.google.com"
+          ) {
+            throw new Error();
+          }
+
+        }
+
+        catch (error) {
+
+          message.textContent =
+            "Please enter a valid Google Drive or Google Docs link.";
+
+          message.style.display = "block";
+          return;
+
+        }
+
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent =
+        "Submitting...";
+
+      try {
+
+        const {
+          data: profile,
+          error: profileError
+        } = await supabaseClient
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profileError) {
+          throw profileError;
+        }
+
+        const metadata =
+          user.user_metadata || {};
+
+        const payload = {
+          user_id: user.id,
+          resource_type: type,
+          type,
+          title,
+          course,
+          course_name: course || null,
+          description,
+          target_campus:
+            targetCampus ||
+            getValue(
+              profile,
+              [
+                "campus",
+                "campus_name",
+                "student_campus"
+              ],
+              getValue(
+                metadata,
+                ["campus", "campus_name"],
+                null
+              )
+            ),
+          drive_link: driveLink || null,
+          status: "pending",
+          full_name: getValue(
+            profile,
+            [
+              "full_name",
+              "name",
+              "display_name",
+              "student_name"
+            ],
+            getValue(
+              metadata,
+              [
+                "full_name",
+                "name",
+                "display_name"
+              ],
+              "Student"
+            )
+          ),
+          session: getValue(
+            profile,
+            [
+              "session",
+              "academic_session",
+              "session_name"
+            ],
+            getValue(
+              metadata,
+              [
+                "session",
+                "academic_session"
+              ],
+              null
+            )
+          ),
+          student_id: getValue(
+            profile,
+            [
+              "student_id",
+              "studentId",
+              "studentid",
+              "roll",
+              "student_roll"
+            ],
+            getValue(
+              metadata,
+              [
+                "student_id",
+                "studentId",
+                "roll"
+              ],
+              null
+            )
+          ),
+          submitter_campus: getValue(
+            profile,
+            [
+              "campus",
+              "campus_name",
+              "student_campus"
+            ],
+            getValue(
+              metadata,
+              [
+                "campus",
+                "campus_name"
+              ],
+              null
+            )
+          )
+        };
+
+        const {
+          error
+        } = await supabaseClient
+          .from("submissions")
+          .insert(payload);
+
+        if (error) {
+          throw error;
+        }
+
+        $("archiveForm").reset();
+        closeArchiveForm();
+        await loadArchiveData(user.id);
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Archive submission error:",
+          error
+        );
+
+        message.textContent =
+          error.message ||
+          "Archive submission failed.";
+
+        message.style.display = "block";
+
+      }
+
+      finally {
+
+        submitButton.disabled = false;
+        submitButton.textContent =
+          "Submit Resource";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
+
+    async function logout() {
+
+      try {
+
+        await supabaseClient.auth.signOut();
+
+      }
+
+      finally {
+
+        window.location.replace(
+          "login.html"
+        );
+
+      }
+
+    }
+
+
+    $("logoutButton")
+      .addEventListener(
+        "click",
+        logout
+      );
+
+    $("headerLogoutButton")
+      .addEventListener(
+        "click",
+        logout
+      );
+
+
+    $("mobileLogoutButton")
+      .addEventListener(
+        "click",
+        logout
+      );
+
+
+    /* =====================================================
+       INITIALIZE
+       ===================================================== */
+
+    async function initializeDashboard() {
+
+      try {
+
+        /*
+          First and most important:
+          make sure the user is actually logged in.
+        */
+
+        const user =
+          await requireAuthenticatedUser();
+
+
+        if (!user) {
+          return;
+        }
+
+
+        /*
+          Load profile.
+        */
+
+        await loadStudentProfile(
+          user
+        );
+
+
+        /*
+          Load articles and get exact article count.
+        */
+
+        const articleCount =
+          await loadArticles(
+            user.id
+          );
+
+
+        /*
+          Load archive + event counts.
+        */
+
+        await loadArchiveData(
+          user.id
+        );
+
+        await loadEventCount(
+          user.id
+        );
+
+        updateTotal();
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Student Dashboard Error:",
+          error
+        );
+
+
+        $("profileName").textContent =
+          "Student";
+
+
+        $("sessionValue").textContent =
+          "—";
+
+
+        $("studentIdValue").textContent =
+          "—";
+
+
+        $("campusValue").textContent =
+          "—";
+
+
+        $("articleList").innerHTML = `
+
+          <div class="error-state">
+
+            Dashboard could not be loaded.
+
+            <br>
+
+            ${escapeHTML(
+              error.message ||
+              "Unknown error"
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    $("openArchiveForm")
+      .addEventListener("click", openArchiveForm);
+
+    $("closeArchiveForm")
+      .addEventListener("click", closeArchiveForm);
+
+    $("cancelArchiveForm")
+      .addEventListener("click", closeArchiveForm);
+
+    $("archiveForm")
+      .addEventListener("submit", submitArchiveResource);
+
+    $("archiveModalBackdrop")
+      .addEventListener("click", function (event) {
+        if (event.target === $("archiveModalBackdrop")) {
+          closeArchiveForm();
+        }
+      });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeArchiveForm();
+      }
+    });
+
+    /*
+      Keep the existing header navigation clickable on mobile.
+      The menu button toggles the same navigation links without changing
+      the desktop header layout.
+    */
+
+    const menuToggle =
+      document.querySelector(".menu-toggle");
+
+    const mainNav =
+      document.querySelector(".site-header .nav");
+
+    if (menuToggle && mainNav) {
+
+      menuToggle.addEventListener("click", function () {
+
+        const isOpen =
+          mainNav.classList.toggle("mobile-open");
+
+        menuToggle.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+      });
+
+    }
+
+    /*
+      Start dashboard.
+    */
+
+    initializeDashboard();
+
+  </script>
 
 </body>
 </html>
