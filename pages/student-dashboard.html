@@ -6,6 +6,8 @@
 
   <title>Student Dashboard | StateCrafter DCU</title>
 
+  <link rel="stylesheet" href="../style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -871,6 +873,30 @@
 
 <body>
 
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="../index.html">
+        <img src="../assets/statecrafter-logo.png" alt="StateCrafter DCU">
+        <span class="brand-copy">
+          <strong>StateCrafter DCU</strong>
+          <small>Political Science Department</small>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="archive.html">Academic Archive</a>
+        <a href="research.html">Research &amp; Articles</a>
+        <a href="events.html">Events</a>
+        <a href="about.html">About</a>
+        <a href="student-dashboard.html" class="nav-login">Dashboard</a>
+        <button id="headerLogoutButton" class="btn" type="button">Logout</button>
+      </nav>
+
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
   <main class="page">
 
     <!-- ===================================================
@@ -1394,6 +1420,14 @@
 
   </main>
 
+
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© 2026 StateCrafter DCU</span>
+      <span>Political Science Department • Dhaka Central University</span>
+    </div>
+  </footer>
 
   <!-- =====================================================
        MOBILE NAVIGATION
@@ -2216,6 +2250,12 @@
 
 
     $("logoutButton")
+      .addEventListener(
+        "click",
+        logout
+      );
+
+    $("headerLogoutButton")
       .addEventListener(
         "click",
         logout
