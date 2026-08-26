@@ -3,179 +3,248 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="StateCrafter DCU — Political Science academic platform.">
+  <meta name="description" content="StateCrafter DCU — a student-focused Political Science academic platform connecting the seven campuses of Dhaka Central University.">
   <title>StateCrafter DCU | Political Science</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--home-navy:#102a43;--home-blue:#193f5f;--home-red:#a7181d;--home-ink:#1e293b;--home-muted:#66758a;--home-line:#e2e8f0;--home-soft:#f6f9fc;--home-shadow:0 18px 55px rgba(16,42,67,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--home-ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{text-decoration:none;color:inherit}button{font:inherit;cursor:pointer}
+    .home-page{overflow:hidden}
+    .home-hero{position:relative;isolation:isolate;min-height:650px;display:flex;align-items:center;padding:88px 0 72px;background:radial-gradient(circle at 85% 20%,rgba(255,255,255,.15),transparent 24%),radial-gradient(circle at 15% 80%,rgba(255,255,255,.08),transparent 28%),linear-gradient(135deg,#0d2238 0%,#163a59 54%,#102a43 100%);color:#fff}
+    .home-hero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 88%);animation:gridMove 18s linear infinite}
+    .home-hero:after{content:"";position:absolute;z-index:-1;width:430px;height:430px;border-radius:50%;right:-150px;bottom:-210px;border:1px solid rgba(255,255,255,.13);box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 65px rgba(255,255,255,.018)}
+    @keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(54px)}}
+    .hero-orb{position:absolute;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.65);box-shadow:0 0 24px rgba(255,255,255,.35);animation:float 7s ease-in-out infinite}.orb1{top:20%;left:12%}.orb2{top:31%;right:18%;animation-delay:1.8s}.orb3{bottom:23%;left:38%;animation-delay:3.2s}.orb4{top:15%;right:39%;animation-delay:4.5s}
+    @keyframes float{0%,100%{transform:translate3d(0,0,0);opacity:.45}50%{transform:translate3d(0,-18px,0);opacity:1}}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:54px;align-items:center}
+    .hero-kicker{margin:0 0 15px;font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+    .hero-title{margin:0;max-width:850px;font-size:clamp(46px,7.3vw,86px);line-height:.96;letter-spacing:-.065em;color:#fff}.hero-title .accent{color:#f3d7d8}
+    .hero-copy{max-width:700px;margin:22px 0 0;color:rgba(255,255,255,.8);font-size:17px;line-height:1.75}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}.home-btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 17px;border-radius:12px;border:1px solid rgba(255,255,255,.25);font-size:11px;font-weight:900;transition:transform .2s ease,background .2s ease,border-color .2s ease}.home-btn:hover{transform:translateY(-2px)}.home-btn.primary{background:#fff;color:var(--home-navy);border-color:#fff}.home-btn.ghost{background:rgba(255,255,255,.07);color:#fff;backdrop-filter:blur(8px)}
+    .hero-visual{position:relative;display:flex;justify-content:center;align-items:center}.crest-card{width:min(340px,100%);aspect-ratio:1/1;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:32px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.04));box-shadow:0 30px 80px rgba(0,0,0,.2);backdrop-filter:blur(12px);animation:crestFloat 6s ease-in-out infinite}.crest-card img{width:min(205px,64%);filter:drop-shadow(0 20px 28px rgba(0,0,0,.28))}.crest-ring{position:absolute;inset:8%;border:1px solid rgba(255,255,255,.1);border-radius:50%;animation:spin 28s linear infinite}.crest-ring:after{content:"";position:absolute;top:8%;left:50%;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.7)}@keyframes crestFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-10px) rotate(.5deg)}}@keyframes spin{to{transform:rotate(360deg)}}
+    .marquee{background:#0b1d31;color:#fff;border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden;white-space:nowrap}.marquee-track{display:inline-flex;min-width:max-content;gap:0;animation:marquee 32s linear infinite}.marquee-item{display:inline-flex;align-items:center;gap:15px;padding:17px 28px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.marquee-dot{width:6px;height:6px;border-radius:50%;background:#d9a2a4}@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .home-section{padding:78px 0}.home-section.soft{background:var(--home-soft)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:28px}.eyebrow{margin:0 0 10px;color:var(--home-red);font-size:10px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}.section-head h2{margin:0;color:var(--home-navy);font-size:clamp(31px,4vw,46px);line-height:1.05;letter-spacing:-.045em}.section-head p{max-width:570px;margin:10px 0 0;color:var(--home-muted);font-size:14px;line-height:1.7}.section-link{color:var(--home-navy);font-size:11px;font-weight:900;white-space:nowrap}.section-link:hover{color:var(--home-red)}
+    .quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.quick-card{position:relative;min-height:190px;padding:24px;border:1px solid var(--home-line);border-radius:20px;background:#fff;box-shadow:0 10px 32px rgba(16,42,67,.045);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;overflow:hidden}.quick-card:after{content:"";position:absolute;width:100px;height:100px;right:-35px;bottom:-45px;border-radius:50%;background:rgba(16,42,67,.035)}.quick-card:hover{transform:translateY(-5px);border-color:#cbd6e2;box-shadow:var(--home-shadow)}.quick-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#edf3f8;color:var(--home-navy);font-weight:950;margin-bottom:28px}.quick-card h3{margin:0;color:var(--home-navy);font-size:18px}.quick-card p{margin:8px 0 0;color:var(--home-muted);font-size:11px;line-height:1.65}.quick-arrow{position:absolute;right:20px;top:23px;color:#9aa7b7;font-size:18px}
+    .content-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}.panel{border:1px solid var(--home-line);border-radius:22px;background:#fff;box-shadow:0 10px 35px rgba(16,42,67,.045);overflow:hidden}.panel-head{display:flex;align-items:end;justify-content:space-between;gap:15px;padding:24px 24px 18px;border-bottom:1px solid var(--home-line)}.panel-head h3{margin:0;color:var(--home-navy);font-size:22px}.panel-head p{margin:7px 0 0;color:var(--home-muted);font-size:11px}.panel-link{font-size:10px;font-weight:900;color:var(--home-red)}.article-list,.event-list{padding:10px}.home-item{display:grid;grid-template-columns:82px minmax(0,1fr);gap:15px;padding:14px;border-radius:15px;transition:background .18s ease}.home-item:hover{background:#f7f9fb}.thumb{width:82px;height:66px;border-radius:11px;overflow:hidden;background:linear-gradient(135deg,#122b52,#a7181d);display:grid;place-items:center;color:#fff;font-size:9px;font-weight:900;text-align:center}.thumb img{width:100%;height:100%;object-fit:cover}.item-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f7eeee;color:var(--home-red);font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}.item-date{color:#8b96a4;font-size:8px}.home-item h4{margin:8px 0 0;color:var(--home-navy);font-size:14px;line-height:1.35}.home-item p{margin:6px 0 0;color:var(--home-muted);font-size:9px;line-height:1.55;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.item-meta{margin-top:7px;color:#8a95a3;font-size:8px}
+    .event-home-item{grid-template-columns:55px minmax(0,1fr)}.event-date-box{width:55px;height:58px;border:1px solid #e5d1d2;border-radius:12px;background:#fff8f8;text-align:center;padding-top:8px}.event-date-box strong{display:block;color:var(--home-red);font-size:20px;line-height:1}.event-date-box span{display:block;margin-top:3px;color:var(--home-navy);font-size:7px;font-weight:950;text-transform:uppercase}.event-home-item h4{margin-top:4px}.event-location{margin-top:6px;color:#7c8897;font-size:8px}
+    .campus-section{padding:78px 0;background:linear-gradient(180deg,#fff 0%,#f7fafc 100%)}.campus-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.campus-card{min-height:170px;padding:18px 14px;border:1px solid var(--home-line);border-radius:18px;background:#fff;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}.campus-card:hover{transform:translateY(-5px);border-color:#cbd6e2;box-shadow:0 14px 35px rgba(16,42,67,.08)}.campus-number{color:var(--home-red);font-size:9px;font-weight:950;letter-spacing:.12em}.campus-card h3{margin:15px 0 8px;color:var(--home-navy);font-size:14px;line-height:1.3}.campus-card p{margin:0;color:var(--home-muted);font-size:9px;line-height:1.6}.campus-card span{display:inline-block;margin-top:14px;color:#8491a0;font-size:8px;font-weight:800}
+    .about-home{display:grid;grid-template-columns:1fr .8fr;gap:25px;align-items:stretch}.about-copy,.dcu-card{padding:34px;border:1px solid var(--home-line);border-radius:24px;background:#fff;box-shadow:0 10px 35px rgba(16,42,67,.045)}.about-copy h2{margin:0;color:var(--home-navy);font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em}.about-copy p{max-width:760px;color:var(--home-muted);font-size:14px;line-height:1.8}.about-copy .mini-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.mini-link{padding:9px 11px;border-radius:9px;background:#f3f6f9;color:var(--home-navy);font-size:9px;font-weight:900}.dcu-card{background:linear-gradient(145deg,#102a43,#193f5f);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.dcu-card img{width:130px;margin-bottom:20px;filter:drop-shadow(0 15px 22px rgba(0,0,0,.22))}.dcu-card h3{margin:0;color:#fff;font-size:24px}.dcu-card p{margin:8px 0 0;color:rgba(255,255,255,.72);font-size:11px;line-height:1.6}
+    .home-cta{position:relative;overflow:hidden;padding:55px 0;background:var(--home-red);color:#fff}.home-cta:after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-90px;top:-140px;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 30px rgba(255,255,255,.035)}.cta-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:25px}.cta-inner h2{margin:0;color:#fff;font-size:clamp(28px,4vw,44px);letter-spacing:-.04em}.cta-inner p{max-width:620px;margin:9px 0 0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.65}.cta-actions{display:flex;flex-wrap:wrap;gap:8px}.cta-actions .home-btn{border-color:rgba(255,255,255,.25)}
+    .loading-home{padding:35px;text-align:center;color:var(--home-muted);font-size:10px}.empty-home{padding:35px;text-align:center;color:var(--home-muted);font-size:10px}.error-home{padding:25px;color:var(--home-muted);font-size:10px}
+    .mobile-only-menu{display:none}
+    @media(max-width:1100px){.quick-grid{grid-template-columns:repeat(2,1fr)}.campus-grid{grid-template-columns:repeat(4,1fr)}.hero-grid{grid-template-columns:1fr}.hero-visual{display:none}.content-grid,.about-home{grid-template-columns:1fr}}
+    @media(max-width:760px){.home-hero{min-height:auto;padding:68px 0 58px}.hero-copy{font-size:15px}.home-section,.campus-section{padding:58px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:22px}.quick-grid{grid-template-columns:1fr}.campus-grid{grid-template-columns:repeat(2,1fr)}.cta-inner{align-items:flex-start;flex-direction:column}.marquee-item{padding:15px 20px;font-size:9px}.home-item{grid-template-columns:68px minmax(0,1fr)}.thumb{width:68px;height:58px}.panel-head{padding:20px}.about-copy,.dcu-card{padding:25px}}
+    @media(max-width:480px){.campus-grid{grid-template-columns:1fr 1fr}.hero-title{font-size:45px}.home-btn{width:100%}.hero-actions{display:grid;grid-template-columns:1fr}.item-top{align-items:flex-start;flex-direction:column;gap:3px}}
+  </style>
 </head>
 <body>
+<div class="home-page">
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="index.html" aria-label="StateCrafter DCU home">
-        <img src="assets/statecrafter-logo.png" alt="StateCrafter DCU logo">
-        <span class="brand-copy">
-          <strong>StateCrafter DCU</strong>
-          <small>Political Science Department</small>
-        </span>
+      <a class="brand" href="index.html">
+        <img src="assets/statecrafter-logo.png" alt="StateCrafter DCU">
+        <span class="brand-copy"><strong>StateCrafter DCU</strong><small>Political Science Department</small></span>
       </a>
-      <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
-      <nav class="nav" aria-label="Primary navigation">
-        <a class="active" href="index.html">Home</a>
+      <button id="mobileMenu" class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <nav id="mainNav" class="nav" aria-label="Main navigation">
+        <a href="index.html" class="active">Home</a>
         <a href="pages/archive.html">Academic Archive</a>
         <a href="pages/research.html">Research &amp; Articles</a>
         <a href="pages/events.html">Events</a>
         <a href="pages/about.html">About</a>
-        <a class="nav-login" href="pages/login.html">Login</a>
+        <a id="authNav" class="nav-login" href="pages/login.html">Login</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="home-hero">
+      <span class="hero-orb orb1"></span><span class="hero-orb orb2"></span><span class="hero-orb orb3"></span><span class="hero-orb orb4"></span>
       <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">POLITICAL SCIENCE • KNOWLEDGE • COMMUNITY</p>
-          <h1>Learn. Create.<br><span>Inspire.</span></h1>
-          <p class="hero-text">
-            A clean academic space for Political Science students to discover notes,
-            previous questions, research, events and shared resources.
-          </p>
+        <div>
+          <p class="hero-kicker">Knowledge · Research · Community</p>
+          <h1 class="hero-title">Political Science,<br><span class="accent">connected.</span></h1>
+          <p class="hero-copy">StateCrafter DCU is a student-focused academic platform for Political Science students across the seven campuses of Dhaka Central University — bringing academic resources, research, articles, events and student knowledge into one home.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="pages/archive.html">Explore Archive</a>
-            <a class="btn btn-secondary" href="pages/research.html">Read Research</a>
-          </div>
-          <div class="hero-meta">
-            <span>Academic Resources</span>
-            <span>Student Contributions</span>
-            <span>Research &amp; Events</span>
+            <a class="home-btn primary" href="pages/archive.html">Explore Academic Archive →</a>
+            <a class="home-btn ghost" href="pages/research.html">Read Research</a>
+            <a class="home-btn ghost" href="pages/events.html">Discover Events</a>
           </div>
         </div>
-        <div class="hero-mark">
-          <div class="crest-card">
-            <img src="assets/dcu-logo.png" alt="Dhaka Central University crest">
-          </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="crest-ring"></div>
+          <div class="crest-card"><img src="assets/dcu-logo.png" alt="Dhaka Central University logo"></div>
         </div>
       </div>
     </section>
 
-    <section class="section archive-preview">
+    <div class="marquee" aria-label="Seven campuses">
+      <div class="marquee-track">
+        <span class="marquee-item">Dhaka College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Eden Mohila College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Titumir College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Shaheed Suhrawardy College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Kabi Nazrul Government College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Begum Badrunnessa Government Girls' College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Bangla College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Dhaka College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Eden Mohila College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Titumir College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Shaheed Suhrawardy College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Kabi Nazrul Government College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Begum Badrunnessa Government Girls' College <i class="marquee-dot"></i></span>
+        <span class="marquee-item">Government Bangla College <i class="marquee-dot"></i></span>
+      </div>
+    </div>
+
+    <section class="home-section">
       <div class="container">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">ACADEMIC ARCHIVE</p>
-            <h2>Everything you need, organized.</h2>
-          </div>
-          <a class="text-link" href="pages/archive.html">View full archive →</a>
+        <div class="section-head">
+          <div><p class="eyebrow">Explore StateCrafter</p><h2>Everything academic, in one place.</h2><p>Every major area below is directly clickable and connected to the existing StateCrafter pages.</p></div>
         </div>
-        <div class="card-grid three">
-          <a class="feature-card" href="pages/archive.html#notes">
-            <span class="card-icon">N</span>
-            <h3>Notes</h3>
-            <p>Course-wise study materials organized around the Political Science curriculum.</p>
-            <span class="card-link">Browse notes →</span>
-          </a>
-          <a class="feature-card" href="pages/archive.html#questions">
-            <span class="card-icon">Q</span>
-            <h3>Previous Questions</h3>
-            <p>Past examination questions organized by campus, course and examination type.</p>
-            <span class="card-link">Browse questions →</span>
-          </a>
-          <a class="feature-card" href="pages/archive.html#suggestions">
-            <span class="card-icon">S</span>
-            <h3>Suggestions</h3>
-            <p>Student-friendly suggestions and academic resources for each course.</p>
-            <span class="card-link">Browse suggestions →</span>
-          </a>
+        <div class="quick-grid">
+          <a class="quick-card" href="pages/archive.html"><span class="quick-arrow">↗</span><div class="quick-icon">A</div><h3>Academic Archive</h3><p>Notes, previous questions, suggestions, syllabus and other study resources.</p></a>
+          <a class="quick-card" href="pages/research.html"><span class="quick-arrow">↗</span><div class="quick-icon">R</div><h3>Research &amp; Articles</h3><p>Read original research, analysis, opinion and academic writing from the community.</p></a>
+          <a class="quick-card" href="pages/events.html"><span class="quick-arrow">↗</span><div class="quick-icon">E</div><h3>Events</h3><p>Discover approved academic, cultural, seminar, workshop and community events.</p></a>
+          <a class="quick-card" href="pages/about.html"><span class="quick-arrow">↗</span><div class="quick-icon">S</div><h3>About StateCrafter</h3><p>Learn about the platform, the seven campuses and the Political Science community.</p></a>
         </div>
       </div>
     </section>
 
-    <section class="section research-strip">
-      <div class="container split">
-        <div>
-          <p class="eyebrow">RESEARCH &amp; ARTICLES</p>
-          <h2>Ideas deserve a place to grow.</h2>
-          <p>
-            Students can submit articles and research for review. Approved work
-            becomes part of the public StateCrafter academic archive.
-          </p>
-          <a class="btn btn-dark" href="pages/research.html">Explore Research</a>
-        </div>
-        <div class="mini-list">
-          <article>
-            <span>01</span>
-            <div><strong>Student Articles</strong><small>Original writing and academic perspectives</small></div>
-          </article>
-          <article>
-            <span>02</span>
-            <div><strong>Research Papers</strong><small>Long-form work with optional PDF attachments</small></div>
-          </article>
-          <article>
-            <span>03</span>
-            <div><strong>Video Resources</strong><small>Related lectures and presentations via YouTube</small></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
+    <section class="home-section soft" id="latest">
       <div class="container">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">EVENTS</p>
-            <h2>What’s happening in the department?</h2>
-          </div>
-          <a class="text-link" href="pages/events.html">View events →</a>
+        <div class="section-head">
+          <div><p class="eyebrow">Live from the community</p><h2>Latest Research &amp; Upcoming Events</h2><p>Published articles and public events appear here automatically after approval.</p></div>
+          <div><a class="section-link" href="pages/research.html">All Research →</a> <a class="section-link" style="margin-left:14px" href="pages/events.html">All Events →</a></div>
         </div>
-        <div class="event-placeholder">
-          <div class="event-date"><strong>--</strong><small>DATE</small></div>
-          <div>
-            <p class="muted">Events will appear here once the admin dashboard is connected.</p>
-            <h3>Department seminars, workshops, competitions and programs</h3>
-          </div>
-          <a class="btn btn-outline" href="pages/events.html">Event archive</a>
+        <div class="content-grid">
+          <section class="panel" aria-label="Latest research">
+            <div class="panel-head"><div><h3>Latest Research</h3><p>Recently published community writing.</p></div><a class="panel-link" href="pages/research.html">VIEW ALL</a></div>
+            <div id="homeArticles" class="article-list"><div class="loading-home">Loading published articles…</div></div>
+          </section>
+          <section class="panel" aria-label="Upcoming events">
+            <div class="panel-head"><div><h3>Upcoming Events</h3><p>Approved events visible to everyone.</p></div><a class="panel-link" href="pages/events.html">VIEW ALL</a></div>
+            <div id="homeEvents" class="event-list"><div class="loading-home">Loading upcoming events…</div></div>
+          </section>
         </div>
       </div>
     </section>
 
-    <section class="section callout">
-      <div class="container callout-inner">
-        <div>
-          <p class="eyebrow">BUILDING TOGETHER</p>
-          <h2>Have something useful to share?</h2>
-          <p>Registered students will be able to submit notes, questions, suggestions and research for admin review.</p>
+    <section class="campus-section">
+      <div class="container">
+        <div class="section-head">
+          <div><p class="eyebrow">Seven campuses</p><h2>One Political Science community.</h2><p>StateCrafter brings together the academic identity, resources and student voices of seven campuses.</p></div>
+          <a class="section-link" href="pages/about.html">Learn More →</a>
         </div>
-        <a class="btn btn-primary" href="pages/login.html">Login / Register</a>
+        <div class="campus-grid">
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">01</div><h3>Dhaka College</h3><p>Political Science community within one of Dhaka's historic institutions.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">02</div><h3>Eden Mohila College</h3><p>A major women's higher-education institution with a large Political Science community.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">03</div><h3>Government Titumir College</h3><p>A large Dhaka campus and an important part of the seven-college academic network.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">04</div><h3>Government Shaheed Suhrawardy College</h3><p>Political Science and social-science learning within a historic Dhaka institution.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">05</div><h3>Kabi Nazrul Government College</h3><p>A historic Laxmibazar institution with Political Science in its academic structure.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">06</div><h3>Begum Badrunnessa Government Girls' College</h3><p>A strong women's education campus with an established Political Science department.</p><span>Explore campus →</span></a>
+          <a class="campus-card" href="pages/about.html"><div class="campus-number">07</div><h3>Government Bangla College</h3><p>A major Dhaka institution and part of the shared Political Science community.</p><span>Explore campus →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section">
+      <div class="container">
+        <div class="about-home">
+          <article class="about-copy">
+            <p class="eyebrow">Why StateCrafter DCU?</p>
+            <h2>More than a website. A shared academic home.</h2>
+            <p>Political Science is about institutions, governance, citizenship, public policy, political ideas, society and the world around us. StateCrafter DCU is designed to make the academic side of that community easier to discover, use and share.</p>
+            <p>From previous questions and study resources to student research, articles, events and campus knowledge, the platform connects the seven campuses through one simple interface.</p>
+            <div class="mini-links"><a class="mini-link" href="pages/archive.html">Notes &amp; Questions</a><a class="mini-link" href="pages/research.html">Research</a><a class="mini-link" href="pages/events.html">Events</a><a class="mini-link" href="pages/about.html">About DCU</a></div>
+          </article>
+          <aside class="dcu-card">
+            <img src="assets/dcu-logo.png" alt="Dhaka Central University logo">
+            <h3>Dhaka Central University</h3>
+            <p>Political Science · Seven-campus academic community</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-cta">
+      <div class="container cta-inner">
+        <div><h2>Have something to contribute?</h2><p>Explore the archive, publish your ideas, discover events, or learn more about StateCrafter DCU.</p></div>
+        <div class="cta-actions"><a class="home-btn primary" href="pages/research.html">Explore Research</a><a class="home-btn ghost" href="pages/events.html">See Events</a></div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <img src="assets/statecrafter-logo.png" alt="StateCrafter DCU">
-        <p>StateCrafter DCU is an academic platform for the Political Science community.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <a href="pages/archive.html">Academic Archive</a>
-        <a href="pages/research.html">Research &amp; Articles</a>
-        <a href="pages/events.html">Events</a>
-      </div>
-      <div>
-        <h4>Institution</h4>
-        <a href="pages/about.html">About Department</a>
-        <a href="pages/login.html">Student Login</a>
-      </div>
-      <div class="footer-crest">
-        <img src="assets/dcu-logo.png" alt="Dhaka Central University">
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <span>© 2026 StateCrafter DCU</span>
-      <span>Political Science Department • Dhaka Central University</span>
-    </div>
+    <div class="container footer-bottom"><span>© 2026 StateCrafter DCU</span><span>Political Science Department • Dhaka Central University</span></div>
   </footer>
+</div>
 
-  <script src="app.js"></script>
+<script>
+  const SUPABASE_URL = "https://psqwnvgruyfgdoukvpid.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_laa0xdMjKu2WV70goHPD-A_uW_ART3c";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const $ = id => document.getElementById(id);
+
+  function esc(v){return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;")}
+  function strip(v){const d=document.createElement("div");d.innerHTML=v||"";return (d.textContent||d.innerText||"").replace(/\s+/g," ").trim()}
+  function first(o,keys,f=""){for(const k of keys){if(o?.[k]!==undefined&&o?.[k]!==null&&String(o[k]).trim()!=="")return String(o[k]).trim()}return f}
+  function dateText(v){if(!v)return "Date unavailable";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}
+  function normalizeImage(url){const v=String(url||"").trim();if(!v||!/^https?:\/\//i.test(v))return "";const m=v.match(/drive\.google\.com\/file\/d\/([^/]+)/i);if(m)return "https://drive.google.com/thumbnail?id="+encodeURIComponent(m[1])+"&sz=w1200";const o=v.match(/drive\.google\.com\/open\?id=([^&]+)/i);if(o)return "https://drive.google.com/thumbnail?id="+encodeURIComponent(o[1])+"&sz=w1200";return v}
+  function articleExcerpt(a){return strip(first(a,["excerpt","summary","subtitle","description","content","body"],"" )).slice(0,145)+(strip(first(a,["excerpt","summary","subtitle","description","content","body"],"" )).length>145?"…":"")}
+  function articleDate(a){return a.published_at||a.created_at||a.updated_at||null}
+  function articleCover(a){return first(a,["cover_image_url","cover_url","thumbnail_url"],"")}
+  function eventDate(e){return first(e,["event_date","date","start_date"],"")}
+  function eventTitle(e){return first(e,["title","name"],"Untitled Event")}
+  function eventLocation(e){return first(e,["location","venue","place"],"Location TBA")}
+  function eventCategory(e){return first(e,["category","event_type"],"other")}
+  function eventTime(e){const s=first(e,["start_time","event_time"],"");const end=first(e,["end_time"],"");return s&&end?s+" – "+end:s||end||"Time TBA"}
+  function upcoming(e){const d=eventDate(e);if(!d)return true;const x=new Date(d+"T00:00:00"),t=new Date();t.setHours(0,0,0,0);return !Number.isNaN(x.getTime())&&x>=t}
+  function dateParts(v){if(!v)return{day:"—",month:"TBA"};const d=new Date(v+"T00:00:00");if(Number.isNaN(d.getTime()))return{day:"—",month:"TBA"};return{day:String(d.getDate()),month:d.toLocaleDateString("en-US",{month:"short"})}}
+
+  async function updateAuth(){
+    try{
+      const {data}=await db.auth.getUser();
+      const user=data?.user;
+      const a=$("authNav");
+      if(!a)return;
+      if(user){a.textContent="Dashboard";a.href="pages/student-dashboard.html";a.classList.add("logged-in")}else{a.textContent="Login";a.href="pages/login.html";a.classList.remove("logged-in")}
+    }catch{ }
+  }
+
+  async function loadArticles(){
+    const box=$("homeArticles");
+    try{
+      const {data,error}=await db.from("articles").select("*").in("status",["published","approved"]).order("published_at",{ascending:false,nullsFirst:false}).limit(4);
+      if(error)throw error;
+      const rows=data||[];
+      if(!rows.length){box.innerHTML='<div class="empty-home">No published research yet. New approved articles will appear here automatically.</div>';return}
+      box.innerHTML=rows.map(a=>{
+        const title=first(a,["title"],"Untitled Article"), cover=normalizeImage(articleCover(a)), cat=first(a,["category","article_category","article_type"],"Article"), author=first(a,["full_name","student_name","created_by_name"],"StateCrafter Contributor"), campus=first(a,["campus","target_campus"],"");
+        return `<a class="home-item" href="pages/article-view.html?id=${encodeURIComponent(a.id)}"><div class="thumb">${cover?`<img src="${esc(cover)}" alt="">`:"RESEARCH"}</div><div><div class="item-top"><span class="pill">${esc(cat)}</span><span class="item-date">${esc(dateText(articleDate(a)))}</span></div><h4>${esc(title)}</h4><p>${esc(articleExcerpt(a)||"Read the full article to explore this publication.")}</p><div class="item-meta">By ${esc(author)}${campus?" · "+esc(campus):""}</div></div></a>`
+      }).join("");
+      box.querySelectorAll("img").forEach(img=>img.addEventListener("error",()=>{img.remove();},{once:true}));
+    }catch(error){console.error(error);box.innerHTML='<div class="error-home">Published research could not be loaded right now.</div>'}
+  }
+
+  async function loadEvents(){
+    const box=$("homeEvents");
+    try{
+      const {data,error}=await db.from("events").select("*").eq("status","published").order("event_date",{ascending:true}).limit(20);
+      if(error)throw error;
+      const rows=(data||[]).filter(upcoming).slice(0,4);
+      if(!rows.length){box.innerHTML='<div class="empty-home">No upcoming public events right now. Approved events will appear here automatically.</div>';return}
+      box.innerHTML=rows.map(e=>{const p=dateParts(eventDate(e));return `<a class="home-item event-home-item" href="pages/events.html?event=${encodeURIComponent(e.id)}"><div class="event-date-box"><strong>${esc(p.day)}</strong><span>${esc(p.month)}</span></div><div><div class="item-top"><span class="pill">${esc(eventCategory(e))}</span><span class="item-date">${esc(eventTime(e))}</span></div><h4>${esc(eventTitle(e))}</h4><div class="event-location">⌖ ${esc(eventLocation(e))}</div><p>${esc(first(e,["short_description","excerpt","description","details"],"Open the event for full details."))}</p></div></a>`}).join("");
+    }catch(error){console.error(error);box.innerHTML='<div class="error-home">Upcoming events could not be loaded right now.</div>'}
+  }
+
+  $("mobileMenu").addEventListener("click",()=>{const nav=$("mainNav");const open=nav.classList.toggle("mobile-open");$("mobileMenu").setAttribute("aria-expanded",open?"true":"false")});
+  db.auth.onAuthStateChange(()=>updateAuth());
+  updateAuth();
+  loadArticles();
+  loadEvents();
+</script>
+<script src="app.js"></script>
 </body>
 </html>
