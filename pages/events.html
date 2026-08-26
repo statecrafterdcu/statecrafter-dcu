@@ -9,6 +9,220 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
+    /* =====================================================
+       STATECRAFTER SHARED HEADER / MOBILE MENU FIX
+       (header behavior only; page content unchanged)
+       ===================================================== */
+
+    .site-header{
+      position:relative;
+      z-index:1000;
+      width:100%;
+      background:#fff;
+      border-bottom:1px solid #e5e9ef;
+    }
+
+    .site-header .container{
+      width:min(1180px,calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .site-header .nav-wrap{
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      position:relative;
+    }
+
+    .site-header .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:0;
+      text-decoration:none;
+      color:#122b52;
+    }
+
+    .site-header .brand img{
+      width:42px;
+      height:42px;
+      object-fit:contain;
+      flex:0 0 auto;
+    }
+
+    .site-header .brand-copy{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    .site-header .brand-copy strong{
+      color:#122b52;
+      font-size:15px;
+      font-weight:900;
+      line-height:1.15;
+      white-space:nowrap;
+    }
+
+    .site-header .brand-copy small{
+      margin-top:3px;
+      color:#7a8696;
+      font-size:9px;
+      font-weight:700;
+      line-height:1.2;
+      white-space:nowrap;
+    }
+
+    .site-header .nav{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:5px;
+      margin-left:auto;
+    }
+
+    .site-header .nav a,
+    .site-header .nav .nav-login,
+    .site-header .nav button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:0 11px;
+      border:0;
+      border-radius:9px;
+      background:transparent;
+      color:#30435b;
+      font:inherit;
+      font-size:11px;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+      white-space:nowrap;
+      transition:background .18s ease,color .18s ease,transform .18s ease;
+    }
+
+    .site-header .nav a:hover,
+    .site-header .nav a.active,
+    .site-header .nav .nav-login:hover,
+    .site-header .nav button:hover{
+      background:#f1f4f8;
+      color:#a7181d;
+    }
+
+    .site-header .nav .nav-login{
+      margin-left:4px;
+      padding:0 14px;
+      background:#122b52;
+      color:#fff;
+    }
+
+    .site-header .nav .nav-login:hover{
+      background:#183d69;
+      color:#fff;
+      transform:translateY(-1px);
+    }
+
+    .site-header .menu-toggle{
+      display:none;
+      width:42px;
+      height:42px;
+      padding:0;
+      border:1px solid #e1e6ed;
+      border-radius:10px;
+      background:#fff;
+      color:#122b52;
+      font-size:24px;
+      line-height:1;
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+
+    .site-header .menu-toggle:hover,
+    .site-header .menu-toggle:focus-visible{
+      background:#f5f7fa;
+      outline:none;
+    }
+
+    @media (max-width: 850px){
+      .site-header .container{
+        width:min(100% - 24px,1180px);
+      }
+
+      .site-header .nav-wrap{
+        min-height:68px;
+      }
+
+      .site-header .menu-toggle{
+        display:inline-flex;
+        flex:0 0 auto;
+      }
+
+      .site-header .nav{
+        display:none;
+        position:absolute;
+        top:calc(100% + 8px);
+        left:0;
+        right:0;
+        z-index:1001;
+        flex-direction:column;
+        align-items:stretch;
+        gap:4px;
+        padding:8px;
+        margin:0;
+        background:#fff;
+        border:1px solid #e1e6ed;
+        border-radius:14px;
+        box-shadow:0 16px 35px rgba(18,43,82,.14);
+      }
+
+      .site-header .nav.mobile-open{
+        display:flex;
+      }
+
+      .site-header .nav a,
+      .site-header .nav .nav-login,
+      .site-header .nav button{
+        width:100%;
+        min-height:44px;
+        justify-content:flex-start;
+        padding:0 14px;
+        border-radius:9px;
+      }
+
+      .site-header .nav .nav-login{
+        margin-left:0;
+        justify-content:center;
+      }
+    }
+
+    @media (max-width:480px){
+      .site-header .brand-copy strong{
+        font-size:14px;
+      }
+
+      .site-header .brand-copy small{
+        font-size:8px;
+      }
+
+      .site-header .brand img{
+        width:39px;
+        height:39px;
+      }
+
+      .site-header .menu-toggle{
+        width:40px;
+        height:40px;
+        font-size:23px;
+      }
+    }
+
     :root{
       --event-navy:#122b52;
       --event-red:#a7181d;
@@ -563,7 +777,7 @@
         </span>
       </a>
 
-      <button id="mobileMenu" class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"☰</button>
+      <button id="mobileMenu" class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
 
       <nav id="mainNav" class="nav" aria-label="Main navigation">
         <a href="../index.html">Home</a>
@@ -1463,12 +1677,46 @@
       if(id) setTimeout(()=>openEventDetails(id),250);
     }
 
-    $("mobileMenu").addEventListener("click",()=>{
-      const nav = $("mainNav");
-      if(!nav) return;
-      const open = nav.classList.toggle("mobile-open");
-      $("mobileMenu").setAttribute("aria-expanded", open ? "true" : "false");
-    });
+    const mobileMenuButton = $("mobileMenu");
+    const mainNav = $("mainNav");
+
+    if (mobileMenuButton && mainNav) {
+      mobileMenuButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const open = mainNav.classList.toggle("mobile-open");
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          open ? "true" : "false"
+        );
+      });
+
+      mainNav.querySelectorAll("a, button").forEach((item) => {
+        item.addEventListener("click", () => {
+          mainNav.classList.remove("mobile-open");
+          mobileMenuButton.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (
+          mainNav.classList.contains("mobile-open") &&
+          !mainNav.contains(event.target) &&
+          !mobileMenuButton.contains(event.target)
+        ) {
+          mainNav.classList.remove("mobile-open");
+          mobileMenuButton.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 850) {
+          mainNav.classList.remove("mobile-open");
+          mobileMenuButton.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
 
     initAuthButton();
     loadEvents().then(openEventFromUrl);
