@@ -1918,6 +1918,42 @@
       }
 
 
+      /*
+        Student dashboard is student-only.
+        If an admin reaches this page directly,
+        send them to the admin dashboard immediately.
+      */
+
+      const {
+        data: profile,
+        error: profileError
+      } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        throw profileError;
+      }
+
+      if (profile?.role === "admin") {
+        window.location.replace(
+          "admin-dashboard.html"
+        );
+
+        return null;
+      }
+
+      if (profile?.role !== "student") {
+        window.location.replace(
+          "login.html"
+        );
+
+        return null;
+      }
+
+
       return data.user;
 
     }
