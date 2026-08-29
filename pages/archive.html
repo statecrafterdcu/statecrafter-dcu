@@ -24,10 +24,10 @@
 
   <style>
 .archive-hero{position:relative;isolation:isolate;overflow:hidden;min-height:520px;display:flex;align-items:center;background:radial-gradient(circle at 85% 18%,rgba(255,255,255,.15),transparent 25%),radial-gradient(circle at 12% 82%,rgba(255,255,255,.07),transparent 28%),linear-gradient(135deg,#0d2238 0%,#163a59 54%,#102a43 100%);border-bottom:1px solid rgba(255,255,255,.08);padding:78px 0 70px;color:#fff}.archive-hero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 90%)}.archive-hero:after{content:"";position:absolute;z-index:-1;width:430px;height:430px;border-radius:50%;right:-150px;bottom:-230px;border:1px solid rgba(255,255,255,.13);box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 65px rgba(255,255,255,.018)}.archive-hero .container{position:relative;z-index:1}.archive-hero h1{margin:0;color:#fff;font-size:clamp(46px,7vw,82px);line-height:.96;letter-spacing:-.065em}.archive-hero p:not(.eyebrow){max-width:720px;margin:22px 0 0;color:rgba(255,255,255,.78);font-size:16px;line-height:1.75}.archive-hero .eyebrow{color:rgba(255,255,255,.68)}.archive-hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.archive-hero-actions .btn{min-height:48px}.archive-hero-actions .btn-primary{background:#fff;color:var(--navy);border-color:#fff}.archive-hero-actions .btn-outline{background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.25);backdrop-filter:blur(8px)}
-.archive-section{padding:58px 0 90px;background:linear-gradient(180deg,#f7fafc 0%,#fff 42%,#f8fafc 100%)}.archive-toolbar{background:linear-gradient(135deg,#fff,#f8faff);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 40px rgba(18,43,82,.07);margin-bottom:34px}.filter-grid{display:grid;grid-template-columns:1.55fr repeat(5,minmax(0,1fr));gap:12px}.filter-group{min-width:0}.filter-group label{display:block;color:var(--navy);font-size:11px;font-weight:900;margin-bottom:7px;letter-spacing:.05em}.filter-group input,.filter-group select{width:100%;height:46px;border:1px solid #d9dee5;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:13px;padding:0 13px;outline:none;box-sizing:border-box}.filter-group input:focus,.filter-group select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,43,82,.06)}.filter-group select{cursor:pointer}.filter-group select:hover,.filter-group input:hover{border-color:#b8c4d2}.filter-actions{display:flex;align-items:end}.reset-button{width:100%;height:46px;cursor:pointer}
+.archive-section{padding:58px 0 90px;background:linear-gradient(180deg,#f7fafc 0%,#fff 42%,#f8fafc 100%)}.archive-toolbar{background:linear-gradient(135deg,#fff,#f8faff);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 40px rgba(18,43,82,.07);margin-bottom:34px}.filter-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:12px}.filter-group{min-width:0}.filter-group label{display:block;color:var(--navy);font-size:11px;font-weight:900;margin-bottom:7px;letter-spacing:.05em}.filter-group input,.filter-group select{width:100%;height:46px;border:1px solid #d9dee5;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:13px;padding:0 13px;outline:none;box-sizing:border-box}.filter-group input:focus,.filter-group select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,43,82,.06)}.filter-group select{cursor:pointer}.filter-group select:hover,.filter-group input:hover{border-color:#b8c4d2}.filter-actions{display:flex;align-items:end}.reset-button{width:100%;height:46px;cursor:pointer}
 .archive-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}.archive-heading h2{margin:0;color:var(--navy);font-size:30px}.archive-count{color:var(--muted);font-size:12px;font-weight:800}.resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.resource-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e1e6ee;border-radius:22px;padding:24px;box-shadow:0 9px 30px rgba(18,43,82,.055);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;min-width:0}.resource-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#d9575e,#7b61d1,#4f8ecb)}.resource-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(18,43,82,.11);border-color:#ccd5e2}.resource-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:15px;padding-top:2px}.resource-type-badge{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 10px;border-radius:999px;background:#f7e9eb;color:var(--red);font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.resource-campus{display:inline-flex;align-items:center;justify-content:center;max-width:62%;padding:6px 10px;border-radius:999px;background:#eaf3ff;color:#24538d;font-size:10px;font-weight:900;text-align:right}.resource-card h3{margin:0;color:var(--navy);font-size:22px;line-height:1.3}.resource-description{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.resource-highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.resource-highlight{border-radius:12px;padding:10px;background:#f7f9fc;border:1px solid #e7ebf1;min-width:0}.resource-highlight.course{background:#fff8e8;border-color:#f0dfb6}.resource-highlight.session{background:#f1f7ff;border-color:#d8e7fb}.resource-highlight.year{background:#f6f1ff;border-color:#e5dafa}.resource-highlight span{display:block;color:#718096;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.resource-highlight strong{display:block;color:var(--navy);font-size:11px;line-height:1.35;word-break:break-word}.resource-meta{border-top:1px solid #edf0f3;margin-top:17px;padding-top:14px}.meta-row{display:flex;justify-content:space-between;gap:15px;padding:5px 0;font-size:11px}.meta-row span{color:var(--muted)}.meta-row strong{color:var(--ink);text-align:right;max-width:72%}.submitter-link{color:var(--navy);text-decoration:underline;text-decoration-color:#cbd5e1;text-underline-offset:3px}.submitter-link:hover{color:var(--red)}.resource-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}.resource-actions .btn{min-height:41px;padding:0 15px;font-size:11px}
 .archive-cta{position:relative;overflow:hidden;margin-top:46px;border-radius:24px;padding:30px 32px;background:linear-gradient(135deg,#122b52,#294d7b 58%,#6b4e9c);box-shadow:0 20px 50px rgba(18,43,82,.16);color:#fff}.archive-cta:after{content:"";position:absolute;width:230px;height:230px;right:-90px;top:-110px;border-radius:50%;background:rgba(255,255,255,.09)}.archive-cta-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:24px}.archive-cta .eyebrow{color:#efb4b7}.archive-cta h2{margin:0;color:#fff;font-size:29px}.archive-cta p{margin:8px 0 0;color:#d5deea;font-size:13px;line-height:1.7;max-width:650px}.archive-cta .btn{background:#fff;color:var(--navy);border-color:#fff;white-space:nowrap}.archive-loading{display:grid;place-items:center;min-height:260px;border:1px dashed #cbd1d9;border-radius:20px;color:var(--muted);font-size:13px}.loading-spinner{width:28px;height:28px;border-radius:50%;border:3px solid #e4e7eb;border-top-color:var(--navy);animation:spin .8s linear infinite;margin-bottom:12px}@keyframes spin{to{transform:rotate(360deg)}}.archive-empty{display:none;text-align:center;border:1px dashed #cbd1d9;border-radius:20px;padding:55px 25px;background:#fafbfc}.archive-empty h3{margin:0;color:var(--navy);font-size:22px}.archive-empty p{color:var(--muted);font-size:13px;margin:8px auto 0;max-width:500px}.archive-error{display:none;background:#fdf0f0;border:1px solid #efcaca;border-radius:15px;padding:18px;color:var(--red);font-size:13px;margin-bottom:25px}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:35px}.page-button{min-width:40px;height:40px;border:1px solid #d8dde5;border-radius:10px;background:#fff;color:var(--navy);font-size:12px;font-weight:800;cursor:pointer}.page-button:hover{border-color:var(--navy)}.page-button.active{background:var(--navy);color:#fff;border-color:var(--navy)}.page-button:disabled{opacity:.4;cursor:not-allowed}
-@media(max-width:1200px){.filter-grid{grid-template-columns:1.5fr repeat(2,1fr)}.resource-grid{grid-template-columns:1fr}}@media(max-width:700px){.filter-grid{grid-template-columns:1fr}.archive-heading{display:block}.archive-count{display:block;margin-top:6px}.resource-card{padding:21px}.resource-top{display:block}.resource-campus{margin-top:9px;max-width:100%;justify-content:flex-start;text-align:left}.resource-highlights{grid-template-columns:1fr}.meta-row{display:block}.meta-row strong{display:block;text-align:left;max-width:100%;margin-top:2px}.archive-cta-inner{display:block}.archive-cta .btn{display:block;margin-top:18px;width:100%;text-align:center}}
+@media(max-width:1050px){.filter-grid{grid-template-columns:1.5fr repeat(2,1fr)}.resource-grid{grid-template-columns:1fr}}@media(max-width:700px){.filter-grid{grid-template-columns:1fr}.archive-heading{display:block}.archive-count{display:block;margin-top:6px}.resource-card{padding:21px}.resource-top{display:block}.resource-campus{margin-top:9px;max-width:100%;justify-content:flex-start;text-align:left}.resource-highlights{grid-template-columns:1fr}.meta-row{display:block}.meta-row strong{display:block;text-align:left;max-width:100%;margin-top:2px}.archive-cta-inner{display:block}.archive-cta .btn{display:block;margin-top:18px;width:100%;text-align:center}}
   </style>
 
 </head>
@@ -171,72 +171,127 @@
 
       <div class="filter-grid">
 
+
         <!-- SEARCH -->
+
         <div class="filter-group">
-          <label for="searchInput">SEARCH</label>
-          <input type="search" id="searchInput" placeholder="Search title, course or student...">
+
+          <label for="searchInput">
+            SEARCH
+          </label>
+
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search title, course or student..."
+          >
+
         </div>
 
-        <!-- RESOURCE TYPE -->
-        <div class="filter-group">
-          <label for="typeFilter">RESOURCE TYPE</label>
-          <select id="typeFilter">
-            <option value="all">All Resources</option>
-            <option value="note">Academic Notes</option>
-            <option value="question">Previous Questions</option>
-            <option value="suggestion">Suggestions</option>
-          </select>
-        </div>
+
 
         <!-- CAMPUS -->
+
         <div class="filter-group">
-          <label for="campusFilter">CAMPUS</label>
+
+          <label for="campusFilter">
+            CAMPUS
+          </label>
+
           <select id="campusFilter">
-            <option value="all">All Campuses</option>
-            <option value="Dhaka College">Dhaka College</option>
-            <option value="Eden Mohila College">Eden Mohila College</option>
-            <option value="Titumir College">Titumir College</option>
-            <option value="Bangla College">Bangla College</option>
-            <option value="Kabi Nazrul College">Kabi Nazrul College</option>
-            <option value="Begum Badrunnesa Mohila College">Begum Badrunnesa Mohila College</option>
-            <option value="Shaheed Suhrawardy College">Shaheed Suhrawardy College</option>
+
+            <option value="all">
+              All Campuses
+            </option>
+
+            <option value="Dhaka College">
+              Dhaka College
+            </option>
+
+            <option value="Eden Mohila College">
+              Eden Mohila College
+            </option>
+
+            <option value="Titumir College">
+              Titumir College
+            </option>
+
+            <option value="Bangla College">
+              Bangla College
+            </option>
+
+            <option value="Kabi Nazrul College">
+              Kabi Nazrul College
+            </option>
+
+            <option value="Begum Badrunnesa Mohila College">
+              Begum Badrunnesa Mohila College
+            </option>
+
+            <option value="Shaheed Suhrawardy College">
+              Shaheed Suhrawardy College
+            </option>
+
           </select>
+
         </div>
 
-        <!-- SESSION -->
+
+
+        <div class="filter-group"><label for="sessionFilter">SESSION</label><select id="sessionFilter"><option value="all">All Sessions</option></select></div>
+        <div class="filter-group"><label for="yearFilter">YEAR</label><select id="yearFilter"><option value="all">All Years</option><option value="1">1st year</option><option value="2">2nd year</option><option value="3">3rd year</option><option value="4">4th year</option></select></div>
+
+        <!-- RESOURCE TYPE -->
+
         <div class="filter-group">
-          <label for="sessionFilter">SESSION</label>
-          <select id="sessionFilter">
-            <option value="all">All Sessions</option>
+
+          <label for="typeFilter">
+            RESOURCE TYPE
+          </label>
+
+          <select id="typeFilter">
+
+            <option value="all">
+              All Resources
+            </option>
+
+            <option value="note">
+              Academic Notes
+            </option>
+
+            <option value="question">
+              Previous Questions
+            </option>
+
+            <option value="suggestion">
+              Suggestions
+            </option>
+
           </select>
+
         </div>
 
-        <!-- YEAR -->
-        <div class="filter-group">
-          <label for="yearFilter">YEAR</label>
-          <select id="yearFilter">
-            <option value="all">All Years</option>
-            <option value="1">1st year</option>
-            <option value="2">2nd year</option>
-            <option value="3">3rd year</option>
-            <option value="4">4th year</option>
-          </select>
-        </div>
 
-        <!-- COURSE / SUBJECT -->
-        <div class="filter-group">
-          <label for="courseFilter">Course / Subject</label>
-          <select id="courseFilter">
-            <option value="all">All Courses / Subjects</option>
-          </select>
-        </div>
 
         <!-- RESET -->
+
         <div class="filter-group filter-actions">
-          <button id="resetButton" type="button" class="btn btn-outline reset-button">Reset Filters</button>
-        </div>
+
+          <button
+            id="resetButton"
+            type="button"
+            class="btn btn-outline reset-button"
+          >
+            Reset Filters
+          </button>
 
         </div>
+
+
+      </div>
+
+
+    </div>
 
 
 
@@ -435,7 +490,6 @@ const campusFilter =
 const typeFilter = document.getElementById("typeFilter");
 const sessionFilter = document.getElementById("sessionFilter");
 const yearFilter = document.getElementById("yearFilter");
-const courseFilter = document.getElementById("courseFilter");
 
 
 const resetButton =
@@ -492,37 +546,118 @@ const pagination =
 ========================================================= */
 
 async function loadArchive() {
+
   showLoading();
+
   hideError();
 
+
   try {
-    const { data, error } = await supabaseClient
-      .from("academic_notes")
-      .select("*")
-      .order("created_at", { ascending: false });
 
-    if (error) throw error;
+    /*
+      academic_notes is expected to contain
+      only approved/published resources.
 
-    allResources = Array.isArray(data) ? data : [];
+      We still filter status = approved
+      if the column exists.
+    */
 
-    if (allResources.some(resource => Object.prototype.hasOwnProperty.call(resource, "status"))) {
-      allResources = allResources.filter(resource => {
-        const status = String(resource.status || "").toLowerCase();
-        return !status || status === "approved" || status === "published";
-      });
+    let query =
+      supabaseClient
+
+        .from("academic_notes")
+
+        .select("*")
+
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    const {
+      data,
+      error
+    } = await query;
+
+
+    if (error) {
+
+      throw error;
+
     }
+
+
+    allResources =
+      Array.isArray(data)
+        ? data
+        : [];
+
+
+    /*
+      If academic_notes contains a status column,
+      remove anything that is not approved.
+
+      This also keeps the archive safe if an
+      unapproved row accidentally exists.
+    */
+
+    allResources =
+      allResources.filter(resource => {
+
+        if (
+          !Object.prototype
+            .hasOwnProperty
+            .call(
+              resource,
+              "status"
+            )
+        ) {
+
+          return true;
+
+        }
+
+
+        return (
+          resource.status ===
+          "approved"
+        );
+
+      });
+
 
     hideLoading();
     populateSessionFilter();
-    await populateCourseFilter();
     applyFilters();
+
+
   } catch (error) {
-    console.error("Archive error:", error);
+
+    console.error(
+      "Archive error:",
+      error
+    );
+
+
     hideLoading();
-    showError(error.message || "Unable to load the Academic Archive.");
-    archiveCount.textContent = "Unable to load resources";
+
+
+    showError(
+      error.message ||
+      "Unable to load the Academic Archive."
+    );
+
+
+    archiveCount.textContent =
+      "Unable to load resources";
+
   }
+
 }
+
 
 
 /* =========================================================
@@ -530,50 +665,160 @@ async function loadArchive() {
 ========================================================= */
 
 function applyFilters() {
-  const search = searchInput.value.trim().toLowerCase();
-  const type = typeFilter.value;
-  const campus = campusFilter.value;
-  const session = sessionFilter.value;
-  const year = yearFilter.value;
-  const course = courseFilter.value;
 
-  filteredResources = allResources.filter(resource => {
-    const resourceCampus = getResourceCampus(resource);
-    const resourceType = normalizeType(resource.resource_type || resource.type);
-    const resourceSession = getResourceSession(resource);
-    const resourceYear = normalizeYearValue(getResourceYear(resource));
-    const resourceCourseCode = getResourceCourseCode(resource);
-    const resourceCourseName = getResourceCourseName(resource);
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
 
-    if (type !== "all" && resourceType !== type) return false;
-    if (campus !== "all" && normalizeText(resourceCampus) !== normalizeText(campus)) return false;
-    if (session !== "all" && normalizeText(resourceSession) !== normalizeText(session)) return false;
-    if (year !== "all" && resourceYear !== year) return false;
 
-    if (course !== "all") {
-      const selectedCourse = normalizeText(course);
-      if (normalizeText(resourceCourseCode) !== selectedCourse && normalizeText(resourceCourseName) !== selectedCourse) {
-        return false;
+  const campus =
+    campusFilter.value;
+
+
+  const type =
+    typeFilter.value;
+
+
+  filteredResources =
+    allResources.filter(
+      resource => {
+
+
+        /* -----------------------------
+           CAMPUS
+        ----------------------------- */
+
+        const resourceCampus =
+          getResourceCampus(
+            resource
+          );
+
+
+        if (
+          campus !== "all" &&
+          resourceCampus !== campus
+        ) {
+
+          return false;
+
+        }
+
+
+
+        /* -----------------------------
+           TYPE
+        ----------------------------- */
+
+        const resourceType =
+          normalizeType(
+            resource.resource_type ||
+            resource.type
+          );
+
+
+        if (
+          type !== "all" &&
+          resourceType !== type
+        ) {
+
+          return false;
+
+        }
+
+        /* -----------------------------
+           RESOURCE SESSION
+        ----------------------------- */
+
+        const resourceSession = getResourceSession(resource);
+
+        if (
+          sessionFilter.value !== "all" &&
+          resourceSession !== sessionFilter.value
+        ) {
+
+          return false;
+
+        }
+
+        /* -----------------------------
+           RESOURCE YEAR
+        ----------------------------- */
+
+        const resourceYear = getResourceYear(resource);
+
+        if (
+          yearFilter.value !== "all" &&
+          normalizeYearValue(resourceYear) !== yearFilter.value
+        ) {
+
+          return false;
+
+        }
+
+
+        /* -----------------------------
+           SEARCH
+        ----------------------------- */
+
+        if (search) {
+
+          const searchable = [
+
+            resource.title,
+
+            resource.course,
+
+            resource.description,
+
+            resource.full_name,
+
+            resource.student_name,
+
+            resource.student_id,
+
+            resource.submitter_name,
+
+            resourceCampus,
+
+            resourceSession,
+
+            resourceYear
+
+          ]
+
+            .filter(Boolean)
+
+            .join(" ")
+
+            .toLowerCase();
+
+
+          if (
+            !searchable.includes(
+              search
+            )
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+        return true;
+
       }
-    }
+    );
 
-    if (search) {
-      const searchable = [
-        resource.title, resourceCourseCode, resourceCourseName, resource.course,
-        resource.description, resource.full_name, resource.student_name,
-        resource.student_id, resource.submitter_name, resourceCampus,
-        resourceSession, getYearLabel(resourceYear)
-      ].filter(Boolean).join(" ").toLowerCase();
-
-      if (!searchable.includes(search)) return false;
-    }
-
-    return true;
-  });
 
   currentPage = 1;
+
   renderArchive();
+
 }
+
 
 
 /* =========================================================
@@ -581,15 +826,13 @@ function applyFilters() {
 ========================================================= */
 
 function getResourceSession(resource) {
-  const value =
+  return String(
     resource.resource_session ??
-    resource.resourceSession ??
     resource.academic_session ??
-    resource.academicSession ??
+    resource.resourceSession ??
     resource.session_name ??
-    resource.resource_session_name;
-
-  return String(value ?? "").trim() || "Not specified";
+    "Not specified"
+  ).trim() || "Not specified";
 }
 
 function normalizeYearValue(value) {
@@ -602,34 +845,19 @@ function normalizeYearValue(value) {
 }
 
 function getResourceYear(resource) {
-  const value =
+  return String(
     resource.year_level ??
     resource.resource_year ??
-    resource.resourceYear ??
     resource.academic_year ??
-    resource.academicYear ??
-    resource.year;
-
-  return String(value ?? "").trim() || "Not specified";
+    resource.year ??
+    "Not specified"
+  ).trim() || "Not specified";
 }
 
 function getYearLabel(value) {
   const n = normalizeYearValue(value);
   return ({"1":"1st year","2":"2nd year","3":"3rd year","4":"4th year"})[n] || String(value || "Not specified");
 }
-
-function getResourceCourseCode(resource) {
-  return String(resource.course_code ?? resource.courseCode ?? resource.code ?? "").trim();
-}
-
-function getResourceCourseName(resource) {
-  return String(resource.course_name ?? resource.courseName ?? resource.course ?? resource.subject ?? "").trim();
-}
-
-function normalizeText(value) {
-  return String(value ?? "").trim().toLowerCase();
-}
-
 
 /* =========================================================
    RESOURCE CAMPUS
@@ -846,9 +1074,9 @@ function createResourceCard(
     "No description provided.";
 
 
-  const courseCode = getResourceCourseCode(resource);
-  const courseName = getResourceCourseName(resource);
-  const course = [courseCode, courseName].filter(Boolean).join(" — ") || "Not specified";
+  const course =
+    resource.course ||
+    "Not specified";
 
 
   const submitter =
@@ -1278,7 +1506,6 @@ function resetFilters() {
     "all";
   sessionFilter.value = "all";
   yearFilter.value = "all";
-  courseFilter.value = "all";
 
   currentPage =
     1;
@@ -1323,7 +1550,6 @@ campusFilter.addEventListener(
 typeFilter.addEventListener("change",applyFilters);
 sessionFilter.addEventListener("change",applyFilters);
 yearFilter.addEventListener("change",applyFilters);
-courseFilter.addEventListener("change",applyFilters);
 
 
 
@@ -1498,62 +1724,16 @@ if (
 ========================================================= */
 function populateSessionFilter() {
   const sessions = [...new Set(
-    allResources.map(getResourceSession).filter(v => v && v !== "Not specified")
+    allResources
+      .map(getResourceSession)
+      .filter(v => v && v !== "Not specified")
   )].sort((a,b) => a.localeCompare(b, undefined, {numeric:true}));
 
   sessionFilter.innerHTML =
     '<option value="all">All Sessions</option>' +
-    sessions.map(v => `<option value="${escapeAttribute(v)}">${escapeHtml(v)}</option>`).join("");
-}
-
-async function populateCourseFilter() {
-  const courses = new Map();
-
-  try {
-    const { data, error } = await supabaseClient
-      .from("courses")
-      .select("code,name,year_level,is_active")
-      .order("year_level", { ascending: true })
-      .order("code", { ascending: true });
-
-    if (!error && Array.isArray(data)) {
-      data.forEach(item => {
-        if (item.is_active === false) return;
-        const code = String(item.code || "").trim();
-        const name = String(item.name || "").trim();
-        if (!code && !name) return;
-        const value = code || name;
-        courses.set(normalizeText(value), { value, code, name, year: normalizeYearValue(item.year_level) });
-      });
-    }
-  } catch (error) {
-    console.warn("Course filter database load failed:", error);
-  }
-
-  // Include courses already used by published resources as a compatibility fallback.
-  allResources.forEach(resource => {
-    const code = getResourceCourseCode(resource);
-    const name = getResourceCourseName(resource);
-    const value = code || name;
-    if (!value) return;
-    const key = normalizeText(value);
-    if (!courses.has(key)) {
-      courses.set(key, { value, code, name, year: normalizeYearValue(getResourceYear(resource)) });
-    }
-  });
-
-  const ordered = [...courses.values()].sort((a,b) => {
-    const ay = Number(a.year) || 99;
-    const by = Number(b.year) || 99;
-    return ay - by || String(a.code || a.name).localeCompare(String(b.code || b.name), undefined, {numeric:true});
-  });
-
-  courseFilter.innerHTML =
-    '<option value="all">All Courses / Subjects</option>' +
-    ordered.map(item => {
-      const label = [item.code, item.name].filter(Boolean).join(" — ");
-      return `<option value="${escapeAttribute(item.value)}">${escapeHtml(label)}</option>`;
-    }).join("");
+    sessions.map(v =>
+      `<option value="${escapeAttribute(v)}">${escapeHtml(v)}</option>`
+    ).join("");
 }
 
 async function openSubmitResource(event) {
@@ -1565,15 +1745,18 @@ async function openSubmitResource(event) {
       return;
     }
   } catch (_) {}
+
   window.location.href = "login.html";
 }
 
 function setupSubmitButtons() {
-  [document.getElementById("heroSubmitResource"), document.getElementById("bottomSubmitResource")]
-    .filter(Boolean)
-    .forEach(button => button.addEventListener("click", openSubmitResource));
+  [
+    document.getElementById("heroSubmitResource"),
+    document.getElementById("bottomSubmitResource")
+  ].filter(Boolean).forEach(button => {
+    button.addEventListener("click", openSubmitResource);
+  });
 }
-
 
 /* =========================================================
    START
