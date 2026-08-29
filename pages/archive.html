@@ -175,116 +175,71 @@
         <!-- SEARCH -->
 
         <div class="filter-group">
-
-          <label for="searchInput">
-            SEARCH
-          </label>
-
-          <input
-            type="search"
-            id="searchInput"
-            placeholder="Search title, course or student..."
-          >
-
+          <label for="searchInput">SEARCH</label>
+          <input type="search" id="searchInput" placeholder="Search title, course or student...">
         </div>
 
+
+        <!-- RESOURCE TYPE -->
+
+        <div class="filter-group">
+          <label for="typeFilter">RESOURCE TYPE</label>
+          <select id="typeFilter">
+            <option value="all">All Resources</option>
+            <option value="note">Academic Notes</option>
+            <option value="question">Previous Questions</option>
+            <option value="suggestion">Suggestions</option>
+          </select>
+        </div>
 
 
         <!-- CAMPUS -->
 
         <div class="filter-group">
-
-          <label for="campusFilter">
-            CAMPUS
-          </label>
-
+          <label for="campusFilter">CAMPUS</label>
           <select id="campusFilter">
-
-            <option value="all">
-              All Campuses
-            </option>
-
-            <option value="Dhaka College">
-              Dhaka College
-            </option>
-
-            <option value="Eden Mohila College">
-              Eden Mohila College
-            </option>
-
-            <option value="Titumir College">
-              Titumir College
-            </option>
-
-            <option value="Bangla College">
-              Bangla College
-            </option>
-
-            <option value="Kabi Nazrul College">
-              Kabi Nazrul College
-            </option>
-
-            <option value="Begum Badrunnesa Mohila College">
-              Begum Badrunnesa Mohila College
-            </option>
-
-            <option value="Shaheed Suhrawardy College">
-              Shaheed Suhrawardy College
-            </option>
-
+            <option value="all">All Campuses</option>
+            <option value="Dhaka College">Dhaka College</option>
+            <option value="Eden Mohila College">Eden Mohila College</option>
+            <option value="Titumir College">Titumir College</option>
+            <option value="Bangla College">Bangla College</option>
+            <option value="Kabi Nazrul College">Kabi Nazrul College</option>
+            <option value="Begum Badrunnesa Mohila College">Begum Badrunnesa Mohila College</option>
+            <option value="Shaheed Suhrawardy College">Shaheed Suhrawardy College</option>
           </select>
-
         </div>
 
 
-
-        <div class="filter-group"><label for="sessionFilter">SESSION</label><select id="sessionFilter"><option value="all">All Sessions</option></select></div>
-        <div class="filter-group"><label for="yearFilter">YEAR</label><select id="yearFilter"><option value="all">All Years</option><option value="1">1st year</option><option value="2">2nd year</option><option value="3">3rd year</option><option value="4">4th year</option></select></div>
-
-        <!-- RESOURCE TYPE -->
-
+        <!-- SESSION -->
         <div class="filter-group">
-
-          <label for="typeFilter">
-            RESOURCE TYPE
-          </label>
-
-          <select id="typeFilter">
-
-            <option value="all">
-              All Resources
-            </option>
-
-            <option value="note">
-              Academic Notes
-            </option>
-
-            <option value="question">
-              Previous Questions
-            </option>
-
-            <option value="suggestion">
-              Suggestions
-            </option>
-
-          </select>
-
+          <label for="sessionFilter">SESSION</label>
+          <select id="sessionFilter"><option value="all">All Sessions</option></select>
         </div>
 
+
+        <!-- YEAR -->
+        <div class="filter-group">
+          <label for="yearFilter">YEAR</label>
+          <select id="yearFilter">
+            <option value="all">All Years</option>
+            <option value="1">1st year</option>
+            <option value="2">2nd year</option>
+            <option value="3">3rd year</option>
+            <option value="4">4th year</option>
+          </select>
+        </div>
+
+
+        <!-- COURSE / SUBJECT -->
+        <div class="filter-group">
+          <label for="courseFilter">Course / Subject</label>
+          <select id="courseFilter"><option value="all">All Courses / Subjects</option></select>
+        </div>
 
 
         <!-- RESET -->
-
         <div class="filter-group filter-actions">
-
-          <button
-            id="resetButton"
-            type="button"
-            class="btn btn-outline reset-button"
-          >
-            Reset Filters
-          </button>
-
+          <button id="resetButton" type="button" class="btn btn-outline reset-button">Reset Filters</button>
         </div>
 
 
@@ -490,6 +445,7 @@ const campusFilter =
 const typeFilter = document.getElementById("typeFilter");
 const sessionFilter = document.getElementById("sessionFilter");
 const yearFilter = document.getElementById("yearFilter");
+const courseFilter = document.getElementById("courseFilter");
 
 
 const resetButton =
@@ -540,6 +496,70 @@ const pagination =
   );
 
 
+
+/* =========================================================
+   COURSE FILTER
+========================================================= */
+
+let courseCatalog = [];
+
+function normalizeCourseYear(value) {
+  const raw = String(value ?? "").trim().toLowerCase();
+  if (raw === "1" || raw === "1st" || raw === "1st year" || raw === "first year") return "1";
+  if (raw === "2" || raw === "2nd" || raw === "2nd year" || raw === "second year") return "2";
+  if (raw === "3" || raw === "3rd" || raw === "3rd year" || raw === "third year") return "3";
+  if (raw === "4" || raw === "4th" || raw === "4th year" || raw === "fourth year") return "4";
+  return raw;
+}
+
+function courseLabel(course) {
+  const code = String(course.code || "").trim();
+  const name = String(course.name || "").trim();
+  return code && name ? `${code} — ${name}` : (code || name || "Unknown Course");
+}
+
+function populateCourseFilter() {
+  const selectedYear = yearFilter.value;
+  const rows = courseCatalog
+    .filter(c => c.is_active !== false)
+    .filter(c => selectedYear === "all" || normalizeCourseYear(c.year_level) === selectedYear)
+    .filter(c => c.code || c.name)
+    .sort((a,b) => (Number(a.year_level)||99)-(Number(b.year_level)||99) || String(a.code||"").localeCompare(String(b.code||""), undefined, {numeric:true}));
+
+  const seen = new Set();
+  const unique = rows.filter(c => {
+    const key = `${String(c.code||"").trim().toLowerCase()}|${String(c.name||"").trim().toLowerCase()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  courseFilter.innerHTML = '<option value="all">All Courses / Subjects</option>' +
+    unique.map(c => `<option value="${escapeAttribute(String(c.code||"").trim())}">${escapeHtml(courseLabel(c))}</option>`).join("");
+}
+
+function getResourceCourseCode(resource) {
+  return String(resource.course_code ?? resource.courseCode ?? resource.code ?? "").trim();
+}
+
+function getResourceCourseName(resource) {
+  return String(resource.course ?? resource.course_name ?? resource.subject ?? "").trim();
+}
+
+async function loadCourseCatalog() {
+  try {
+    const { data, error } = await supabaseClient.from("courses")
+      .select("code,name,year_level,is_active")
+      .order("year_level", { ascending: true })
+      .order("code", { ascending: true });
+    if (error) throw error;
+    courseCatalog = Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.warn("Course catalog could not be loaded:", error.message || error);
+    courseCatalog = [];
+  }
+  populateCourseFilter();
+}
 
 /* =========================================================
    LOAD ARCHIVE
@@ -758,6 +778,26 @@ function applyFilters() {
 
 
         /* -----------------------------
+           COURSE / SUBJECT
+        ----------------------------- */
+
+        if (courseFilter.value !== "all") {
+          const selectedCode = String(courseFilter.value).trim().toLowerCase();
+          const resourceCode = getResourceCourseCode(resource).toLowerCase();
+          const resourceName = getResourceCourseName(resource).toLowerCase();
+          const catalogMatch = courseCatalog.find(c => String(c.code || "").trim().toLowerCase() === selectedCode);
+
+          if (resourceCode) {
+            if (resourceCode !== selectedCode) return false;
+          } else if (catalogMatch) {
+            if (resourceName !== String(catalogMatch.name || "").trim().toLowerCase()) return false;
+          } else {
+            return false;
+          }
+        }
+
+
+        /* -----------------------------
            SEARCH
         ----------------------------- */
 
@@ -768,6 +808,8 @@ function applyFilters() {
             resource.title,
 
             resource.course,
+
+            resource.course_code,
 
             resource.description,
 
@@ -893,7 +935,7 @@ function normalizeType(
 
   if (!type) {
 
-    return "note";
+    return "";
 
   }
 
@@ -925,7 +967,7 @@ function normalizeType(
   }
 
 
-  return "note";
+  return value;
 
 }
 
@@ -1074,9 +1116,9 @@ function createResourceCard(
     "No description provided.";
 
 
-  const course =
-    resource.course ||
-    "Not specified";
+  const courseCode = getResourceCourseCode(resource);
+  const courseName = getResourceCourseName(resource);
+  const course = courseCode && courseName ? `${courseCode} — ${courseName}` : (courseCode || courseName || "Not specified");
 
 
   const submitter =
@@ -1506,6 +1548,8 @@ function resetFilters() {
     "all";
   sessionFilter.value = "all";
   yearFilter.value = "all";
+  populateCourseFilter();
+  courseFilter.value = "all";
 
   currentPage =
     1;
@@ -1549,7 +1593,12 @@ campusFilter.addEventListener(
 
 typeFilter.addEventListener("change",applyFilters);
 sessionFilter.addEventListener("change",applyFilters);
-yearFilter.addEventListener("change",applyFilters);
+yearFilter.addEventListener("change", () => {
+  populateCourseFilter();
+  courseFilter.value = "all";
+  applyFilters();
+});
+courseFilter.addEventListener("change",applyFilters);
 
 
 
@@ -1762,6 +1811,7 @@ function setupSubmitButtons() {
    START
 ========================================================= */
 
+loadCourseCatalog();
 loadArchive();
 setupSubmitButtons();
 
