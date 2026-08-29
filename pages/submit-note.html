@@ -1,4 +1,3 @@
-```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -533,18 +532,15 @@
           </div>
 
           <form id="submissionForm" novalidate>
-
             <div class="form-group">
               <label for="resourceType">
                 Resource Type <span class="required">*</span>
               </label>
-
               <select id="resourceType" required>
                 <option value="">Select resource type</option>
                 <option value="note">Academic Note</option>
                 <option value="question">Previous Question</option>
                 <option value="suggestion">Suggestion</option>
-                <option value="article">Article</option>
               </select>
             </div>
 
@@ -554,62 +550,55 @@
               <label for="title">
                 Title <span class="required">*</span>
               </label>
-
-              <input
-                id="title"
-                type="text"
-                maxlength="180"
-                placeholder="Enter the title of your resource"
-                required
-              >
+              <input id="title" type="text" maxlength="180" placeholder="Enter the title of your resource" required>
             </div>
 
             <div class="two-columns">
-
               <div class="form-group">
-
-                <label for="courseCode">
-                  Course Code <span class="required">*</span>
+                <label for="resourceSession">
+                  Session <span class="required">*</span>
                 </label>
-
-                <select id="courseCode" required>
-                  <option value="">Select course code</option>
-                  <option value="PS 101">PS 101 — Ancient and Medieval Western Political Thought</option>
-                  <option value="PS 102">PS 102 — Political Theory and Organization</option>
-                  <option value="PS 103">PS 103 — Government and Politics: UK, USA and France</option>
-                  <option value="PS 104">PS 104 — Principles of Sociology</option>
-                  <option value="PS 105">PS 105 — Modern Western Political Thought</option>
-                  <option value="PS 211501">PS 211501 — History of the Emergence of Independent Bangladesh</option>
-                  <option value="PS 107">PS 107 — Socio-Political and Constitutional Development in British India (1757 to 1947)</option>
-                  <option value="PS 108">PS 108 — Public Administration in Bangladesh</option>
+                <select id="resourceSession" required>
+                  <option value="">Select session</option>
+                  <option value="21-22">21-22</option>
+                  <option value="22-23">22-23</option>
+                  <option value="23-24">23-24</option>
+                  <option value="24-25">24-25</option>
+                  <option value="25-26">25-26</option>
+                  <option value="26-27">26-27</option>
+                  <option value="27-28">27-28</option>
+                  <option value="28-29">28-29</option>
+                  <option value="29-30">29-30</option>
+                  <option value="30-31">30-31</option>
                 </select>
-
+                <p class="form-help">This is the academic session of the resource, not the submitter's session.</p>
               </div>
-
               <div class="form-group">
-
-                <label for="courseName">
-                  Course / Subject <span class="required">*</span>
+                <label for="yearLevel">
+                  Year <span class="required">*</span>
                 </label>
-
-                <input
-                  id="courseName"
-                  type="text"
-                  readonly
-                  placeholder="Select course code first"
-                  required
-                >
-
-                <p class="form-help">
-                  Course name is automatically filled from the selected course code.
-                </p>
-
+                <select id="yearLevel" required>
+                  <option value="">Select year</option>
+                  <option value="1st year">1st year</option>
+                  <option value="2nd year">2nd year</option>
+                  <option value="3rd year">3rd year</option>
+                  <option value="4th year">4th year</option>
+                </select>
               </div>
-
             </div>
 
             <div class="form-group">
+              <label for="courseCode">
+                Course / Subject <span class="required">*</span>
+              </label>
+              <select id="courseCode" required disabled>
+                <option value="">Select year first</option>
+              </select>
+              <p class="form-help">Course / Subject options are loaded from the admin-managed course list for the selected year.</p>
+            </div>
+            <input id="courseName" type="hidden" value="">
 
+            <div class="form-group">
               <label for="targetCampus">
                 Resource Campus <span class="required">*</span>
               </label>
@@ -830,31 +819,25 @@ const supabaseClient =
    COURSE DATA
 ========================================================= */
 
-const COURSES = {
-  "PS 101":
-    "Ancient and Medieval Western Political Thought",
-
-  "PS 102":
-    "Political Theory and Organization",
-
-  "PS 103":
-    "Government and Politics: UK, USA and France",
-
-  "PS 104":
-    "Principles of Sociology",
-
-  "PS 105":
-    "Modern Western Political Thought",
-
-  "PS 211501":
-    "History of the Emergence of Independent Bangladesh",
-
-  "PS 107":
-    "Socio-Political and Constitutional Development in British India (1757 to 1947)",
-
-  "PS 108":
-    "Public Administration in Bangladesh"
+const FALLBACK_COURSES = {
+  "1st year": [
+    ["PS-000", "ALL IN ONE"],
+    ["PS 101", "Ancient and Medieval Western Political Thought"],
+    ["PS 102", "Political Theory and Organization"],
+    ["PS 103", "Government and Politics: UK, USA and France"],
+    ["PS 104", "Principles of Sociology"],
+    ["PS 105", "Modern Western Political Thought"],
+    ["PS 211501", "History of the Emergence of Independent Bangladesh"],
+    ["PS 107", "Socio-Political and Constitutional Development in British India (1757 to 1947)"],
+    ["PS 108", "Public Administration in Bangladesh"]
+  ],
+  "2nd year": [],
+  "3rd year": [],
+  "4th year": []
 };
+
+let coursesFromDatabase = [];
+
 
 
 /* =========================================================
@@ -1139,18 +1122,78 @@ async function loadUserProfile() {
    COURSE SELECTION
 ========================================================= */
 
-courseCode.addEventListener(
-  "change",
-  function () {
+function normalizeYear(value) {
+  return String(value || "").trim().toLowerCase();
+}
 
-    const code =
-      this.value;
+function courseRowsForYear(year) {
+  const selectedYear = normalizeYear(year);
 
-    courseName.value =
-      COURSES[code] || "";
+  const databaseRows = coursesFromDatabase
+    .filter(row => {
+      const rowYear = row.year_level || row.year || row.academic_year || row.year_name;
+      return rowYear && normalizeYear(rowYear) === selectedYear;
+    })
+    .map(row => [
+      row.code || row.course_code || "",
+      row.name || row.course_name || row.title || ""
+    ])
+    .filter(row => row[0] && row[1]);
 
+  return databaseRows.length
+    ? databaseRows
+    : (FALLBACK_COURSES[year] || []);
+}
+
+function populateCourseDropdown(year) {
+  const rows = courseRowsForYear(year);
+
+  courseCode.innerHTML =
+    '<option value="">' +
+    (year
+      ? (rows.length ? "Select course / subject" : "No courses available for this year")
+      : "Select year first") +
+    '</option>' +
+    rows.map(row =>
+      '<option value="' + escapeHTML(row[0]) +
+      '" data-course-name="' + escapeHTML(row[1]) + '">' +
+      escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
+      '</option>'
+    ).join("");
+
+  courseCode.disabled = !year || !rows.length;
+  courseName.value = "";
+}
+
+yearLevel.addEventListener("change", function () {
+  populateCourseDropdown(this.value);
+});
+
+courseCode.addEventListener("change", function () {
+  const selected = this.options[this.selectedIndex];
+  courseName.value = selected?.dataset?.courseName || "";
+});
+
+async function loadCoursesFromDatabase() {
+  try {
+    const { data, error } = await supabaseClient
+      .from("courses")
+      .select("*")
+      .order("code", { ascending: true });
+
+    if (error) {
+      console.warn("Courses could not be loaded from database:", error.message);
+      coursesFromDatabase = [];
+    } else {
+      coursesFromDatabase = data || [];
+    }
+  } catch (error) {
+    console.warn("Courses load error:", error);
+    coursesFromDatabase = [];
   }
-);
+
+  populateCourseDropdown(yearLevel.value);
+}
 
 
 /* =========================================================
@@ -1168,8 +1211,6 @@ const typeDescriptions = {
   suggestion:
     "Useful academic suggestions, recommendations or ideas for improving student resources.",
 
-  article:
-    "Original academic or research-oriented articles suitable for the StateCrafter community."
 
 };
 
@@ -1471,6 +1512,18 @@ submissionForm.addEventListener(
     }
 
 
+    if (!selectedSession) {
+      showMessage("Please select the resource session.", "error");
+      resourceSession.focus();
+      return;
+    }
+
+    if (!selectedYear) {
+      showMessage("Please select the year.", "error");
+      yearLevel.focus();
+      return;
+    }
+
     if (!selectedCourseCode) {
 
       showMessage(
@@ -1633,6 +1686,12 @@ submissionForm.addEventListener(
         session:
           currentProfile.session ||
           null,
+
+        resource_session:
+          selectedSession,
+
+        year_level:
+          selectedYear,
 
         student_id:
           currentProfile.student_id ||
@@ -1803,10 +1862,9 @@ supabaseClient.auth.onAuthStateChange(
    START
 ========================================================= */
 
-loadUserProfile();
+loadUserProfile().then(loadCoursesFromDatabase);
 
 </script>
 
 </body>
 </html>
-```
