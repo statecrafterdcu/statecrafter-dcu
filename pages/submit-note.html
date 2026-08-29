@@ -1190,52 +1190,98 @@ function populateCourseDropdown(year) {
 }
 
 async function loadCoursesForSelectedYear(year) {
-  const numericYear = Number(year);
+  const numericYear = Number(normalizeYear(year));
 
   if (!numericYear) {
     populateCourseDropdown("");
     return;
   }
 
-  courseCode.disabled = false;
+  courseCode.disabled = true;
   courseCode.innerHTML = '<option value="">Loading courses...</option>';
   courseName.value = "";
 
   try {
-    const { data, error } = await supabaseClient
+    /*
+      IMPORTANT FIX:
+      Do not filter is_active inside the Supabase query.
+      Some existing course rows/databases do not have a
+      usable is_active value, which can make the dropdown
+      appear to stay on "Loading courses...".
+
+      We load the admin-managed courses for the selected
+      year and only ignore rows that are explicitly inactive.
+    */
+    const query = supabaseClient
       .from("courses")
-      .select("code,name,year_level,is_active")
-      .eq("year_level", numericYear)
-      .eq("is_active", true)
+      .select("*")
       .order("code", { ascending: true });
 
-    if (error) throw error;
+    const result = await Promise.race([
+      query,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Course request timed out")), 8000)
+      )
+    ]);
 
-    const rows = (data || [])
+    if (result.error) throw result.error;
+
+    const rows = (result.data || [])
+      .filter(row => {
+        /* If is_active exists and is explicitly false, hide it.
+           Otherwise keep the course visible. */
+        return row.is_active !== false;
+      })
+      .filter(row => {
+        const rowYear =
+          row.year_level ??
+          row.year ??
+          row.academic_year ??
+          row.year_name ??
+          row.yearLevel;
+
+        return normalizeYear(rowYear) === String(numericYear);
+      })
       .map(row => [
-        String(row.code || "").trim(),
-        String(row.name || "").trim()
+        String(
+          row.code ??
+          row.course_code ??
+          row.courseCode ??
+          row.code_name ??
+          ""
+        ).trim(),
+        String(
+          row.name ??
+          row.course_name ??
+          row.courseName ??
+          row.title ??
+          row.subject ??
+          ""
+        ).trim()
       ])
       .filter(row => row[0] && row[1]);
 
-    if (!rows.length) {
-      populateCourseDropdown(year);
+    if (rows.length) {
+      courseCode.innerHTML =
+        '<option value="">Select course / subject</option>' +
+        rows.map(row =>
+          '<option value="' + escapeHTML(row[0]) +
+          '" data-course-name="' + escapeHTML(row[1]) + '">' +
+          escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
+          '</option>'
+        ).join("");
+
+      courseCode.disabled = false;
       return;
     }
 
-    courseCode.innerHTML =
-      '<option value="">Select course / subject</option>' +
-      rows.map(row =>
-        '<option value="' + escapeHTML(row[0]) +
-        '" data-course-name="' + escapeHTML(row[1]) + '">' +
-        escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
-        '</option>'
-      ).join("");
-
-    courseCode.disabled = false;
+    /* No database rows for this year: use the existing fallback. */
+    populateCourseDropdown(String(numericYear));
   } catch (error) {
     console.error("Course loading error:", error);
-    populateCourseDropdown(year);
+
+    /* Never leave the user stuck on Loading courses... */
+    populateCourseDropdown(String(numericYear));
   }
 }
 
@@ -1250,15 +1296,19 @@ courseCode.addEventListener("change", function () {
 
 async function loadCoursesFromDatabase() {
   try {
-    const { data, error } = await supabaseClient
-      .from("courses")
-      .select("code,name,year_level,is_active")
-      .order("year_level", { ascending: true })
-      .order("code", { ascending: true });
+    const result = await Promise.race([
+      supabaseClient
+        .from("courses")
+        .select("*")
+        .order("code", { ascending: true }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Course request timed out")), 8000)
+      )
+    ]);
 
-    if (error) throw error;
+    if (result.error) throw result.error;
 
-    coursesFromDatabase = data || [];
+    coursesFromDatabase = (result.data || []).filter(row => row.is_active !== false);
   } catch (error) {
     console.warn("Courses could not be loaded from database:", error.message || error);
     coursesFromDatabase = [];
@@ -1270,6 +1320,7 @@ async function loadCoursesFromDatabase() {
     populateCourseDropdown("");
   }
 }
+
 
 
 /* =========================================================
