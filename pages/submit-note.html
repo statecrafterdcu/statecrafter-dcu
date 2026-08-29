@@ -900,6 +900,19 @@ const newSubmissionButton =
 let currentUser = null;
 let currentProfile = null;
 
+/* Escape text before inserting course data into HTML. */
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function (char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#039;"
+    }[char];
+  });
+}
+
 
 /* =========================================================
    LOAD USER
@@ -1190,9 +1203,9 @@ function populateCourseDropdown(year) {
 }
 
 async function loadCoursesForSelectedYear(year) {
-  const numericYear = Number(normalizeYear(year));
+  const selectedYear = normalizeYear(year);
 
-  if (!numericYear) {
+  if (!selectedYear) {
     populateCourseDropdown("");
     return;
   }
@@ -1203,35 +1216,21 @@ async function loadCoursesForSelectedYear(year) {
 
   try {
     /*
-      IMPORTANT FIX:
-      Do not filter is_active inside the Supabase query.
-      Some existing course rows/databases do not have a
-      usable is_active value, which can make the dropdown
-      appear to stay on "Loading courses...".
-
-      We load the admin-managed courses for the selected
-      year and only ignore rows that are explicitly inactive.
+      Courses are related to YEAR, not SESSION.
+      Load the same course columns used by the Admin Dashboard,
+      then filter the selected year in JavaScript. This avoids
+      depending on an is_active column that the admin course table
+      does not use.
     */
-    const query = supabaseClient
+    const { data, error } = await supabaseClient
       .from("courses")
-      .select("*")
+      .select("id,code,name,year_level,created_at,updated_at")
+      .order("year_level", { ascending: true })
       .order("code", { ascending: true });
 
-    const result = await Promise.race([
-      query,
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Course request timed out")), 8000)
-      )
-    ]);
+    if (error) throw error;
 
-    if (result.error) throw result.error;
-
-    const rows = (result.data || [])
-      .filter(row => {
-        /* If is_active exists and is explicitly false, hide it.
-           Otherwise keep the course visible. */
-        return row.is_active !== false;
-      })
+    const rows = (data || [])
       .filter(row => {
         const rowYear =
           row.year_level ??
@@ -1240,48 +1239,33 @@ async function loadCoursesForSelectedYear(year) {
           row.year_name ??
           row.yearLevel;
 
-        return normalizeYear(rowYear) === String(numericYear);
+        return normalizeYear(rowYear) === selectedYear;
       })
       .map(row => [
-        String(
-          row.code ??
-          row.course_code ??
-          row.courseCode ??
-          row.code_name ??
-          ""
-        ).trim(),
-        String(
-          row.name ??
-          row.course_name ??
-          row.courseName ??
-          row.title ??
-          row.subject ??
-          ""
-        ).trim()
+        String(row.code ?? row.course_code ?? row.courseCode ?? "").trim(),
+        String(row.name ?? row.course_name ?? row.courseName ?? row.title ?? row.subject ?? "").trim()
       ])
       .filter(row => row[0] && row[1]);
 
-    if (rows.length) {
-      courseCode.innerHTML =
-        '<option value="">Select course / subject</option>' +
-        rows.map(row =>
-          '<option value="' + escapeHTML(row[0]) +
-          '" data-course-name="' + escapeHTML(row[1]) + '">' +
-          escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
-          '</option>'
-        ).join("");
-
-      courseCode.disabled = false;
+    if (!rows.length) {
+      populateCourseDropdown(selectedYear);
       return;
     }
 
-    /* No database rows for this year: use the existing fallback. */
-    populateCourseDropdown(String(numericYear));
+    courseCode.innerHTML =
+      '<option value="">Select course / subject</option>' +
+      rows.map(row =>
+        '<option value="' + escapeHTML(row[0]) +
+        '" data-course-name="' + escapeHTML(row[1]) + '">' +
+        escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
+        '</option>'
+      ).join("");
+
+    courseCode.disabled = false;
   } catch (error) {
     console.error("Course loading error:", error);
-
     /* Never leave the user stuck on Loading courses... */
-    populateCourseDropdown(String(numericYear));
+    populateCourseDropdown(selectedYear);
   }
 }
 
@@ -1296,19 +1280,15 @@ courseCode.addEventListener("change", function () {
 
 async function loadCoursesFromDatabase() {
   try {
-    const result = await Promise.race([
-      supabaseClient
-        .from("courses")
-        .select("*")
-        .order("code", { ascending: true }),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Course request timed out")), 8000)
-      )
-    ]);
+    const { data, error } = await supabaseClient
+      .from("courses")
+      .select("id,code,name,year_level,created_at,updated_at")
+      .order("year_level", { ascending: true })
+      .order("code", { ascending: true });
 
-    if (result.error) throw result.error;
+    if (error) throw error;
 
-    coursesFromDatabase = (result.data || []).filter(row => row.is_active !== false);
+    coursesFromDatabase = data || [];
   } catch (error) {
     console.warn("Courses could not be loaded from database:", error.message || error);
     coursesFromDatabase = [];
@@ -1320,7 +1300,6 @@ async function loadCoursesFromDatabase() {
     populateCourseDropdown("");
   }
 }
-
 
 
 /* =========================================================
