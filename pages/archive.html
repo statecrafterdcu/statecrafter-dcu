@@ -23,8 +23,8 @@
 
 
   <style>
-.archive-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#fff7ed,#f8f5ff 48%,#eaf5ff);border-bottom:1px solid var(--line);padding:65px 0 55px}.archive-hero:before,.archive-hero:after{content:"";position:absolute;border-radius:50%;pointer-events:none}.archive-hero:before{width:260px;height:260px;right:-80px;top:-90px;background:rgba(239,180,183,.22)}.archive-hero:after{width:220px;height:220px;left:-100px;bottom:-140px;background:rgba(120,170,230,.18)}.archive-hero .container{position:relative;z-index:1}.archive-hero h1{margin:0;color:var(--navy);font-size:clamp(44px,6vw,72px);line-height:.96;letter-spacing:-.05em}.archive-hero p:not(.eyebrow){max-width:700px;margin:22px 0 0;color:var(--muted);font-size:16px;line-height:1.7}.archive-hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:25px}.archive-hero-actions .btn{min-height:44px}
-.archive-section{padding:58px 0 90px;background:linear-gradient(180deg,#fff,#fbfcff)}.archive-toolbar{background:linear-gradient(135deg,#fff,#f8faff);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 40px rgba(18,43,82,.07);margin-bottom:34px}.filter-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:12px}.filter-group{min-width:0}.filter-group label{display:block;color:var(--navy);font-size:11px;font-weight:900;margin-bottom:7px;letter-spacing:.05em}.filter-group input,.filter-group select{width:100%;height:46px;border:1px solid #d9dee5;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:13px;padding:0 13px;outline:none;box-sizing:border-box}.filter-group input:focus,.filter-group select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,43,82,.06)}.filter-actions{display:flex;align-items:end}.reset-button{width:100%;height:46px;cursor:pointer}
+.archive-hero{position:relative;isolation:isolate;overflow:hidden;min-height:520px;display:flex;align-items:center;background:radial-gradient(circle at 85% 18%,rgba(255,255,255,.15),transparent 25%),radial-gradient(circle at 12% 82%,rgba(255,255,255,.07),transparent 28%),linear-gradient(135deg,#0d2238 0%,#163a59 54%,#102a43 100%);border-bottom:1px solid rgba(255,255,255,.08);padding:78px 0 70px;color:#fff}.archive-hero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 90%)}.archive-hero:after{content:"";position:absolute;z-index:-1;width:430px;height:430px;border-radius:50%;right:-150px;bottom:-230px;border:1px solid rgba(255,255,255,.13);box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 65px rgba(255,255,255,.018)}.archive-hero .container{position:relative;z-index:1}.archive-hero h1{margin:0;color:#fff;font-size:clamp(46px,7vw,82px);line-height:.96;letter-spacing:-.065em}.archive-hero p:not(.eyebrow){max-width:720px;margin:22px 0 0;color:rgba(255,255,255,.78);font-size:16px;line-height:1.75}.archive-hero .eyebrow{color:rgba(255,255,255,.68)}.archive-hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.archive-hero-actions .btn{min-height:48px}.archive-hero-actions .btn-primary{background:#fff;color:var(--navy);border-color:#fff}.archive-hero-actions .btn-outline{background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.25);backdrop-filter:blur(8px)}
+.archive-section{padding:58px 0 90px;background:linear-gradient(180deg,#f7fafc 0%,#fff 42%,#f8fafc 100%)}.archive-toolbar{background:linear-gradient(135deg,#fff,#f8faff);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 40px rgba(18,43,82,.07);margin-bottom:34px}.filter-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:12px}.filter-group{min-width:0}.filter-group label{display:block;color:var(--navy);font-size:11px;font-weight:900;margin-bottom:7px;letter-spacing:.05em}.filter-group input,.filter-group select{width:100%;height:46px;border:1px solid #d9dee5;border-radius:11px;background:#fff;color:var(--ink);font:inherit;font-size:13px;padding:0 13px;outline:none;box-sizing:border-box}.filter-group input:focus,.filter-group select:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(18,43,82,.06)}.filter-group select{cursor:pointer}.filter-group select:hover,.filter-group input:hover{border-color:#b8c4d2}.filter-actions{display:flex;align-items:end}.reset-button{width:100%;height:46px;cursor:pointer}
 .archive-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}.archive-heading h2{margin:0;color:var(--navy);font-size:30px}.archive-count{color:var(--muted);font-size:12px;font-weight:800}.resource-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.resource-card{position:relative;overflow:hidden;background:#fff;border:1px solid #e1e6ee;border-radius:22px;padding:24px;box-shadow:0 9px 30px rgba(18,43,82,.055);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;min-width:0}.resource-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#d9575e,#7b61d1,#4f8ecb)}.resource-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(18,43,82,.11);border-color:#ccd5e2}.resource-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:15px;padding-top:2px}.resource-type-badge{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 10px;border-radius:999px;background:#f7e9eb;color:var(--red);font-size:10px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.resource-campus{display:inline-flex;align-items:center;justify-content:center;max-width:62%;padding:6px 10px;border-radius:999px;background:#eaf3ff;color:#24538d;font-size:10px;font-weight:900;text-align:right}.resource-card h3{margin:0;color:var(--navy);font-size:22px;line-height:1.3}.resource-description{margin:10px 0 0;color:var(--muted);font-size:13px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.resource-highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.resource-highlight{border-radius:12px;padding:10px;background:#f7f9fc;border:1px solid #e7ebf1;min-width:0}.resource-highlight.course{background:#fff8e8;border-color:#f0dfb6}.resource-highlight.session{background:#f1f7ff;border-color:#d8e7fb}.resource-highlight.year{background:#f6f1ff;border-color:#e5dafa}.resource-highlight span{display:block;color:#718096;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.resource-highlight strong{display:block;color:var(--navy);font-size:11px;line-height:1.35;word-break:break-word}.resource-meta{border-top:1px solid #edf0f3;margin-top:17px;padding-top:14px}.meta-row{display:flex;justify-content:space-between;gap:15px;padding:5px 0;font-size:11px}.meta-row span{color:var(--muted)}.meta-row strong{color:var(--ink);text-align:right;max-width:72%}.submitter-link{color:var(--navy);text-decoration:underline;text-decoration-color:#cbd5e1;text-underline-offset:3px}.submitter-link:hover{color:var(--red)}.resource-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}.resource-actions .btn{min-height:41px;padding:0 15px;font-size:11px}
 .archive-cta{position:relative;overflow:hidden;margin-top:46px;border-radius:24px;padding:30px 32px;background:linear-gradient(135deg,#122b52,#294d7b 58%,#6b4e9c);box-shadow:0 20px 50px rgba(18,43,82,.16);color:#fff}.archive-cta:after{content:"";position:absolute;width:230px;height:230px;right:-90px;top:-110px;border-radius:50%;background:rgba(255,255,255,.09)}.archive-cta-inner{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:24px}.archive-cta .eyebrow{color:#efb4b7}.archive-cta h2{margin:0;color:#fff;font-size:29px}.archive-cta p{margin:8px 0 0;color:#d5deea;font-size:13px;line-height:1.7;max-width:650px}.archive-cta .btn{background:#fff;color:var(--navy);border-color:#fff;white-space:nowrap}.archive-loading{display:grid;place-items:center;min-height:260px;border:1px dashed #cbd1d9;border-radius:20px;color:var(--muted);font-size:13px}.loading-spinner{width:28px;height:28px;border-radius:50%;border:3px solid #e4e7eb;border-top-color:var(--navy);animation:spin .8s linear infinite;margin-bottom:12px}@keyframes spin{to{transform:rotate(360deg)}}.archive-empty{display:none;text-align:center;border:1px dashed #cbd1d9;border-radius:20px;padding:55px 25px;background:#fafbfc}.archive-empty h3{margin:0;color:var(--navy);font-size:22px}.archive-empty p{color:var(--muted);font-size:13px;margin:8px auto 0;max-width:500px}.archive-error{display:none;background:#fdf0f0;border:1px solid #efcaca;border-radius:15px;padding:18px;color:var(--red);font-size:13px;margin-bottom:25px}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:35px}.page-button{min-width:40px;height:40px;border:1px solid #d8dde5;border-radius:10px;background:#fff;color:var(--navy);font-size:12px;font-weight:800;cursor:pointer}.page-button:hover{border-color:var(--navy)}.page-button.active{background:var(--navy);color:#fff;border-color:var(--navy)}.page-button:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:1050px){.filter-grid{grid-template-columns:1.5fr repeat(2,1fr)}.resource-grid{grid-template-columns:1fr}}@media(max-width:700px){.filter-grid{grid-template-columns:1fr}.archive-heading{display:block}.archive-count{display:block;margin-top:6px}.resource-card{padding:21px}.resource-top{display:block}.resource-campus{margin-top:9px;max-width:100%;justify-content:flex-start;text-align:left}.resource-highlights{grid-template-columns:1fr}.meta-row{display:block}.meta-row strong{display:block;text-align:left;max-width:100%;margin-top:2px}.archive-cta-inner{display:block}.archive-cta .btn{display:block;margin-top:18px;width:100%;text-align:center}}
@@ -144,6 +144,10 @@
       resources contributed by Political Science students
       across the seven campuses of Dhaka Central University.
     </p>
+
+    <div class="archive-hero-actions">
+      <a href="submit-note.html" id="heroSubmitResource" class="btn btn-primary">Submit Resource →</a>
+    </div>
 
   </div>
 
@@ -626,7 +630,7 @@ async function loadArchive() {
 
 
     hideLoading();
-
+    populateSessionFilter();
     applyFilters();
 
 
@@ -722,6 +726,35 @@ function applyFilters() {
 
         }
 
+        /* -----------------------------
+           RESOURCE SESSION
+        ----------------------------- */
+
+        const resourceSession = getResourceSession(resource);
+
+        if (
+          sessionFilter.value !== "all" &&
+          resourceSession !== sessionFilter.value
+        ) {
+
+          return false;
+
+        }
+
+        /* -----------------------------
+           RESOURCE YEAR
+        ----------------------------- */
+
+        const resourceYear = getResourceYear(resource);
+
+        if (
+          yearFilter.value !== "all" &&
+          normalizeYearValue(resourceYear) !== yearFilter.value
+        ) {
+
+          return false;
+
+        }
 
 
         /* -----------------------------
@@ -746,7 +779,11 @@ function applyFilters() {
 
             resource.submitter_name,
 
-            resourceCampus
+            resourceCampus,
+
+            resourceSession,
+
+            resourceYear
 
           ]
 
@@ -783,6 +820,44 @@ function applyFilters() {
 }
 
 
+
+/* =========================================================
+   RESOURCE SESSION / YEAR
+========================================================= */
+
+function getResourceSession(resource) {
+  return String(
+    resource.resource_session ??
+    resource.academic_session ??
+    resource.resourceSession ??
+    resource.session_name ??
+    "Not specified"
+  ).trim() || "Not specified";
+}
+
+function normalizeYearValue(value) {
+  const raw = String(value ?? "").trim().toLowerCase();
+  if (raw === "1" || raw === "1st" || raw === "1st year" || raw === "first year") return "1";
+  if (raw === "2" || raw === "2nd" || raw === "2nd year" || raw === "second year") return "2";
+  if (raw === "3" || raw === "3rd" || raw === "3rd year" || raw === "third year") return "3";
+  if (raw === "4" || raw === "4th" || raw === "4th year" || raw === "fourth year") return "4";
+  return raw;
+}
+
+function getResourceYear(resource) {
+  return String(
+    resource.year_level ??
+    resource.resource_year ??
+    resource.academic_year ??
+    resource.year ??
+    "Not specified"
+  ).trim() || "Not specified";
+}
+
+function getYearLabel(value) {
+  const n = normalizeYearValue(value);
+  return ({"1":"1st year","2":"2nd year","3":"3rd year","4":"4th year"})[n] || String(value || "Not specified");
+}
 
 /* =========================================================
    RESOURCE CAMPUS
@@ -1014,10 +1089,8 @@ function createResourceCard(
     "StateCrafter Student";
 
 
-  const session =
-    resource.session ||
-    resource.submitter_session ||
-    "Not specified";
+  const resourceSession = getResourceSession(resource);
+  const resourceYear = getResourceYear(resource);
 
 
   const studentId =
@@ -1079,82 +1152,34 @@ function createResourceCard(
     </p>
 
 
+    <div class="resource-highlights">
+      <div class="resource-highlight course">
+        <span>Course / Subject</span>
+        <strong>${escapeHtml(course)}</strong>
+      </div>
+      <div class="resource-highlight session">
+        <span>Resource Session</span>
+        <strong>${escapeHtml(resourceSession)}</strong>
+      </div>
+      <div class="resource-highlight year">
+        <span>Resource Year</span>
+        <strong>${escapeHtml(getYearLabel(resourceYear))}</strong>
+      </div>
+    </div>
+
     <div class="resource-meta">
-
       <div class="meta-row">
-
-        <span>
-          Course
-        </span>
-
-        <strong>
-          ${escapeHtml(
-            course
-          )}
-        </strong>
-
+        <span>Submitted by</span>
+        <strong>${buildSubmitterLink(resource, submitter)}</strong>
       </div>
-
-
       <div class="meta-row">
-
-        <span>
-          Submitted by
-        </span>
-
-        <strong>
-          ${escapeHtml(
-            submitter
-          )}
-        </strong>
-
+        <span>Submitter Campus</span>
+        <strong>${escapeHtml(uploaderCampus)}</strong>
       </div>
-
-
       <div class="meta-row">
-
-        <span>
-          Submitter Campus
-        </span>
-
-        <strong>
-          ${escapeHtml(
-            uploaderCampus
-          )}
-        </strong>
-
+        <span>Student ID</span>
+        <strong>${escapeHtml(studentId)}</strong>
       </div>
-
-
-      <div class="meta-row">
-
-        <span>
-          Session
-        </span>
-
-        <strong>
-          ${escapeHtml(
-            session
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="meta-row">
-
-        <span>
-          Student ID
-        </span>
-
-        <strong>
-          ${escapeHtml(
-            studentId
-          )}
-        </strong>
-
-      </div>
-
     </div>
 
 
@@ -1210,6 +1235,12 @@ function createResourceCard(
 }
 
 
+
+function buildSubmitterLink(resource, submitter) {
+  const id = resource.user_id || resource.author_id || resource.created_by || resource.submitter_id || resource.profile_id;
+  if (!id) return escapeHtml(submitter);
+  return `<a class="submitter-link" href="profile.html?id=${encodeURIComponent(id)}">${escapeHtml(submitter)}</a>`;
+}
 
 /* =========================================================
    TYPE LABEL
@@ -1691,8 +1722,41 @@ if (
 /* =========================================================
    DYNAMIC SESSION FILTER + SUBMIT ACCESS
 ========================================================= */
-function populateSessionFilter(){const sessions=[...new Set(allResources.map(getResourceSession).filter(v=>v&&v!=="Not specified"))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));sessionFilter.innerHTML='<option value="all">All Sessions</option>'+sessions.map(v=>`<option value="${escapeAttribute(v)}">${escapeHtml(v)}</option>`).join("");}
-function setupSubmitButtons(){[document.getElementById("heroSubmitResource"),document.getElementById("bottomSubmitResource")].filter(Boolean).forEach(button=>button.addEventListener("click",async event=>{event.preventDefault();try{const{data}=await supabaseClient.auth.getUser();if(data?.user){window.location.href="submit-note.html";return;}}catch(_){}const goLogin=window.confirm("You need to log in before submitting a resource. Go to the login page?");if(goLogin)window.location.href="login.html?redirect=submit-note.html";}));}
+function populateSessionFilter() {
+  const sessions = [...new Set(
+    allResources
+      .map(getResourceSession)
+      .filter(v => v && v !== "Not specified")
+  )].sort((a,b) => a.localeCompare(b, undefined, {numeric:true}));
+
+  sessionFilter.innerHTML =
+    '<option value="all">All Sessions</option>' +
+    sessions.map(v =>
+      `<option value="${escapeAttribute(v)}">${escapeHtml(v)}</option>`
+    ).join("");
+}
+
+async function openSubmitResource(event) {
+  event.preventDefault();
+  try {
+    const { data, error } = await supabaseClient.auth.getUser();
+    if (!error && data?.user) {
+      window.location.href = "submit-note.html";
+      return;
+    }
+  } catch (_) {}
+
+  window.location.href = "login.html";
+}
+
+function setupSubmitButtons() {
+  [
+    document.getElementById("heroSubmitResource"),
+    document.getElementById("bottomSubmitResource")
+  ].filter(Boolean).forEach(button => {
+    button.addEventListener("click", openSubmitResource);
+  });
+}
 
 /* =========================================================
    START
