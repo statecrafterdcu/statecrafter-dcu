@@ -579,10 +579,10 @@
                 </label>
                 <select id="yearLevel" required>
                   <option value="">Select year</option>
-                  <option value="1st year">1st year</option>
-                  <option value="2nd year">2nd year</option>
-                  <option value="3rd year">3rd year</option>
-                  <option value="4th year">4th year</option>
+                  <option value="1">1st year</option>
+                  <option value="2">2nd year</option>
+                  <option value="3">3rd year</option>
+                  <option value="4">4th year</option>
                 </select>
               </div>
             </div>
@@ -868,6 +868,9 @@ const courseName =
 const yearLevel =
   document.getElementById("yearLevel");
 
+const resourceSession =
+  document.getElementById("resourceSession");
+
 const targetCampus =
   document.getElementById("targetCampus");
 
@@ -1126,7 +1129,14 @@ async function loadUserProfile() {
 ========================================================= */
 
 function normalizeYear(value) {
-  return String(value || "").trim().toLowerCase();
+  const raw = String(value ?? "").trim().toLowerCase();
+
+  if (raw === "1" || raw === "1st" || raw === "1st year" || raw === "first year") return "1";
+  if (raw === "2" || raw === "2nd" || raw === "2nd year" || raw === "second year") return "2";
+  if (raw === "3" || raw === "3rd" || raw === "3rd year" || raw === "third year") return "3";
+  if (raw === "4" || raw === "4th" || raw === "4th year" || raw === "fourth year") return "4";
+
+  return raw;
 }
 
 function courseRowsForYear(year) {
@@ -1134,8 +1144,10 @@ function courseRowsForYear(year) {
 
   const databaseRows = coursesFromDatabase
     .filter(row => {
-      const rowYear = row.year_level || row.year || row.academic_year || row.year_name;
-      return rowYear && normalizeYear(rowYear) === selectedYear;
+      const rowYear = row.year_level ?? row.year ?? row.academic_year ?? row.year_name;
+      return rowYear !== null &&
+        rowYear !== undefined &&
+        normalizeYear(rowYear) === selectedYear;
     })
     .map(row => [
       row.code || row.course_code || "",
@@ -1143,9 +1155,18 @@ function courseRowsForYear(year) {
     ])
     .filter(row => row[0] && row[1]);
 
-  return databaseRows.length
-    ? databaseRows
-    : (FALLBACK_COURSES[year] || []);
+  if (databaseRows.length) {
+    return databaseRows;
+  }
+
+  const fallbackKey = {
+    "1": "1st year",
+    "2": "2nd year",
+    "3": "3rd year",
+    "4": "4th year"
+  }[selectedYear];
+
+  return FALLBACK_COURSES[fallbackKey] || [];
 }
 
 function populateCourseDropdown(year) {
