@@ -1189,8 +1189,58 @@ function populateCourseDropdown(year) {
   courseName.value = "";
 }
 
+async function loadCoursesForSelectedYear(year) {
+  const numericYear = Number(year);
+
+  if (!numericYear) {
+    populateCourseDropdown("");
+    return;
+  }
+
+  courseCode.disabled = false;
+  courseCode.innerHTML = '<option value="">Loading courses...</option>';
+  courseName.value = "";
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("courses")
+      .select("code,name,year_level,is_active")
+      .eq("year_level", numericYear)
+      .eq("is_active", true)
+      .order("code", { ascending: true });
+
+    if (error) throw error;
+
+    const rows = (data || [])
+      .map(row => [
+        String(row.code || "").trim(),
+        String(row.name || "").trim()
+      ])
+      .filter(row => row[0] && row[1]);
+
+    if (!rows.length) {
+      populateCourseDropdown(year);
+      return;
+    }
+
+    courseCode.innerHTML =
+      '<option value="">Select course / subject</option>' +
+      rows.map(row =>
+        '<option value="' + escapeHTML(row[0]) +
+        '" data-course-name="' + escapeHTML(row[1]) + '">' +
+        escapeHTML(row[0]) + ' — ' + escapeHTML(row[1]) +
+        '</option>'
+      ).join("");
+
+    courseCode.disabled = false;
+  } catch (error) {
+    console.error("Course loading error:", error);
+    populateCourseDropdown(year);
+  }
+}
+
 yearLevel.addEventListener("change", function () {
-  populateCourseDropdown(this.value);
+  loadCoursesForSelectedYear(this.value);
 });
 
 courseCode.addEventListener("change", function () {
@@ -1202,24 +1252,23 @@ async function loadCoursesFromDatabase() {
   try {
     const { data, error } = await supabaseClient
       .from("courses")
-      .select("*");
+      .select("code,name,year_level,is_active")
+      .order("year_level", { ascending: true })
+      .order("code", { ascending: true });
 
-    if (error) {
-      console.warn("Courses could not be loaded from database:", error.message);
-      coursesFromDatabase = [];
-    } else {
-      coursesFromDatabase = (data || []).slice().sort((a, b) => {
-        const ac = String(a.code || a.course_code || a.courseCode || "").trim();
-        const bc = String(b.code || b.course_code || b.courseCode || "").trim();
-        return ac.localeCompare(bc, undefined, { numeric: true, sensitivity: "base" });
-      });
-    }
+    if (error) throw error;
+
+    coursesFromDatabase = data || [];
   } catch (error) {
-    console.warn("Courses load error:", error);
+    console.warn("Courses could not be loaded from database:", error.message || error);
     coursesFromDatabase = [];
   }
 
-  populateCourseDropdown(yearLevel.value);
+  if (yearLevel.value) {
+    await loadCoursesForSelectedYear(yearLevel.value);
+  } else {
+    populateCourseDropdown("");
+  }
 }
 
 
