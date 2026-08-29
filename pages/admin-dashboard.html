@@ -189,7 +189,22 @@ function editArticleArchive(id){const x=articles.find(v=>String(v.id)===String(i
 async function saveArticleArchive(id){const title=$('articleEditTitle').value.trim(),category=$('articleEditCategory').value.trim(),excerpt=$('articleEditExcerpt').value.trim(),content=$('articleEditContent').value;if(!title)return toast('Article title is required.');const payload={title,category:category||null,excerpt:excerpt||null,content_html:content,updated_at:new Date().toISOString()};const r=await db.from('articles').update(payload).eq('id',id);if(r.error)return toast('Article update failed: '+r.error.message);const x=articles.find(v=>String(v.id)===String(id));if(x)Object.assign(x,payload);toast('Article updated.');log('Edited article: '+title);closeModal();renderArticleArchive();renderArticles();renderOverview()}
 async function deleteArticleArchive(id){const x=articles.find(v=>String(v.id)===String(id));if(!confirm('Delete this article permanently?'))return;const r=await db.from('articles').delete().eq('id',id);if(r.error)return toast('Delete failed: '+r.error.message);toast('Article deleted.');log('Deleted article: '+(x?.title||id));closeModal();await loadData()}
 function renderStudents(){const q=$('studentSearch').value.trim().toLowerCase(),ca=$('studentCampus').value;const list=students.filter(x=>(!q||[x.full_name,x.student_id,x.campus,x.session].join(' ').toLowerCase().includes(q))&&(!ca||x.campus===ca));$('studentRows').innerHTML=list.map(x=>'<tr><td><strong>'+esc(x.full_name||'Student')+'</strong></td><td>'+esc(x.student_id||'—')+'</td><td>'+esc(x.campus||'—')+'</td><td>'+esc(x.session||'—')+'</td><td><button class="btn small" data-action="edit-student" data-id="'+esc(x.id)+'" type="button">View / Edit</button></td></tr>').join('')||'<tr><td colspan="5"><div class="empty">No students found.</div></td></tr>'}
-function renderCourses(){$('courseList').innerHTML=courses.map((c,i)=>'<div class="item"><div><div class="item-title">'+esc(c[0])+'</div><div class="meta"><span>'+esc(c[1])+'</span></div></div><div class="item-actions"><button class="btn small" data-action="edit-course" data-index="'+i+'" type="button">Edit</button></div></div>').join('')}
+function renderCourses(){
+  const groups={1:[],2:[],3:[],4:[]};
+  courses.forEach(c=>{
+    const y=Number(c.year_level||1);
+    if(!groups[y])groups[y]=[];
+    groups[y].push(c);
+  });
+  let out='';
+  for(let y=1;y<=4;y++){
+    const suffix=y===1?'st':y===2?'nd':y===3?'rd':'th';
+    const list=(groups[y]||[]).slice().sort((a,b)=>String(a.code||'').localeCompare(String(b.code||'')));
+    out+='<div style="padding:15px 17px 8px;color:var(--navy);font-weight:900;font-size:12px;border-bottom:1px solid var(--line)">'+y+suffix+' Year</div>';
+    out+=list.map(c=>'<div class="item"><div><div class="item-title">'+esc(c.code)+'</div><div class="meta"><span>'+esc(c.name)+'</span></div></div><div class="item-actions"><button class="btn small" data-action="edit-course" data-id="'+esc(c.id)+'" type="button">Edit</button><button class="btn small danger" data-action="delete-course" data-id="'+esc(c.id)+'" type="button">Delete</button></div></div>').join('')||'<div class="empty">No courses added for this year.</div>';
+  }
+  $('courseList').innerHTML=out;
+}
 function renderLogs(){$('activityList').innerHTML=logs.map(x=>'<div class="item"><div><div class="item-title">'+esc(x.text)+'</div><div class="meta"><span>'+esc(x.time)+'</span></div></div></div>').join('')||'<div class="empty">No actions recorded in this session.</div>'}
 function log(text){logs.unshift({text,time:new Date().toLocaleString()});renderLogs()}
 function openModal(title,body,foot){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalFoot').innerHTML=foot||'';$('modalBg').classList.add('open')}
@@ -206,14 +221,118 @@ function editStudent(id){const x=students.find(v=>String(v.id)===String(id));if(
 async function saveStudent(){const p={full_name:$('eName').value.trim(),student_id:$('eStudentId').value.trim(),session:$('eSession').value.trim(),campus:$('eCampus').value};const r=await db.from('profiles').update(p).eq('id',studentEditId);if(r.error)return toast('Profile update failed: '+r.error.message);const x=students.find(v=>String(v.id)===String(studentEditId));if(x)Object.assign(x,p);log('Updated student profile: '+p.full_name);toast('Student profile updated.');closeModal();renderStudents();renderStats()}
 function editArchive(id){const x=archive.find(v=>String(v.id)===String(id));if(!x)return;openModal('Edit Archive Resource','<div class="field"><label>Title</label><input id="archiveTitle" value="'+esc(x.title||'')+'"></div><div class="field"><label>Description</label><textarea id="archiveDescription">'+esc(x.description||'')+'</textarea></div><div class="field"><label>Target Campus</label><select id="archiveEditCampus">'+campuses.map(c=>'<option value="'+esc(c)+'" '+(c===(x.target_campus||x.campus)?'selected':'')+'>'+esc(c)+'</option>').join('')+'</select></div>','<button class="btn" data-action="close-modal" type="button">Cancel</button><button class="btn success" data-action="save-archive" data-id="'+esc(id)+'" type="button">Save Changes</button>')}
 async function saveArchive(id){const r=await db.from('academic_notes').update({title:$('archiveTitle').value.trim(),description:$('archiveDescription').value.trim(),target_campus:$('archiveEditCampus').value}).eq('id',id);if(r.error)return toast('Archive update failed: '+r.error.message);toast('Archive updated.');log('Edited archive resource.');closeModal();await loadData()}
-function courseModal(index=null){const c=index===null?['','']:courses[index];openModal(index===null?'Add Course':'Edit Course','<div class="field"><label>Course Code *</label><input id="courseCode" value="'+esc(c[0])+'"></div><div class="field"><label>Course Name *</label><input id="courseName" value="'+esc(c[1])+'"></div>','<button class="btn" data-action="close-modal" type="button">Cancel</button><button class="btn success" data-action="save-course" data-index="'+(index===null?'':index)+'" type="button">Save Course</button>')}
-async function saveCourse(index){const code=$('courseCode').value.trim(),name=$('courseName').value.trim();if(!code||!name)return toast('Course code and name are required.');$('modalFoot').querySelectorAll('button').forEach(b=>b.disabled=true);try{if(index===''){const r=await db.from('courses').insert({code,name}).select().single();if(r.error)throw r.error;courses.push([r.data.code||code,r.data.name||name]);log('Added course '+code);toast('Course saved permanently.')}else{const oldCode=courses[Number(index)]?.[0];const r=await db.from('courses').update({code,name}).eq('code',oldCode);if(r.error)throw r.error;courses[Number(index)]=[code,name];log('Edited course '+code);toast('Course updated permanently.')}renderCourses();closeModal();await loadCoursesFromDatabase()}catch(error){console.error('Course save error:',error);toast('Course save failed: '+(error.message||'Unknown error'))}finally{$('modalFoot').querySelectorAll('button').forEach(b=>b.disabled=false)}}
-async function loadCoursesFromDatabase(){const r=await db.from('courses').select('*').order('code',{ascending:true});if(r.error){console.error('Courses load error:',r.error);return}courses=(r.data||[]).map(x=>[x.code||x.course_code||'',x.name||x.course_name||x.title||'']).filter(x=>x[0]&&x[1]);if(!courses.length){courses=[['PS 101','Ancient and Medieval Western Political Thought'],['PS 102','Political Theory and Organization'],['PS 103','Government and Politics: UK, USA and France'],['PS 104','Principles of Sociology'],['PS 105','Modern Western Political Thought'],['PS 211501','History of the Emergence of Independent Bangladesh'],['PS 107','Socio-Political and Constitutional Development in British India (1757 to 1947)'],['PS 108','Public Administration in Bangladesh']];}if($('aCode'))$('aCode').innerHTML='<option value="">Select course</option>'+courses.map(c=>'<option value="'+esc(c[0])+'">'+esc(c[0])+' — '+esc(c[1])+'</option>').join('');renderCourses()}
-async function adminSubmit(e){e.preventDefault();const type=$('aType').value,title=$('aTitle').value.trim(),code=$('aCode').value,course=courses.find(x=>x[0]===code),campus=$('aCampus').value,description=$('aDesc').value.trim(),drive=$('aDrive').value.trim();if(!type||!title||!course||!campus||!description||!drive)return toast('Please complete all required fields.');try{const u=new URL(drive);if(!['drive.google.com','docs.google.com'].includes(u.hostname.toLowerCase()))throw new Error()}catch{return toast('Enter a valid Google Drive or Google Docs link.')}const payload={user_id:currentUser.id,resource_type:type,type,title,course_code:code,course_name:course[1],course:course[1],description,target_campus:campus,drive_link:drive,status:'approved',full_name:currentProfile.full_name||'Admin',session:currentProfile.session||null,student_id:currentProfile.student_id||null,submitter_campus:currentProfile.campus||null};$('aSubmit').disabled=true;const r=await db.from('submissions').insert(payload);$('aSubmit').disabled=false;if(r.error)return toast('Submission failed: '+r.error.message);toast('Resource submitted successfully.');log('Admin submitted resource: '+title);e.target.reset();await loadData()}
-async function loadData(){clearDiagnostic();const results=await Promise.all([db.from('profiles').select('*').eq('role','student').order('full_name'),db.from('submissions').select('*').order('created_at',{ascending:false}),db.from('academic_notes').select('*').order('created_at',{ascending:false}),db.from('articles').select('*').order('created_at',{ascending:false}),db.from('events').select('*').order('created_at',{ascending:false})]);const errors=[];if(results[0].error)errors.push('Students: '+results[0].error.message);if(results[1].error)errors.push('Submissions: '+results[1].error.message);if(results[2].error)errors.push('Archive: '+results[2].error.message);if(results[3].error)errors.push('Articles: '+results[3].error.message);if(results[4].error)errors.push('Events: '+results[4].error.message);students=results[0].data||[];submissions=results[1].data||[];archive=results[2].data||[];articles=results[3].data||[];events=results[4].data||[];if(errors.length)showDiagnostic('Database read issue: '+errors.join(' | '));renderOverview();renderArticles();renderSubmissions();renderArchive();renderArticleArchive();renderStudents();renderCourses();renderLogs()}
-async function init(){const session=await db.auth.getUser();if(session.error||!session.data.user){location.href='login.html';return}currentUser=session.data.user;const p=await db.from('profiles').select('*').eq('id',currentUser.id).single();if(p.error||!p.data){toast('Could not load admin profile.');return}if(p.data.role!=='admin'){location.href='student-dashboard.html';return}currentProfile=p.data;fillSelect('submissionCampus',campuses,'All campuses');fillSelect('archiveCampus',campuses,'All campuses');fillSelect('studentCampus',campuses,'All campuses');fillSelect('aCampus',campuses,'Select campus');await loadCoursesFromDatabase();await loadData()}
+function yearLabel(y){return y===1?'1st year':y===2?'2nd year':y===3?'3rd year':'4th year'}
+function courseModal(id=null){
+  const c=id===null?null:courses.find(v=>String(v.id)===String(id));
+  const year=Number(c?.year_level||1);
+  const yearOptions=[1,2,3,4].map(y=>'<option value="'+y+'" '+(y===year?'selected':'')+'>'+yearLabel(y)+'</option>').join('');
+  openModal(id===null?'Add Course':'Edit Course',
+    '<div class="field"><label>Year *</label><select id="courseYear" required>'+yearOptions+'</select></div>'+
+    '<div class="field"><label>Course Code *</label><input id="courseCode" maxlength="50" value="'+esc(c?.code||'')+'" required></div>'+
+    '<div class="field"><label>Course Name *</label><input id="courseName" maxlength="220" value="'+esc(c?.name||'')+'" required></div>'+
+    '<div class="hint">Deleting a course does not change existing resources. Editing a course updates the saved course metadata of matching resources.</div>',
+    '<button class="btn" data-action="close-modal" type="button">Cancel</button><button class="btn success" data-action="save-course" data-id="'+(id===null?'':esc(id))+'" type="button">Save Course</button>'
+  );
+}
+async function saveCourse(id){
+  const year=Number($('courseYear').value);
+  const code=$('courseCode').value.trim();
+  const name=$('courseName').value.trim();
+  if(![1,2,3,4].includes(year)||!code||!name)return toast('Year, course code and course name are required.');
+  const duplicate=courses.find(c=>String(c.code||'').toLowerCase()===code.toLowerCase()&&(id===''||String(c.id)!==String(id)));
+  if(duplicate)return toast('This course code already exists.');
+  $('modalFoot').querySelectorAll('button').forEach(b=>b.disabled=true);
+  try{
+    if(id===''){
+      const r=await db.from('courses').insert({year_level:year,code,name}).select('*').single();
+      if(r.error)throw r.error;
+      courses.push(r.data);
+      log('Added course '+code+' ('+yearLabel(year)+')');
+      toast('Course added permanently.');
+    }else{
+      const old=courses.find(c=>String(c.id)===String(id));
+      const r=await db.from('courses').update({year_level:year,code,name,updated_at:new Date().toISOString()}).eq('id',id).select('*').single();
+      if(r.error)throw r.error;
+      if(old && (String(old.code)!==code || String(old.name)!==name)){
+        const oldCode=old.code;
+        const sub=await db.from('submissions').update({course_code:code,course_name:name,course:name}).eq('course_code',oldCode);
+        if(sub.error)console.warn('Submission course update:',sub.error.message);
+        const notes=await db.from('academic_notes').update({course_code:code,course_name:name,course:name}).eq('course_code',oldCode);
+        if(notes.error)console.warn('Archive course update:',notes.error.message);
+      }
+      const i=courses.findIndex(c=>String(c.id)===String(id));
+      if(i>=0)courses[i]=r.data;
+      log('Edited course '+code+' ('+yearLabel(year)+')');
+      toast('Course updated permanently.');
+    }
+    renderCourses();
+    refreshCourseSelect();
+    closeModal();
+  }catch(error){
+    console.error('Course save error:',error);
+    toast('Course save failed: '+(error.message||'Unknown error'));
+  }finally{
+    $('modalFoot').querySelectorAll('button').forEach(b=>b.disabled=false);
+  }
+}
+async function deleteCourse(id){
+  const c=courses.find(v=>String(v.id)===String(id));
+  if(!c)return;
+  if(!confirm('Delete "'+c.code+' — '+c.name+'" from the course list? Existing resources will keep their saved course name.'))return;
+  const r=await db.from('courses').delete().eq('id',id);
+  if(r.error)return toast('Delete failed: '+r.error.message);
+  courses=courses.filter(v=>String(v.id)!==String(id));
+  renderCourses();
+  refreshCourseSelect();
+  log('Deleted course '+c.code);
+  toast('Course deleted.');
+}
+function refreshCourseSelect(){
+  const el=$('aCode');
+  if(!el)return;
+  const selected=el.value;
+  const ordered=courses.slice().sort((a,b)=>Number(a.year_level)-Number(b.year_level)||String(a.code).localeCompare(String(b.code)));
+  el.innerHTML='<option value="">Select course</option>'+ordered.map(c=>'<option value="'+esc(c.code)+'">'+esc(c.code)+' — '+esc(c.name)+' ('+esc(yearLabel(Number(c.year_level)))+')</option>').join('');
+  if(ordered.some(c=>String(c.code)===String(selected)))el.value=selected;
+}
+async function loadCoursesFromDatabase(){
+  const r=await db.from('courses').select('id,code,name,year_level,created_at,updated_at').order('year_level').order('code');
+  if(r.error){console.error('Courses load error:',r.error);courses=[];refreshCourseSelect();return}
+  courses=(r.data||[]).filter(x=>x.code&&x.name);
+  refreshCourseSelect();
+  renderCourses();
+}
+async function adminSubmit(e){e.preventDefault();const type=$('aType').value,title=$('aTitle').value.trim(),code=$('aCode').value,course=courses.find(x=>String(x.code)===String(code)),campus=$('aCampus').value,description=$('aDesc').value.trim(),drive=$('aDrive').value.trim();if(!type||!title||!course||!campus||!description||!drive)return toast('Please complete all required fields.');try{const u=new URL(drive);if(!['drive.google.com','docs.google.com'].includes(u.hostname.toLowerCase()))throw new Error()}catch{return toast('Enter a valid Google Drive or Google Docs link.')}const payload={user_id:currentUser.id,resource_type:type,type,title,course_code:code,course_name:course.name,course:course.name,description,target_campus:campus,drive_link:drive,status:'approved',full_name:currentProfile.full_name||'Admin',session:currentProfile.session||null,student_id:currentProfile.student_id||null,submitter_campus:currentProfile.campus||null};$('aSubmit').disabled=true;const r=await db.from('submissions').insert(payload);$('aSubmit').disabled=false;if(r.error)return toast('Submission failed: '+r.error.message);toast('Resource submitted successfully.');log('Admin submitted resource: '+title);e.target.reset();await loadData()}
+async function loadData(){
+  clearDiagnostic();
+  const results=await Promise.all([
+    db.from('profiles').select('*').eq('role','student').order('full_name'),
+    db.from('submissions').select('*').order('created_at',{ascending:false}),
+    db.from('academic_notes').select('*').order('created_at',{ascending:false}),
+    db.from('articles').select('*').order('created_at',{ascending:false}),
+    db.from('events').select('*').order('created_at',{ascending:false}),
+    db.from('courses').select('id,code,name,year_level,created_at,updated_at').order('year_level').order('code')
+  ]);
+  const errors=[];
+  if(results[0].error)errors.push('Students: '+results[0].error.message);
+  if(results[1].error)errors.push('Submissions: '+results[1].error.message);
+  if(results[2].error)errors.push('Archive: '+results[2].error.message);
+  if(results[3].error)errors.push('Articles: '+results[3].error.message);
+  if(results[4].error)errors.push('Events: '+results[4].error.message);
+  if(results[5].error)errors.push('Courses: '+results[5].error.message);
+  students=results[0].data||[];
+  submissions=results[1].data||[];
+  archive=results[2].data||[];
+  articles=results[3].data||[];
+  events=results[4].data||[];
+  courses=results[5].data||[];
+  refreshCourseSelect();
+  if(errors.length)showDiagnostic('Database read issue: '+errors.join(' | '));
+  renderOverview();renderArticles();renderSubmissions();renderArchive();renderArticleArchive();renderStudents();renderCourses();renderLogs();
+}
+async function init(){const session=await db.auth.getUser();if(session.error||!session.data.user){location.href='login.html';return}currentUser=session.data.user;const p=await db.from('profiles').select('*').eq('id',currentUser.id).single();if(p.error||!p.data){toast('Could not load admin profile.');return}if(p.data.role!=='admin'){location.href='student-dashboard.html';return}currentProfile=p.data;fillSelect('submissionCampus',campuses,'All campuses');fillSelect('archiveCampus',campuses,'All campuses');fillSelect('studentCampus',campuses,'All campuses');fillSelect('aCampus',campuses,'Select campus');refreshCourseSelect();await loadData()}
 
-document.addEventListener('click',async e=>{const goBtn=e.target.closest('[data-view-go]');if(goBtn){go(goBtn.dataset.viewGo,{status:goBtn.dataset.status,type:goBtn.dataset.type});return}const side=e.target.closest('[data-view]');if(side){go(side.dataset.view);return}const act=e.target.closest('[data-action]');if(!act)return;const a=act.dataset.action;const id=act.dataset.id;if(a==='view-event')return viewEvent(id);if(a==='approve-event')return approveEvent(id);if(a==='reject-event')return rejectEvent(id);if(a==='confirm-reject-event')return confirmRejectEvent();if(a==='delete-event')return deleteEvent(id);if(a==='view-article')return viewArticle(id);if(a==='edit-article-archive')return editArticleArchive(id);if(a==='save-article-archive')return saveArticleArchive(id);if(a==='delete-article-archive')return deleteArticleArchive(id);if(a==='approve-article')return approveArticle(id);if(a==='reject-article')return rejectArticle(id);if(a==='confirm-reject-article')return confirmRejectArticle();if(a==='view-submission')return viewSubmission(id);if(a==='approve-submission')return approveSubmission(id);if(a==='reject-submission')return rejectSubmission(id);if(a==='confirm-reject-submission')return confirmRejectSubmission();if(a==='close-modal')return closeModal();if(a==='drive'){window.open(act.dataset.url,'_blank','noopener,noreferrer');return}if(a==='edit-student')return editStudent(id);if(a==='save-student')return saveStudent();if(a==='edit-archive')return editArchive(id);if(a==='save-archive')return saveArchive(id);if(a==='delete-archive'){if(!confirm('Delete this archive resource?'))return;const r=await db.from('academic_notes').delete().eq('id',id);if(r.error)return toast('Delete failed: '+r.error.message);toast('Archive resource deleted.');log('Deleted archive resource.');return loadData()}if(a==='edit-course')return courseModal(Number(act.dataset.index));if(a==='save-course')return saveCourse(act.dataset.index)});
+document.addEventListener('click',async e=>{const goBtn=e.target.closest('[data-view-go]');if(goBtn){go(goBtn.dataset.viewGo,{status:goBtn.dataset.status,type:goBtn.dataset.type});return}const side=e.target.closest('[data-view]');if(side){go(side.dataset.view);return}const act=e.target.closest('[data-action]');if(!act)return;const a=act.dataset.action;const id=act.dataset.id;if(a==='view-event')return viewEvent(id);if(a==='approve-event')return approveEvent(id);if(a==='reject-event')return rejectEvent(id);if(a==='confirm-reject-event')return confirmRejectEvent();if(a==='delete-event')return deleteEvent(id);if(a==='view-article')return viewArticle(id);if(a==='edit-article-archive')return editArticleArchive(id);if(a==='save-article-archive')return saveArticleArchive(id);if(a==='delete-article-archive')return deleteArticleArchive(id);if(a==='approve-article')return approveArticle(id);if(a==='reject-article')return rejectArticle(id);if(a==='confirm-reject-article')return confirmRejectArticle();if(a==='view-submission')return viewSubmission(id);if(a==='approve-submission')return approveSubmission(id);if(a==='reject-submission')return rejectSubmission(id);if(a==='confirm-reject-submission')return confirmRejectSubmission();if(a==='close-modal')return closeModal();if(a==='drive'){window.open(act.dataset.url,'_blank','noopener,noreferrer');return}if(a==='edit-student')return editStudent(id);if(a==='save-student')return saveStudent();if(a==='edit-archive')return editArchive(id);if(a==='save-archive')return saveArchive(id);if(a==='delete-archive'){if(!confirm('Delete this archive resource?'))return;const r=await db.from('academic_notes').delete().eq('id',id);if(r.error)return toast('Delete failed: '+r.error.message);toast('Archive resource deleted.');log('Deleted archive resource.');return loadData()}if(a==='edit-course')return courseModal(act.dataset.id);if(a==='delete-course')return deleteCourse(act.dataset.id);if(a==='save-course')return saveCourse(act.dataset.id)});
 $('eventModalClose').onclick=closeEventModal;$('eventCancel').onclick=closeEventModal;$('eventModalBg').addEventListener('click',e=>{if(e.target===$('eventModalBg'))closeEventModal()});$('adminCreateEvent').onclick=openEventCreate;$('eventForm').addEventListener('submit',createAdminEvent);eventPreview('evCover','evCoverPreview');eventPreview('evImage','evImagePreview');$('modalClose').onclick=closeModal;$('modalBg').addEventListener('click',e=>{if(e.target===$('modalBg'))closeModal()});$('refresh').onclick=loadData;$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');$('mobileMenu').onclick=()=>$('sidebar').classList.toggle('open');$('logout').onclick=async()=>{await db.auth.signOut();location.href='login.html'};$('settingsLogout').onclick=async()=>{await db.auth.signOut();location.href='login.html'};$('addCourse').onclick=()=>courseModal();$('adminForm').addEventListener('submit',adminSubmit);
 [['articleSearch','articleStatus','articleCategory'],['articleArchiveSearch','articleArchiveStatus','articleArchiveCategory'],['submissionSearch','submissionStatus','submissionType','submissionCampus'],['eventSearch','eventStatus','eventCategory'],['archiveSearch','archiveType','archiveCampus'],['studentSearch','studentCampus']].forEach(group=>group.forEach(id=>$(id).addEventListener('input',()=>{const active=document.querySelector('.view.active');if(active.id==='view-articles')renderArticles();if(active.id==='view-articleArchive')renderArticleArchive();if(active.id==='view-submissions')renderSubmissions();if(active.id==='view-archive')renderArchive();if(active.id==='view-students')renderStudents()})));
 $('eventClear').onclick=()=>{$('eventSearch').value='';$('eventStatus').value='';$('eventCategory').value='';renderEvents()};$('articleClear').onclick=()=>{$('articleSearch').value='';$('articleStatus').value='';$('articleCategory').value='';renderArticles()};$('articleArchiveClear').onclick=()=>{$('articleArchiveSearch').value='';$('articleArchiveStatus').value='';$('articleArchiveCategory').value='';renderArticleArchive()};$('submissionClear').onclick=()=>{$('submissionSearch').value='';$('submissionStatus').value='';$('submissionType').value='';$('submissionCampus').value='';renderSubmissions()};$('archiveClear').onclick=()=>{$('archiveSearch').value='';$('archiveType').value='';$('archiveCampus').value='';renderArchive()};$('studentClear').onclick=()=>{$('studentSearch').value='';$('studentCampus').value='';renderStudents()};
