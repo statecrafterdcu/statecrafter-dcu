@@ -1128,11 +1128,14 @@
 
       <div class="top-actions">
 
-        <a href="submit-note.html" class="button button-red">
-            Add Resource
-          </a>
+        <a
+          href="submit-note.html"
+          class="button button-red"
+        >
+          Add Resource
+        </a>
 
-          <a
+        <a
           href="article-editor.html"
           class="button button-primary"
         >
@@ -3228,8 +3231,11 @@
     }
 
 
-    $("openArchiveForm")
-      .addEventListener("click", openArchiveForm);
+    const openArchiveFormButton = $("openArchiveForm");
+    if (openArchiveFormButton) {
+      openArchiveFormButton
+        .addEventListener("click", openArchiveForm);
+    }
 
     $("closeArchiveForm")
       .addEventListener("click", closeArchiveForm);
